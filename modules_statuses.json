@@ -1,0 +1,15 @@
+{
+    "Product": true,
+    "User": true,
+    "Utility": true,
+    "Location": true,
+    "ProductCategory": true,
+    "ProductSearch": true,
+    "Shop": true,
+    "Notification": true,
+    "GeneralModule": true,
+    "Regions": true,
+    "Street": true,
+    "Subscription": true,
+    "Slider": true
+}

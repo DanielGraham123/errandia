@@ -1,0 +1,13 @@
+{
+    "name": "Street",
+    "alias": "street",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Street\\Providers\\StreetServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -1,0 +1,13 @@
+{
+    "name": "ProductSearch",
+    "alias": "productsearch",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ProductSearch\\Providers\\ProductSearchServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
