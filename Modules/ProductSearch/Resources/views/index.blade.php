@@ -7,53 +7,59 @@
         <div class="row">
             <div class="col-md-3  card">
                 <h4>Sort By </h4>
-                <form method="POST" action="{{route('productsort')}}">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="keyword" value="{{$keyword}}"/>
-                    <!--<select class="form-control" onchange="getSubCategoriesByCategory(this)" name="category"-->
-                    <!--        id="category">-->
-                    <!--    <option value="none">Select Category</option>-->
-                    <!--    @foreach($categories as $category)-->
-                    <!--        <option-->
-                    <!--            value="{{$category->id}}" <?php echo $category->id == request('category') ? 'selected="selected"' : '';?>>{{$category->name}}</option>-->
-                    <!--    @endforeach-->
+                <div class="desktop-only">
+                    <form method="POST" action="{{route('productsort')}}">
 
-                    <!--</select>-->
+                        {{ csrf_field() }}
+                        <input type="hidden" name="keyword" value="{{$keyword}}"/>
+                        <select class="form-control" name="region" id="regionSearch" onchange="getTowns(this)">
+                            <option value="">Select Region</option>
+                            @foreach($regions as $region)
+                                <option
+                                    value="{{$region->id}}" <?php echo $region->id == request('region') ? 'selected="selected"' : '';?>>{{$region->name}}</option>
+                            @endforeach
+                        </select>
+                        <select class="form-control" name="town" id="townSearch" onchange="getStreets(this)">
+                            <option value="">Select Town</option>
+                            @foreach($towns as $town)
+                                <option value="{{$town->id}}">{{$town->name}}</option>
+                            @endforeach
+                        </select>
+                        <select class="form-control" name="street" id="streetSearch">
+                            <option value="">Select Street</option>
+                            @foreach($streets as $street)
+                                <option value="{{$street->id}}">{{$street->name}}</option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
+                <div class="mobile-only">
+                    <form method="POST" action="{{route('productsort')}}">
 
-                    <!--<select class="form-control" name="sub_category" id="sub_category">-->
-                    <!--    <option value="">Select Sub Category</option>-->
+                        {{ csrf_field() }}
+                        <input type="hidden" name="keyword" value="{{$keyword}}"/>
+                        <select class="form-control" name="region" id="regionSearch" onchange="getTowns(this)">
+                            <option value="">Region</option>
+                            @foreach($regions as $region)
+                                <option
+                                    value="{{$region->id}}" <?php echo $region->id == request('region') ? 'selected="selected"' : '';?>>{{$region->name}}</option>
+                            @endforeach
+                        </select>
+                        <select class="form-control mx-3" name="town" id="townSearch" onchange="getStreets(this)">
+                            <option value="">Town</option>
+                            @foreach($towns as $town)
+                                <option value="{{$town->id}}">{{$town->name}}</option>
+                            @endforeach
+                        </select>
 
-                    <!--</select>-->
-                    <select class="form-control" name="region" id="regionSearch" onchange="getTowns(this)">
-                        <option value="">Select Region</option>
-                        @foreach($regions as $region)
-                            <option
-                                value="{{$region->id}}" <?php echo $region->id == request('region') ? 'selected="selected"' : '';?>>{{$region->name}}</option>
-                        @endforeach
-                    </select>
-                    <select class="form-control" name="town" id="townSearch" onchange="getStreets(this)">
-                        <option value="">Select Town</option>
-                        @foreach($towns as $town)
-                            <option value="{{$town->id}}">{{$town->name}}</option>
-                        @endforeach
-                    </select>
-
-                    <select class="form-control" name="street" id="streetSearch">
-                        <option value="">Select Street</option>
-                        @foreach($streets as $street)
-                            <option value="{{$street->id}}">{{$street->name}}</option>
-                        @endforeach
-                    </select>
-
-{{--                    <section class="range-slider">--}}
-{{--                        <label>Price :</label><br/>--}}
-{{--                        Min <input name="MinPrice" value="{{request('MinPrice')}}" min="1" class="form-control"--}}
-{{--                                   step="1" type="text">--}}
-{{--                        Max <input name="MaxPrice" value="{{request('MaxPrice')}}" min="1" class="form-control"--}}
-{{--                                   step="1" type="text">--}}
-{{--                    </section>--}}
-                    <input type="submit" value="Search" class="btn helep_btn_raise"/>
-                </form>
+                        <select class="form-control" name="street" id="streetSearch">
+                            <option value="">Street</option>
+                            @foreach($streets as $street)
+                                <option value="{{$street->id}}">{{$street->name}}</option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
             </div>
             <div class="col-md-9  card">
                 @if(!$products->isEmpty())
@@ -88,9 +94,10 @@
                                             <div class="card-body withripple zoom-img">
                                                 <a href="{{route('general_product_details',['id'=>$product->slug])}}">
                                                     @if(isMobile())
-                                                        <img style="width:280px; max-width:280px; height:251px; max-height:251px"
-                                                             class="img-fluid center-block"
-                                                             src="{{asset('storage/'.$product->featured_image_path)}}"/>
+                                                        <img
+                                                            style="width:280px; max-width:280px; height:251px; max-height:251px"
+                                                            class="img-fluid center-block"
+                                                            src="{{asset('storage/'.$product->featured_image_path)}}"/>
                                                     @else
                                                         <img height="130px" class="card-img-top"
                                                              src="{{asset('storage/'.$product->featured_image_path)}}"/>

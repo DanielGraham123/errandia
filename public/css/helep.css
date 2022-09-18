@@ -1210,3 +1210,26 @@ li.nav-item a.text-primary {
     padding: 5px;
     box-shadow: 0 0.5rem 0.5rem rgba(0, 0, 0, 0.175) !important;
 }
+.mobile-only{
+    display: none;
+}
+.mobile-only form{
+    display: flex;
+}
+.desktop-only{
+    display: block;
+}
+select:focus{
+    outline: none;
+    border-color: unset !important;
+    box-shadow: none !important;
+
+}
+@media (max-width: 767px) {
+    .mobile-only{
+        display: block;
+    }
+    .desktop-only{
+        display: none;
+    }
+}
