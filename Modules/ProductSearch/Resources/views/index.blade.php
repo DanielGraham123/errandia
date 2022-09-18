@@ -45,13 +45,13 @@
                         @endforeach
                     </select>
 
-                    <section class="range-slider">
-                        <label>Price :</label><br/>
-                        Min <input name="MinPrice" value="{{request('MinPrice')}}" min="1" class="form-control"
-                                   step="1" type="text">
-                        Max <input name="MaxPrice" value="{{request('MaxPrice')}}" min="1" class="form-control"
-                                   step="1" type="text">
-                    </section>
+{{--                    <section class="range-slider">--}}
+{{--                        <label>Price :</label><br/>--}}
+{{--                        Min <input name="MinPrice" value="{{request('MinPrice')}}" min="1" class="form-control"--}}
+{{--                                   step="1" type="text">--}}
+{{--                        Max <input name="MaxPrice" value="{{request('MaxPrice')}}" min="1" class="form-control"--}}
+{{--                                   step="1" type="text">--}}
+{{--                    </section>--}}
                     <input type="submit" value="Search" class="btn helep_btn_raise"/>
                 </form>
             </div>

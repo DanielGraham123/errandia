@@ -26,12 +26,6 @@ $app = new Illuminate\Foundation\Application(
 |
 */
 
-if (env('APP_ENV') != "local") {
-    $app->bind('path.public', function () {
-        return realpath(__DIR__ . '/../../public_html');
-    });
-}
-
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
     App\Http\Kernel::class
