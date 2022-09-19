@@ -1,3 +1,4 @@
+@include('helep.general.components.loader')
 </div>
 <footer class="py-2">
     <div class="container py-sm-4">
@@ -90,6 +91,16 @@
         }
 
     }
+
+    window.addEventListener('load',function (){
+        const loadingSection = document.getElementById('loader-section');
+        if(loadingSection){
+            setTimeout(()=>{
+                loadingSection.classList.add("d-none");
+
+            },500)
+        }
+    })
 </script>
 
 @yield('js')
