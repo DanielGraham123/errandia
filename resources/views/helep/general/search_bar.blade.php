@@ -83,8 +83,12 @@
                     </li>
                     <li class="nav-item pl-1">
                         @if(auth()->check())
-                            <a class="nav-link text-white pl-1" data-target="customSearchModal"
-                               onclick="showCustomSearchModal(this,'customSearchModal')">@lang('general.send_custom_quote_msg')</a>
+{{--                            <a class="nav-link text-white pl-1" data-target="customSearchModal"--}}
+{{--                               onclick="showCustomSearchModal(this,'customSearchModal')">@lang('general.send_custom_quote_msg')--}}
+{{--                            </a>--}}
+                            <a  href="{{route('run_errand_page')}}" class="nav-link text-white pl-1" data-target="customSearchModal"
+                               >@lang('general.send_custom_quote_msg')
+                            </a>
                         @else
                             <a class="nav-link text-white pl-1"
                                href="{{route('login_page', ['redirectTo' =>route('run_errand_page')])}}">@lang('general.send_custom_quote_msg')</a>

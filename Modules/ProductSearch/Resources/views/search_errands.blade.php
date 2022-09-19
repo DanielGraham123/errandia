@@ -123,7 +123,7 @@
                                         <div class="form-group">
                                             <select class="form-control mb-2 subCategory" name="dialogCategory"
                                                     id="dialogCategory">
-                                                <option value="none">Select Product Category</option>
+                                                <option value="">Select Product Category</option>
                                                 @foreach($categories as $category)
                                                     <option
                                                         value="{{$category->id}}">{{$category->name}}</option>
@@ -133,7 +133,7 @@
                                         <div class="form-group">
                                             <select class="form-control region" name="region" id="regionSearch"
                                                     onchange="getTownsByRegionErrand(this)">
-                                                <option value="none">Filter By Region</option>
+                                                <option value="">Filter By Region</option>
                                                 @foreach($regions as $region)
                                                     <option
                                                         value="{{$region->id}}">{{$region->name}}</option>
@@ -143,12 +143,12 @@
                                         <div class="form-group">
                                             <select class="form-control town" name="town" id="townSearch"
                                                     onchange="getCityByTownErrand(this)">
-                                                <option value="none">Filter By Town</option>
+                                                <option value="">Filter By Town</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <select class="form-control street" name="street" id="streetSearch">
-                                                <option value="none">Filter By Street</option>
+                                                <option value="">Filter By Street</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -192,8 +192,8 @@
 
         function getSubCategoriesErrand(obj) {
             var category = $("#" + obj.id).val();
-            if (category === "none") return;
-            $("#sub_category").html("<option value='none'>Please Wait ....</option>");
+            if (!category) return;
+            $("#sub_category").html("<option value=''>Please Wait ....</option>");
             $.ajax({
                 datatype: "json",
                 type: 'get',

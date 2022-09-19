@@ -94,12 +94,13 @@ class ProductSearchController extends Controller
         $quoteData['phone_number'] = $user->tel;
         $quoteData['description'] = $_POST['Description'];
         $quoteData['UserID'] = $user->id;
-        $quoteData['sub_category_id'] = $_POST["dialogCategory"];
+
+        $quoteData['sub_category_id'] = isset($_POST["dialogCategory"]) && $_POST["dialogCategory"] ?$_POST["dialogCategory"] : 0;
         $quoteData['created_at'] = date("Y-m-d h:i:s");
         $quoteData['updated_at'] = date("Y-m-d h:i:s");
-
+//
         $quoteID = $ProductQuoteService->saveProductQuote($quoteData);
-
+//
         // FOR ENQUIRY IMAGE
         if ($quoteID) {
             $extraProductImages = $request->getProductQuoteImages();
