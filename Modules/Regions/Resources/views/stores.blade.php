@@ -6,7 +6,7 @@
 
                 <div class="col-md-3">
 
-                    <form name="Sort" action="{{route('regions_stores',['id' => $RegionID])}}" method="get" onsubmit="showLoader()">
+                    <form name="Sort" action="{{route('regions_stores',['id' => $RegionID])}}" method="get">
 
                         {{--                <select  class="form-control" name="region" id="region"   onchange="getTowns(this)">--}}
                         {{--                    <option value="">Select Region</option>--}}

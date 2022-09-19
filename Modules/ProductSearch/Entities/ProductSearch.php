@@ -33,16 +33,17 @@ class ProductSearch extends Model
 	public function getAllSortProduct($keyword,$keywords)
 	{
 		//print_r($keywords);die;
-		$result=ProductSearch::select("*")->from('products')
+		$result = ProductSearch::select("*")->from('products')
 			->when(!empty($keywords['sub_category']) , function ($query) use($keywords){
 				return $query->where('products.sub_category_id',$keywords['sub_category']);
 			})
-			->when($keywords['MinPrice']!=0 and $keywords['MaxPrice']!=0 , function ($query) use($keywords){
-				return $query->whereBetween('products.unit_price', [$keywords['MinPrice'], $keywords['MaxPrice']]) ;
-			})
+
+//			->when($keywords['MinPrice']!=0 and $keywords['MaxPrice']!=0 , function ($query) use($keywords){
+//				return $query->whereBetween('products.unit_price', [$keywords['MinPrice'], $keywords['MaxPrice']]) ;
+//			})
 			->when(!empty($keyword), function ($query) use ($keyword){
 				return $query->where(function($q) use($keyword) {
-				 $q	->where('products.search_index', 'LIKE', "%{$keyword}%");
+				 $q->where('products.search_index', 'LIKE', "%{$keyword}%");
 			 });
 		 })
 		 ->paginate(20);

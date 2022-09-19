@@ -8,11 +8,11 @@
             <div class="col-md-3  card">
                 <h4>Sort By </h4>
                 <div class="desktop-only">
-                    <form method="POST" action="{{route('productsort')}}">
+                    <form method="get" action="{{route('productsearch')}}">
 
                         {{ csrf_field() }}
                         <input type="hidden" name="keyword" value="{{$keyword}}"/>
-                        <select class="form-control" name="region" id="regionSearch" onchange="getTowns(this)">
+                        <select class="form-control" name="region" id="regionSearch" onchange="this.form.submit();">
                             <option value="">Select Region</option>
                             @foreach($regions as $region)
                                 <option
@@ -209,23 +209,23 @@
             var region = $("#regionSearch").val();
             if (region === "none") return;
             $("#town").html("<option value='none'>Please Wait ....</option>");
-            $.ajax({
-                datatype: "json",
-                type: 'get',
-                data: {
-                    region: region
-                },
-                url: $("#baseUrl").val() + '/region/town',
-                success: function (response) {
-                    var res = JSON.parse(response);
-                    $("#townSearch").html(res.data);
-                    $('#townSearch option[value="<?php echo request('town');?>"]').attr("selected", "selected");
-                    setTimeout(getStreets, 500);
-                },
-                error: function () {
-                    console.log("Eror getting response");
-                }
-            });
+            {{--$.ajax({--}}
+            {{--    datatype: "json",--}}
+            {{--    type: 'get',--}}
+            {{--    data: {--}}
+            {{--        region: region--}}
+            {{--    },--}}
+            {{--    url: $("#baseUrl").val() + '/region/town',--}}
+            {{--    success: function (response) {--}}
+            {{--        var res = JSON.parse(response);--}}
+            {{--        $("#townSearch").html(res.data);--}}
+            {{--        $('#townSearch option[value="<?php echo request('town');?>"]').attr("selected", "selected");--}}
+            {{--        setTimeout(getStreets, 500);--}}
+            {{--    },--}}
+            {{--    error: function () {--}}
+            {{--        console.log("Eror getting response");--}}
+            {{--    }--}}
+            {{--});--}}
         }
 
         function getStreets() {
@@ -233,22 +233,22 @@
             var town = $("#townSearch").val();
             if (town === "none") return;
             $("#streetSearch").html("<option value='none'>Please Wait ....</option>");
-            $.ajax({
-                datatype: "json",
-                type: 'get',
-                data: {
-                    town: town
-                },
-                url: $("#baseUrl").val() + '/town/street',
-                success: function (response) {
-                    var res = JSON.parse(response);
-                    $("#streetSearch").html(res.data);
-                    $('#streetSearch option[value="<?php echo request('street');?>"]').attr("selected", "selected");
-                },
-                error: function () {
-                    console.log("Eror getting response");
-                }
-            });
+            {{--$.ajax({--}}
+            {{--    datatype: "json",--}}
+            {{--    type: 'get',--}}
+            {{--    data: {--}}
+            {{--        town: town--}}
+            {{--    },--}}
+            {{--    url: $("#baseUrl").val() + '/town/street',--}}
+            {{--    success: function (response) {--}}
+            {{--        var res = JSON.parse(response);--}}
+            {{--        $("#streetSearch").html(res.data);--}}
+            {{--        $('#streetSearch option[value="<?php echo request('street');?>"]').attr("selected", "selected");--}}
+            {{--    },--}}
+            {{--    error: function () {--}}
+            {{--        console.log("Eror getting response");--}}
+            {{--    }--}}
+            {{--});--}}
         }
 
     </script>

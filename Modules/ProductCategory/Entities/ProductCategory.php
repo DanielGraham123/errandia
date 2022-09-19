@@ -15,7 +15,7 @@ class ProductCategory extends Model
 
     public function subCategories()
     {
-        return $this->hasMany(SubCategory::class, 'category_id');
+        return $this->hasMany(SubCategory::class, 'category_id')->orderBy('name','asc');
     }
 
     public function shops()

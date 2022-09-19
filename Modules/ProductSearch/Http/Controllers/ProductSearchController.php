@@ -38,7 +38,7 @@ class ProductSearchController extends Controller
 
     public function index()
     {
-        
+
         if (empty($_REQUEST['search']) || $_REQUEST['search'] == "") return redirect()->route('general_home');
         $keyword = $_REQUEST['search'];
         $data['keyword'] = $keyword;
@@ -66,7 +66,7 @@ class ProductSearchController extends Controller
 
     public function productsort()
     {
-        $keyword = $_REQUEST['keyword'];
+        $keyword = $_REQUEST['search'];
         $data['keyword'] = $keyword;
         $data['request'] = $_REQUEST;
         $data['products'] = $this->ProductSearch->getAllSortProduct($keyword, $_REQUEST);
