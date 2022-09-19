@@ -70,7 +70,6 @@
                     <textarea style="height: 300px;font-size: 20px" name="description" cols="10"
                               class="html-editor form-control"
                               placeholder="{{trans('vendor.add_product_description_label')}}">
-
                     </textarea>
                 </div>
 
