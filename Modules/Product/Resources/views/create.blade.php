@@ -49,8 +49,8 @@
                 <div class="form-group">
                     <select name="currency" class="form-control">
                         <option value="none">@lang('vendor.add_product_currency_label')</option>
-                        @foreach($currencies as $currency)
-                            <option value="{{$currency->id}}">{{$currency->name}}</option>
+                        @foreach($currencies as $key=>$currency)
+                            <option value="{{$currency->id}}" @if($key == 0) selected @endif>{{$currency->name}}</option>
                         @endforeach
                     </select>
                 </div>
