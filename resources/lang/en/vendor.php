@@ -41,4 +41,5 @@ return [
     "sidebar_manage_product_review" => "Manage Product Reviews",
     "subscribers_list_page_title" => "Manage subscribers currently subscribed to your Errandia shop profile",
     "hide_user_review_success" => "User review has been hidden from public view",
+    "sidebar_errand_page"=>"Run an Errand",
 ];

@@ -1,8 +1,8 @@
-@extends('helep.general.master')
+{{--@extends('helep.general.master')--}}
+@extends('helep.vendor.layout.master')
+
 @section('css')
     <link rel="stylesheet" href="{{url('css/croppie.css')}}">
-
-    <link href="{{asset('summernote/dist/summernote.css')}}" rel="stylesheet">
 @endsection
 @section('content')
     <div class="py-5 container">
@@ -25,107 +25,16 @@
                                 </div>
                                 <form class="" method="POST" action="{{route('send_product_quote')}}"
                                       enctype="multipart/form-data">
-                                    <div>
-                                        {{ csrf_field() }}
-                                        <div class="row">
-                                            <div class="col-6 col-sm-3  mb-2">
-                                                <div
-                                                    class="d-flex border radius-15  w-100 select-photo">
-                                                    <div class="rounded-lg"><img id="preview-errand-photo-1"
-                                                                                 height="100%"
-                                                                                 width="100%"
-                                                                                 class="d-none" src=""></div>
-                                                    <label for="errand-photo-1"
-                                                           class="w-100 h-100 d-flex-column align-items-center justify-content-center text-center  font-20">
-                                                        <span class="text-center font-20">+</span> </label>
-                                                    <input
-                                                        alt="preview-errand-photo-1"
-                                                        onchange="previewErrandPhoto(this)"
-                                                        name="preview-1"
-                                                        class="d-none" id="errand-photo-1" type="file">
-                                                </div>
-                                            </div>
-                                            <div class="col-6 col-sm-3  mb-2">
-                                                <div
-                                                    class="d-flex border radius-15  w-100 select-photo">
-                                                    <div class="rounded-lg"><img id="preview-errand-photo-2"
-                                                                                 height="100%"
-                                                                                 width="100%"
-                                                                                 class="d-none" src=""></div>
-                                                    <label for="errand-photo-2"
-                                                           class="w-100 h-100 d-flex-column align-items-center justify-content-center text-center  font-20">
-                                                        <span class="text-center font-20">+</span> </label>
-                                                    <input
-                                                        alt="preview-errand-photo-2"
-                                                        onchange="previewErrandPhoto(this)"
-                                                        name="preview-2"
-                                                        class="d-none"
-                                                        id="errand-photo-2" type="file">
-                                                </div>
-                                            </div>
-                                            <div class="col-6 col-sm-3  mb-2">
-                                                <div
-                                                    class="d-flex border radius-15  w-100 select-photo">
-                                                    <div class="rounded-lg"><img class="d-none" height="100%"
-                                                                                 width="100%"
-                                                                                 id="preview-errand-photo-3" src="">
-                                                    </div>
-                                                    <label for="errand-photo-3"
-                                                           class="w-100 h-100 d-flex-column align-items-center justify-content-center text-center  font-20">
-                                                        <span class="text-center font-20">+</span> </label>
-                                                    <input
-                                                        alt="preview-errand-photo-3"
-                                                        onchange="previewErrandPhoto(this)"
-                                                        name="preview-3"
-                                                        class="d-none"
-                                                        id="errand-photo-3" type="file">
-                                                </div>
-                                            </div>
-                                            <div class="col-6 col-sm-3  mb-2">
-                                                <div
-                                                    class="d-flex border radius-15  w-100 select-photo">
-                                                    <div class="rounded-lg"><img class="d-none" height="100%"
-                                                                                 width="100%"
-                                                                                 id="preview-errand-photo-4" src="">
-                                                    </div>
-                                                    <label for="errand-photo-4"
-                                                           class="w-100 h-100 d-flex-column align-items-center justify-content-center text-center  font-20">
-                                                        <span class="text-center font-20">+</span> </label>
-                                                    <input
-                                                        alt="preview-errand-photo-4"
-                                                        onchange="previewErrandPhoto(this)"
-                                                        name="preview-4"
-                                                        rev="preview-errand-photo-4"
-                                                        class="d-none"
-                                                        id="errand-photo-4" type="file">
-                                                </div>
-                                            </div>
-                                            <input id="counter" type="hidden" name="counter" value="0"/>
-                                        </div>
-                                        <div id="errand_images" class="row">
+                                    {{ csrf_field() }}
+                                    <div class="w-100">
+
+                                        <div id="product_images" class="row">
 
                                         </div>
                                         <div class="form-group">
                                             <input maxlength="100" type="text" class="form-control mb-2" name="Title" required
                                                    placeholder="Enter Matching Keywords for what you are looking for separated by comma eg: laptop, food, computers"/>
                                         </div>
-{{--                                        <div class="form-group">--}}
-{{--                                            <input type="text" class="form-control  mb-2" name="PhoneNumber"--}}
-{{--                                                   required--}}
-{{--                                                   placeholder="Phone Number"/>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="form-group">--}}
-{{--                                            <select class="form-control mb-2"--}}
-{{--                                                    onchange="getSubCategoriesErrand(this)"--}}
-{{--                                                    name="dialog_category"--}}
-{{--                                                    id="dialogCategorySearch">--}}
-{{--                                                <option value="none">Select Product Category</option>--}}
-{{--                                                @foreach($categories as $category)--}}
-{{--                                                    <option--}}
-{{--                                                        value="{{$category->id}}">{{$category->name}}</option>--}}
-{{--                                                @endforeach--}}
-{{--                                            </select>--}}
-{{--                                        </div>--}}
                                         <div class="form-group">
                                             <select class="form-control mb-2 subCategory" name="dialogCategory"
                                                     id="dialogCategory">
@@ -176,28 +85,27 @@
         </div>
     </div>
 @endsection
-
 @section('js')
     <script src="{{url('js/croppie.js')}}"></script>
     <script src="{{url('js/moment.js')}}"></script>
     <script>
         var quoteImageCounter = 0;
 
-        function previewErrandPhoto(obj) {
-            var img_id = obj.alt;
-            var file = $("#" + obj.id).get(0).files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function () {
-                    $('#' + img_id).removeClass('d-none');
-                    $("#" + img_id).attr("src", reader.result);
-                    quoteImageCounter++;
-                    $('#quoteImageCounter').val(quoteImageCounter);
-                }
-                $('#' + obj.id).addClass('helep_round');
-                reader.readAsDataURL(file);
-            }
-        }
+        // function previewErrandPhoto(obj) {
+        //     var img_id = obj.alt;
+        //     var file = $("#" + obj.id).get(0).files[0];
+        //     if (file) {
+        //         var reader = new FileReader();
+        //         reader.onload = function () {
+        //             $('#' + img_id).removeClass('d-none');
+        //             $("#" + img_id).attr("src", reader.result);
+        //             quoteImageCounter++;
+        //             $('#quoteImageCounter').val(quoteImageCounter);
+        //         }
+        //         $('#' + obj.id).addClass('helep_round');
+        //         reader.readAsDataURL(file);
+        //     }
+        // }
 
         function getSubCategoriesErrand(obj) {
             var category = $("#" + obj.id).val();
@@ -327,10 +235,12 @@
                 cropper = null;
             });
 
+            console.log("before croping")
             document.getElementById('crop-'+j).addEventListener('click', function () {
                 var initialAvatarURL;
                 var canvas;
 
+                console.log("inside canvas croping")
                 $modal.modal('hide');
                 if (cropper) {
                     canvas = cropper.getCroppedCanvas({
@@ -350,7 +260,6 @@
                             $('#button-'+j).html(button)
                             $('#course_image-'+j).val(base64data)
                             if(j < i){
-
                             }else{
                                 i = i + 1;
                                 addImage()
@@ -369,7 +278,7 @@
                 '  <div id="image-' + i + '"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">' +
                 '     <div  class="d-flex border radius-15 position-relative w-100 flex-column h-100 select-photo">' +
                 '         <div class="product-img">'+
-                '             <input id="photo-'+ i +'" onchange="preViewCrop(event,' + i + ')"  type="file"' +
+                '             <input id="photo-'+ i +'" oninput="preViewCrop(event,' + i + ')"  type="file"' +
                 '                    class="d-none files"' +
                 '                    accept="image/*">' +
                 '             <input type="hidden"  name="image[]" class="image-value" id="course_image-' + i + '"/>' +
@@ -408,11 +317,18 @@
                 '        </div>' +
                 '    </div>' +
                 '</div>'
-            $('#errand_images').append(html);
+            $('#product_images').append(html);
         }
 
         function deleteContent(j) {
             $('#image-' + j).remove();
         }
+    </script>
+    <script>
+        $(function () {
+            //set link indicator
+            $("#run_errand_page").addClass('active');
+        });
+
     </script>
 @endsection

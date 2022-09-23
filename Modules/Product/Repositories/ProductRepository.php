@@ -91,9 +91,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $regionFilter = $searchCriteria['region'];
         $townFilter = $searchCriteria['town'];
         $streetFilter = $searchCriteria['street'];
-        if ($regionFilter != "none") {
-            if ($townFilter != "none") {
-                if ($streetFilter != "none") {
+        if ($regionFilter) {
+            if ($townFilter) {
+                if ($streetFilter) {
                     //get all streets for a given street id
                     $query = DB::table('shops')
                         ->join('users', 'shops.user_id', '=', 'users.id')
