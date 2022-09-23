@@ -54,23 +54,8 @@ class ProductController extends Controller
         DB::transaction(function () use ($request, $add_product_dto, $imageUploadService) {
             $product = $this->productService->saveProduct($add_product_dto);
             if ($product) {
-             //Glenn
-                foreach ($request->image as $k=>$image){
-                   if(isset($image)){
-                   // $folderPath = storage_path("app/public/products/");
-                       $folderPath = config("filesystems.disks.public.root") . "/products/";
-                       $image_parts = explode(";base64,", $image);
-                       $image_base64 = base64_decode($image_parts[1]);
-                       $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
-                       $file = $folderPath . $name;
-                       $path =  "products/" . $name;
-                       file_put_contents($file, $image_base64);
-                       if($product->featured_image_path == 'default.jpg'){
-                           $product->featured_image_path = $path;
-                           $product->save();
-                       }
-                       $this->productService->saveProductImages($product->id, ['image_path' => $path, 'product_id' => $product->id]);
-                   }
+                if ($request->image){
+                    $this->saveImage($product,$request->image);
                 }
                 $this->utilityService->indexProduct($product->id);
             }
@@ -79,6 +64,28 @@ class ProductController extends Controller
         $request->session()->flash('message', trans('vendor.add_product_success_msg'));
         return redirect()->route('products')
             ->with(['success' => trans('vendor.add_product_success_msg')]);
+    }
+    public function saveImage($product,$images=[]){
+        if (count($images) >0){
+            foreach ($images as $k=>$image){
+                if(isset($image)){
+                    // $folderPath = storage_path("app/public/products/");
+                    $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
+                    $folderPath = config("filesystems.disks.public.root") . "/products/";
+                    $image_parts = explode(";base64,", $image);
+                    $image_base64 = base64_decode($image_parts[1]);
+                    $file = $folderPath . $name;
+                    $path =  "products/" . $name;
+                    file_put_contents($file, $image_base64);
+                    if($product->featured_image_path == 'default.jpg'){
+                        $product->featured_image_path = $path;
+                        $product->save();
+                    }
+                    $this->productService->saveProductImages($product->id, ['image_path' => $path, 'product_id' => $product->id]);
+                }
+            }
+        }
+
     }
 
     public
@@ -124,7 +131,11 @@ class ProductController extends Controller
                         }
                     }
                 }
-                $this->utilityService->indexProduct($product->id);
+
+                if ($request->image){
+                    $this->saveImage($productExist,$request->image);
+                }
+                $this->utilityService->indexProduct($productExist->id);
             }
         });
         $request->session()->flash('message', trans('vendor.update_product_success_msg'));

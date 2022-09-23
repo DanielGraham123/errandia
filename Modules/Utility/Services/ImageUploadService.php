@@ -29,6 +29,7 @@ class ImageUploadService
         $upload_file = $request[$request_param];
         $filename = $this->utilityService->generateRandSlug() . "_" . time() . '.' . $upload_file->extension();
         $path = $bucket . "/" . $filename;
+
         $img = Image::make($upload_file->path());
         $img->resize(350, 400)->save($base_dir . '/' . $filename);
         return $path;

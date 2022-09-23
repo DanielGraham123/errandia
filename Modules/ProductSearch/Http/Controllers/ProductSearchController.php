@@ -44,9 +44,9 @@ class ProductSearchController extends Controller
         $data['keyword'] = $keyword;
         $data['request']['category'] = $_REQUEST['subcategory'] = 0;
         $data['request']['sub_category'] = '';
-        $data['request']['region'] = '';
-        $data['request']['town'] = '';
-        $data['request']['street'] = '';
+        $data['request']['region'] = $_REQUEST['region'] ?? '';
+        $data['request']['town'] =  $_REQUEST['town'] ?? '';
+        $data['request']['street'] =  $_REQUEST['street'] ?? '';
         $data['request']['MinPrice'] = '';
         $data['request']['MaxPrice'] = '';
         $data['products'] = $this->ProductSearch->getAllSearchProduct($keyword);
@@ -98,6 +98,11 @@ class ProductSearchController extends Controller
         $quoteData['sub_category_id'] = isset($_POST["dialogCategory"]) && $_POST["dialogCategory"] ?$_POST["dialogCategory"] : 0;
         $quoteData['created_at'] = date("Y-m-d h:i:s");
         $quoteData['updated_at'] = date("Y-m-d h:i:s");
+
+        $data['region'] = $_REQUEST['region'] ?? '';
+        $data['town'] = $_REQUEST['town'] ?? '';
+        $data['street'] = $_REQUEST['street'] ?? '';
+        $data['search'] =  $_POST['Title'] ?? '';
 //
         $quoteID = $ProductQuoteService->saveProductQuote($quoteData);
 //
@@ -106,7 +111,8 @@ class ProductSearchController extends Controller
             $extraProductImages = $request->getProductQuoteImages();
             $totalImages = count($extraProductImages);
             $counter = 0;
-            if ($totalImages > 0) {
+            if ($totalImages) {
+
                 foreach ($extraProductImages as $image) {
                     //upload image then save to db
                     $imagePath = $imageUploadService->uploadFile($image, key($image), "productquote");
@@ -149,7 +155,7 @@ class ProductSearchController extends Controller
             return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
         }
         session()->flash('message', trans('Product Quote successfully sent !'));
-        return redirect()->route('productsearch', ['search' => $quoteData['title']])->with(['success' => trans('Product Quote successfully sent !')]);
+        return redirect()->route('productsearch', $data)->with(['success' => trans('Product Quote successfully sent !')]);
     }
 
     public function showCustomQuotePage($quoteUrl, ProductQuoteService $productQuoteService)

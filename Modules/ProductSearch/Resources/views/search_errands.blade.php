@@ -152,7 +152,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                           <textarea class="form-control html-editor" rows="5" name="Description" required
+                                    <textarea class="form-control html-editor" rows="5" name="Description" required
                                      placeholder="Description"></textarea>
                                         </div>
                                         <input type="submit" class="btn helep_btn_raise text-uppercase"
