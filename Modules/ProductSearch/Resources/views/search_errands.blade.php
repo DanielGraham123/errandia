@@ -1,5 +1,9 @@
 @extends('helep.general.master')
+@section('css')
+    <link rel="stylesheet" href="{{url('css/croppie.css')}}">
 
+    <link href="{{asset('summernote/dist/summernote.css')}}" rel="stylesheet">
+@endsection
 @section('content')
     <div class="py-5 container">
         <div class="ml-n2 mr-n5">
@@ -96,8 +100,10 @@
                                                         id="errand-photo-4" type="file">
                                                 </div>
                                             </div>
-
                                             <input id="counter" type="hidden" name="counter" value="0"/>
+                                        </div>
+                                        <div id="errand_images" class="row">
+
                                         </div>
                                         <div class="form-group">
                                             <input maxlength="100" type="text" class="form-control mb-2" name="Title" required
@@ -170,7 +176,10 @@
         </div>
     </div>
 @endsection
+
 @section('js')
+    <script src="{{url('js/croppie.js')}}"></script>
+    <script src="{{url('js/moment.js')}}"></script>
     <script>
         var quoteImageCounter = 0;
 
@@ -256,6 +265,154 @@
                     console.log("Eror getting response");
                 }
             });
+        }
+    </script>
+    <script type="text/javascript">
+        var i = 0;
+        function preViewCrop(e,j) {
+            var avatar = $('#preview-'+j);
+            var input = $('#photo-'+j);
+            var image = $('#ddimage-'+j);
+            var $modal = $('#modal-'+j);
+            var cropper;
+
+            $('[data-toggle="tooltip"]').tooltip();
+            var files = e.target.files;
+
+            var done = function (url) {
+                input.value = '';
+                image.attr('src',url);
+                $modal.modal('show');
+            };
+
+            var reader;
+            var file;
+            var url;
+
+
+            if (files && files.length > 0) {
+                file = files[0];
+                if (URL) {
+                    done(URL.createObjectURL(file));
+                    r = new FileReader();
+                    r.readAsDataURL(file);
+                } else if (FileReader) {
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        done(reader.result);
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            $modal.on('shown.bs.modal', function () {
+                cropper = new Cropper(image[0], {
+                    aspectRatio: 2/1.5,
+                    viewMode: 0,
+                    enableZoom: true,
+                    showZoomer: true,
+                    ready: function () {
+                        var clone = this.cloneNode();
+                        clone.className = '';
+                        clone.style.cssText = (
+                            'display: block;' +
+                            'width: 300px;'
+                        );
+                    },
+
+                });
+            }).on('hidden.bs.modal', function () {
+                cropper.destroy();
+                cropper = null;
+            });
+
+            document.getElementById('crop-'+j).addEventListener('click', function () {
+                var initialAvatarURL;
+                var canvas;
+
+                $modal.modal('hide');
+                if (cropper) {
+                    canvas = cropper.getCroppedCanvas({
+                        width: 800,
+                        height: 600,
+                    });
+                    avatar.attr('src', canvas.toDataURL());
+                    canvas.toBlob(function (blob) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(blob);
+                        reader.onloadend = function () {
+                            var base64data = reader.result;
+                            button = '<div class="d-flex flex-nowrap  align-items-center">'+
+                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0">  Change</label>' +
+                                '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10  flex-grow-1 radius-0"> Remove</label>'
+                            '</div>';
+                            $('#button-'+j).html(button)
+                            $('#course_image-'+j).val(base64data)
+                            if(j < i){
+
+                            }else{
+                                i = i + 1;
+                                addImage()
+                            }
+                        }
+                    });
+                }
+            });
+
+        }
+
+        addImage();
+
+        function addImage(){
+            html =
+                '  <div id="image-' + i + '"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">' +
+                '     <div  class="d-flex border radius-15 position-relative w-100 flex-column h-100 select-photo">' +
+                '         <div class="product-img">'+
+                '             <input id="photo-'+ i +'" onchange="preViewCrop(event,' + i + ')"  type="file"' +
+                '                    class="d-none files"' +
+                '                    accept="image/*">' +
+                '             <input type="hidden"  name="image[]" class="image-value" id="course_image-' + i + '"/>' +
+                '             <img' +
+                '                  class="img-fluid d-block" id="preview-' + i + '">' +
+                '        </div>' +
+                '        <div id="button-' + i + '" class="delete ">' +
+                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
+                '               <label for="photo-' + i + '"  class=" mb-0">  <i class="mdi mdi-plus mdi-18px"></i></label>'+
+                '               <label class="font-10" for="photo-' + i + '">Add Image</label>'+
+                '          </div>' +
+                '        </div>' +
+                '     </div>' +
+                ' </div>'+
+
+
+
+                '<div class="modal fade" id="modal-'+i+'" tabindex="-1" role="dialog" aria-labelledby="modalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">' +
+                '    <div class="modal-dialog" role="document">' +
+                '        <div class="modal-content">' +
+                '            <div class="modal-header">' +
+                '                <h5 class="modal-title" id="modalLabel">Crop the image</h5>' +
+                '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                '                    <span aria-hidden="true">&times;</span>' +
+                '                </button>' +
+                '            </div>' +
+                '            <div class="modal-body">' +
+                '                <div class="img-container">' +
+                '    <img id="ddimage-'+i+'" style="max-height : 250px; width : auto; object-fit: contain;" src="">' +
+                '                </div>' +
+                '            </div>' +
+                '            <div class="modal-footer">' +
+                '                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
+                '                <button type="button" class="btn btn-primary" id="crop-'+i+'">Crop</button>' +
+                '            </div>' +
+                '        </div>' +
+                '    </div>' +
+                '</div>'
+            $('#errand_images').append(html);
+        }
+
+        function deleteContent(j) {
+            $('#image-' + j).remove();
         }
     </script>
 @endsection
