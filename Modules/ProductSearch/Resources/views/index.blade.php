@@ -64,7 +64,7 @@
             {{--            <div class="col-md-9  card">--}}
             {{--                {{$products}}--}}
             {{--            </div>--}}
-            <div class="col-md-9  card">
+            <div class="col-md-9 card">
                 @if(!$products->isEmpty())
                     <a href="{{route('run_errand_page')}}" class="btn helep_btn_raise">Send Custom Product Quote</a>
                     <div class="card helep-color" style="margin-top:15px;">
@@ -160,6 +160,50 @@
                 @else
                     <div class="alert alert-danger helep_alert_round" style="margin-top:50px;">No product
                         found!
+                    </div>
+                @endif
+
+                @if(!$shops->isEmpty())
+                    <div class="card box-shadow-none bg-light-gray">
+                        <div class="row card-body">
+                            <div class="text-left col-md-12 mb-1">
+                                @if((request('region')) || request('town') || request('street'))
+                                <h4 class="font-weight-bold text-black-50">Related Shops</h4>
+                                @else
+                                    <h4 class="font-weight-bold text-black-50">Visit Shops</h4>
+                                @endif
+                            </div>
+
+                            @php
+                                $colum_size ="col-md-3";
+                            @endphp
+                            <div class="col-md-12">
+                                <div class="card-deck row">
+
+                                    @foreach($shops->sortBy('name')->take(6) as $shop)
+                                        <div class="{{$colum_size}} card ">
+                                            <div class="card-body h-100">
+                                                <a href="{{route('show_shop',['id'=>$shop->slug])}}">
+                                                    <img src="{{asset('storage/'.$shop->image_path)}}"
+                                                         style="width:100% ;max-height: 150px;max-width:100%" alt=""
+                                                         class="img-fluid">
+
+
+                                                    <div class="text-center">
+                                                        {{--                                        <a href="{{route('show_collection_products',['id'=>$shop->slug])}}">--}}
+                                                        <h5 class="text-black-50 font-weight-bold text-capitalize">{{$shop->name}}</h5>
+                                                        {{--                                        </a>--}}
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 @endif
             </div>

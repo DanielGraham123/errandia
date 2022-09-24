@@ -78,7 +78,7 @@ class ProductSearch extends Model
             ->join('towns', 'streets.town_id', '=', 'towns.id')
             ->join('regions', 'towns.region_id', '=', 'regions.id');
          $this->extracted($query, $searchFilters,'OR');
-        return $query->select('shops.*')->take(8)->get();
+        return $query->select('shops.*')->distinct()->take(8)->get();
     }
 	public function getTotalSortProduct($keyword,$keywords)
 	{
