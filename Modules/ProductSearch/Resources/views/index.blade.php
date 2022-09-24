@@ -72,7 +72,7 @@
                             <div class="col-md-12">
                                 <div class="m-2">
                                     <h4 class="index-2 pl-2 text-center text-white font-weight-bold  pb-2 mb-2 text-capitalize">
-                                        {{$TotalProducts->count()}} Products found !<small></small></h4>
+                                        {{$TotalProducts}} Products found !<small></small></h4>
                                 </div>
                                 @php
                                     $column="col-md-3";

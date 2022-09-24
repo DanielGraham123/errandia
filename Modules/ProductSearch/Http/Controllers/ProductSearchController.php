@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Product\Services\ProductService;
 use Modules\ProductCategory\Services\CategoryService;
@@ -56,13 +57,16 @@ class ProductSearchController extends Controller
         $data['request']['street'] = $street;
 
 
-        $data['products'] = $this->ProductSearch->getSearchProducts([
+         $searchResults = $this->ProductSearch->getSearchProducts([
             'search'=>$keyword,
             'region'=>$region,
             'town'=>$town,
             'street'=>$street,
 
         ]);
+        $data['products'] = $searchResults['products'];
+        $data['TotalProducts'] = $searchResults['total'];
+
         $data['shops'] = $this->ProductSearch->getRelatedShops([
             'search'=>$keyword,
             'region'=>$region,
@@ -70,7 +74,7 @@ class ProductSearchController extends Controller
             'street'=>$street,
 
         ]);
-        $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);
+//        $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);
         $data['currencies'] = $this->utilityService->getCurrencies();
 
         // FOR SORT CATEGORY SUB CATEGORY
@@ -81,6 +85,17 @@ class ProductSearchController extends Controller
         $data['towns'] = $this->Regions->getTowns();
         $data['streets'] = $this->Street->getAllStreets();
 
+        if ($region){
+            $data['towns'] = DB::table('towns')->where('region_id',$region)->get();
+            $data['streets'] = DB::table('streets')
+                ->join('towns', 'streets.town_id', '=', 'towns.id')
+                ->where('towns.region_id',$region)
+                ->select('streets.*')
+                ->get();
+        }
+        if ($town){
+            $data['streets'] = DB::table('streets')->where('town_id',$region)->get();
+        }
 
         return view('productsearch::index')->with($data);
     }
