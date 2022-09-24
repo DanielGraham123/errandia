@@ -313,7 +313,7 @@
         function addImage(){
             html =
                 '  <div id="image-' + i + '"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">' +
-                '     <div  class="d-flex border radius-15   w-100 flex-column h-100 select-photo">' +
+                '     <div  class="d-flex border radius-15 position-relative  w-100 flex-column h-100 select-photo">' +
                 '         <div class="product-img">'+
                 '             <input id="photo-'+ i +'" onchange="preViewCrop(event,' + i + ')"  type="file"' +
                 '                    class="d-none files"' +
@@ -324,8 +324,7 @@
                 '        </div>' +
                 '        <div id="button-' + i + '" class="delete ">' +
                 '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
-                '               <label for="photo-' + i + '"  class=" mb-0">  <i class="mdi mdi-plus mdi-18px"></i></label>'+
-                '               <label class="font-10" for="photo-' + i + '">Featured Image</label>'+
+                '               <label for="photo-' + i + '"  class="align-items-center justify-content-center d-flex flex-column h-100 w-100 cursor-pointer" >  <i class="mdi mdi-plus mdi-18px"></i> <span>Add Image</span></label>' +
                 '          </div>' +
                 '        </div>' +
                 '     </div>' +

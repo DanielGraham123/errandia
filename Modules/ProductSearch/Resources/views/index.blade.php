@@ -10,8 +10,8 @@
                 <div class="desktop-only">
                     <form method="get" action="{{route('productsearch')}}">
 
-                        {{ csrf_field() }}
-                        <input type="hidden" name="keyword" value="{{$keyword}}"/>
+                        {{--                        {{ csrf_field() }}--}}
+                        <input type="hidden" name="search" value="{{$keyword}}"/>
                         <select class="form-control" name="region" id="regionSearch" onchange="this.form.submit();">
                             <option value="">Select Region</option>
                             @foreach($regions as $region)
@@ -61,6 +61,9 @@
                     </form>
                 </div>
             </div>
+            {{--            <div class="col-md-9  card">--}}
+            {{--                {{$products}}--}}
+            {{--            </div>--}}
             <div class="col-md-9  card">
                 @if(!$products->isEmpty())
                     <a href="{{route('run_errand_page')}}" class="btn helep_btn_raise">Send Custom Product Quote</a>
@@ -87,7 +90,6 @@
                                                      } else{
                                                         $name= $product->name;
                                                  }
-                                            $currency = $currencies->where('id',$product->currency_id)->first();
                                         @endphp
 
                                         <div class="{{$column}} card {{$card_shadow}} product-image-size">
@@ -102,13 +104,30 @@
                                                         <img height="130px" class="card-img-top"
                                                              src="{{asset('storage/'.$product->featured_image_path)}}"/>
                                                     @endif
+
+                                                    <div class="card-title mt-1">
+                                                        <h5
+                                                            class="text-black font-weight-bolder text-center">
+                                                            {{$name}}
+                                                        </h5>
+                                                    </div>
+                                                    <div class="card-text"><h4
+                                                            class="font-weight-bold pb-1 mb-0 text-muted helep-text-color text-center">{{$product->currency}} {{$product->unit_price}}</h4>
+                                                    </div>
+
+                                                    <div class="card-header mb-1">
+                                                        <h5
+                                                            class="font-weight-bold text-black text-center">{{$product->shop_name}}</h5>
+                                                    </div>
+
+                                                    <div class="card-text mb-1"><h6
+                                                            class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
+                                                    </div>
+                                                    <div class="card-text"><h6
+                                                            class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>
+                                                    </div>
+
                                                 </a>
-                                                <div class="card-title mt-1"><h5
-                                                        class="text-black font-weight-bolder text-center">{{$name}}</h5>
-                                                </div>
-                                                <div class="card-text"><h6
-                                                        class="font-weight-bold pb-1 text-muted helep-text-color text-center">{{$currency->name}} {{$product->unit_price}}</h6>
-                                                </div>
                                             </div>
                                         </div>
                                         @php
@@ -127,7 +146,7 @@
 
 
                                 </div>
-                                {!! $products->appends(['search' => $keyword])->links() !!}
+                                {{--                                {!! $products->appends(['search' => $keyword])->links() !!}--}}
                             </div>
                             <style>
                                 @media (min-width: 992px) {
@@ -144,6 +163,7 @@
                     </div>
                 @endif
             </div>
+
         </div>
     </div>
 @endsection

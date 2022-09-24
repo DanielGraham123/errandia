@@ -39,17 +39,30 @@ class ProductSearchController extends Controller
     public function index()
     {
 
-        if (empty($_REQUEST['search']) || $_REQUEST['search'] == "") return redirect()->route('general_home');
+        if (empty($_REQUEST['search']) || $_REQUEST['search'] == ""){
+            return redirect()->route('general_home');
+        }
         $keyword = $_REQUEST['search'];
+        $region =  $_REQUEST['region'] ?? 0;
+        $town =  $_REQUEST['town']  ?? 0;
+        $street =  $_REQUEST['street'] ?? 0;
+//        $sub_category =  $_REQUEST['sub_category'] ?? 0;
+//        $category =  $_REQUEST['category'] ?? 0;
         $data['keyword'] = $keyword;
-        $data['request']['category'] = $_REQUEST['subcategory'] = 0;
-        $data['request']['sub_category'] = '';
-        $data['request']['region'] = $_REQUEST['region'] ?? '';
-        $data['request']['town'] = $_REQUEST['town'] ?? '';
-        $data['request']['street'] = $_REQUEST['street'] ?? '';
-        $data['request']['MinPrice'] = '';
-        $data['request']['MaxPrice'] = '';
-        $data['products'] = $this->ProductSearch->getAllSearchProduct($keyword);
+//        $data['request']['category'] = $category;
+//        $data['request']['sub_category'] = $sub_category;
+        $data['request']['region'] = $region;
+        $data['request']['town'] = $town;
+        $data['request']['street'] = $street;
+
+
+        $data['products'] = $this->ProductSearch->getSearchProducts([
+            'search'=>$keyword,
+            'region'=>$region,
+            'town'=>$town,
+            'street'=>$street,
+
+        ]);
         $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);
         $data['currencies'] = $this->utilityService->getCurrencies();
 
@@ -60,6 +73,7 @@ class ProductSearchController extends Controller
         $data['regions'] = $this->Regions->getAllRegions();
         $data['towns'] = $this->Regions->getTowns();
         $data['streets'] = $this->Street->getAllStreets();
+//        dd($data);
 
         return view('productsearch::index')->with($data);
     }
