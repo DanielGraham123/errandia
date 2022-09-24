@@ -56,27 +56,8 @@ class ProductSearch extends Model
             ->join('streets', 'shop_contact_info.street_id', '=', 'streets.id')
             ->join('towns', 'streets.town_id', '=', 'towns.id')
             ->join('regions', 'towns.region_id', '=', 'regions.id');
-        $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters){
-            return $query->where(function($q) use($searchFilters) {
-                $q->where('products.search_index', 'LIKE', "%{$searchFilters['search']}%");
-            });
-        });
-        $query->when(!empty($searchFilters['region']), function ($query) use ($searchFilters){
-            return $query->where(function($q) use($searchFilters) {
-                $q->where('regions.id', '=', "{$searchFilters['region']}");
-            });
-        });
-        $query->when(!empty($searchFilters['town']), function ($query) use ($searchFilters){
-            return $query->where(function($q) use($searchFilters) {
-                $q->where('towns.id', '=', "{$searchFilters['town']}");
-            });
-        });
-        $query->when(!empty($searchFilters['street']), function ($query) use ($searchFilters){
-            return $query->where(function($q) use($searchFilters) {
-                $q->where('streets.id', '=', "%{$searchFilters['street']}%");
-            });
-        });
-            return $query->select('products.*',
+         $this->extracted($query, $searchFilters);
+        return $query->select('products.*',
                 'users.name as store_owner_name',
                 'users.email as store_owner_email',
                 'shops.name as shop_name',
@@ -88,7 +69,17 @@ class ProductSearch extends Model
 
             )->get();
     }
-
+    public function getRelatedShops($searchFilters){
+        $query = DB::table('shops')
+            ->join('products', 'shops.id', '=', 'products.shop_id')
+            ->join('users', 'shops.user_id', '=', 'users.id')
+            ->join('shop_contact_info', 'shops.id', '=', 'shop_contact_info.shop_id')
+            ->join('streets', 'shop_contact_info.street_id', '=', 'streets.id')
+            ->join('towns', 'streets.town_id', '=', 'towns.id')
+            ->join('regions', 'towns.region_id', '=', 'regions.id');
+         $this->extracted($query, $searchFilters,'OR');
+        return $query->select('shops.*')->take(8)->get();
+    }
 	public function getTotalSortProduct($keyword,$keywords)
 	{
 		$result = ProductSearch::select("*")->from('products')
@@ -105,5 +96,34 @@ class ProductSearch extends Model
 		 })->get();
 		 return $result;
 	}
+
+    /**
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param $searchFilters
+     * @return void
+     */
+    public function extracted(\Illuminate\Database\Query\Builder $query, $searchFilters,$boolean ='AND'): void
+    {
+        $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters,$boolean) {
+            return $query->where(function ($q) use ($searchFilters,$boolean) {
+                $q->where('products.search_index', 'LIKE', "%{$searchFilters['search']}%",$boolean);
+            });
+        });
+        $query->when(!empty($searchFilters['region']), function ($query) use ($searchFilters,$boolean) {
+            return $query->where(function ($q) use ($searchFilters,$boolean) {
+                $q->where('regions.id', '=', "{$searchFilters['region']}",$boolean);
+            });
+        });
+        $query->when(!empty($searchFilters['town']), function ($query) use ($searchFilters,$boolean) {
+            return $query->where(function ($q) use ($searchFilters,$boolean) {
+                $q->where('towns.id', '=', "{$searchFilters['town']}",$boolean);
+            });
+        });
+        $query->when(!empty($searchFilters['street']), function ($query) use ($searchFilters,$boolean) {
+            return $query->where(function ($q) use ($searchFilters,$boolean) {
+                $q->where('streets.id', '=', "%{$searchFilters['street']}%",$boolean);
+            });
+        });
+    }
 
 }

@@ -63,6 +63,13 @@ class ProductSearchController extends Controller
             'street'=>$street,
 
         ]);
+        $data['shops'] = $this->ProductSearch->getRelatedShops([
+            'search'=>$keyword,
+            'region'=>$region,
+            'town'=>$town,
+            'street'=>$street,
+
+        ]);
         $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);
         $data['currencies'] = $this->utilityService->getCurrencies();
 
@@ -73,7 +80,7 @@ class ProductSearchController extends Controller
         $data['regions'] = $this->Regions->getAllRegions();
         $data['towns'] = $this->Regions->getTowns();
         $data['streets'] = $this->Street->getAllStreets();
-//        dd($data);
+
 
         return view('productsearch::index')->with($data);
     }

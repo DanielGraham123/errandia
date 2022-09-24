@@ -50,6 +50,7 @@
                         <a href="{{route('show_collection_products',['category'=>$collection->slug])}}">
                             <img src="{{asset('storage/'.$collection->image_path)}}"
                                  style="max-height: 120px;max-width:100%" alt="" class="img-fluid">
+                            trtrtr
                         </a>
                         <div class="text-center">
                             <a href="{{route('show_collection_products',['category'=>$collection->slug])}}">
