@@ -7,15 +7,15 @@
 @section('content')
     <div class="py-5 container">
         <div class="ml-n2 mr-n5">
-            <div class="card helep_round">
+            <div>
                 @if(session('message'))
                     <div class="alert alert-success">{!! session('message') !!}</div>
                 @endif
-                <div class="card-body row">
+                <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
                         <div class="mb-2">
-                            <h4 class="helep-text-color text-center font-weight-bold mb-2"
+                            <h4 class="helep-text-color font-weight-bold mb-2"
                                 id="customSearchModalLabel">@lang("general.search_errand_form_title")</h4>
                             <div class="clearfix"><br/></div>
                             <div class="mt-2">
@@ -32,7 +32,8 @@
 
                                         </div>
                                         <div class="form-group">
-                                            <input maxlength="100" type="text" class="form-control mb-2" name="Title" required
+                                            <input maxlength="100" type="text" class="form-control mb-2" name="Title"
+                                                   required
                                                    placeholder="Enter Matching Keywords for what you are looking for separated by comma eg: laptop, food, computers"/>
                                         </div>
                                         <div class="form-group">
@@ -68,10 +69,12 @@
                                         </div>
                                         <div class="form-group">
                                     <textarea class="form-control html-editor" rows="5" name="Description" required
-                                     placeholder="Description"></textarea>
+                                              placeholder="Description"></textarea>
                                         </div>
                                         <input type="submit" class="btn helep_btn_raise text-uppercase"
                                                value="Send Product Quote">
+                                        <input id="quoteImages" type="hidden" name="QuoteImages"
+                                               value="0"/>
                                         <input id="quoteImageCounter" type="hidden" name="QuoteImageCounter"
                                                value="0"/>
                                     </div>
@@ -89,13 +92,13 @@
     <script src="{{url('js/croppie.js')}}"></script>
     <script src="{{url('js/moment.js')}}"></script>
     <script>
-        var quoteImageCounter = 0;
+        let quoteImageCounter = 0;
 
         // function previewErrandPhoto(obj) {
-        //     var img_id = obj.alt;
-        //     var file = $("#" + obj.id).get(0).files[0];
+        //     let img_id = obj.alt;
+        //     let file = $("#" + obj.id).get(0).files[0];
         //     if (file) {
-        //         var reader = new FileReader();
+        //         let reader = new FileReader();
         //         reader.onload = function () {
         //             $('#' + img_id).removeClass('d-none');
         //             $("#" + img_id).attr("src", reader.result);
@@ -108,7 +111,7 @@
         // }
 
         function getSubCategoriesErrand(obj) {
-            var category = $("#" + obj.id).val();
+            let category = $("#" + obj.id).val();
             if (!category) return;
             $("#sub_category").html("<option value=''>Please Wait ....</option>");
             $.ajax({
@@ -119,7 +122,7 @@
                 },
                 url: $("#baseUrl").val() + '/categories/subcategories/category',
                 success: function (response) {
-                    var res = JSON.parse(response);
+                    let res = JSON.parse(response);
                     $("#sub_category").html(res.data);
                     $(".subCategory").html(res.data);
                     $("#sub_category option:first").html("Select Shop Sub Category");
@@ -134,7 +137,7 @@
         }
 
         function getCityByTownErrand(obj) {
-            var townId = $("#" + obj.id).val();
+            let townId = $("#" + obj.id).val();
             $.ajax({
                 method: "get",
                 url: $("#baseUrl").val() + '/street/town',
@@ -153,7 +156,7 @@
         }
 
         function getTownsByRegionErrand(obj) {
-            var region = $("#" + obj.id).val();
+            let region = $("#" + obj.id).val();
             if (region === "none") return;
             $("#town").html("<option value='none'>Loading Towns, Please Wait ....</option>");
             $.ajax({
@@ -164,7 +167,7 @@
                 },
                 url: $("#baseUrl").val() + '/region/town',
                 success: function (response) {
-                    var res = JSON.parse(response);
+                    let res = JSON.parse(response);
                     $("#townSearch").html(res.data);
                     $("#townSearch option:first").html("Filter By Town");
                     $("#townSearch option:first").val("none");
@@ -176,26 +179,27 @@
         }
     </script>
     <script type="text/javascript">
-        var i = 0;
-        function preViewCrop(e,j) {
-            var avatar = $('#preview-'+j);
-            var input = $('#photo-'+j);
-            var image = $('#ddimage-'+j);
-            var $modal = $('#modal-'+j);
-            var cropper;
+        let i = 0;
 
+        function preViewCrop(e, j) {
+            let avatar = $('#preview-' + j);
+            let input = $('#photo-' + j);
+            let image = $('#ddimage-' + j);
+            let $modal = $('#modal-' + j);
+            let cropper;
+            let quoteImageCounter = $('#quoteImageCounter').val();
             $('[data-toggle="tooltip"]').tooltip();
-            var files = e.target.files;
+            let files = e.target.files;
 
-            var done = function (url) {
+            let done = function (url) {
                 input.value = '';
-                image.attr('src',url);
+                image.attr('src', url);
                 $modal.modal('show');
             };
 
-            var reader;
-            var file;
-            var url;
+            let reader;
+            let file;
+            let url;
 
 
             if (files && files.length > 0) {
@@ -216,12 +220,12 @@
 
             $modal.on('shown.bs.modal', function () {
                 cropper = new Cropper(image[0], {
-                    aspectRatio: 2/1.5,
+                    aspectRatio: 2 / 1.5,
                     viewMode: 0,
                     enableZoom: true,
                     showZoomer: true,
                     ready: function () {
-                        var clone = this.cloneNode();
+                        let clone = this.cloneNode();
                         clone.className = '';
                         clone.style.cssText = (
                             'display: block;' +
@@ -235,12 +239,9 @@
                 cropper = null;
             });
 
-            console.log("before croping")
-            document.getElementById('crop-'+j).addEventListener('click', function () {
-                var initialAvatarURL;
-                var canvas;
-
-                console.log("inside canvas croping")
+            document.getElementById('crop-' + j).addEventListener('click', function () {
+                let initialAvatarURL;
+                let canvas;
                 $modal.modal('hide');
                 if (cropper) {
                     canvas = cropper.getCroppedCanvas({
@@ -249,20 +250,28 @@
                     });
                     avatar.attr('src', canvas.toDataURL());
                     canvas.toBlob(function (blob) {
-                        var reader = new FileReader();
+                        let reader = new FileReader();
                         reader.readAsDataURL(blob);
                         reader.onloadend = function () {
-                            var base64data = reader.result;
-                            button = '<div class="d-flex flex-nowrap  align-items-center">'+
+                            let base64data = reader.result;
+                            button = '<div class="d-flex flex-nowrap  align-items-center">' +
                                 '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0">  Change</label>' +
                                 '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10  flex-grow-1 radius-0"> Remove</label>'
                             '</div>';
-                            $('#button-'+j).html(button)
-                            $('#course_image-'+j).val(base64data)
-                            if(j < i){
-                            }else{
-                                i = i + 1;
-                                addImage()
+                            $('#button-' + j).html(button)
+                            $('#course_image-' + j).val(base64data)
+                            quoteImageCounter = parseInt(quoteImageCounter) + 1;
+                            console.log('quoteImageCounter', quoteImageCounter);
+                            $('#quoteImageCounter').val(quoteImageCounter);
+
+                            if (j < i) {
+                            } else {
+                                if (quoteImageCounter < 4) {
+                                    i = i + 1;
+                                    addImage()
+                                }
+
+
                             }
                         }
                     });
@@ -273,12 +282,14 @@
 
         addImage();
 
-        function addImage(){
+        function addImage() {
+            const quoteImageCounter = $('#quoteImageCounter').val();
+
             html =
                 '  <div id="image-' + i + '"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">' +
                 '     <div  class="d-flex border radius-15 position-relative w-100 flex-column h-100 select-photo">' +
-                '         <div class="product-img">'+
-                '             <input id="photo-'+ i +'" oninput="preViewCrop(event,' + i + ')"  type="file"' +
+                '         <div class="product-img">' +
+                '             <input id="photo-' + i + '" oninput="preViewCrop(event,' + i + ')"  type="file"' +
                 '                    class="d-none files"' +
                 '                    accept="image/*">' +
                 '             <input type="hidden"  name="image[]" class="image-value" id="course_image-' + i + '"/>' +
@@ -286,17 +297,15 @@
                 '                  class="img-fluid d-block" id="preview-' + i + '">' +
                 '        </div>' +
                 '        <div id="button-' + i + '" class="delete ">' +
-                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
-                '               <label for="photo-' + i + '"  class=" mb-0">  <i class="mdi mdi-plus mdi-18px"></i></label>'+
-                '               <label class="font-10" for="photo-' + i + '">Add Image</label>'+
+                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">' +
+                '               <label for="photo-' + i + '"  class="align-items-center justify-content-center d-flex flex-column h-100 w-100 cursor-pointer" >  <i class="mdi mdi-plus mdi-18px"></i> <span>Add Image</span></label>' +
                 '          </div>' +
                 '        </div>' +
                 '     </div>' +
-                ' </div>'+
+                ' </div>' +
 
 
-
-                '<div class="modal fade" id="modal-'+i+'" tabindex="-1" role="dialog" aria-labelledby="modalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">' +
+                '<div class="modal fade" id="modal-' + i + '" tabindex="-1" role="dialog" aria-labelledby="modalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">' +
                 '    <div class="modal-dialog" role="document">' +
                 '        <div class="modal-content">' +
                 '            <div class="modal-header">' +
@@ -307,21 +316,31 @@
                 '            </div>' +
                 '            <div class="modal-body">' +
                 '                <div class="img-container">' +
-                '    <img id="ddimage-'+i+'" style="max-height : 250px; width : auto; object-fit: contain;" src="">' +
+                '    <img id="ddimage-' + i + '" style="max-height : 250px; width : auto; object-fit: contain;" src="">' +
                 '                </div>' +
                 '            </div>' +
                 '            <div class="modal-footer">' +
                 '                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
-                '                <button type="button" class="btn btn-primary" id="crop-'+i+'">Crop</button>' +
+                '                <button type="button" class="btn btn-primary" id="crop-' + i + '">Crop</button>' +
                 '            </div>' +
                 '        </div>' +
                 '    </div>' +
                 '</div>'
             $('#product_images').append(html);
+
         }
 
         function deleteContent(j) {
             $('#image-' + j).remove();
+            let quoteImageCounter = $('#quoteImageCounter').val();
+            quoteImageCounter = parseInt(quoteImageCounter) - 1;
+            $('#quoteImageCounter').val(quoteImageCounter);
+            if (quoteImageCounter === 3) {
+                i = i + 1;
+                addImage();
+            }
+
+
         }
     </script>
     <script>

@@ -1225,6 +1225,9 @@ select:focus{
     box-shadow: none !important;
 
 }
+.cursor-pointer{
+    cursor: pointer !important;
+}
 /*loader*/
 .spin {
     background: #0000;
