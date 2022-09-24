@@ -108,20 +108,22 @@ class ProductSearchController extends Controller
 //
         // FOR ENQUIRY IMAGE
         if ($quoteID) {
-//            $extraProductImages = $request->getProductQuoteImages();
-//            $totalImages = count($extraProductImages);
-//            $counter = 0;
 
             if ($request->image && count($request->image) > 0) {
+
+
                 foreach ($request->image  as $image) {
-                    $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
-                    $folderPath = config("filesystems.disks.public.root") . "/productquote/";
-                    $image_parts = explode(";base64,", $image);
-                    $image_base64 = base64_decode($image_parts[1]);
-                    $file = $folderPath . $name;
-                    $imagePath =  "productquote/" . $name;
-                    file_put_contents($file, $image_base64);
-                    $ProductQuoteService->saveQuoteImages($quoteID->id, ['image_path' => $imagePath, 'quote_id' => $quoteID->id]);
+                    if ($image){
+                        $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
+                        $folderPath = config("filesystems.disks.public.root") . "/productquote/";
+                        $image_parts = explode(";base64,", $image);
+                        $image_base64 = base64_decode($image_parts[1]);
+                        $file = $folderPath . $name;
+                        $imagePath = "productquote/" . $name;
+                        file_put_contents($file, $image_base64);
+
+                        $ProductQuoteService->saveQuoteImages($quoteID->id, ['image_path' => $imagePath, 'quote_id' => $quoteID->id]);
+                    }
                 }
             }
             $quoteUrl = Str::random(5) . $quoteID->id;
