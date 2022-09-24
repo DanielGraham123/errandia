@@ -55,7 +55,7 @@
                     </select>
                 </div>
                 <div class="form-group mb-3">
-                    <input name="quantity" value="{{old('quantity')}}" type="number" class="form-control"
+                    <input name="quantity" value="{{old('quantity',1)}}" type="number" class="form-control"
                            placeholder="@lang('vendor.add_product_quantity_label')"/>
                 </div>
 {{--                <div class="form-group mb-3">--}}
