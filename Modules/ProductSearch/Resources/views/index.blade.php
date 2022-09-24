@@ -112,22 +112,23 @@
                                                             </h5>
                                                         </div>
                                                     </a>
-
+                                                    @if($product->unit_price)
                                                         <div class="card-text"><h4
                                                                 class="font-weight-bold pb-1 mb-0 text-muted helep-text-color text-center">{{$product->currency}} {{$product->unit_price}}</h4>
                                                         </div>
+                                                    @endif
 
-                                                        <div class="card-header mb-1">
-                                                            <h5
-                                                                class="font-weight-bold text-black text-center">{{$product->shop_name}}</h5>
-                                                        </div>
+                                                    <div class="card-header mb-1">
+                                                        <h5
+                                                            class="font-weight-bold text-black text-center">{{$product->shop_name}}</h5>
+                                                    </div>
 
-                                                        <div class="card-text mb-1"><h6
-                                                                class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
-                                                        </div>
-                                                        <div class="card-text"><h6
-                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>
-                                                        </div>
+                                                    <div class="card-text mb-1"><h6
+                                                            class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
+                                                    </div>
+                                                    <div class="card-text"><h6
+                                                            class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>
+                                                    </div>
 
 
                                                 </div>
