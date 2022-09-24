@@ -77,10 +77,9 @@
                                 @php
                                     $column="col-md-3";
                                     $card_shadow ="";
-                                     if($products->count() <=5) $column="col-md-3";
                                      $i=0;
                                 @endphp
-                                <div class="row card-deck">
+                                <div class="row">
 
                                     @foreach($products as $product)
                                         @php
@@ -92,60 +91,54 @@
                                                  }
                                         @endphp
 
-                                        <div class="{{$column}} card {{$card_shadow}} product-image-size">
-                                            <div class="card-body withripple zoom-img">
-                                                <a href="{{route('general_product_details',['id'=>$product->slug])}}">
-                                                    @if(isMobile())
-                                                        <img
-                                                            style="width:280px; max-width:280px; height:251px; max-height:251px"
-                                                            class="img-fluid center-block"
-                                                            src="{{asset('storage/'.$product->featured_image_path)}}"/>
-                                                    @else
-                                                        <img height="130px" class="card-img-top"
-                                                             src="{{asset('storage/'.$product->featured_image_path)}}"/>
-                                                    @endif
+                                        <div class="{{$column}} {{$card_shadow}} mb-2">
+                                            <div class="card h-100 w-100 mb-0">
+                                                <div class="card-body withripple zoom-img">
+                                                    <a href="{{route('general_product_details',['id'=>$product->slug])}}">
+                                                        @if(isMobile())
+                                                            <img
+                                                                style="width:280px; max-width:280px; height:251px; max-height:251px"
+                                                                class="img-fluid center-block"
+                                                                src="{{asset('storage/'.$product->featured_image_path)}}"/>
+                                                        @else
+                                                            <img height="130px" class="card-img-top"
+                                                                 src="{{asset('storage/'.$product->featured_image_path)}}"/>
+                                                        @endif
 
-                                                    <div class="card-title mt-1">
-                                                        <h5
-                                                            class="text-black font-weight-bolder text-center">
-                                                            {{$name}}
-                                                        </h5>
-                                                    </div>
-                                                    <div class="card-text"><h4
-                                                            class="font-weight-bold pb-1 mb-0 text-muted helep-text-color text-center">{{$product->currency}} {{$product->unit_price}}</h4>
-                                                    </div>
+                                                        <div class="card-title mt-1">
+                                                            <h5
+                                                                class="text-black font-weight-bolder text-center">
+                                                                {{$name}}
+                                                            </h5>
+                                                        </div>
+                                                    </a>
 
-                                                    <div class="card-header mb-1">
-                                                        <h5
-                                                            class="font-weight-bold text-black text-center">{{$product->shop_name}}</h5>
-                                                    </div>
+                                                        <div class="card-text"><h4
+                                                                class="font-weight-bold pb-1 mb-0 text-muted helep-text-color text-center">{{$product->currency}} {{$product->unit_price}}</h4>
+                                                        </div>
 
-                                                    <div class="card-text mb-1"><h6
-                                                            class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
-                                                    </div>
-                                                    <div class="card-text"><h6
-                                                            class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>
-                                                    </div>
+                                                        <div class="card-header mb-1">
+                                                            <h5
+                                                                class="font-weight-bold text-black text-center">{{$product->shop_name}}</h5>
+                                                        </div>
 
-                                                </a>
+                                                        <div class="card-text mb-1"><h6
+                                                                class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
+                                                        </div>
+                                                        <div class="card-text"><h6
+                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>
+                                                        </div>
+
+
+                                                </div>
                                             </div>
                                         </div>
-                                        @php
-                                            $i++;
-                                            if($i%3==0)
-                                            {
-                                        @endphp
-                                </div>
-                                <div class="row card-deck">
-                                    @php
-                                        }else{
-
-                                        }
-                                    @endphp
                                     @endforeach
 
 
                                 </div>
+
+
                                 {{--                                {!! $products->appends(['search' => $keyword])->links() !!}--}}
                             </div>
                             <style>
@@ -168,7 +161,7 @@
                         <div class="row card-body">
                             <div class="text-left col-md-12 mb-1">
                                 @if((request('region')) || request('town') || request('street'))
-                                <h4 class="font-weight-bold text-black-50">Related Shops</h4>
+                                    <h4 class="font-weight-bold text-black-50">Related Shops</h4>
                                 @else
                                     <h4 class="font-weight-bold text-black-50">Visit Shops</h4>
                                 @endif
@@ -178,25 +171,25 @@
                                 $colum_size ="col-md-3";
                             @endphp
                             <div class="col-md-12">
-                                <div class="card-deck row">
+                                <div class="row">
+                                    @foreach($shops->sortBy('name')->take(8) as $shop)
+                                        <div class="{{$colum_size}} mb-2">
+                                            <div class="card h-100 mb-0">
+                                                <div class="card-body">
+                                                    <a href="{{route('show_shop',['id'=>$shop->slug])}}">
+                                                        <img src="{{asset('storage/'.$shop->image_path)}}"
+                                                             style="width:100% ;max-height: 150px;max-width:100%" alt=""
+                                                             class="img-fluid">
 
-                                    @foreach($shops->sortBy('name')->take(6) as $shop)
-                                        <div class="{{$colum_size}} card ">
-                                            <div class="card-body h-100">
-                                                <a href="{{route('show_shop',['id'=>$shop->slug])}}">
-                                                    <img src="{{asset('storage/'.$shop->image_path)}}"
-                                                         style="width:100% ;max-height: 150px;max-width:100%" alt=""
-                                                         class="img-fluid">
 
-
-                                                    <div class="text-center">
-                                                        {{--                                        <a href="{{route('show_collection_products',['id'=>$shop->slug])}}">--}}
-                                                        <h5 class="text-black-50 font-weight-bold text-capitalize">{{$shop->name}}</h5>
-                                                        {{--                                        </a>--}}
-                                                    </div>
-                                                </a>
+                                                        <div class="text-center">
+                                                            {{--                                        <a href="{{route('show_collection_products',['id'=>$shop->slug])}}">--}}
+                                                            <h5 class="text-black-50 font-weight-bold text-capitalize">{{$shop->name}}</h5>
+                                                            {{--                                        </a>--}}
+                                                        </div>
+                                                    </a>
+                                                </div>
                                             </div>
-
                                         </div>
                                     @endforeach
 
