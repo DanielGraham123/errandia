@@ -38,18 +38,38 @@ class ProductSearchController extends Controller
 
     public function index()
     {
-        
-        if (empty($_REQUEST['search']) || $_REQUEST['search'] == "") return redirect()->route('general_home');
+
+        if (empty($_REQUEST['search']) || $_REQUEST['search'] == ""){
+            return redirect()->route('general_home');
+        }
         $keyword = $_REQUEST['search'];
+        $region =  $_REQUEST['region'] ?? 0;
+        $town =  $_REQUEST['town']  ?? 0;
+        $street =  $_REQUEST['street'] ?? 0;
+//        $sub_category =  $_REQUEST['sub_category'] ?? 0;
+//        $category =  $_REQUEST['category'] ?? 0;
         $data['keyword'] = $keyword;
-        $data['request']['category'] = $_REQUEST['subcategory'] = 0;
-        $data['request']['sub_category'] = '';
-        $data['request']['region'] = '';
-        $data['request']['town'] = '';
-        $data['request']['street'] = '';
-        $data['request']['MinPrice'] = '';
-        $data['request']['MaxPrice'] = '';
-        $data['products'] = $this->ProductSearch->getAllSearchProduct($keyword);
+//        $data['request']['category'] = $category;
+//        $data['request']['sub_category'] = $sub_category;
+        $data['request']['region'] = $region;
+        $data['request']['town'] = $town;
+        $data['request']['street'] = $street;
+
+
+        $data['products'] = $this->ProductSearch->getSearchProducts([
+            'search'=>$keyword,
+            'region'=>$region,
+            'town'=>$town,
+            'street'=>$street,
+
+        ]);
+        $data['shops'] = $this->ProductSearch->getRelatedShops([
+            'search'=>$keyword,
+            'region'=>$region,
+            'town'=>$town,
+            'street'=>$street,
+
+        ]);
         $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);
         $data['currencies'] = $this->utilityService->getCurrencies();
 
@@ -61,12 +81,13 @@ class ProductSearchController extends Controller
         $data['towns'] = $this->Regions->getTowns();
         $data['streets'] = $this->Street->getAllStreets();
 
+
         return view('productsearch::index')->with($data);
     }
 
     public function productsort()
     {
-        $keyword = $_REQUEST['keyword'];
+        $keyword = $_REQUEST['search'];
         $data['keyword'] = $keyword;
         $data['request'] = $_REQUEST;
         $data['products'] = $this->ProductSearch->getAllSortProduct($keyword, $_REQUEST);
@@ -94,61 +115,75 @@ class ProductSearchController extends Controller
         $quoteData['phone_number'] = $user->tel;
         $quoteData['description'] = $_POST['Description'];
         $quoteData['UserID'] = $user->id;
-        $quoteData['sub_category_id'] = $_POST["dialogCategory"];
+
+        $quoteData['sub_category_id'] = isset($_POST["dialogCategory"]) && $_POST["dialogCategory"] ? $_POST["dialogCategory"] : 0;
         $quoteData['created_at'] = date("Y-m-d h:i:s");
         $quoteData['updated_at'] = date("Y-m-d h:i:s");
 
+        $data['region'] = $_REQUEST['region'] ?? '';
+        $data['town'] = $_REQUEST['town'] ?? '';
+        $data['street'] = $_REQUEST['street'] ?? '';
+        $data['search'] = $_POST['Title'] ?? '';
+//
         $quoteID = $ProductQuoteService->saveProductQuote($quoteData);
-
+//
         // FOR ENQUIRY IMAGE
         if ($quoteID) {
-            $extraProductImages = $request->getProductQuoteImages();
-            $totalImages = count($extraProductImages);
-            $counter = 0;
-            if ($totalImages > 0) {
-                foreach ($extraProductImages as $image) {
-                    //upload image then save to db
-                    $imagePath = $imageUploadService->uploadFile($image, key($image), "productquote");
-                    $ProductQuoteService->saveQuoteImages($quoteID->id, ['image_path' => $imagePath, 'quote_id' => $quoteID->id]);
-                    $counter++;
-                }
-                $quoteUrl = Str::random(5) . $quoteID->id;
-                $updateQuote = array('slug' => $quoteUrl);
-                $ProductQuoteService->updateQuote($updateQuote, $quoteID->id);
-                //get all active shop owners' contact and send an sms to them about
-                $regionFilter = $_POST['region'];
-                $townFilter = $_POST['town'];
-                $streetFilter = $_POST['street'];
-                $searchCriteria = array('subCategory' => $quoteData['sub_category_id'], 'region' => $regionFilter, 'town' => $townFilter, 'street' => $streetFilter);
-                $shopContacts = $productService->getShopsBySubCategory($searchCriteria);
-                $shopsTels = $shopContacts['tel'];
-                if (!$shopsTels->isEmpty()) {
-                    //send sms to all contacts
-                    $shopContactsList = $shopsTels->map(function ($tel) {
-                        return "237" . $tel;
-                    });
-                    $data = $shopContactsList->toArray();
-                    $quoteLink = route('showCustomQuotePage', ['url' => $quoteUrl]);
-                    $message = trans('general.product_quote_sms_msg', ['link' => $quoteLink]);
-                    //send sms notification to show owners
-                    SendProductQuoteBySMS::dispatchSync(array('message' => $message, 'contacts' => $data));
-                    //send email notifications to show owners as well.
-                    $shopEmailList = $shopContacts['email'];
-                    $emailData = $shopEmailList->toArray();
-                    $quoteID['image'] = collect($ProductQuoteService->getQuoteImages($quoteID->id))->first();
-                    $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);
-                    SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
-                } else {
-                    session()->flash('message', trans('general.errands_not_sent_msg'));
-                    return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
+
+            if ($request->image && count($request->image) > 0) {
+
+
+                foreach ($request->image  as $image) {
+                    if ($image){
+                        $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
+                        $folderPath = config("filesystems.disks.public.root") . "/productquote/";
+                        $image_parts = explode(";base64,", $image);
+                        $image_base64 = base64_decode($image_parts[1]);
+                        $file = $folderPath . $name;
+                        $imagePath = "productquote/" . $name;
+                        file_put_contents($file, $image_base64);
+
+                        $ProductQuoteService->saveQuoteImages($quoteID->id, ['image_path' => $imagePath, 'quote_id' => $quoteID->id]);
+                    }
                 }
             }
+            $quoteUrl = Str::random(5) . $quoteID->id;
+            $updateQuote = array('slug' => $quoteUrl);
+            $ProductQuoteService->updateQuote($updateQuote, $quoteID->id);
+            //get all active shop owners' contact and send an sms to them about
+            $regionFilter = $_POST['region'] ?? 0;
+            $townFilter = $_POST['town'] ?? 0;
+            $streetFilter = $_POST['street'] ?? 0;
+            $searchCriteria = array('subCategory' => $quoteData['sub_category_id'], 'region' => $regionFilter, 'town' => $townFilter, 'street' => $streetFilter);
+            $shopContacts = $productService->getShopsBySubCategory($searchCriteria);
+            $shopsTels = $shopContacts['tel'];
+            if (!$shopsTels->isEmpty()) {
+                //send sms to all contacts
+                $shopContactsList = $shopsTels->map(function ($tel) {
+                    return "237" . $tel;
+                });
+                $data = $shopContactsList->toArray();
+                $quoteLink = route('showCustomQuotePage', ['url' => $quoteUrl]);
+                $message = trans('general.product_quote_sms_msg', ['link' => $quoteLink]);
+                //send sms notification to show owners
+                SendProductQuoteBySMS::dispatchSync(array('message' => $message, 'contacts' => $data));
+                //send email notifications to show owners as well.
+                $shopEmailList = $shopContacts['email'];
+                $emailData = $shopEmailList->toArray();
+                $quoteID['image'] = collect($ProductQuoteService->getQuoteImages($quoteID->id))->first();
+                $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);
+                SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
+            } else {
+                session()->flash('message', trans('general.errands_not_sent_msg'));
+                return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
+            }
+
         } else {
             session()->flash('message', trans('general.errands_not_sent_msg'));
             return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
         }
         session()->flash('message', trans('Product Quote successfully sent !'));
-        return redirect()->route('productsearch', ['search' => $quoteData['title']])->with(['success' => trans('Product Quote successfully sent !')]);
+        return redirect()->route('productsearch', $data)->with(['success' => trans('Product Quote successfully sent !')]);
     }
 
     public function showCustomQuotePage($quoteUrl, ProductQuoteService $productQuoteService)

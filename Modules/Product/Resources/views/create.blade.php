@@ -49,8 +49,8 @@
                 <div class="form-group">
                     <select name="currency" class="form-control">
                         <option value="none">@lang('vendor.add_product_currency_label')</option>
-                        @foreach($currencies as $currency)
-                            <option value="{{$currency->id}}">{{$currency->name}}</option>
+                        @foreach($currencies as $key=>$currency)
+                            <option value="{{$currency->id}}" @if($key == 0) selected @endif>{{$currency->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -70,6 +70,8 @@
                     <textarea style="height: 300px;font-size: 20px" name="description" cols="10"
                               class="html-editor form-control"
                               placeholder="{{trans('vendor.add_product_description_label')}}">
+                                                        {{@old('description')}}
+
                     </textarea>
                 </div>
 
@@ -190,8 +192,6 @@
                     };
 
                     reader.readAsDataURL(file);
-
-
                 }
             }
 

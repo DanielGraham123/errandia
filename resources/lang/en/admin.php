@@ -89,6 +89,4 @@ return [
     "manage_site_page_title"=>"Manage Site Pages and Content",
     "save_site_page_btn"=>"Save Page Content",
     "save_site_save_success"=>"Page content was saved without errors",
-    "sidebar_site_page"=>"Manage Site Pages",
-
 ];
