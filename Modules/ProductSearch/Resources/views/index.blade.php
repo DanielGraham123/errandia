@@ -19,43 +19,43 @@
                                     value="{{$region->id}}" <?php echo $region->id == request('region') ? 'selected="selected"' : '';?>>{{$region->name}}</option>
                             @endforeach
                         </select>
-                        <select class="form-control" name="town" id="townSearch" onchange="getStreets(this)">
+                        <select class="form-control" name="town" id="townSearch" onchange="this.form.submit();">
                             <option value="">Select Town</option>
                             @foreach($towns as $town)
-                                <option value="{{$town->id}}">{{$town->name}}</option>
+                                <option value="{{$town->id}}" <?php echo $town->id == request('town') ? 'selected="selected"' : '';?>>{{$town->name}}</option>
                             @endforeach
                         </select>
-                        <select class="form-control" name="street" id="streetSearch">
+                        <select class="form-control" name="street" id="streetSearch" onchange="this.form.submit();">
                             <option value="">Select Street</option>
                             @foreach($streets as $street)
-                                <option value="{{$street->id}}">{{$street->name}}</option>
+                                <option value="{{$street->id}}" <?php echo $street->id == request('street') ? 'selected="selected"' : '';?>>{{$street->name}}</option>
                             @endforeach
                         </select>
                     </form>
                 </div>
                 <div class="mobile-only">
-                    <form method="POST" action="{{route('productsort')}}">
+                    <form method="GET" action="{{route('productsearch')}}">
 
-                        {{ csrf_field() }}
-                        <input type="hidden" name="keyword" value="{{$keyword}}"/>
-                        <select class="form-control" name="region" id="regionSearch" onchange="getTowns(this)">
+{{--                        {{ csrf_field() }}--}}
+                        <input type="hidden" name="search" value="{{$keyword}}"/>
+                        <select class="form-control" name="region" id="regionSearch" onchange="this.form.submit();">
                             <option value="">Region</option>
                             @foreach($regions as $region)
                                 <option
                                     value="{{$region->id}}" <?php echo $region->id == request('region') ? 'selected="selected"' : '';?>>{{$region->name}}</option>
                             @endforeach
                         </select>
-                        <select class="form-control mx-3" name="town" id="townSearch" onchange="getStreets(this)">
+                        <select class="form-control mx-3" name="town" id="townSearch" onchange="this.form.submit();">
                             <option value="">Town</option>
                             @foreach($towns as $town)
-                                <option value="{{$town->id}}">{{$town->name}}</option>
+                                <option value="{{$town->id}}" <?php echo $town->id == request('town') ? 'selected="selected"' : '';?>>{{$town->name}}</option>
                             @endforeach
                         </select>
 
-                        <select class="form-control" name="street" id="streetSearch">
+                        <select class="form-control" name="street" id="streetSearch" onchange="this.form.submit();">
                             <option value="">Street</option>
                             @foreach($streets as $street)
-                                <option value="{{$street->id}}">{{$street->name}}</option>
+                                <option value="{{$street->id}}" <?php echo $street->id == request('street') ? 'selected="selected"' : '';?>>{{$street->name}}</option>
                             @endforeach
                         </select>
                     </form>
@@ -140,7 +140,7 @@
                                 </div>
 
 
-                                {{--                                {!! $products->appends(['search' => $keyword])->links() !!}--}}
+                                                                {!! $products->appends(['search' => $keyword,'town'=>request('town'),'region'=>request('region'),'street'=>request('street')])->links() !!}
                             </div>
                             <style>
                                 @media (min-width: 992px) {
@@ -161,11 +161,9 @@
                     <div class="card box-shadow-none bg-light-gray">
                         <div class="row card-body">
                             <div class="text-left col-md-12 mb-1">
-                                @if((request('region')) || request('town') || request('street'))
-                                    <h4 class="font-weight-bold text-black-50">Related Shops</h4>
-                                @else
-                                    <h4 class="font-weight-bold text-black-50">Visit Shops</h4>
-                                @endif
+
+                                    <h4 class="font-weight-bold text-black-50">Errandia Suggest the following business</h4>
+
                             </div>
 
                             @php

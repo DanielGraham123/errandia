@@ -94,7 +94,7 @@ class ProductSearchController extends Controller
                 ->get();
         }
         if ($town){
-            $data['streets'] = DB::table('streets')->where('town_id',$region)->get();
+            $data['streets'] = DB::table('streets')->where('town_id',$town)->get();
         }
 
         return view('productsearch::index')->with($data);
