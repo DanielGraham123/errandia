@@ -44,6 +44,11 @@
                         <span>{{trans('vendor.sidebar_manage_product_review')}}</span>
                     </a>
                 </li>
+                <li id="run_errand_page">
+                    <a href="{{route('run_errand_page')}}" class="mx-2 d-flex flex-nowrap">
+                        <span>{{trans('vendor.sidebar_errand_page')}}</span>
+                    </a>
+                </li>
                 <li id="profile">
                     <a href="{{route('user_profile')}}" class="mx-2  d-flex flex-nowrap">
                         <span>{{trans('vendor.sidebar_manage_setting_msg')}}</span>

@@ -4,6 +4,7 @@ namespace Modules\ProductSearch\Http\Controllers;
 use App\Jobs\SendProductQuoteByEmail;
 use App\Jobs\SendProductQuoteBySMS;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -121,7 +122,7 @@ class ProductSearchController extends Controller
     /**
      * Post product quote action
      */
-    public function sendProductQuote(ProductQuoteService $ProductQuoteService, AddQuoteRequest $request, ImageUploadService $imageUploadService, ProductService $productService)
+    public function sendProductQuote(ProductQuoteService $ProductQuoteService, Request $request, ImageUploadService $imageUploadService, ProductService $productService,)
     {
         if (!auth()->check()) return redirect()->route("login_page", ['redirectTo' => route('run_errand_page')])->withErrors([trans('general.errands_custom_view_request_auth_msg')]);
         $user = Auth::user();
@@ -144,20 +145,11 @@ class ProductSearchController extends Controller
 //
         // FOR ENQUIRY IMAGE
         if ($quoteID) {
-
-            if ($request->image && count($request->image) > 0) {
-
+            if ($request->file('image') && count($request->image) > 0) {
 
                 foreach ($request->image  as $image) {
                     if ($image){
-                        $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
-                        $folderPath = config("filesystems.disks.public.root") . "/productquote/";
-                        $image_parts = explode(";base64,", $image);
-                        $image_base64 = base64_decode($image_parts[1]);
-                        $file = $folderPath . $name;
-                        $imagePath = "productquote/" . $name;
-                        file_put_contents($file, $image_base64);
-
+                        $imagePath = $imageUploadService->uploadFile(['image'=>$image], 'image', "productquote");
                         $ProductQuoteService->saveQuoteImages($quoteID->id, ['image_path' => $imagePath, 'quote_id' => $quoteID->id]);
                     }
                 }

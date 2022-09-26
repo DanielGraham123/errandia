@@ -1161,7 +1161,7 @@ li.nav-item a.text-primary {
 }
 
 .select-photo {
-    min-height: 100px !important;
+    height: 100px !important;
 }
 
 .helep_round {

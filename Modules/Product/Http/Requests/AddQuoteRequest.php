@@ -29,16 +29,13 @@ class AddQuoteRequest extends FormRequest
     /*
      * @Author:Dieudonne Dengun
      */
-	
 	public function getProductQuoteImages()
     {
         $counter = $this->input('QuoteImageCounter');
-       
 		$data = [];
         for ($i = 1; $i <= $counter; $i++) {
             $name = 'preview-' . $i;
             $element = $this->file($name);
-			
             if ($this->hasFile($name)) {
                 array_push($data, [$name => $element]);
             }
