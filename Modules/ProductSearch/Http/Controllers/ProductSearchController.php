@@ -122,7 +122,7 @@ class ProductSearchController extends Controller
     /**
      * Post product quote action
      */
-    public function sendProductQuote(ProductQuoteService $ProductQuoteService, Request $request, ImageUploadService $imageUploadService, ProductService $productService,)
+    public function sendProductQuote(ProductQuoteService $ProductQuoteService, Request $request, ImageUploadService $imageUploadService, ProductService $productService)
     {
         if (!auth()->check()) return redirect()->route("login_page", ['redirectTo' => route('run_errand_page')])->withErrors([trans('general.errands_custom_view_request_auth_msg')]);
         $user = Auth::user();
