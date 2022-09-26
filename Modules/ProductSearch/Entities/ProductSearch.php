@@ -103,7 +103,7 @@ class ProductSearch extends Model
         });
         $this->extracted($query, $searchFilters, 'OR');
 
-        return $query->select('shops.*')->distinct()->take(8)->get();
+        return $query->select('shops.*','shop_contact_info.tel as shop_tel')->distinct()->take(8)->get();
     }
 
     public function getTotalSortProduct($keyword, $keywords)

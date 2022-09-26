@@ -119,6 +119,7 @@
                                                     @endif
 
                                                     <div class="card-header mb-1">
+
                                                         <h5
                                                             class="font-weight-bold text-black text-center">{{$product->shop_name}}</h5>
                                                     </div>
@@ -126,8 +127,12 @@
                                                     <div class="card-text mb-1"><h6
                                                             class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
                                                     </div>
-                                                    <div class="card-text"><h6
-                                                            class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>
+                                                    <div class="card-text">
+                                                        <a href="tel:{{$product->shop_tel}}">
+                                                            <h6
+                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>
+                                                        </a>
+
                                                     </div>
 
 
@@ -182,9 +187,13 @@
 
 
                                                         <div class="text-center">
-                                                            {{--                                        <a href="{{route('show_collection_products',['id'=>$shop->slug])}}">--}}
-                                                            <h5 class="text-black-50 font-weight-bold text-capitalize">{{$shop->name}}</h5>
-                                                            {{--                                        </a>--}}
+                                                                                                    <a href="{{route('show_shop_page',['id'=>$shop->slug])}}">
+                                                            <h5 class="text-black font-weight-bold text-capitalize">{{$shop->name}}</h5>
+                                                                                                    </a>
+                                                            <a href="tel:{{$shop->shop_tel}}">
+                                                                <h6
+                                                                    class="m-0 p-0 text-black-50 text-center">{{$product->shop_tel}}</h6>
+                                                            </a>
                                                         </div>
                                                     </a>
                                                 </div>
