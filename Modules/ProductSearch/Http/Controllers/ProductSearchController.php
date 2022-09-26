@@ -74,6 +74,7 @@ class ProductSearchController extends Controller
             'region'=>$region,
             'town'=>$town,
             'street'=>$street,
+            'shop_ids'=>$searchResults['shop_ids']
 
         ]);
 //        $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);

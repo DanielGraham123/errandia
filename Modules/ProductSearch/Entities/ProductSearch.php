@@ -79,10 +79,16 @@ class ProductSearch extends Model
 
         );
         $products = $query->paginate(20);
+        $queryCollection = collect($products);
+        $queryCollection = collect($queryCollection['data']);
+        $shopIds = $queryCollection->pluck('shop_id')->groupBy('shop_id')->flatMap(function ($val) {
+            return $val;
+        })->toArray();
         $total = $query->count();
         return [
             'products' => $products,
-            'total' => $total
+            'total' => $total,
+            'shop_ids' => $shopIds ?? []
         ];
     }
 
@@ -96,6 +102,7 @@ class ProductSearch extends Model
             ->join('towns', 'streets.town_id', '=', 'towns.id')
             ->join('regions', 'towns.region_id', '=', 'regions.id');
         $query->where('shops.name', "!=", '');
+        $query->whereNotIn('shops.id',$searchFilters['shop_ids'] );
         $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters) {
             return $query->where(function ($q) use ($searchFilters) {
                 $q->where('products.search_index', 'LIKE', "%{$searchFilters['search']}%", 'OR');
