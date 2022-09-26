@@ -27,21 +27,23 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <select id="category" class="form-control" onchange="getSubCategoriesByCategory(this)"
-                            name="category">
+                    <select id="sub_category" class="form-control"
+                            name="sub_category" >
                         <option value="none">@lang('vendor.add_product_category_label')</option>
                         @foreach($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
+                            <option value="{{$category->id}}"
+                                {{ old('your_name') === $category->id ? 'selected' : '' }}
+                            >{{$category->name}}</option>
                         @endforeach
                     </select>
                 </div>
 
-                <div class="form-group mb-3">
-                    <select class="form-control" name="sub_category"
-                            id="sub_category">
-                        <option value="none">@lang('vendor.add_product_sub_category_label')</option>
-                    </select>
-                </div>
+{{--                <div class="form-group mb-3">--}}
+{{--                    <select class="form-control" name="sub_category"--}}
+{{--                            id="sub_category">--}}
+{{--                        <option value="none">@lang('vendor.add_product_sub_category_label')</option>--}}
+{{--                    </select>--}}
+{{--                </div>--}}
                 <div class="form-group  mb-3">
                     <input value="{{old('price')}}" type="number" name="price" class="form-control"
                            placeholder="{{trans('vendor.add_product_unit_price_label')}}">
