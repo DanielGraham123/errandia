@@ -103,25 +103,25 @@ class ProductSearch extends Model
             ->join('regions', 'towns.region_id', '=', 'regions.id');
         $query->where('shops.name', "!=", '');
         $query->whereNotIn('shops.id',$searchFilters['shop_ids'] );
-        $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters) {
-            return $query->orWhere(function ($q) use ($searchFilters) {
-                $q->orWhere('products.search_index', 'LIKE', "%{$searchFilters['search']}%", 'OR');
-            });
-        });
 //        $this->extracted($query, $searchFilters, 'OR');
         $query->when(!empty($searchFilters['region']), function ($query) use ($searchFilters) {
-            return $query->orWhere(function ($q) use ($searchFilters) {
-                $q->orWhere('regions.id', '=', "{$searchFilters['region']}");
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('regions.id', '=', "{$searchFilters['region']}");
             });
         });
         $query->when(!empty($searchFilters['town']), function ($query) use ($searchFilters) {
-            return $query->orWhere(function ($q) use ($searchFilters) {
-                $q->orWhere('towns.id', '=', "{$searchFilters['town']}");
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('towns.id', '=', "{$searchFilters['town']}");
             });
         });
         $query->when(!empty($searchFilters['street']), function ($query) use ($searchFilters) {
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('streets.id', '=', "{$searchFilters['street']}");
+            });
+        });
+        $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters) {
             return $query->orWhere(function ($q) use ($searchFilters) {
-                $q->orWhere('streets.id', '=', "{$searchFilters['street']}");
+                $q->orWhere('products.search_index', 'LIKE', "%{$searchFilters['search']}%",'AND');
             });
         });
 

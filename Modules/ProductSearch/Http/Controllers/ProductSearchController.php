@@ -71,9 +71,9 @@ class ProductSearchController extends Controller
 
         $data['shops'] = $this->ProductSearch->getRelatedShops([
             'search'=>$keyword,
-            'region'=>$region,
-            'town'=>$town,
-            'street'=>$street,
+            'region'=>$region ?? "",
+            'town'=>$town??"",
+            'street'=>$street??"",
             'shop_ids'=>$searchResults['shop_ids']
 
         ]);
