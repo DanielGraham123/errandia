@@ -115,15 +115,16 @@ class ProductController extends Controller
         //update product
         DB::transaction(function () use ($request, $productExist, $update_product_dto, $imageUploadService) {
             $product = $this->productService->updateProduct($update_product_dto, $productExist->id);
+
+
             if ($product) {
                 //update the extra images for product if exist
                 $extraProductImages = $request->getExtraProductImages();
                 if (count($extraProductImages) > 0) {
                     foreach ($extraProductImages as $image) {
                         //upload image then save to db
-
                         $imagePath = $imageUploadService->uploadFile($image, key($image), "products");
-                        $counter = 2;
+                        $counter = 1;
                         foreach ($productExist->images->sortDesc() as $image_exist) {
                             if ('product-' . $counter == key($image)) {
                                 $this->productService->updateProductImage($image_exist->id, ['image_path' => $imagePath]);

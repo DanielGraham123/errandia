@@ -1163,7 +1163,9 @@ li.nav-item a.text-primary {
 .select-photo {
     height: 100px !important;
 }
-
+.select-photo .product-img{
+   max-height: 100% !important;
+}
 .helep_round {
     border-radius: .5em;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, .175) !important
