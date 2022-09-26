@@ -104,11 +104,26 @@ class ProductSearch extends Model
         $query->where('shops.name', "!=", '');
         $query->whereNotIn('shops.id',$searchFilters['shop_ids'] );
         $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters) {
-            return $query->where(function ($q) use ($searchFilters) {
-                $q->where('products.search_index', 'LIKE', "%{$searchFilters['search']}%", 'OR');
+            return $query->orWhere(function ($q) use ($searchFilters) {
+                $q->orWhere('products.search_index', 'LIKE', "%{$searchFilters['search']}%", 'OR');
             });
         });
-        $this->extracted($query, $searchFilters, 'OR');
+//        $this->extracted($query, $searchFilters, 'OR');
+        $query->when(!empty($searchFilters['region']), function ($query) use ($searchFilters) {
+            return $query->orWhere(function ($q) use ($searchFilters) {
+                $q->orWhere('regions.id', '=', "{$searchFilters['region']}");
+            });
+        });
+        $query->when(!empty($searchFilters['town']), function ($query) use ($searchFilters) {
+            return $query->orWhere(function ($q) use ($searchFilters) {
+                $q->orWhere('towns.id', '=', "{$searchFilters['town']}");
+            });
+        });
+        $query->when(!empty($searchFilters['street']), function ($query) use ($searchFilters) {
+            return $query->orWhere(function ($q) use ($searchFilters) {
+                $q->orWhere('streets.id', '=', "{$searchFilters['street']}");
+            });
+        });
 
         return $query->select('shops.*','shop_contact_info.tel as shop_tel')->distinct()->take(8)->get();
     }
