@@ -128,9 +128,14 @@
                                                             class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
                                                     </div>
                                                     <div class="card-text">
-                                                        <a href="tel:{{$product->shop_tel}}">
-                                                            <h6
-                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>
+{{--                                                        <a href="tel:{{$product->shop_tel}}">--}}
+{{--                                                            <h6--}}
+{{--                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>--}}
+{{--                                                        </a>--}}
+                                                        <a href="tel:{{$product->shop_tel}}"
+                                                           class="list-group-item list-group-item-action withripple border-0"><i
+                                                                class="zmdi zmdi-phone"></i>Contact shop
+                                                            <div class="ripple-container"></div>
                                                         </a>
 
                                                     </div>
@@ -190,9 +195,10 @@
                                                                                                     <a href="{{route('show_shop_page',['id'=>$shop->slug])}}">
                                                             <h5 class="text-black font-weight-bold text-capitalize">{{$shop->name}}</h5>
                                                                                                     </a>
-                                                            <a href="tel:{{$shop->shop_tel}}">
-                                                                <h6
-                                                                    class="m-0 p-0 text-black-50 text-center">{{$product->shop_tel}}</h6>
+                                                            <a href="tel:{{$shop->shop_tel}}"
+                                                               class="list-group-item list-group-item-action withripple border-0"><i
+                                                                    class="zmdi zmdi-phone"></i>Contact shop
+                                                                <div class="ripple-container"></div>
                                                             </a>
                                                         </div>
                                                     </a>
