@@ -48,6 +48,7 @@ class ProductSearchController extends Controller
         $region =  $_REQUEST['region'] ?? 0;
         $town =  $_REQUEST['town']  ?? 0;
         $street =  $_REQUEST['street'] ?? 0;
+
 //        $sub_category =  $_REQUEST['sub_category'] ?? 0;
 //        $category =  $_REQUEST['category'] ?? 0;
         $data['keyword'] = $keyword;

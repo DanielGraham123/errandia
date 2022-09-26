@@ -142,7 +142,7 @@ class ProductSearch extends Model
         });
         $query->when(!empty($searchFilters['street']), function ($query) use ($searchFilters, $boolean) {
             return $query->where(function ($q) use ($searchFilters, $boolean) {
-                $q->where('streets.id', '=', "%{$searchFilters['street']}%", $boolean);
+                $q->where('streets.id', '=', "{$searchFilters['street']}", $boolean);
             });
         });
     }
