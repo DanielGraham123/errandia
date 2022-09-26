@@ -133,7 +133,7 @@
 {{--                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>--}}
 {{--                                                        </a>--}}
                                                         <a href="tel:{{$product->shop_tel}}"
-                                                           class="list-group-item list-group-item-action withripple border-0"><i
+                                                           class="btn helep_btn_raise w-100" style="padding: 8px 0px;"><i
                                                                 class="zmdi zmdi-phone"></i>Contact shop
                                                             <div class="ripple-container"></div>
                                                         </a>
@@ -196,7 +196,7 @@
                                                             <h5 class="text-black font-weight-bold text-capitalize">{{$shop->name}}</h5>
                                                                                                     </a>
                                                             <a href="tel:{{$shop->shop_tel}}"
-                                                               class="list-group-item list-group-item-action withripple border-0"><i
+                                                               class="btn helep_btn_raise w-100" style="padding: 8px 0px;"><i
                                                                     class="zmdi zmdi-phone"></i>Contact shop
                                                                 <div class="ripple-container"></div>
                                                             </a>
