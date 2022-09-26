@@ -4,9 +4,11 @@ namespace Modules\ProductSearch\Http\Controllers;
 use App\Jobs\SendProductQuoteByEmail;
 use App\Jobs\SendProductQuoteBySMS;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Product\Services\ProductService;
 use Modules\ProductCategory\Services\CategoryService;
@@ -56,13 +58,16 @@ class ProductSearchController extends Controller
         $data['request']['street'] = $street;
 
 
-        $data['products'] = $this->ProductSearch->getSearchProducts([
+         $searchResults = $this->ProductSearch->getSearchProducts([
             'search'=>$keyword,
             'region'=>$region,
             'town'=>$town,
             'street'=>$street,
 
         ]);
+        $data['products'] = $searchResults['products'];
+        $data['TotalProducts'] = $searchResults['total'];
+
         $data['shops'] = $this->ProductSearch->getRelatedShops([
             'search'=>$keyword,
             'region'=>$region,
@@ -70,7 +75,7 @@ class ProductSearchController extends Controller
             'street'=>$street,
 
         ]);
-        $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);
+//        $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);
         $data['currencies'] = $this->utilityService->getCurrencies();
 
         // FOR SORT CATEGORY SUB CATEGORY
@@ -81,6 +86,17 @@ class ProductSearchController extends Controller
         $data['towns'] = $this->Regions->getTowns();
         $data['streets'] = $this->Street->getAllStreets();
 
+        if ($region){
+            $data['towns'] = DB::table('towns')->where('region_id',$region)->get();
+            $data['streets'] = DB::table('streets')
+                ->join('towns', 'streets.town_id', '=', 'towns.id')
+                ->where('towns.region_id',$region)
+                ->select('streets.*')
+                ->get();
+        }
+        if ($town){
+            $data['streets'] = DB::table('streets')->where('town_id',$town)->get();
+        }
 
         return view('productsearch::index')->with($data);
     }
@@ -106,7 +122,7 @@ class ProductSearchController extends Controller
     /**
      * Post product quote action
      */
-    public function sendProductQuote(ProductQuoteService $ProductQuoteService, AddQuoteRequest $request, ImageUploadService $imageUploadService, ProductService $productService)
+    public function sendProductQuote(ProductQuoteService $ProductQuoteService, Request $request, ImageUploadService $imageUploadService, ProductService $productService,)
     {
         if (!auth()->check()) return redirect()->route("login_page", ['redirectTo' => route('run_errand_page')])->withErrors([trans('general.errands_custom_view_request_auth_msg')]);
         $user = Auth::user();
@@ -129,20 +145,11 @@ class ProductSearchController extends Controller
 //
         // FOR ENQUIRY IMAGE
         if ($quoteID) {
-
-            if ($request->image && count($request->image) > 0) {
-
+            if ($request->file('image') && count($request->image) > 0) {
 
                 foreach ($request->image  as $image) {
                     if ($image){
-                        $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
-                        $folderPath = config("filesystems.disks.public.root") . "/productquote/";
-                        $image_parts = explode(";base64,", $image);
-                        $image_base64 = base64_decode($image_parts[1]);
-                        $file = $folderPath . $name;
-                        $imagePath = "productquote/" . $name;
-                        file_put_contents($file, $image_base64);
-
+                        $imagePath = $imageUploadService->uploadFile(['image'=>$image], 'image', "productquote");
                         $ProductQuoteService->saveQuoteImages($quoteID->id, ['image_path' => $imagePath, 'quote_id' => $quoteID->id]);
                     }
                 }

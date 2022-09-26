@@ -47,10 +47,10 @@ class UpdateProductRequest extends FormRequest
     //get product extra images
     public function getExtraProductImages()
     {
-        $counter = $this->input('counter');
+        $counter = $this->input('product_counter');
+        $counter = intval($counter);
         $data = [];
-        if ($counter == 0) return $data;
-        $counter = 5;
+        if ( $counter == 0) return $data;
         for ($i = 1; $i <= $counter; $i++) {
             $name = 'product-' . $i;
             $element = $this->file($name);
