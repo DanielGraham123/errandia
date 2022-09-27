@@ -48,6 +48,7 @@ class ProductSearchController extends Controller
         $region =  $_REQUEST['region'] ?? 0;
         $town =  $_REQUEST['town']  ?? 0;
         $street =  $_REQUEST['street'] ?? 0;
+
 //        $sub_category =  $_REQUEST['sub_category'] ?? 0;
 //        $category =  $_REQUEST['category'] ?? 0;
         $data['keyword'] = $keyword;
@@ -70,9 +71,10 @@ class ProductSearchController extends Controller
 
         $data['shops'] = $this->ProductSearch->getRelatedShops([
             'search'=>$keyword,
-            'region'=>$region,
-            'town'=>$town,
-            'street'=>$street,
+            'region'=>$region ?? "",
+            'town'=>$town??"",
+            'street'=>$street??"",
+            'shop_ids'=>$searchResults['shop_ids']
 
         ]);
 //        $data['TotalProducts'] = $this->ProductSearch->getTotalSearchProduct($keyword);

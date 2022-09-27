@@ -79,10 +79,16 @@ class ProductSearch extends Model
 
         );
         $products = $query->paginate(20);
+        $queryCollection = collect($products);
+        $queryCollection = collect($queryCollection['data']);
+        $shopIds = $queryCollection->pluck('shop_id')->groupBy('shop_id')->flatMap(function ($val) {
+            return $val;
+        })->toArray();
         $total = $query->count();
         return [
             'products' => $products,
-            'total' => $total
+            'total' => $total,
+            'shop_ids' => $shopIds ?? []
         ];
     }
 
@@ -96,12 +102,28 @@ class ProductSearch extends Model
             ->join('towns', 'streets.town_id', '=', 'towns.id')
             ->join('regions', 'towns.region_id', '=', 'regions.id');
         $query->where('shops.name', "!=", '');
-        $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters) {
+        $query->whereNotIn('shops.id',$searchFilters['shop_ids'] );
+//        $this->extracted($query, $searchFilters, 'OR');
+        $query->when(!empty($searchFilters['region']), function ($query) use ($searchFilters) {
             return $query->where(function ($q) use ($searchFilters) {
-                $q->where('products.search_index', 'LIKE', "%{$searchFilters['search']}%", 'OR');
+                $q->where('regions.id', '=', "{$searchFilters['region']}");
             });
         });
-        $this->extracted($query, $searchFilters, 'OR');
+        $query->when(!empty($searchFilters['town']), function ($query) use ($searchFilters) {
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('towns.id', '=', "{$searchFilters['town']}");
+            });
+        });
+        $query->when(!empty($searchFilters['street']), function ($query) use ($searchFilters) {
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('streets.id', '=', "{$searchFilters['street']}");
+            });
+        });
+        $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters) {
+            return $query->orWhere(function ($q) use ($searchFilters) {
+                $q->orWhere('products.search_index', 'LIKE', "%{$searchFilters['search']}%",'AND');
+            });
+        });
 
         return $query->select('shops.*','shop_contact_info.tel as shop_tel')->distinct()->take(8)->get();
     }
@@ -142,7 +164,7 @@ class ProductSearch extends Model
         });
         $query->when(!empty($searchFilters['street']), function ($query) use ($searchFilters, $boolean) {
             return $query->where(function ($q) use ($searchFilters, $boolean) {
-                $q->where('streets.id', '=', "%{$searchFilters['street']}%", $boolean);
+                $q->where('streets.id', '=', "{$searchFilters['street']}", $boolean);
             });
         });
     }
