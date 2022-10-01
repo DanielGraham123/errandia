@@ -26,9 +26,9 @@ class SubCategory extends Model
     {
         return "product_sub_categories";
     }
-	
+
 	public function getAllSubCategories()
 	{
-		return  SubCategory::get()->all();    
+		return  SubCategory::orderBy('name','asc')->get();
 	}
 }
