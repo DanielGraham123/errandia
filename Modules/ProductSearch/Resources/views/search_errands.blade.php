@@ -94,21 +94,6 @@
     <script>
         let quoteImageCounter = 0;
 
-        // function previewErrandPhoto(obj) {
-        //     let img_id = obj.alt;
-        //     let file = $("#" + obj.id).get(0).files[0];
-        //     if (file) {
-        //         let reader = new FileReader();
-        //         reader.onload = function () {
-        //             $('#' + img_id).removeClass('d-none');
-        //             $("#" + img_id).attr("src", reader.result);
-        //             quoteImageCounter++;
-        //             $('#quoteImageCounter').val(quoteImageCounter);
-        //         }
-        //         $('#' + obj.id).addClass('helep_round');
-        //         reader.readAsDataURL(file);
-        //     }
-        // }
 
         function getSubCategoriesErrand(obj) {
             let category = $("#" + obj.id).val();

@@ -23,11 +23,12 @@ class AddProductRequest extends FormRequest
      */
     public function rules()
     {
+        dd($this->input('name'));
         return ['name' => 'required', 'description' => 'required',
             'quantity' => 'required|numeric', 'price' => 'required|numeric',
             'sub_category' => 'required|not_in:none|numeric', 'currency' => 'required|not_in:none',
-            'image' => 'required|array|min:1',
-            "image.*"  => "required|string|distinct|min:1",
+            'image' => 'required|array|min:0',
+            "image.*"  => "required|string|distinct|min:0",
 
         ];
     }

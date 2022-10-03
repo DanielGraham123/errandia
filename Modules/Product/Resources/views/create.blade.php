@@ -234,9 +234,9 @@
                         reader.readAsDataURL(blob);
                         reader.onloadend = function () {
                             var base64data = reader.result;
-                            button = '<div class="d-flex flex-nowrap  align-items-center">'+
-                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0">  Change</label>' +
-                                '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10  flex-grow-1 radius-0"> Remove</label>'
+                            button = '<div class="d-flex flex-nowrap align-items-center position-absolute w-100" style="bottom: 0">'+
+                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0 mb-0">  Change</label>' +
+                                '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10  flex-grow-1 radius-0 mb-0"> Remove</label>'
                             '</div>';
                             $('#button-'+j).html(button)
                             $('#course_image-'+j).val(base64data)
@@ -258,19 +258,20 @@
         function addImage(){
             html =
                 '  <div id="image-' + i + '"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">' +
-                '     <div  class="d-flex border radius-15   w-100 flex-column h-100 select-photo">' +
+                '     <div  class="d-flex border radius-15 position-relative w-100 flex-column select-photo">' +
                 '         <div class="product-img">'+
                 '             <input id="photo-'+ i +'" onchange="preViewCrop(event,' + i + ')"  type="file"' +
                 '                    class="d-none files"' +
                 '                    accept="image/*">' +
                 '             <input type="hidden"  name="image[]" class="image-value" id="course_image-' + i + '"/>' +
                 '             <img' +
-                '                  class="img-fluid d-block" id="preview-' + i + '">' +
+                '                  class="img-fluid d-block mh-100 w-100" id="preview-' + i + '">' +
                 '        </div>' +
                 '        <div id="button-' + i + '" class="delete ">' +
                 '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
-                '               <label for="photo-' + i + '"  class=" mb-0">  <i class="mdi mdi-plus mdi-18px"></i></label>'+
-                '               <label class="font-10" for="photo-' + i + '">Featured Image</label>'+
+                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
+                '               <label for="photo-' + i + '"  class="align-items-center justify-content-center d-flex flex-column h-100 w-100 cursor-pointer" >  <i class="mdi mdi-plus mdi-18px"></i> <span>Add Image</span></label>' +
+                '          </div>' +
                 '          </div>' +
                 '        </div>' +
                 '     </div>' +
