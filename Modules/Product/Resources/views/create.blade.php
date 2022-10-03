@@ -32,7 +32,7 @@
                         <option value="none">@lang('vendor.add_product_category_label')</option>
                         @foreach($categories as $category)
                             <option value="{{$category->id}}"
-                                {{ old('your_name') === $category->id ? 'selected' : '' }}
+                                {{ old('sub_category') === $category->id ? 'selected' : '' }}
                             >{{$category->name}}</option>
                         @endforeach
                     </select>
