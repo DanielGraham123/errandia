@@ -48,7 +48,6 @@ class ProductController extends Controller
     public function addProduct(AddProductRequest $request, ImageUploadService $imageUploadService)
     {
         $shop_id = $this->utilityService->getCurrentUserShop()->id;
-        dd($request);
         $add_product_dto = $request->getProductDTO();
         $add_product_dto["shop_id"] = $shop_id;
         $add_product_dto['status'] = 1;
