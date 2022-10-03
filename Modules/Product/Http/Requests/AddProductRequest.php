@@ -23,7 +23,6 @@ class AddProductRequest extends FormRequest
      */
     public function rules()
     {
-//        dd('image');
 
         return ['name' => 'required', 'description' => 'required',
             'quantity' => 'required|numeric', 'price' => 'required|numeric',
