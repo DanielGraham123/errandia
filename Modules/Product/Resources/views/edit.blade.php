@@ -81,11 +81,11 @@
                 <div id="product_images" class="row">
                     <div class="col-6 col-sm-3  mb-2">
                         <div for="photo-1" class="d-flex border radius-15  w-100 select-photo">
-                            <div class="rounded-lg"><img id="preview-1" height="100%" width="100%"
+                            <div class="rounded-lg" style="flex-grow: 1;"><img id="preview-1" height="100%" width="100%"
                                                          src="{{asset('storage/'.$product->featured_image_path)}}">
                             </div>
                             <label for="photo-1"
-                                   class="w-100 h-100 d-flex-column align-items-center justify-content-center text-center  font-20">
+                                   class="h-100 d-flex-column align-items-center justify-content-center text-center cursor-pointer font-20">
                                 <span class="text-center font-20">+</span>
                                 <span class="text-center font-10">@lang('vendor.add_product_feature_image_title')</span>
                             </label>

@@ -23,12 +23,11 @@ class AddProductRequest extends FormRequest
      */
     public function rules()
     {
+
         return ['name' => 'required', 'description' => 'required',
             'quantity' => 'required|numeric', 'price' => 'required|numeric',
             'sub_category' => 'required|not_in:none|numeric', 'currency' => 'required|not_in:none',
             'image' => 'required|array|min:1',
-            "image.*"  => "required|string|distinct|min:1",
-
         ];
     }
 
@@ -53,5 +52,17 @@ class AddProductRequest extends FormRequest
             }
         }
         return $data;
+    }
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $filtered_images =array_filter($this->image, fn($value) => !is_null($value) && $value !== '' && $value !== FALSE);
+        $this->merge([
+            'image' => $filtered_images,
+        ]);
     }
 }

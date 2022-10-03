@@ -123,7 +123,7 @@ class Regions extends Model
                             ->where('shops.status', 1)
                             ->where('towns.region_id', '=', $RegionID)
                              ->orderBy('shops.name','asc')
-                            ->paginate($perPage);//dd($Store);
+                            ->paginate($perPage);
                     }
         return $Store;
     }

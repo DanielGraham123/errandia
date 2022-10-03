@@ -121,7 +121,7 @@ class ProductSearch extends Model
         });
         $query->when(!empty($searchFilters['search']), function ($query) use ($searchFilters) {
             return $query->where(function ($q) use ($searchFilters) {
-                $q->where('products.search_index', 'LIKE', "%{$searchFilters['search']}%",'AND');
+                $q->where('products.search_index', 'LIKE', "%{$searchFilters['search']}%",'OR');
             });
         });
 
