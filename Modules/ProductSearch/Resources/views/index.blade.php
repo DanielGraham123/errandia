@@ -185,7 +185,7 @@
                                         <div class="{{$colum_size}} mb-2">
                                             <div class="card h-100 mb-0">
                                                 <div class="card-body">
-                                                    <a href="{{route('show_shop',['id'=>$shop->slug])}}">
+                                                    <a href="{{route('show_shop_page',['id'=>$shop->slug])}}">
                                                         <img src="{{asset('storage/'.$shop->image_path)}}"
                                                              style="width:100% ;max-height: 150px;max-width:100%" alt=""
                                                              class="img-fluid">
