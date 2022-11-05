@@ -182,6 +182,8 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     @foreach($shops->sortBy('name')->take(8) as $shop)
+
+
                                         <div class="{{$colum_size}} mb-2">
                                             <div class="card h-100 mb-0">
                                                 <div class="card-body">
@@ -195,10 +197,15 @@
                                                                                                     <a href="{{route('show_shop_page',['id'=>$shop->slug])}}">
                                                             <h5 class="text-black font-weight-bold text-capitalize">{{$shop->name}}</h5>
                                                                                                     </a>
+                                                            <h5 class="text-black">
+                                                                <i class="zmdi zmdi-pin"></i>
+                                                                <span>{{$shop->store_street}}, {{$shop->store_town}} {{$shop->store_region}}</span>
+                                                            </h5>
                                                             <a href="tel:{{$shop->shop_tel}}"
                                                                class="btn helep_btn_raise w-100" style="padding: 8px 0px;"><i
                                                                     class="zmdi zmdi-phone"></i>Contact shop
                                                                 <div class="ripple-container"></div>
+
                                                             </a>
                                                         </div>
                                                     </a>

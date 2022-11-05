@@ -125,7 +125,14 @@ class ProductSearch extends Model
             });
         });
 
-        return $query->select('shops.*','shop_contact_info.tel as shop_tel')->distinct()->take(8)->get();
+        return $query->select(
+            'shops.*',
+            'shop_contact_info.tel as shop_tel',
+            'shop_contact_info.address as shop_address',
+            'towns.name as store_town',
+            'streets.name as store_street',
+            'regions.name as store_region'
+        )->distinct()->take(8)->get();
     }
 
     public function getTotalSortProduct($keyword, $keywords)
