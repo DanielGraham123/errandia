@@ -571,7 +571,7 @@
                         '<label onclick="deleteContent(' + i + ',id)"  class="btn-danger text-center  py-2 font-10 mb-0 flex-grow-1 radius-0">Remove</label>'
                     '</div>';
                     $( `#${id}-button-${j}`).html('');
-                    avatar.attr('src', file.url);
+                    avatar.attr('src', file.url).removeClass('img-fluid');
                     $( `#${id}-button-${j}`).html(button).addClass('img-preview-buttons')
                 } catch (error_message) {
                     console.log(error_message);

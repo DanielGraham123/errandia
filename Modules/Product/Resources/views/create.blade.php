@@ -228,7 +228,7 @@
                         width: 800,
                         height: 600,
                     });
-                    avatar.attr('src', canvas.toDataURL());
+                    avatar.attr('src', canvas.toDataURL()).removeClass('img-fluid');
                     canvas.toBlob(function (blob) {
                         var reader = new FileReader();
                         reader.readAsDataURL(blob);

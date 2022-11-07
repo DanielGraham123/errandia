@@ -183,15 +183,15 @@ class ProductSearchController extends Controller
                 $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);
                 SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
             } else {
-                session()->flash('message', trans('general.errands_not_sent_msg'));
+//                session()->flash('message', trans('general.errands_not_sent_msg'));
                 return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
             }
 
         } else {
-            session()->flash('message', trans('general.errands_not_sent_msg'));
+//            session()->flash('message', trans('general.errands_not_sent_msg'));
             return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
         }
-        session()->flash('message', trans('Product Quote successfully sent !'));
+//        session()->flash('message', trans('Product Quote successfully sent !'));
         return redirect()->route('productsearch', $data)->with(['success' => trans('Product Quote successfully sent !')]);
     }
 

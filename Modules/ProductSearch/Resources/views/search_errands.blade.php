@@ -172,8 +172,8 @@
 
             html =
                 '  <div id="image-' + i + '"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">' +
-                '     <div  class="d-flex border radius-15 position-relative w-100 flex-column h-100">' +
-                '         <div class="product-img select-photo">' +
+                '     <div  class="d-flex border radius-15 position-relative w-100 flex-column h-100 select-photo">' +
+                '         <div class="product-img">' +
                 '             <input id="photo-' + i + '" oninput="processFiles(event,' + i + ')"  type="file"' +
                 '                    class="d-none files"' +
                 '                    accept="image/*" name="image[]">' +
@@ -218,7 +218,7 @@
                         '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10 mb-0 flex-grow-1 radius-0"> Remove</label>'
                     '</div>';
                     $('#button-' + j).html('');
-                    avatar.attr('src', file.url);
+                    avatar.attr('src', file.url).removeClass('img-fluid');
                     $('#button-' + j).html(button).addClass('img-preview-buttons');
                 } catch (error_message) {
                     console.log(error_message);

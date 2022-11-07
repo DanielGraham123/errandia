@@ -1181,7 +1181,7 @@ div.img-preview-buttons label{
     color: white !important;
 }
 .select-photo .product-img{
-   max-height: 100% !important;
+   height: 100% !important;
 }
 .helep_round {
     border-radius: .5em;
