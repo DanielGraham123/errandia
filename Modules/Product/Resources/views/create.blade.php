@@ -238,7 +238,7 @@
                                 '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0 mb-0">  Change</label>' +
                                 '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10  flex-grow-1 radius-0 mb-0"> Remove</label>'
                             '</div>';
-                            $('#button-'+j).html(button)
+                            $('#button-'+j).html(button).addClass('img-preview-buttons')
                             $('#course_image-'+j).val(base64data)
                             if(j < i){
 
@@ -265,9 +265,9 @@
                 '                    accept="image/*">' +
                 '             <input type="hidden"  name="image[]" class="image-value" id="course_image-' + i + '"/>' +
                 '             <img' +
-                '                  class="img-fluid d-block mh-100 w-100" id="preview-' + i + '">' +
+                '                  class="img-fluid d-block h-100 w-100" id="preview-' + i + '">' +
                 '        </div>' +
-                '        <div id="button-' + i + '" class="delete ">' +
+                '        <div id="button-' + i + '" class="delete">' +
                 '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
                 '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
                 '               <label for="photo-' + i + '"  class="align-items-center justify-content-center d-flex flex-column h-100 w-100 cursor-pointer" >  <i class="mdi mdi-plus mdi-18px"></i> <span>Add Image</span></label>' +

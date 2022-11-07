@@ -5,6 +5,7 @@
     <div class="py-5 container-lg">
         <div class="row bg-white helep_round p-lg-4 ml-lg-n3 mr-lg-n5">
             <div class="col-md-12">
+
                 <div class="clearfix"><br/></div>
                 @include('helep.general.components.product_details')
                 <div class="clearfix mb-4"></div>

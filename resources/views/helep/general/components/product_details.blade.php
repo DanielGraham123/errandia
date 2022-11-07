@@ -88,6 +88,22 @@
         font-size: 12px;
         padding-top: 17px;
     }
+
+    #product-details-tab .nav-item:hover, #product-details-tab .nav-item.active {
+        background-color: #fff !important;
+        border-radius: 0 !important;
+        cursor: pointer;
+    }
+
+    #product-details-tab .nav-item:hover a, #product-details-tab .nav-item.active a {
+        color: #113d6b !important;
+
+    }
+
+    #product-details-tab .nav-item a:hover {
+        background-color: transparent !important;
+        color: #113d6b !important;
+    }
 </style>
 <link href='{{asset('/jquery-bar-rating-master/dist/themes/fontawesome-stars.css')}}' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="{{url('css/croppie.css')}}">
@@ -101,7 +117,7 @@
                     @foreach($product->images as $k=>$image)
                         <div class="carousel-item {{$k == 0?"active":""}} withripple zoom-img">
                             <img class="p-lg-5 m-lg-5 img-fluid "
-                                
+
                                  src="{{asset('storage/'.$image->image_path)}}"
                                  alt="Product Image">
                         </div>
@@ -111,7 +127,8 @@
             <!-- Indicators -->
             <ol class="carousel-indicators carousel-indicators-tumbs carousel-indicators-tumbs-outside">
                 @foreach($product->images as $i=>$image)
-                    <li data-target="#carousel-product" class="helep_round  {{$i == 0?"active":""}}" data-slide-to="{{$i}}"><img
+                    <li data-target="#carousel-product" class="helep_round  {{$i == 0?"active":""}}"
+                        data-slide-to="{{$i}}"><img
                             height="80" width="95" src="{{asset('storage/'.$image->image_path)}}"
                             alt="Product Image"></li>
                 @endforeach
@@ -210,37 +227,40 @@
         </div>
     </div>
 </div>
-<div class="ml-lg-2 mr-lg-2 pl-lg-2 pr-lg-5 mt-4 mb-4">
+<div class="mt-4 mb-4">
     <div class=" row">
-        <div class="col-md-12 card ">
-            <div class="p-1">
+        <div class="col-md-12">
+            <div class="card">
                 <!-- Nav tabs -->
-                <ul class="nav nav-justified nav-fill"
+                <ul id="product-details-tab" class="nav nav-justified nav-fill helep-color"
                     role="tablist">
-                    <li class="nav-item"><a class="nav-link  active" href="#description"
-                                            aria-controls="home"
-                                            role="tab" data-toggle="tab"> <span
-                                class="font-weight-bold text-black-50">@lang('vendor.add_product_description_label')</span></a>
+                    <li class="nav-item active"><a class="nav-link" href="#description"
+                                                   aria-controls="home"
+                                                   role="tab" data-toggle="tab"> <span
+                                class="font-weight-bold">@lang('vendor.add_product_description_label')</span></a>
                     </li>
                     <li class="nav-item"><a class="nav-link withoutripple" href="#supplier" aria-controls="profile"
                                             role="tab" data-toggle="tab"><span
-                                class="font-weight-bold text-black-50">@lang('vendor.shop_info_name')</span></a></li>
+                                class="font-weight-bold">@lang('vendor.shop_info_name')</span></a></li>
                     <li class="nav-item"><a class="nav-link withoutripple" href="#reviews" aria-controls="messages"
                                             role="tab" data-toggle="tab"><span
-                                class="font-weight-bold text-black-50">@lang('vendor.product_details_review_title')</span></a>
+                                class="font-weight-bold">@lang('vendor.product_details_review_title')</span></a>
                     </li>
                     <li class="nav-item"><a class="nav-link withoutripple" href="#enquiry" aria-controls="settings"
                                             role="tab" data-toggle="tab"> <span
-                                class="font-weight-bold text-black-50">@lang('vendor.product_details_enquiry_title')</span></a>
+                                class="font-weight-bold">@lang('vendor.product_details_enquiry_title')</span></a>
                     </li>
                 </ul>
                 <div class="card-body">
                     <!-- Tab panes -->
-                    <div class="tab-content">
+                    <div class="tab-content p-4">
+
+                        {{--             description           --}}
                         <div role="tabpanel" class="tab-pane fade active show" id="description">
                             <div
-                                class="text-justify font-16 text-black text-center"> {!! $product->description !!} </div>
+                                class="text-justify font-16 text-black"> {!! $product->description !!} </div>
                         </div>
+                        {{--             supplier           --}}
                         <div role="tabpanel" class="tab-pane fade" id="supplier">
                             <div class="card">
                                 <div class="card-header">
@@ -264,18 +284,21 @@
                                 </div>
                             </div>
                         </div>
+                        {{--              reviews          --}}
                         <div role="tabpanel" class="tab-pane fade" id="reviews">
-                            @if(auth()->id()  && $user_type==1)
+                            {{--                            && $user_type==1--}}
+                            @auth
                                 <form class="" enctype="multipart/form-data" method="POST"
                                       action="{{route('post_review')}}">
                                     @csrf
                                     <div class="">
-                                        <h4 class="text-black font-weight-bold">@lang('general.product_details_review_title')</h4>
-                                        <div class="clearfix"><br/></div>
                                         <div class="form-group mt-2">
-                                            <h5 class="text-danger" for="rating_1">Select a rating as stars below
-                                                for this
-                                                product</h5>
+                                            <label for="rating_1">
+                                                <h5 class="text-danger m-0" for="rating_1">Select a rating as stars below
+                                                    for this
+                                                    product</h5>
+                                            </label>
+
                                             <div class="clearfix"><br/></div>
                                             <select style="font-size: 20px !important;" class='rating form-control'
                                                     id='rating_1' data-id='rating_1'
@@ -288,31 +311,36 @@
                                                 <option value="5">5</option>
                                             </select>
                                         </div>
-
-                                        <h5 class="text-black-50">Upload some sample(s) of this product if you have
-                                            bought it before from this supplier</h5>
-
-                                        <div id="review_images" class="row mt-2">
-
-                                        </div>
-
-                                        <h5 class="text-black-50">A brief feedback on your experience using this
-                                            product</h5>
                                         <div class="form-group">
-                                            <textarea class="form-control  html-editor" name="Comments"
+                                            <label>
+                                                <h5 class="text-black-50 m-0">Upload some sample(s) of this product if you
+                                                    have
+                                                    bought it before from this supplier</h5>
+                                            </label>
+                                            <div id="review_images" class="row mt-2"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comments">
+                                                <h5 class="text-black-50 m-0">A brief feedback on your experience using this
+                                                    product</h5>
+                                            </label>
+                                            <textarea id="comments" class="form-control  html-editor" name="Comments"
                                                       required></textarea>
                                         </div>
                                         <div class="form-group">
                                             <input type="submit" class="btn helep_btn_raise text-uppercase"
                                                    value="Submit Feedback">
                                         </div>
-
                                     </div>
                                     <input type="hidden" name="product_id" value="{{$product->id}}"/>
                                     <input type="hidden" name="slug" value="{{$product->slug}}"/>
+                                    <input id="quoteImageCounter" type="hidden" name="QuoteImageCounter"
+                                           value="0"/>
                                     <input id="reviewCounter" type="hidden" name="counter" value="0"/>
                                 </form>
-                            @else
+                            @endauth
+                            @guest
+
                                 <a href="{{route('login_page')}}">
                                     <button class="btn helep_btn_raise text-uppercase">Login</button>
                                 </a> Or
@@ -320,24 +348,38 @@
                                 <a href="{{route('signup_page')}}">
                                     <button class="btn helep_btn_raise text-uppercase">Register</button>
                                 </a>
-                            @endif
-                            <br/>
-                            @foreach($ReviewData as $review)
-                                <div class="Stars" style="--rating: {{$review->rating}};--star-color:#a1abbd;"
-                                     aria-label="Rating of this product is 2.3 out of 5."></div>
-                                <div>
-                                    @foreach($reviewImages[$review->id]['images'] as $image)
-                                        <img height="80" width="95" class="rounded "
-                                             src="{{asset('storage/'.$image->image_path)}}"
-                                             alt="Product Review Image">
-                                    @endforeach
+                                <span>to post a review</span>
+                            @endguest
+                            {{--                            @endif--}}
+                            <div class="reviews mt-4">
+                                <div class="tabpanel-header p-4 mb-5"
+                                     style="font-size: 16px;color:#000;font-weight: 500;background-color: #f5f5f5">
+                                    <h4 class="text-black font-weight-bold m-0">@lang('general.product_details_review_title')</h4>
                                 </div>
-                                <div> {!!$review->review!!} </div>
-                                <div style="font-size:12px;"><i>Reviewed on {{$review->created_at}}</i>
-                                    By {{$UserName[$review->buyer_id]['user_name']}}</div>
-                            @endforeach </div>
+                                @foreach($ReviewData as $review)
+                                    <div class="user-review">
+                                    <div class="Stars" style="--rating: {{$review->rating}};--star-color:#a1abbd;"
+                                         aria-label="Rating of this product is 2.3 out of 5."></div>
+                                    <div>
+                                        @foreach($reviewImages[$review->id]['images'] as $image)
+                                            <img height="80" width="95" class="rounded "
+                                                 src="{{asset('storage/'.$image->image_path)}}"
+                                                 alt="Product Review Image">
+                                        @endforeach
+                                    </div>
+                                    <div style="color: #000 !important;"> {!!$review->review!!} </div>
+                                    <div style="font-size:12px;"><i>Reviewed on {{$review->created_at}}</i>
+                                        By {{$UserName[$review->buyer_id]['user_name']}}</div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                        </div>
+                        {{--               enquiries         --}}
                         <div role="tabpanel" class="tab-pane fade" id="enquiry">
-                            <div> @if(auth()->id() && $user_type==1)
+{{--                            @if(auth()->id() && $user_type==1)--}}
+                            <div>
+                                @auth
                                     <h4 class="text-black font-weight-bold">@lang('general.product_details_enquiry_title')</h4>
                                     <div class="clearfix"><br/></div>
                                     <form class="" method="POST" action="{{route('post_enquiry')}}"
@@ -370,7 +412,8 @@
                                         <input id="EnquiryImageCounter" type="hidden" name="EnquiryImageCounter"
                                                value="0"/>
                                     </form>
-                                @else
+                                @endauth
+                                @guest
                                     <a href="{{route('login_page')}}">
                                         <button class="btn helep_btn_raise text-uppercase">Login</button>
                                     </a> Or
@@ -378,7 +421,7 @@
                                     <a href="{{route('signup_page')}}">
                                         <button class="btn helep_btn_raise text-uppercase">Register</button>
                                     </a>
-                                @endif
+                                @endguest
 
                             </div>
 
@@ -429,9 +472,22 @@
         var i = 10000;
         $(function () {
             $("#vendor_manage_product").addClass('active');
+            $(document).on('click', '#product-details-tab .nav-item a', function () {
+                $('#product-details-tab .nav-item').removeClass('active');
+                $(this).parent().addClass('active');
+            });
+            $(document).on('input', '.file-input', function (e) {
+
+                let id = $(this).attr('data-id');
+                let counter = $(this).attr('data-counter');
+                counter = parseInt(counter);
+                processFiles(e,counter,id)
+
+            });
             loadHtmlEditor();
             addImage('review_images');
             addImage('inquiries_images');
+
         });
 
         function loadHtmlEditor() {
@@ -464,168 +520,75 @@
             }
 
         }
-
-
-        function addImage(section){
-            if(section === "inquiries_images"){
-                if(i%2 === 1){ //Stay odd for inquiry images
-                    i = i+2;
-                }else{
-                    i = i+1;
-                }
-            }else{ //stay even ///
-                if(i%2 === 1){
-                    i = i+1;
-                }else{
-                    i = i+2;
-                }
-            }
-
+        function addImage(elemId) {
             html =
-                '  <div id="image-' + i + '"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">' +
-                '     <div  class="d-flex border radius-15   w-100 flex-column h-100 select-photo">' +
-                '         <div class="product-img">'+
-                '             <input id="photo-'+ i +'" onchange="preViewCrop(event, \''+i+'\' ,\''+section+'\')"  type="file"' +
-                '                    class="d-none files"' +
-                '                    accept="image/*">' +
-                '             <input type="hidden"  name="image[]" class="image-value" id="course_image-' + i + '"/>' +
-                '             <img' +
-                '                  class="img-fluid d-block" id="preview-' + i + '">' +
-                '        </div>' +
-                '        <div id="button-' + i + '" class="delete ">' +
-                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
-                '               <label for="photo-' + i + '"  class=" mb-0">  <i class="mdi mdi-plus mdi-18px"></i></label>'+
-                '          </div>' +
-                '        </div>' +
-                '     </div>' +
-                ' </div>'+
+                 ` <div id="${elemId}-image-${i}"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">
+                     <div  class="d-flex border radius-15 position-relative w-100 flex-column h-100">
+                         <div class="product-img select-photo">
+                             <input id="${elemId}-photo-${i}" type="file"
+                                    class="d-none files file-input"
+                                    data-id="${elemId}"
+                                    data-counter="${i}"
+                                    accept="image/*" name="image[]">
+                             <img
+                                  class="w-100 img-fluid d-block h-100" id="${elemId}-preview-${i}">
+                        </div>
+                        <div id="${elemId}-button-${i}" class="delete">
+                           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center" style="bottom: 0">
+                               <label for="${elemId}-photo-${i}"  class="align-items-center justify-content-center d-flex flex-column h-100 w-100 cursor-pointer" >  <i class="mdi mdi-plus mdi-18px"></i> <span>Add Image</span></label>
+                          </div>
+                        </div>
+                     </div>
+                 </div>` ;
 
+            $(`#${elemId}`).append(html);
 
-
-                '<div class="modal fade" id="modal-'+i+'" tabindex="-1" role="dialog" aria-labelledby="modalLabel" data-backdrop="static" data-keyboard="false" >' +
-                '    <div class="modal-dialog" role="document">' +
-                '        <div class="modal-content">' +
-                '            <div class="modal-header">' +
-                '                <h5 class="modal-title" id="modalLabel">Crop the image</h5>' +
-                '                <button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-                '                    <span aria-hidden="true">&times;</span>' +
-                '                </button>' +
-                '            </div>' +
-                '            <div class="modal-body">' +
-                '                <div class="img-container">' +
-                '    <img id="ddimage-'+i+'" style="max-height : 250px; width : auto; object-fit: contain;" src="">' +
-                '                </div>' +
-                '            </div>' +
-                '            <div class="modal-footer">' +
-                '                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>' +
-                '                <button type="button" class="btn btn-primary" id="crop-'+i+'">Crop</button>' +
-                '            </div>' +
-                '        </div>' +
-                '    </div>' +
-                '</div>'
-            $('#'+section).append(html);
         }
 
-        function preViewCrop(e,j,section) {
-            console.log(j)
-            var avatar = $('#preview-'+j);
-            var input = $('#photo-'+j);
-            var image = $('#ddimage-'+j);
-            var $modal = $('#modal-'+j);
-            var cropper;
-
-            $('[data-toggle="tooltip"]').tooltip();
-            var files = e.target.files;
-
-            var done = function (url) {
-                input.value = '';
-                image.attr('src',url);
-                $modal.modal('show');
-            };
-
-            var reader;
-            var file;
-            var url;
-
-
-            if (files && files.length > 0) {
-                file = files[0];
-                if (URL) {
-                    done(URL.createObjectURL(file));
-                    r = new FileReader();
-                    r.readAsDataURL(file);
-                } else if (FileReader) {
-                    reader = new FileReader();
-                    reader.onload = function (e) {
-                        done(reader.result);
-                    };
-
-                    reader.readAsDataURL(file);
-
-
-                }
+        function deleteContent(j,id) {
+            $(`#${id}-image-j`).remove();
+            let quoteImageCounter = $('#quoteImageCounter').val();
+            quoteImageCounter = parseInt(quoteImageCounter) - 1;
+            $('#quoteImageCounter').val(quoteImageCounter);
+            if (quoteImageCounter === 2) {
+                i = i + 1;
+                addImage(id);
             }
 
-            $modal.on('shown.bs.modal', function () {
-                cropper = new Cropper(image[0], {
-                    aspectRatio: 2/1.5,
-                    viewMode: 1,
-                    ready: function () {
-                        var clone = this.cloneNode();
-                        clone.className = '';
-                        clone.style.cssText = (
-                            'display: block;' +
-                            'width: 300px;'
-                        );
-                    },
+        }
 
-                });
-            }).on('hidden.bs.modal', function () {
-                cropper.destroy();
-                cropper = null;
-            });
+        function processFiles(e, j,id) {
+            let avatar = $(`#${id}-preview-${j}`);
+            let input = $(`#${id}-photo-${j}`);
+            if (e.target.files.length) {
+                try {
+                    // eslint-disable-next-line no-unused-vars
 
-            document.getElementById('crop-'+j).addEventListener('click', function () {
-                var initialAvatarURL;
-                var canvas;
-
-                $modal.modal('hide');
-                if (cropper) {
-                    canvas = cropper.getCroppedCanvas({
-                        width: 800,
-                        height: 600,
-                    });
-                    avatar.attr('src', canvas.toDataURL());
-                    canvas.toBlob(function (blob) {
-                        var reader = new FileReader();
-                        reader.readAsDataURL(blob);
-                        reader.onloadend = function () {
-                            var base64data = reader.result;
-                            button = '<div class="d-flex flex-nowrap  align-items-center">'+
-                                '<label for="photo-' + j + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0">  Change</label>' +
-                                '<label onclick="deleteContent(\''+j+'\')"  class="btn-danger text-center  py-2 font-10  flex-grow-1 radius-0"> Remove</label>'
-                            '</div>';
-                            $('#button-'+j).html(button)
-
-                            if($('#course_image-'+j).val() === "" ){
-                                addImage(section)
-                            }else{
-
-                            }
-                            $('#course_image-'+j).val(base64data)
-                        }
-                    });
+                    const file = e.target.files[0];
+                    file.url = URL.createObjectURL(file);
+                    let button = '<div class="d-flex flex-nowrap align-items-center">' +
+                        '<label for="'+id+'-photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 mb-0 radius-0">Change</label>' +
+                        '<label onclick="deleteContent(' + i + ',id)"  class="btn-danger text-center  py-2 font-10 mb-0 flex-grow-1 radius-0">Remove</label>'
+                    '</div>';
+                    $( `#${id}-button-${j}`).html('');
+                    avatar.attr('src', file.url);
+                    $( `#${id}-button-${j}`).html(button).addClass('img-preview-buttons')
+                } catch (error_message) {
+                    console.log(error_message);
                 }
-            });
-
+                input.value = '';
+                let quoteImageCounter = $('#quoteImageCounter').val() || 0;
+                quoteImageCounter = parseInt(quoteImageCounter) + 1;
+                $('#quoteImageCounter').val(quoteImageCounter);
+                // if (quoteImageCounter < 4) {
+                i = i + 1;
+                addImage(id)
+                // }
+            }
         }
-
-        function deleteContent(j) {
-            $('#image-' + j).remove();
-        }
-
 
     </script>
+
 @endsection
 <script>
     function show() {

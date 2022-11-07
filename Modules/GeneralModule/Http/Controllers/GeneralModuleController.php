@@ -158,18 +158,10 @@ class GeneralModuleController extends Controller
         $extraProductImages = $request->getReviewImages();
         // FOR REVIEW IMAGE
         if ($reviewID) {
-            foreach ($request->image as $k=>$image){
-                if(isset($image)){
-                 //$folderPath = storage_path("app/public/reviews/");
-                 $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
-                 $filePath = "reviews/".$name;
-                 $folderPath = config("filesystems.disks.public.root") . "/reviews/";
-                 $image_parts = explode(";base64,", $image);
-                 $image_base64 = base64_decode($image_parts[1]);
-                 $file = $folderPath . $name;
-                 //$path =  "products/" . $name;
-                file_put_contents($file, $image_base64);
-                $ProductReviewService->saveReviewImages($reviewID->id, ['image_path' => $filePath, 'review_id' => $reviewID->id]);
+            foreach ($request->image as $image) {
+                if ($image) {
+                    $imagePath = $imageUploadService->uploadFile(['image' => $image], 'image', "reviews");
+                    $ProductReviewService->saveReviewImages($reviewID->id, ['image_path' => $imagePath, 'review_id' => $reviewID->id]);
                 }
             }
 
@@ -195,17 +187,11 @@ class GeneralModuleController extends Controller
 
         // FOR ENQUIRY IMAGE
         if ($enquiryID) {
-            foreach ($request->image as $k=>$image){
-                if(isset($image)){
-                    $name = $this->utilityService->generateRandSlug() . "_" . time() . '.png';
-                    $filePath = "enquiry/".$name;
-                    $folderPath = config("filesystems.disks.public.root") . "/enquiry/";
-                    $image_parts = explode(";base64,", $image);
-                    $image_base64 = base64_decode($image_parts[1]);
-                    $file = $folderPath . $name;
-                    //$path =  "products/" . $name;
-                    file_put_contents($file, $image_base64);
-                    $ProductEnquiryService->saveEnquiryImages($enquiryID->id, ['image_path' => $filePath, 'enquiry_id' => $enquiryID->id]);
+            foreach ($request->image as $image) {
+                if ($image) {
+                    $imagePath = $imageUploadService->uploadFile(['image' => $image], 'image', "enquiry");
+                    $ProductEnquiryService->saveEnquiryImages($enquiryID->id, ['image_path' => $imagePath, 'enquiry_id' => $enquiryID->id]);
+
                 }
             }
         }
@@ -305,7 +291,7 @@ class GeneralModuleController extends Controller
             return redirect()->back()
                 ->withErrors([trans('shop.shop_suspend_public_profile')]);
         }
-        $reviews= $productReviewService->getPaginatedReviewsForShop($shopExist->id);
+        $reviews = $productReviewService->getPaginatedReviewsForShop($shopExist->id);
         $reviewIds = $reviews->pluck('review_id')->toArray();
         $reviewsImage = $productReviewService->getProductReviewImagesByIds($reviewIds);
         $data['reviews'] = $reviews;
@@ -313,7 +299,7 @@ class GeneralModuleController extends Controller
         $data['shopDetails'] = $shopExist;
         $data['address'] = $this->utilityService->getShopAddressByShopContactId($shopExist->shopContactInfo->street_id);
         $data['products'] = $shopService->getPaginatedProductsByShop($shopExist->id);
-        
+
         return view('generalmodule::shop_details')->with($data);
     }
 

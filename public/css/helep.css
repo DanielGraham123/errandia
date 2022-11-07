@@ -1155,13 +1155,30 @@ li.nav-item a.text-primary {
     outline: 0;
     box-shadow: none;
 }
-
 .height-120 {
     height: 120px !important;
 }
 
 .select-photo {
     height: 200px !important;
+}
+.img-preview-buttons{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+label{
+    cursor: pointer;
+}
+.user-review{
+    border-bottom: 1px solid #333;
+    padding: 10px 2px;
+}
+.user-review:last-child{
+    border-bottom: none !important;
+}
+div.img-preview-buttons label{
+    color: white !important;
 }
 .select-photo .product-img{
    max-height: 100% !important;

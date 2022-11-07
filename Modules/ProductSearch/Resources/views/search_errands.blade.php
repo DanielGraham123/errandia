@@ -178,7 +178,7 @@
                 '                    class="d-none files"' +
                 '                    accept="image/*" name="image[]">' +
                 '             <img' +
-                '                  class="w-100 mh-100" id="preview-' + i + '">' +
+                '                  class="w-100 img-fluid d-block h-100" id="preview-' + i + '">' +
                 '        </div>' +
                 '        <div id="button-' + i + '" class="delete ">' +
                 '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center" style="bottom: 0">' +
@@ -219,7 +219,7 @@
                     '</div>';
                     $('#button-' + j).html('');
                     avatar.attr('src', file.url);
-                    $('#button-' + j).html(button)
+                    $('#button-' + j).html(button).addClass('img-preview-buttons');
                 } catch (error_message) {
                     console.log(error_message);
                 }
