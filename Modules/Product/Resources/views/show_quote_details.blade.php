@@ -1,45 +1,52 @@
 @extends('helep.vendor.layout.master')
 @section('content')
     <div class="container">
-        <div class="d-flex justify-content-between">
-            <div class="d-flex flex-wrap"><a href="{{route('product_quote_list')}}">
-                    <button type="button" class="btn helep_btn_raise">
-                        <i class="fa fa-arrow-left pr-1"></i>{{trans('admin.return_back_msg')}}</button>
-                </a>
-            </div>
-            <div class="d-flex flex-wrap"></div>
-            <div class="d-flex flex-wrap"></div>
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <a href="{{route('product_quote_list')}}">
+                <button type="button" class="btn helep_btn_raise">
+                    <i class="fa fa-arrow-left pr-1"></i>{{trans('admin.return_back_msg')}}</button>
+            </a>
+            <p class="mb-0">{{ \Carbon\Carbon::parse($quote->created_at)->toFormattedDateString()}}</p>
         </div>
 
+
         <div class="row">
-        	@foreach ($quoteImages as $image)
-            <div class="col-6 col-sm-3  mb-2">
-              <div for="photo-1" class="d-flex border radius-15  w-100 select-photo">
-                <div class="rounded-lg"><img id="preview-1" height="100%" width="100%" src="{{asset('storage/'.$image->image_path)}}"></div>
-              </div>
-            </div>
+            @foreach ($quoteImages as $image)
+                <div class="col-6 col-sm-3  mb-2">
+                    <div for="photo-1" class="d-flex border radius-15  w-100 select-photo">
+                        <div class="rounded-lg"><img id="preview-1" height="100%" width="100%"
+                                                     src="{{asset('storage/'.$image->image_path)}}"></div>
+                    </div>
+                </div>
             @endforeach
-         </div>
-         <div class="row">
-         <div class="col-12 col-sm-12  mb-2">
-            <div class="form-group">
-            <label>Title</label>
-            <input type="text" class="form-control" name="Title"  value="{{$quote->title}}"  placeholder="Title" disabled="disabled"/>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-12 mb-2 border-bottom">
+                <label>Title</label>
+                <p class="text-black">{{$quote->title}}</p>
+                {{--            <input type="text" class="form-control" name="Title"  value="{{$quote->title}}"  placeholder="Title" disabled="disabled"/>--}}
+
             </div>
-          </div>
-          <div class="col-12 col-sm-12  mb-2">
-            <div class="form-group">
-            <label>Phone Number</label>
-            <input type="text" class="form-control" name="PhoneNumber"   value="{{$quote->phone_number}}"  placeholder="Phone Number" disabled="disabled"/>
+            <hr>
+            <div class="col-12 col-sm-12 mb-2 border-bottom">
+                <label>Phone Number</label>
+                <div class="d-flex flex-wrap align-items-center ">
+                    <p class="text-black mb-0 mr-3">{{$quote->phone_number}}</p>
+                    {{--                    <input type="text" class="form-control" name="PhoneNumber"   value="{{$quote->phone_number}}"  placeholder="Phone Number" disabled="disabled"/>--}}
+                    <a id="phone" class="btn helep_btn_raise"
+                       href="tel:{{$quote->phone_number}}">Contact Requester
+                    </a>
+
+                </div>
+
             </div>
+            <hr>
+            <div class="col-12 col-sm-12 mb-2 border-bottom">
+                <label>Description</label>
+                <p class="text-black">{{$quote->description}}</p>
+                {{--            <textarea class="form-control html-editor" rows="5" name="Description" required placeholder="Description">  {{$quote->description}}</textarea>--}}
             </div>
-            <div class="col-12 col-sm-12  mb-2">
-            <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control html-editor" rows="5" name="Description" required placeholder="Description">  {{$quote->description}}</textarea>
-            </div>
-            </div>
-          </div>
+        </div>
 
     </div>
     <style>

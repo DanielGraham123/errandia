@@ -299,8 +299,13 @@ class ProductController extends Controller
 
     public function showProductQuoteDetails($QuoteID, ProductQuoteService $ProductQuoteService)
     {
-        $data['quote'] = $ProductQuoteService->findQuoteById($QuoteID);
+
+            $quote = $ProductQuoteService->findQuoteById($QuoteID);
+        $data['quote']  = $quote;
         $data['quoteImages'] = $ProductQuoteService->getQuoteImages($QuoteID);
+        $quote->read_status = 1;
+        $quote->save();
+
         return view("product::show_quote_details")->with($data);
     }
 
