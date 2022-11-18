@@ -133,8 +133,9 @@ class ProductSearchController extends Controller
         $quoteData['phone_number'] = $user->tel;
         $quoteData['description'] = $_POST['Description'];
         $quoteData['UserID'] = $user->id;
+        $quoteData['categories'] = implode(',',$_POST['categories']);
+//        $quoteData[''] = isset($_POST["dialogCategory"]) && $_POST["dialogCategory"] ? $_POST["dialogCategory"] : 0;
 
-        $quoteData['sub_category_id'] = isset($_POST["dialogCategory"]) && $_POST["dialogCategory"] ? $_POST["dialogCategory"] : 0;
         $quoteData['created_at'] = date("Y-m-d h:i:s");
         $quoteData['updated_at'] = date("Y-m-d h:i:s");
 
@@ -144,6 +145,8 @@ class ProductSearchController extends Controller
         $data['search'] = $_POST['Title'] ?? '';
 //
         $quoteID = $ProductQuoteService->saveProductQuote($quoteData);
+        dd($quoteData);
+
 //
         // FOR ENQUIRY IMAGE
         if ($quoteID) {
@@ -267,6 +270,42 @@ class ProductSearchController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getCategories(Request $request){
+        $filter_params =[
+            'description'=>$request->title,
+            'region'=>$request->region,
+            'town'=>$request->town,
+            'street'=>$request->street,
+            'title'=>$request->title,
+
+        ];
+        $categories = DB::table('product_sub_categories')->distinct()->orderBy('name','asc')->get();
+        $search_categories = $this->ProductSearch->getSearchCategories($filter_params);
+        $options ="";
+        if (sizeof($search_categories)){
+            foreach ($categories as $category) {
+                $selected = false;
+                foreach ($search_categories as $search_category){
+                    if ($search_category->id == $category->id){
+                        $selected = true;
+                    }
+                }
+                if ($selected){
+                    $options .= "<option value='".$category->id."' selected>".$category->name."</option>";
+
+                }else{
+                    $options .= "<option value='".$category->id."'>".$category->name."</option>";
+                }
+            }
+        }else{
+            foreach ($categories as $category) {
+                $options .= "<option value='".$category->id."'>".$category->name."</option>";
+            }
+        }
+        return $options;
+
     }
 }
 

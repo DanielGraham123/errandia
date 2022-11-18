@@ -3,90 +3,142 @@
 
 @section('css')
     <link rel="stylesheet" href="{{url('css/croppie.css')}}">
+    <style>
+
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            border: 0 !important;
+            background-image: linear-gradient(#03a9f4, #03a9f4), linear-gradient(#d2d2d2, #d2d2d2);
+            background-size: 0 2px, 100% 1px;
+            background-repeat: no-repeat;
+            background-position: center bottom, center calc(100% - 1px);
+            background-color: transparent;
+            transition: background 0s ease-out;
+            float: none;
+            box-shadow: none;
+            border-radius: 0;
+            width: 100%;
+        }
+
+        .select2-container .select2-search--inline .select2-search__field {
+            height: 23px !important;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #5897fb !important;
+            border: 1px solid #5897fb !important;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: white !important;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #000 !important;
+        }
+
+        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+            color: white !important;
+        }
+
+        .select2-results__option {
+            color: #999 !important;
+        }
+    </style>
 @endsection
 @section('content')
-{{--    <div class="py-5 container">--}}
+    {{--    <div class="py-5 container">--}}
 
-            <div>
-                @if(session('message'))
-                    <div class="alert alert-success">{!! session('message') !!}</div>
-                @endif
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8">
-                        <div class="mb-2">
-                            <h4 class="helep-text-color font-weight-bold mb-2"
-                                id="customSearchModalLabel">@lang("general.search_errand_form_title")</h4>
+    <div>
+        @if(session('message'))
+            <div class="alert alert-success">{!! session('message') !!}</div>
+        @endif
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="mb-2">
+                    <h4 class="helep-text-color font-weight-bold mb-2"
+                        id="customSearchModalLabel">@lang("general.search_errand_form_title")</h4>
+                    <div class="clearfix"><br/></div>
+                    <div class="mt-2">
+                        <div class="text-left">
+                            <h5 class="font-weight-bold">@lang('general.errands_custom_view_request_images')</h5>
                             <div class="clearfix"><br/></div>
-                            <div class="mt-2">
-                                <div class="text-left">
-                                    <h5 class="font-weight-bold">@lang('general.errands_custom_view_request_images')</h5>
-                                    <div class="clearfix"><br/></div>
-                                </div>
-                                <form class="" method="POST" action="{{route('send_product_quote')}}"
-                                      enctype="multipart/form-data">
-                                    {{ csrf_field() }}
-                                    <div class="w-100">
-
-                                        <div id="product_images" class="row">
-
-                                        </div>
-                                        <div class="form-group">
-                                            <input maxlength="100" type="text" class="form-control mb-2" name="Title"
-                                                   required
-                                                   placeholder="Enter Matching Keywords for what you are looking for separated by comma eg: laptop, food, computers"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control mb-2 subCategory" name="dialogCategory"
-                                                    id="dialogCategory">
-                                                <option value="">Select Product Category</option>
-                                                @foreach($categories as $category)
-                                                    <option
-                                                        value="{{$category->id}}">{{$category->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control region" name="region" id="regionSearch"
-                                                    onchange="getTownsByRegionErrand(this)">
-                                                <option value="">Filter By Region</option>
-                                                @foreach($regions as $region)
-                                                    <option
-                                                        value="{{$region->id}}">{{$region->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control town" name="town" id="townSearch"
-                                                    onchange="getCityByTownErrand(this)">
-                                                <option value="">Filter By Town</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="form-control street" name="street" id="streetSearch">
-                                                <option value="">Filter By Street</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                    <textarea class="form-control html-editor" rows="5" name="Description" required
-                                              placeholder="Description"></textarea>
-                                        </div>
-                                        <input type="submit" class="btn helep_btn_raise text-uppercase"
-                                               value="Send Product Quote">
-                                        <input id="quoteImages" type="hidden" name="QuoteImages"
-                                               value="0"/>
-                                        <input id="quoteImageCounter" type="hidden" name="QuoteImageCounter"
-                                               value="0"/>
-                                    </div>
-                                </form>
-                            </div>
                         </div>
+                        <form class="" method="POST" action="{{route('send_product_quote')}}"
+                              enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            <div class="w-100">
+                                <div id="step-1" data-step="1">
+
+                                    <div id="product_images" class="row"></div>
+                                    <div class="form-group">
+                                        <input maxlength="100" type="text" class="form-control mb-2" name="Title"
+                                               required
+                                               value="{{ old('Title') }}"
+                                               placeholder="Enter Matching Keywords for what you are looking for separated by comma eg: laptop, food, computers"/>
+                                        <p id="title-required" class="d-none text-danger bold">Enter a Matching Keyword</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control region" name="region" id="regionSearch"
+                                                onchange="getTownsByRegionErrand(this)">
+                                            <option value="">Filter By Region</option>
+                                            @foreach($regions as $region)
+                                                <option
+                                                    value="{{$region->id}}">{{$region->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control town" name="town" id="townSearch"
+                                                onchange="getCityByTownErrand(this)">
+                                            <option value="">Filter By Town</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control street" name="street" id="streetSearch">
+                                            <option value="">Filter By Street</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                    <textarea class="form-control html-editor" rows="5" name="Description" required
+                                              placeholder="Description"> {{ old('Description') }}</textarea>
+                                    </div>
+                                </div>
+                                <div id="step-2" data-step="2" class="d-none">
+                                    <div class="form-group">
+                                        <select id="product-categories" class="form-control region" name="categories[]"
+                                                multiple="multiple">
+                                        </select>
+                                        <small class="italic">Select categories for better results</small>
+                                    </div>
+
+                                </div>
+                                <div class="mt-4">
+                                    <input id="next-btn" type="button" class="btn helep_btn_raise text-uppercase"
+                                           value="Next">
+                                    <input id="submit-btn" type="submit"
+                                           class="btn helep_btn_raise text-uppercase d-none"
+                                           value="Send Product Quote">
+                                    <input id="quoteImages" type="hidden" name="QuoteImages"
+                                           value="0"/>
+                                    <input id="quoteImageCounter" type="hidden" name="QuoteImageCounter"
+                                           value="0"/>
+                                </div>
+
+                            </div>
+                        </form>
                     </div>
-                    <div class="col-md-2"></div>
                 </div>
             </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
 
-{{--    </div>--}}
+    {{--    </div>--}}
 @endsection
 @section('js')
     <script src="{{url('js/croppie.js')}}"></script>
@@ -186,7 +238,7 @@
                 '          </div>' +
                 '        </div>' +
                 '     </div>' +
-                ' </div>' ;
+                ' </div>';
 
             $('#product_images').append(html);
 
@@ -238,6 +290,57 @@
         $(function () {
             //set link indicator
             $("#run_errand_page").addClass('active');
+            $('#product-categories').select2({
+                closeOnSelect: false,
+                placeholder: "Select Product Category"
+            });
+            $(document).on('click', '#next-btn', function (e) {
+                e.preventDefault();
+                let title = $("input[name='Title']").val() ? $("input[name='Title']").val() : ""
+                if (!title) {
+                    $("#title-required").removeClass('d-none');
+                } else {
+                    $("#title-required").addClass('d-none');
+                    $(this).attr("disabled", 'disabled')//.val("Loading categories...");
+                    let region = $("select[name='region']").val();
+                    let street = $("select[name='street']").val()
+                    let town = $("select[name='town']").val();
+                    if (!street || street == 'none') {
+                        street = "";
+                    }
+                    if (!town || town == 'none') {
+                        town = "";
+                    }
+                    if (!region || region == 'none') {
+                        region = "";
+                    }
+                    const data = {
+                        region,
+                        street,
+                        town,
+                        description: $("textarea[name='Description']").val() ? $("textarea[name='Description']").val() : "",
+                        title: $("input[name='Title']").val() ? $("input[name='Title']").val() : ""
+                    };
+                    const that = $(this);
+                    $.ajax({
+                        datatype: "json",
+                        type: 'get',
+                        data: data,
+                        url: $("#baseUrl").val() + '/productsearch/product-categories',
+                        success: function (response) {
+                            $("#product-categories").empty();
+                            $("#product-categories").html(response);
+                            $("#step-2").removeClass('d-none');
+                            that.fadeOut('slow').addClass('d-none');
+                            $("#submit-btn").removeClass('d-none').fadeIn('normal')
+                        },
+                        error: function () {
+                            console.log("Eror getting response");
+                        }
+                    });
+
+                }
+            });
         });
 
     </script>

@@ -91,6 +91,56 @@ class ProductSearch extends Model
             'shop_ids' => $shopIds ?? []
         ];
     }
+    public function getSearchCategories($searchFilters)
+    {
+
+        $query = DB::table('product_sub_categories')
+            ->join('products', 'product_sub_categories.id', '=', 'products.sub_category_id')
+            ->join('shops', 'shops.id', '=', 'products.shop_id')
+            ->join('shop_contact_info', 'shops.id', '=', 'shop_contact_info.shop_id')
+            ->join('streets', 'shop_contact_info.street_id', '=', 'streets.id')
+            ->join('towns', 'streets.town_id', '=', 'towns.id')
+            ->join('regions', 'towns.region_id', '=', 'regions.id');
+
+        $query->where('product_sub_categories.name', "!=", '');
+        $query->when(!empty($searchFilters['title']), function ($query) use ($searchFilters) {
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('products.name', 'LIKE', "%{$searchFilters['title']}%")
+                    ->orWhere('products.description', 'LIKE', "%{$searchFilters['title']}%")
+                    ->orWhere('products.search_index', 'LIKE', "%{$searchFilters['title']}%")
+                    ->orWhere('product_sub_categories.description', 'LIKE', "%{$searchFilters['title']}%")
+                    ->orWhere('product_sub_categories.name', 'LIKE', "%{$searchFilters['title']}%");
+            });
+        });
+        $query->when(!empty($searchFilters['description']), function ($query) use ($searchFilters) {
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('products.name', 'LIKE', "%{$searchFilters['description']}%")
+                    ->orWhere('products.description', 'LIKE', "%{$searchFilters['description']}%")
+                    ->orWhere('products.search_index', 'LIKE', "%{$searchFilters['description']}%")
+                    ->orWhere('product_sub_categories.description', 'LIKE', "%{$searchFilters['description']}%")
+                    ->orWhere('product_sub_categories.name', 'LIKE', "%{$searchFilters['description']}%");
+            });
+        });
+//
+        $query->when(!empty($searchFilters['region']), function ($query) use ($searchFilters) {
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('regions.id', '=', "{$searchFilters['region']}");
+            });
+        });
+        $query->when(!empty($searchFilters['town']), function ($query) use ($searchFilters) {
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('towns.id', '=', "{$searchFilters['town']}");
+            });
+        });
+        $query->when(!empty($searchFilters['street']), function ($query) use ($searchFilters) {
+            return $query->where(function ($q) use ($searchFilters) {
+                $q->where('streets.id', '=', "{$searchFilters['street']}");
+            });
+        });
+//        return $searchFilters;
+
+     return $query->select('product_sub_categories.*')->distinct()->get();
+    }
 
     public function getRelatedShops($searchFilters)
     {

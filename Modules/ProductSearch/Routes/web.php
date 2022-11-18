@@ -17,6 +17,7 @@ Route::prefix('productsearch')->group(function () {
     Route::get('/', 'ProductSearchController@index');
     Route::get('/', 'ProductSearchController@index')->name('productsearch');
     Route::get('productsort', 'ProductSearchController@productsort')->name('productsortpage');
+    Route::get('product-categories', 'ProductSearchController@getCategories');
     Route::post('productsort', 'ProductSearchController@productsort')->name('productsort');
     Route::post('/sendproductquote', 'ProductSearchController@sendProductQuote')->name('send_product_quote');
     Route::get("/errands", "ProductSearchController@showCustomProductSearchPage")->name("run_errand_page");
