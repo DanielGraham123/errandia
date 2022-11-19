@@ -180,11 +180,12 @@ class ProductSearchController extends Controller
                 $message = trans('general.product_quote_sms_msg', ['link' => $quoteLink]);
                 //send sms notification to show owners
                 SendProductQuoteBySMS::dispatchSync(array('message' => $message, 'contacts' => $data));
+
                 //send email notifications to show owners as well.
                 $shopEmailList =  $shopContacts->map(function ($store) {
                     return $store->shop_email;
                 });
-                //$shopContacts['email'];
+
                 $emailData = $shopEmailList->toArray();
                 $quoteID['image'] = collect($ProductQuoteService->getQuoteImages($quoteID->id))->first();
                 $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);

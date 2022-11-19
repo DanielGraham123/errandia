@@ -6,8 +6,10 @@
     <div style="box-shadow:0 0.5rem 1rem rgba(0, 0, 0, .175) !important; border-radius: .5em;">
         <span>@lang("general.errands_email_title_body")</span>
         <p><b>{{$quoteInfo->title}}.</b></p><br/>
+        @if($quoteInfo->image)
         <img alt="{{$quoteInfo->title}}" height="80" width="95" style="border-radius: 6px;"
              src="{{asset('storage/'.$quoteInfo->image->image_path)}}"/>
+        @endif
     </div>
     <p>  @lang("general.product_quote_email_link_msg")</p>
     @component('mail::button', ['url' =>$link])

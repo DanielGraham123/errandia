@@ -165,8 +165,8 @@ class UtilityService implements UtilityServiceInterface
         }
         return false;
     }
-    
-    
+
+
     public function indexProduct($id){
         $product = Product::find($id);
        try{
