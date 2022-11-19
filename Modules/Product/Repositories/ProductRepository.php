@@ -155,6 +155,64 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $response = array("tel" => $tels, "email" => $emails);
         return $response;
     }
+    public function geterrandShops($searchCriteria)
+    {
+
+
+        $query = DB::table('shops')
+            ->join('products', 'shops.id', '=', 'products.shop_id')
+            ->join('users', 'shops.user_id', '=', 'users.id')
+            ->join('shop_contact_info', 'shops.id', '=', 'shop_contact_info.shop_id')
+            ->join('streets', 'shop_contact_info.street_id', '=', 'streets.id')
+            ->join('towns', 'streets.town_id', '=', 'towns.id')
+            ->join('regions', 'towns.region_id', '=', 'regions.id');
+        $query->where('shops.name', "!=", '');
+//
+        $query->when(!empty($searchCriteria['region']), function ($query) use ($searchCriteria) {
+            return $query->where(function ($q) use ($searchCriteria) {
+                $q->where('regions.id', '=', "{$searchCriteria['region']}");
+            });
+        });
+        $query->when(!empty($searchCriteria['town']), function ($query) use ($searchCriteria) {
+            return $query->where(function ($q) use ($searchCriteria) {
+                $q->where('towns.id', '=', "{$searchCriteria['town']}");
+            });
+        });
+        $query->when(!empty($searchCriteria['street']), function ($query) use ($searchCriteria) {
+            return $query->where(function ($q) use ($searchCriteria) {
+                $q->where('streets.id', '=', "{$searchCriteria['street']}");
+            });
+        });
+
+
+        $query->when(!empty($searchCriteria['categories']), function ($query) use ($searchCriteria) {
+            return $query->where(function ($q) use ($searchCriteria) {
+                if ( sizeof( $searchCriteria['categories'])){
+                    foreach ($searchCriteria['categories'] as $key=>$category){
+                        if ($key == 0){
+                            $q->where('shops.category_id', '=', "{$category}");
+                        }else{
+                            $q->orWhere('shops.category_id', '=', "{$category}");
+                        }
+
+                    }
+                }
+            });
+        });
+
+
+        return $query->select(
+            'shops.*',
+            'shop_contact_info.tel as shop_tel',
+            'shop_contact_info.address as shop_address',
+            'towns.name as store_town',
+            'streets.name as store_street',
+            'regions.name as store_region',
+            'users.email as shop_email'
+        )->distinct()->get();
+
+    }
+
 
     private function findShopsActiveSubscription($shopIds)
     {

@@ -11,7 +11,7 @@ class ProductQuote extends Model
 {
 
     protected $table = "product_quote";
-    protected $fillable = ['title', 'description', 'phone_number', 'UserID', 'sub_category_id','slug'];
+    protected $fillable = ['title', 'description', 'phone_number', 'UserID', 'categories','slug'];
 
     public function product()
     {

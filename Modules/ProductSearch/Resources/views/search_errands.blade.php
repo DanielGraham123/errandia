@@ -78,7 +78,7 @@
                                     <div class="form-group">
                                         <input maxlength="100" type="text" class="form-control mb-2" name="Title"
                                                required
-                                               value="{{ old('Title') }}"
+                                               value="{{ @old('Title') }}"
                                                placeholder="Enter Matching Keywords for what you are looking for separated by comma eg: laptop, food, computers"/>
                                         <p id="title-required" class="d-none text-danger bold">Enter a Matching Keyword</p>
                                     </div>
@@ -105,7 +105,7 @@
                                     </div>
                                     <div class="form-group">
                                     <textarea class="form-control html-editor" rows="5" name="Description" required
-                                              placeholder="Description"> {{ old('Description') }}</textarea>
+                                              placeholder="Description"></textarea>
                                     </div>
                                 </div>
                                 <div id="step-2" data-step="2" class="d-none">

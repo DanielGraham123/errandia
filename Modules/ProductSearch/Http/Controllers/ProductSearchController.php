@@ -129,11 +129,12 @@ class ProductSearchController extends Controller
         if (!auth()->check()) return redirect()->route("login_page", ['redirectTo' => route('run_errand_page')])->withErrors([trans('general.errands_custom_view_request_auth_msg')]);
         $user = Auth::user();
         //$_POST['PhoneNumber']
+        $categories = $_POST['categories'];
         $quoteData['title'] = $_POST['Title'];
         $quoteData['phone_number'] = $user->tel;
         $quoteData['description'] = $_POST['Description'];
         $quoteData['UserID'] = $user->id;
-        $quoteData['categories'] = implode(',',$_POST['categories']);
+        $quoteData['categories'] = implode(',',$categories);
 //        $quoteData[''] = isset($_POST["dialogCategory"]) && $_POST["dialogCategory"] ? $_POST["dialogCategory"] : 0;
 
         $quoteData['created_at'] = date("Y-m-d h:i:s");
@@ -143,15 +144,13 @@ class ProductSearchController extends Controller
         $data['town'] = $_REQUEST['town'] ?? '';
         $data['street'] = $_REQUEST['street'] ?? '';
         $data['search'] = $_POST['Title'] ?? '';
-//
         $quoteID = $ProductQuoteService->saveProductQuote($quoteData);
-        dd($quoteData);
 
 //
         // FOR ENQUIRY IMAGE
         if ($quoteID) {
-            if ($request->file('image') && count($request->image) > 0) {
 
+            if ($request->file('image') && count($request->image) > 0) {
                 foreach ($request->image  as $image) {
                     if ($image){
                         $imagePath = $imageUploadService->uploadFile(['image'=>$image], 'image', "productquote");
@@ -166,13 +165,15 @@ class ProductSearchController extends Controller
             $regionFilter = $_POST['region'] ?? 0;
             $townFilter = $_POST['town'] ?? 0;
             $streetFilter = $_POST['street'] ?? 0;
-            $searchCriteria = array('subCategory' => $quoteData['sub_category_id'], 'region' => $regionFilter, 'town' => $townFilter, 'street' => $streetFilter);
+            $searchCriteria = array('categories' => $categories, 'region' => $regionFilter, 'town' => $townFilter, 'street' => $streetFilter);
+
             $shopContacts = $productService->getShopsBySubCategory($searchCriteria);
-            $shopsTels = $shopContacts['tel'];
-            if (!$shopsTels->isEmpty()) {
+//            $shopsTels = $shopContacts['tel'];
+            if (sizeof($shopContacts)) {
                 //send sms to all contacts
-                $shopContactsList = $shopsTels->map(function ($tel) {
-                    return "237" . $tel;
+                $shopContactsList = $shopContacts->map(function ($store) {
+                    $store->shop_tel = "237" . $store->shop_tel;
+                    return $store->shop_tel;
                 });
                 $data = $shopContactsList->toArray();
                 $quoteLink = route('showCustomQuotePage', ['url' => $quoteUrl]);
@@ -180,18 +181,20 @@ class ProductSearchController extends Controller
                 //send sms notification to show owners
                 SendProductQuoteBySMS::dispatchSync(array('message' => $message, 'contacts' => $data));
                 //send email notifications to show owners as well.
-                $shopEmailList = $shopContacts['email'];
+                $shopEmailList =  $shopContacts->map(function ($store) {
+                    return $store->shop_email;
+                });
+                //$shopContacts['email'];
                 $emailData = $shopEmailList->toArray();
                 $quoteID['image'] = collect($ProductQuoteService->getQuoteImages($quoteID->id))->first();
                 $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);
                 SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
             } else {
 //                session()->flash('message', trans('general.errands_not_sent_msg'));
-                return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
+                return redirect()->back()->withErrors(['No shop with the product you are looking for']);
             }
 
         } else {
-//            session()->flash('message', trans('general.errands_not_sent_msg'));
             return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
         }
 //        session()->flash('message', trans('Product Quote successfully sent !'));

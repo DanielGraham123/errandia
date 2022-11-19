@@ -80,6 +80,7 @@ class ProductService implements ProductServiceInterface
 
     public function getShopsBySubCategory($subCategoryId)
     {
-        return $this->productRepository->getShopsBySubCategory($subCategoryId);
+//        return $this->productRepository->getShopsBySubCategory($subCategoryId);//
+        return $this->productRepository->geterrandShops($subCategoryId);
     }
 }
