@@ -9,5 +9,5 @@ class ShopQuote extends Model
 
     protected $table = "shop_quotes";
 
-    protected $fillable = ['shop_id', 'quote_id'];
+    protected $fillable = ['shop_id', 'product_quote_id'];
 }

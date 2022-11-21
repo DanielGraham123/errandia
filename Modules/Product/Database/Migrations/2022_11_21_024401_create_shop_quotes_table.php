@@ -15,8 +15,7 @@ class CreateShopQuotesTable extends Migration
     {
         Schema::create('shop_quotes', function (Blueprint $table) {
             $table->id();
-            $table->string('shop_id');
-            $table->string('product_quote_id');
+
             $table->timestamps();
         });
     }

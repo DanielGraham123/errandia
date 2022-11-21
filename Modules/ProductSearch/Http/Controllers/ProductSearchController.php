@@ -178,7 +178,7 @@ class ProductSearchController extends Controller
                     $shopEmailList[] = "237" . $shopContact->shop_email;
                     $shop_quote = new ShopQuote();
                     $shop_quote['shop_id']=$shopContact->id;
-                    $shop_quote['quote_id']=$quoteID->id;
+                    $shop_quote['product_quote_id']=$quoteID->id;
                     $shop_quote->save();
 
 
