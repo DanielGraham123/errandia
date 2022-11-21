@@ -12,7 +12,7 @@
 */
 
 Route::prefix('/ui')->group(function () {
-    Route::get('/home', 'GeneralModuleController@showAppHomePage')->name('general_home');
+    Route::get('/', 'GeneralModuleController@showAppHomePage')->name('general_home');
     Route::get('product/show/{id}', 'GeneralModuleController@showProductDetailsPage')->name('general_product_details');
     Route::get('shop/show/{id}', 'GeneralModuleController@showShopProfilePage')->name('show_shop_page');
     Route::get('category/collection/{category}', 'GeneralModuleController@showSubCategoryProducts')->name('show_collection_products');

@@ -168,7 +168,6 @@ class ProductSearchController extends Controller
             $searchCriteria = array('categories' => $categories, 'region' => $regionFilter, 'town' => $townFilter, 'street' => $streetFilter);
 
             $shopContacts = $productService->getShopsBySubCategory($searchCriteria);
-//            $shopsTels = $shopContacts['tel'];
             if (sizeof($shopContacts)) {
                 //send sms to all contacts
                 $shopContactsList = $shopContacts->map(function ($store) {
@@ -190,6 +189,10 @@ class ProductSearchController extends Controller
                 $quoteID['image'] = collect($ProductQuoteService->getQuoteImages($quoteID->id))->first();
                 $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);
                 SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
+                //        session()->flash('message', trans('Product Quote successfully sent !'));
+
+                return redirect()->route('run_errand_page', $data)->with(['success' => trans('Product Quote successfully sent !')]);
+
             } else {
 //                session()->flash('message', trans('general.errands_not_sent_msg'));
                 return redirect()->back()->withErrors(['No shop with the product you are looking for']);
@@ -198,8 +201,6 @@ class ProductSearchController extends Controller
         } else {
             return redirect()->back()->withErrors([trans('general.errands_not_sent_msg')]);
         }
-//        session()->flash('message', trans('Product Quote successfully sent !'));
-        return redirect()->route('productsearch', $data)->with(['success' => trans('Product Quote successfully sent !')]);
     }
 
     public function showCustomQuotePage($quoteUrl, ProductQuoteService $productQuoteService)

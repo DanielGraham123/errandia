@@ -64,22 +64,21 @@
                         id="customSearchModalLabel">@lang("general.search_errand_form_title")</h4>
                     <div class="clearfix"><br/></div>
                     <div class="mt-2">
-                        <div class="text-left">
-                            <h5 class="font-weight-bold">@lang('general.errands_custom_view_request_images')</h5>
-                            <div class="clearfix"><br/></div>
-                        </div>
+
                         <form class="" method="POST" action="{{route('send_product_quote')}}"
                               enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="w-100">
                                 <div id="step-1" data-step="1">
-
-                                    <div id="product_images" class="row"></div>
                                     <div class="form-group">
-                                        <input maxlength="100" type="text" class="form-control mb-2" name="Title"
+                                        <input id="product-title" maxlength="30" type="text" class="form-control mb-0" name="Title"
                                                required
                                                value="{{ @old('Title') }}"
-                                               placeholder="Enter Matching Keywords for what you are looking for separated by comma eg: laptop, food, computers"/>
+                                               placeholder="Enter product name eg: laptop"/>
+                                        <span class="d-flex align-items-center justify-content-end">
+                                            <span id="entered-characters">0</span>
+                                            <span>/30</span>
+                                        </span>
                                         <p id="title-required" class="d-none text-danger bold">Enter a Matching Keyword</p>
                                     </div>
                                     <div class="form-group">
@@ -106,12 +105,19 @@
                                     <div class="form-group">
                                     <textarea class="form-control html-editor" rows="5" name="Description" required
                                               placeholder="Description"></textarea>
+
+                                    </div>
+                                    <div class="text-left">
+                                        <h5 class="font-weight-bold">@lang('general.errands_custom_view_request_images')</h5>
+                                        <div class="clearfix"><br/></div>
+                                        <div id="product_images" class="row"></div>
+
                                     </div>
                                 </div>
                                 <div id="step-2" data-step="2" class="d-none">
                                     <div class="form-group">
                                         <select id="product-categories" class="form-control region" name="categories[]"
-                                                multiple="multiple">
+                                                multiple="multiple" required>
                                         </select>
                                         <small class="italic">Select categories for better results</small>
                                     </div>
@@ -164,8 +170,8 @@
                     $(".subCategory").html(res.data);
                     $("#sub_category option:first").html("Select Shop Sub Category");
                     $(".subCategory option:first").html("Select Shop Sub Category");
-                    $("#sub_category option:first").val("none");
-                    $(".subCategory option:first").val("none");
+                    $("#sub_category option:first").val("");
+                    $(".subCategory option:first").val("");
                 },
                 error: function () {
                     console.log("Eror getting response");
@@ -184,7 +190,7 @@
                     $("#streetSearch").empty();
                     $("#streetSearch").append(response);
                     $("#streetSearch option:first").html("Filter By Street");
-                    $("#streetSearch option:first").val("none");
+                    $("#streetSearch option:first").val("");
                 },
                 error: function (error) {
                     $("#streetSearch").fadeOut(500);
@@ -207,13 +213,14 @@
                     let res = JSON.parse(response);
                     $("#townSearch").html(res.data);
                     $("#townSearch option:first").html("Filter By Town");
-                    $("#townSearch option:first").val("none");
+                    $("#townSearch option:first").val("");
                 },
                 error: function () {
                     console.log("Eror getting response");
                 }
             });
         }
+
     </script>
     <script type="text/javascript">
         let i = 0;
@@ -293,6 +300,16 @@
             $('#product-categories').select2({
                 closeOnSelect: false,
                 placeholder: "Select Product Category"
+            });
+            $(document).on('keyup','#product-title',function (){
+                let fieldValue = $(this).val();
+                let trimmedValue = fieldValue ? fieldValue.toString().replace(/^\s+|\s+$/gm, '').replace(/(\r\n|\n|\r)/gm, "") : undefined ;
+                let charLen = 0;
+                if(trimmedValue){
+                    charLen =trimmedValue.length;
+                }
+                $("#entered-characters").html(charLen);
+
             });
             $(document).on('click', '#next-btn', function (e) {
                 e.preventDefault();

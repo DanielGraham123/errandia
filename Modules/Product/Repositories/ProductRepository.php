@@ -158,7 +158,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function geterrandShops($searchCriteria)
     {
 
-
         $query = DB::table('shops')
             ->join('products', 'shops.id', '=', 'products.shop_id')
             ->join('users', 'shops.user_id', '=', 'users.id')

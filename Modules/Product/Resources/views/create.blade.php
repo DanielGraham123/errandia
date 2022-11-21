@@ -268,10 +268,8 @@
                 '                  class="img-fluid d-block h-100 w-100" id="preview-' + i + '">' +
                 '        </div>' +
                 '        <div id="button-' + i + '" class="delete">' +
-                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
-                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
+                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center" style="bottom: 0">'+
                 '               <label for="photo-' + i + '"  class="align-items-center justify-content-center d-flex flex-column h-100 w-100 cursor-pointer" >  <i class="mdi mdi-plus mdi-18px"></i> <span>Add Image</span></label>' +
-                '          </div>' +
                 '          </div>' +
                 '        </div>' +
                 '     </div>' +

@@ -114,7 +114,7 @@ class StreetController extends Controller
 
     public function getStreet(Request $req){
         $streetByTown = Street::getStreetByTownId($req['townId']);
-        $options = "<option value='none'>Filter By Street</option>";
+        $options = "<option value=''>Filter By Street</option>";
         foreach ($streetByTown as $street) {
             $options .= "<option value='".$street->id."'>".$street->name."</option>";
         }
