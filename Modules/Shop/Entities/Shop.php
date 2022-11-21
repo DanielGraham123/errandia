@@ -2,6 +2,7 @@
 
 namespace Modules\Shop\Entities;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Product\Entities\Product;
 use Modules\Product\Entities\ProductQuote;
@@ -10,6 +11,7 @@ use Modules\User\Entities\User;
 
 class Shop extends Model
 {
+    use HasFactory;
 
     protected $fillable = ['name', 'slug', 'status', 'user_id', 'description', 'category_id', 'image_path'];
 

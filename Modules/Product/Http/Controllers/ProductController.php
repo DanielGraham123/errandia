@@ -14,6 +14,7 @@ use Modules\Product\Services\ProductEnquiryService;
 use Modules\Product\Services\ProductReplyService;
 use Modules\ProductCategory\Entities\SubCategory;
 use Modules\ProductCategory\Services\CategoryService;
+use Modules\Shop\Entities\Shop;
 use Modules\Shop\Services\ShopService;
 use Modules\User\Services\Interfaces\UserServiceInterface;
 use Modules\Utility\Services\ImageUploadService;
@@ -292,8 +293,10 @@ class ProductController extends Controller
     // FOR PRODUCT QUOTES
     public function showProductQuotes(ProductQuoteService $ProductQuoteService)
     {
-        $shop_id = $this->utilityService->getCurrentUserShop()->id;
-//        dd($shop_id);
+        $shop_id =  $this->utilityService->getCurrentUserShop()->id;
+
+        $shop = Shop::find($shop_id);
+        dd($shop->quotes);
         $data['quotes'] = $ProductQuoteService->getAllShopProductQuotes($shop_id);
         return view("product::show_quotes")->with($data);
     }
