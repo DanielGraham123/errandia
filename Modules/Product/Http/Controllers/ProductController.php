@@ -296,8 +296,8 @@ class ProductController extends Controller
         $shop_id =  $this->utilityService->getCurrentUserShop()->id;
 
         $shop = Shop::find($shop_id);
-        dd($shop->quotes);
-        $data['quotes'] = $ProductQuoteService->getAllShopProductQuotes($shop_id);
+        $data['quotes'] = $shop->quotes()->paginate(20);
+        $ProductQuoteService->getAllShopProductQuotes($shop_id);
         return view("product::show_quotes")->with($data);
     }
 

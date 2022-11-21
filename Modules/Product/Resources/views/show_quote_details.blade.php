@@ -13,9 +13,9 @@
         <div class="row">
             @foreach ($quoteImages as $image)
                 <div class="col-6 col-sm-3  mb-2">
-                    <div for="photo-1" class="d-flex border radius-15  w-100 select-photo">
-                        <div class="rounded-lg"><img id="preview-1" height="100%" width="100%"
-                                                     src="{{asset('storage/'.$image->image_path)}}"></div>
+                    <div class="rounded-lg">
+                        <img id="preview-1" style="height: 200px" width="100%"
+                             src="{{asset('storage/'.$image->image_path)}}">
                     </div>
                 </div>
             @endforeach

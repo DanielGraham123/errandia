@@ -9,28 +9,6 @@
             <div class="d-flex flex-wrap"></div>
             <div class="d-flex flex-wrap"></div>
         </div>
-        <table id="example" class="table table-striped table-bordered nowrap d-none" style="width:100%">
-            <tr>
-                <th>Title</th>
-                <th>Phone Number</th>
-                <th>Description</th>
-                <th>Action</th>
-                <th></th>
-            </tr>
-            @foreach ($quotes as $quote)
-                <tr>
-                    <td>{{$quote->title}}</td>
-                    <td>{{$quote->phone_number}}</td>
-                    <td>{{$quote->description}}</td>
-                    <td><a class="btn btn-info" href="{{url('products/quote-details/'.$quote->id)}}">Details</a></td>
-                    <td>
-                        <a id="phone" class="btn helep_btn_raise"
-                           href="tel:{{$quote->phone_number}}">Contact Requester
-                        </a>
-                    </td>
-                </tr>
-            @endforeach
-        </table>
         <div class=" row">
             <div class="col-md-12">
                 <!-- Nav tabs -->
@@ -54,8 +32,15 @@
                 <div class="tab-content py-4">
                     {{--             description           --}}
                     <div role="tabpanel" class="tab-pane fade active show" id="description">
-                        <div class="position-relative">
+                        <div class="position-relative" style="overflow-x: scroll; padding: 10px 0">
                             <table class="w-100 quote-table">
+                                <thead>
+                                    <th>Product name</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                <th>Action</th>
+
+                                </thead>
                                 <tbody>
                                 @foreach ($quotes as $quote)
                                     <tr class="@if($quote->read_status) read @else unread @endif"
@@ -71,6 +56,7 @@
                                         <td class="quote-time" role="gridcell" tabindex="-1">
                                             <div>{{ \Carbon\Carbon::parse($quote->created_at)->toFormattedDateString() }}</div>
                                         </td>
+                                        <td><a href="{{url('products/quote-details/'.$quote->id)}}"><i class="fa fa-eye"></i></a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -132,11 +118,15 @@
             /*border-bottom: 1px rgba(100, 121, 143, 0.122) solid;*/
             border-top: 1px rgba(100, 121, 143, 0.122) solid;
             height: 50px;
-            cursor: pointer;
             padding: 10px 5px;
         }
+        table.quote-table tbody tr{
+            cursor: pointer;
+        }
 
-        table.quote-table tr:hover {
+
+
+        table.quote-table tbody tr:hover {
             box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
             z-index: 2;
         }
@@ -154,17 +144,20 @@
             color: #202124;
         }
 
-        table.quote-table td {
+        table.quote-table td ,table.quote-table th{
             padding: 0 10px;
         }
-
-        .quote-table .quote-title {
-            width: 25%;
+        table.quote-table thead{
+            background: #000;
         }
 
-        .quote-table .quote-time {
-            width: 12%;
-        }
+        /*.quote-table .quote-title {*/
+        /*    width: 25%;*/
+        /*}*/
+
+        /*.quote-table .quote-time {*/
+        /*    width: 12%;*/
+        /*}*/
 
         /*.xY {*/
         /*    border-bottom: 1px rgba(100, 121, 143, 0.122) solid;*/
@@ -224,7 +217,7 @@
         $(function () {
             //set link indicator
             $("#vendor_sidebar_manage_product_quote").addClass('active');
-            $(document).on('click', 'table.quote-table tr', function () {
+            $(document).on('click', 'table.quote-table tbody tr', function () {
                 console.log("i was cliked")
                 let route = $(this).attr("data-url");
                 window.location.href = route;

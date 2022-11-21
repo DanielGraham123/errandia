@@ -179,9 +179,7 @@ class ProductSearchController extends Controller
                     $shop_quote = new ShopQuote();
                     $shop_quote['shop_id']=$shopContact->id;
                     $shop_quote['product_quote_id']=$quoteID->id;
-
                     $shop_quote->save();
-
                 }
                 $data = $shopContactsList;//->toArray();
 
