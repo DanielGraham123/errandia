@@ -175,30 +175,23 @@ class ProductSearchController extends Controller
                 $shopEmailList = [];
                 foreach ($shopContacts as $shopContact){
                     $shopContactsList[] = "237" . $shopContact->shop_tel;
-                    $shopEmailList[] = "237" . $shopContact->shop_email;
+                    $shopEmailList[] = $shopContact->shop_email;
                     $shop_quote = new ShopQuote();
                     $shop_quote['shop_id']=$shopContact->id;
                     $shop_quote['product_quote_id']=$quoteID->id;
+
                     $shop_quote->save();
 
-
                 }
-//                $data = $shopContacts->map(function ($store) {
-//                    $store->shop_tel = "237" . $store->shop_tel;
-//                    return $store->shop_tel;
-//                });
                 $data = $shopContactsList;//->toArray();
+
                 $quoteLink = route('showCustomQuotePage', ['url' => $quoteUrl]);
                 $message = trans('general.product_quote_sms_msg', ['link' => $quoteLink]);
                 //send sms notification to show owners
                 SendProductQuoteBySMS::dispatchSync(array('message' => $message, 'contacts' => $data));
 
-                //send email notifications to show owners as well.
-//                $shopEmailList =  $shopContacts->map(function ($store) {
-//                    return $store->shop_email;
-//                });
-
                 $emailData = $shopEmailList;//->toArray();
+
                 $quoteID['image'] = collect($ProductQuoteService->getQuoteImages($quoteID->id))->first();
                 $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);
                 SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
