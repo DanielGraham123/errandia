@@ -4,6 +4,7 @@ namespace Modules\Shop\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Product\Entities\Product;
+use Modules\Product\Entities\ProductQuote;
 use Modules\ProductCategory\Entities\SubCategory;
 use Modules\User\Entities\User;
 
@@ -45,5 +46,9 @@ class Shop extends Model
     public function subscribers()
     {
         return $this->hasMany(ShopSubscriber::class);
+    }
+    public function quotes()
+    {
+        return $this->belongsToMany(ProductQuote::class ,'shop_quotes');
     }
 }

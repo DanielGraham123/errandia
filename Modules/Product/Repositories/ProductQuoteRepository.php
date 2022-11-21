@@ -96,8 +96,9 @@ class ProductQuoteRepository
 
     public function getAllShopProductQuotes($shopId)
     {
+//'LIKE', "%{$searchFilters['search']}%",
         $query = DB::table('product_quote')
-            ->join('shops', 'product_quote.sub_category_id', '=', 'shops.category_id')
+            ->join('shops', 'product_quote.categories', 'LIKE', 'shops.category_id')
             ->select('product_quote.*','product_quote.id as id', 'title', 'phone_number', 'product_quote.description as description')
             ->where('shops.id', $shopId)
             ->paginate(20);

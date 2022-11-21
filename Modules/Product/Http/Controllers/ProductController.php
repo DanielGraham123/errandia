@@ -293,6 +293,7 @@ class ProductController extends Controller
     public function showProductQuotes(ProductQuoteService $ProductQuoteService)
     {
         $shop_id = $this->utilityService->getCurrentUserShop()->id;
+//        dd($shop_id);
         $data['quotes'] = $ProductQuoteService->getAllShopProductQuotes($shop_id);
         return view("product::show_quotes")->with($data);
     }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Product\Services\ProductService;
 use Modules\ProductCategory\Services\CategoryService;
+use Modules\Shop\Entities\ShopQuote;
 use Modules\Utility\Services\UtilityService;
 use Modules\ProductSearch\Entities\ProductSearch;
 use Modules\ProductCategory\Entities\SubCategory;
@@ -166,26 +167,38 @@ class ProductSearchController extends Controller
             $townFilter = $_POST['town'] ?? 0;
             $streetFilter = $_POST['street'] ?? 0;
             $searchCriteria = array('categories' => $categories, 'region' => $regionFilter, 'town' => $townFilter, 'street' => $streetFilter);
-
             $shopContacts = $productService->getShopsBySubCategory($searchCriteria);
+
             if (sizeof($shopContacts)) {
                 //send sms to all contacts
-                $shopContactsList = $shopContacts->map(function ($store) {
-                    $store->shop_tel = "237" . $store->shop_tel;
-                    return $store->shop_tel;
-                });
-                $data = $shopContactsList->toArray();
+                $shopContactsList = [];
+                $shopEmailList = [];
+                foreach ($shopContacts as $shopContact){
+                    $shopContactsList[] = "237" . $shopContact->shop_tel;
+                    $shopEmailList[] = "237" . $shopContact->shop_email;
+                    $shop_quote = new ShopQuote();
+                    $shop_quote['shop_id']=$shopContact->id;
+                    $shop_quote['quote_id']=$quoteID->id;
+                    $shop_quote->save();
+
+
+                }
+//                $data = $shopContacts->map(function ($store) {
+//                    $store->shop_tel = "237" . $store->shop_tel;
+//                    return $store->shop_tel;
+//                });
+                $data = $shopContactsList;//->toArray();
                 $quoteLink = route('showCustomQuotePage', ['url' => $quoteUrl]);
                 $message = trans('general.product_quote_sms_msg', ['link' => $quoteLink]);
                 //send sms notification to show owners
                 SendProductQuoteBySMS::dispatchSync(array('message' => $message, 'contacts' => $data));
 
                 //send email notifications to show owners as well.
-                $shopEmailList =  $shopContacts->map(function ($store) {
-                    return $store->shop_email;
-                });
+//                $shopEmailList =  $shopContacts->map(function ($store) {
+//                    return $store->shop_email;
+//                });
 
-                $emailData = $shopEmailList->toArray();
+                $emailData = $shopEmailList;//->toArray();
                 $quoteID['image'] = collect($ProductQuoteService->getQuoteImages($quoteID->id))->first();
                 $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);
                 SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
