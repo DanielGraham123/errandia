@@ -23,12 +23,12 @@
                     <div class="card-body withripple zoom-img">
                         <a href="{{route($product_route_name,['id'=>$product->slug])}}">
                             @if(!isMobile())
-                            <img height="130px" class="card-img-top" src="{{asset('storage/'.$product->featured_image_path)}}"/>
+                            <img style=" min-height: 238px" class="card-img-top" src="{{asset('storage/'.$product->featured_image_path)}}"/>
                             @else
                               <img style="width:290px; max-width:290px; height:261px; max-height:261px" class="img-fluid center-block"
-                                 src="{{asset('storage/'.$product->featured_image_path)}}"/>   
+                                 src="{{asset('storage/'.$product->featured_image_path)}}"/>
                             @endif
-                                 
+
                         </a>
                         <div class="card-title mt-1"><h5
                                 class="text-black font-weight-bolder text-center">{{$name}}</h5></div>

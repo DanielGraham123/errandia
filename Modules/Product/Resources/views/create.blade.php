@@ -69,12 +69,10 @@
                 <div class="form-group mb-3">
                                 <label>{{trans('vendor.add_product_description_label')}}</label>
                     <br/>
-                    <textarea style="height: 300px;font-size: 20px" name="description" cols="10"
-                              class="html-editor form-control"
-                              placeholder="{{trans('vendor.add_product_description_label')}}">
-                                                        {{@old('description')}}
 
-                    </textarea>
+{{--                    @include('helep.general.components.product_details')--}}
+                    @include('helep.general.components.richtext_editor',['textareaName'=>'description'])
+
                 </div>
 
                 <h6 class="text-black px-4 my-3">@lang('vendor.add_product_image_title')</h6>
@@ -90,17 +88,14 @@
         </form>
     </div>
 @endsection
-@section('css')
-    <link href="{{asset('summernote/dist/summernote.css')}}" rel="stylesheet">
-@stop
+
 @section('js')
-    <script src="{!!asset("summernote/dist/summernote-updated.min.js")!!}"></script>
+
     <script>
         $(function () {
             // previewProduct('','');
             //set link indicator
             $("#vendor_manage_product").addClass('active');
-            loadHtmlEditor();
         });
 
         function getSubCategoriesByCategory(obj) {
@@ -122,37 +117,6 @@
                     console.log("Eror getting response");
                 }
             });
-        }
-
-        function loadHtmlEditor() {
-            if ($('.html-editor')[0]) {
-                $('.html-editor').summernote({
-                    height: 300
-                });
-            }
-            if ($('.html-editor-click')[0]) {
-                //Edit
-                $('body').on('click', '.hec-button', function () {
-                    $('.html-editor-click').summernote({
-                        focus: true
-                    });
-                    $('.hec-save').show();
-                })
-                //Save
-                $('body').on('click', '.hec-save', function () {
-                    $('.html-editor-click').code();
-                    $('.html-editor-click').destroy();
-                    $('.hec-save').hide();
-                    notify('Content Saved Successfully!', 'success');
-                });
-            }
-            //Air Mode
-            if ($('.html-editor-airmod')[0]) {
-                $('.html-editor-airmod').summernote({
-                    airMode: true
-                });
-            }
-
         }
     </script>
 
@@ -235,7 +199,7 @@
                         reader.onloadend = function () {
                             var base64data = reader.result;
                             button = '<div class="d-flex flex-nowrap align-items-center position-absolute w-100" style="bottom: 0">'+
-                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0 mb-0">  Change</label>' +
+                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0 mb-0">Change</label>' +
                                 '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10  flex-grow-1 radius-0 mb-0"> Remove</label>'
                             '</div>';
                             $('#button-'+j).html(button).addClass('img-preview-buttons')

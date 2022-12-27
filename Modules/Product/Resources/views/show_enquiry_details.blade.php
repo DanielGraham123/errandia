@@ -216,8 +216,9 @@ width:80%;
                         	@endforeach
                               <form class="" method="POST" action="{{route('enquirypostreply')}}">
                                 {{ csrf_field() }}
-                                <textarea class="form-control html-editor" name="reply" required placeholder="Reply"></textarea>
-                                 <input type="submit" class="btn helep_btn_raise text-uppercase" value="Send Reply">
+                                  @include('helep.general.components.richtext_editor',['textareaName'=>'reply'])
+
+                                  <input type="submit" class="btn helep_btn_raise text-uppercase" value="Send Reply">
                                  <input type="hidden" name="enquiry_id" value="{{$enquiry->id}}" />
                             	<input type="hidden" name="slug" value="" />
                                 </form>
@@ -242,12 +243,8 @@ width:80%;
     </style>
 @endsection
 
-@section('css')
-<link href="{{asset('summernote/dist/summernote.css')}}" rel="stylesheet">
-@stop
 
 @section('js')
-<script src="{!!asset("summernote/dist/summernote-updated.min.js")!!}"></script>
     <script>
 	var acc = document.getElementsByClassName("enquiryaccordion");
 var i;
@@ -271,36 +268,6 @@ for (i = 0; i < acc.length; i++) {
 
     $(function () {
 	$("#vendor_manage_product").addClass('active');
-	loadHtmlEditor();
 });
-function loadHtmlEditor() {
-	if ($('.html-editor')[0]) {
-		$('.html-editor').summernote({
-			height: 300
-		});
-	}
-	if ($('.html-editor-click')[0]) {
-		//Edit
-		$('body').on('click', '.hec-button', function () {
-			$('.html-editor-click').summernote({
-				focus: true
-			});
-			$('.hec-save').show();
-		})
-		//Save
-		$('body').on('click', '.hec-save', function () {
-			$('.html-editor-click').code();
-			$('.html-editor-click').destroy();
-			$('.hec-save').hide();
-			notify('Content Saved Successfully!', 'success');
-		});
-	}
-	//Air Mode
-	if ($('.html-editor-airmod')[0]) {
-		$('.html-editor-airmod').summernote({
-			airMode: true
-		});
-	}
-}
 </script>
 @endsection

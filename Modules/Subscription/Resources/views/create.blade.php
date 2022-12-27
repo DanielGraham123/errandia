@@ -27,18 +27,20 @@
                         </div>
                         <div class="col-md-4"></div>
                     </div>
-                    
+
                     <h5 class="text-black-50 font-weight-bold  mb-2 p-2">Description</h5>
                     <div class="row">
                         <div class="col-md-8 ">
                             <div class="input-group mb-3">
-                                <textarea class="form-control html-editor" name="description" required placeholder="Description"></textarea>
+                                @include('helep.general.components.richtext_editor',['textareaName'=>'description'])
+
+                                {{--                                <textarea class="form-control html-editor" name="description" required placeholder="Description"></textarea>--}}
                             </div>
                         </div>
                         <div class="col-md-4"></div>
                     </div>
-                    
-                    <h5 class="text-black-50 font-weight-bold  mb-2 p-2">Amount </h5>
+
+                    <h5 class="text-black-50 font-weight-bold  mb-2 p-2">Amount</h5>
                     <div class="row">
                         <div class="col-md-8 ">
                             <div class="input-group border-with-radius mb-3">
@@ -48,7 +50,7 @@
                         </div>
                         <div class="col-md-4"></div>
                     </div>
-                    
+
                     <h5 class="text-black-50 font-weight-bold  mb-2 p-2">Duration (Days)</h5>
                     <div class="row">
                         <div class="col-md-8 ">
@@ -59,7 +61,7 @@
                         </div>
                         <div class="col-md-4"></div>
                     </div>
-                    
+
                 </div>
                 <div class="align-self-start d-flex-column mb-2">
                     <button class="btn helep_btn_raise px-5 shadow w-100">{{trans('admin.add_subscriptions_btn')}}</button>
@@ -67,47 +69,4 @@
             </form>
         </div>
     </div>
-@endsection
-@section('css')
-<link href="{{asset('summernote/dist/summernote.css')}}" rel="stylesheet">
-@stop
-@section('js')
-<script src="{!!asset("summernote/dist/summernote-updated.min.js")!!}"></script>
-    <script>
-        $(function () {
-            //set link indicator
-            $("#admin_manage_subscription").addClass('active');
-			loadHtmlEditor();
-        });
-		
-		function loadHtmlEditor() {
-			if ($('.html-editor')[0]) {
-				$('.html-editor').summernote({
-					height: 300
-				});
-			}
-			if ($('.html-editor-click')[0]) {
-				//Edit
-				$('body').on('click', '.hec-button', function () {
-					$('.html-editor-click').summernote({
-						focus: true
-					});
-					$('.hec-save').show();
-				})
-				//Save
-				$('body').on('click', '.hec-save', function () {
-					$('.html-editor-click').code();
-					$('.html-editor-click').destroy();
-					$('.hec-save').hide();
-					notify('Content Saved Successfully!', 'success');
-				});
-			}
-			//Air Mode
-			if ($('.html-editor-airmod')[0]) {
-				$('.html-editor-airmod').summernote({
-					airMode: true
-				});
-			}
-		}
-    </script>
 @endsection

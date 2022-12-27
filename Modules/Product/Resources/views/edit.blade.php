@@ -70,11 +70,7 @@
                 </div>
 
                 <div class="form-group mb-3">
-                                <textarea style="height: 300px;font-size: 20px" name="description" cols="10"
-                                          class="html-editor form-control"
-                                          placeholder="{{trans('vendor.add_product_description_label')}}">
-                                    {!! $product->description !!}
-                                </textarea>
+                    @include('helep.general.components.richtext_editor',['textareaName'=>'description','serverData'=>$product->description])
                 </div>
 
                 <h6 class="text-black px-4 my-3">@lang('vendor.add_product_image_title')</h6>
@@ -82,7 +78,7 @@
                     <div class="col-6 col-sm-3  mb-2">
                         <div for="photo-1" class="d-flex border radius-15  w-100 select-photo">
                             <div class="rounded-lg" style="flex-grow: 1;"><img id="preview-1" height="100%" width="100%"
-                                                         src="{{asset('storage/'.$product->featured_image_path)}}">
+                                                         src="{{asset('storage/'.$product->featured_image_path)}}" class="preview">
                             </div>
                             <label for="photo-1"
                                    class="h-100 d-flex-column align-items-center justify-content-center text-center cursor-pointer font-20">
@@ -99,12 +95,12 @@
                     @foreach($product->images->sortDesc() as $image)
                         <div class="col-6 col-sm-3  mb-2">
                             <div for="photo-{{$counter}}" class="d-flex border radius-15  w-100 select-photo">
-                                <div class="rounded-lg">
+                                <div class="rounded-lg" style="flex-grow: 1;">
                                     <img id="preview-{{$counter}}" height="100%" width="100%"
-                                         src="{{asset('storage/'.$image->image_path)}}">
+                                         src="{{asset('storage/'.$image->image_path)}}" class="preview">
                                 </div>
                                 <label for="photo-{{$counter}}"
-                                       class="w-100 h-100 d-flex-column align-items-center justify-content-center text-center  font-20">
+                                       class="w-20 h-100 d-flex-column align-items-center justify-content-center text-center  font-20">
                                     <span class="text-center font-20">+</span>
                                 </label>
                                 <input onchange="previewProduct(this,'preview-{{$counter}}')" name="product-{{$counter}}"
@@ -120,9 +116,6 @@
 
                     <input id="counter" type="hidden" name="counter" value="0"/>
                 </div>
-{{--                <div class="row">--}}
-
-{{--                </div>--}}
             </div>
             <div class="align-self-end d-flex-column">
                 <button class="btn helep_btn_raise mb-5 px-5  w-100">@lang('vendor.update_product_btn_label')</button>
@@ -130,13 +123,10 @@
         </form>
     </div>
 @endsection
-@section('css')
-    <link href="{{asset('summernote/dist/summernote.css')}}" rel="stylesheet">
-@stop
+
 @section('js')
     <script src="{{url('js/croppie.js')}}"></script>
     <script src="{{url('js/moment.js')}}"></script>
-    <script src="{!!asset("summernote/dist/summernote-updated.min.js")!!}"></script>
     <script>
         $(function () {
             //set link indicator
@@ -181,43 +171,10 @@
                 }
             });
         }
-
-        function loadHtmlEditor() {
-            if ($('.html-editor')[0]) {
-                $('.html-editor').summernote({
-                    height: 300
-                });
-            }
-            if ($('.html-editor-click')[0]) {
-                //Edit
-                $('body').on('click', '.hec-button', function () {
-                    $('.html-editor-click').summernote({
-                        focus: true
-                    });
-                    $('.hec-save').show();
-                })
-                //Save
-                $('body').on('click', '.hec-save', function () {
-                    $('.html-editor-click').code();
-                    $('.html-editor-click').destroy();
-                    $('.hec-save').hide();
-                    notify('Content Saved Successfully!', 'success');
-                });
-            }
-            //Air Mode
-            if ($('.html-editor-airmod')[0]) {
-                $('.html-editor-airmod').summernote({
-                    airMode: true
-                });
-            }
-
-        }
     </script>
     <script type="text/javascript">
         const product_counter = document.getElementById('product-counter');
-        console.log(product_counter);
         var i = product_counter ? parseInt(product_counter.value) : 0;
-        console.log('i',i);
         function preViewCrop(e,j) {
             var avatar = $('#preview-'+j);
             var input = $('#photo-'+j);
@@ -293,8 +250,8 @@
                         reader.onloadend = function () {
                             var base64data = reader.result;
                             button = '<div class="d-flex flex-nowrap align-items-center position-absolute w-100" style="bottom: 0;">'+
-                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0 mb-0">  Change</label>' +
-                                '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10 mb-0 flex-grow-1 radius-0"> Remove</label>'
+                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0 mb-0">Change</label>' +
+                                '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10 mb-0 flex-grow-1 radius-0">Remove</label>'
                             '</div>';
                             $('#button-'+j).html(button)
                             $('#course_image-'+j).val(base64data)
@@ -320,10 +277,10 @@
                 '                    accept="image/*">' +
                 '             <input type="hidden"  name="image[]" class="image-value" id="course_image-' + i + '"/>' +
                 '             <img' +
-                '                  class="img-fluid mh-100 w-100 d-block" id="preview-' + i + '">' +
+                '                  class="img-fluid d-block h-100 w-100" id="preview-' + i + '">' +
                 '        </div>' +
                 '        <div id="button-' + i + '" class="delete">' +
-                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center">'+
+                '           <div class="d-flex flex-column w-100 h-100 position-absolute align-items-center justify-content-center" style="bottom: 0">'+
                 '               <label for="photo-' + i + '"  class="align-items-center justify-content-center d-flex flex-column h-100 w-100 cursor-pointer" >  <i class="mdi mdi-plus mdi-18px"></i> <span>Add Image</span></label>' +
                 '          </div>' +
                 '        </div>' +
