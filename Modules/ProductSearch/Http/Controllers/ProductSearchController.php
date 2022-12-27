@@ -42,19 +42,16 @@ class ProductSearchController extends Controller
     public function index()
     {
 
-        if (empty($_REQUEST['search']) || $_REQUEST['search'] == ""){
+        $searchWord = empty($_REQUEST['search']) ? "" : trim($_REQUEST['search']);
+        if (!$searchWord){
             return redirect()->route('general_home');
         }
-        $keyword = $_REQUEST['search'];
+        $keyword = $searchWord;
         $region =  $_REQUEST['region'] ?? 0;
         $town =  $_REQUEST['town']  ?? 0;
         $street =  $_REQUEST['street'] ?? 0;
 
-//        $sub_category =  $_REQUEST['sub_category'] ?? 0;
-//        $category =  $_REQUEST['category'] ?? 0;
         $data['keyword'] = $keyword;
-//        $data['request']['category'] = $category;
-//        $data['request']['sub_category'] = $sub_category;
         $data['request']['region'] = $region;
         $data['request']['town'] = $town;
         $data['request']['street'] = $street;
