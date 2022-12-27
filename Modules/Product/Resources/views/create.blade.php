@@ -15,7 +15,7 @@
             <div class="d-flex flex-wrap"></div>
         </div>
         <div class="clearfix"><br/></div>
-        <form enctype="multipart/form-data" method="POST" action="{{route('save_product')}}"
+        <form id="add_product_form" enctype="multipart/form-data" method="POST" action="{{route('save_product')}}"
               class="my-4 d-flex-column align-items-center px-sm-5">
             @csrf
             <div class="w-100">
@@ -60,17 +60,10 @@
                     <input name="quantity" value="{{old('quantity',1)}}" type="number" class="form-control"
                            placeholder="@lang('vendor.add_product_quantity_label')"/>
                 </div>
-{{--                <div class="form-group mb-3">--}}
-{{--                                <textarea name="summary" cols="10"--}}
-{{--                                          class="form-control height-120"--}}
-{{--                                          placeholder="{{trans('vendor.add_product_summary_label')}}">--}}
-{{--                                </textarea>--}}
-{{--                </div>--}}
                 <div class="form-group mb-3">
                                 <label>{{trans('vendor.add_product_description_label')}}</label>
                     <br/>
 
-{{--                    @include('helep.general.components.product_details')--}}
                     @include('helep.general.components.richtext_editor',['textareaName'=>'description'])
 
                 </div>
@@ -83,7 +76,7 @@
             </div>
             <div class="clearfix"><br/></div>
             <div class="align-self-center d-flex-column">
-                <button class="btn helep_btn_raise mb-5 px-5  w-100">@lang('vendor.add_product_btn_label')</button>
+                <button id="create_product_btn" class="btn helep_btn_raise mb-5 px-5  w-100">@lang('vendor.add_product_btn_label')</button>
             </div>
         </form>
     </div>
@@ -96,6 +89,10 @@
             // previewProduct('','');
             //set link indicator
             $("#vendor_manage_product").addClass('active');
+            $(document).on('click','#create_product_btn',function (e){
+                $(this).attr('disabled',true);
+                $("#add_product_form").submit();
+            })
         });
 
         function getSubCategoriesByCategory(obj) {
@@ -118,6 +115,7 @@
                 }
             });
         }
+
     </script>
 
     <script src="{{url('js/croppie.js')}}"></script>
@@ -199,7 +197,7 @@
                         reader.onloadend = function () {
                             var base64data = reader.result;
                             button = '<div class="d-flex flex-nowrap align-items-center position-absolute w-100" style="bottom: 0">'+
-                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0 mb-0">Change</label>' +
+                                '<label for="photo-' + i + '"  class="btn-success text-center py-2 flex-grow-1 font-10 radius-0 mb-0">  Change</label>' +
                                 '<label onclick="deleteContent(' + i + ')"  class="btn-danger text-center  py-2 font-10  flex-grow-1 radius-0 mb-0"> Remove</label>'
                             '</div>';
                             $('#button-'+j).html(button).addClass('img-preview-buttons')

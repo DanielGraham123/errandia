@@ -1,7 +1,7 @@
 <link href="{{asset('richtexteditor/rte_theme_default.css')}}" rel="stylesheet">
 
 <textarea class="errandia_rich_text_editor" name="{{$textareaName}}">
-    @if($serverData)
+    @if( isset($serverData)  && $serverData)
         {{$serverData}}
     @else
     {{@old($textareaName)}}
