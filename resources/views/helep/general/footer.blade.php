@@ -1,4 +1,3 @@
-@include('helep.general.components.loader')
 </div>
 <footer class="py-2">
     <div class="container py-sm-4">

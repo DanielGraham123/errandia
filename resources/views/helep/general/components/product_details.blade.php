@@ -1,8 +1,4 @@
 <style>
-    #phone {
-        display: none;
-    }
-
     :root {
         --star-size: 30px;
         --star-color: #fff;
@@ -214,12 +210,10 @@
                     </div>
                     <div class="col-md-2"></div>
                     <div class="col-md-4">
-                        <button type="button" class="btn helep_btn_raise text-uppercase" id="PhoneButton"
-                                onclick="show();"><i
-                                class="zmdi zmdi-phone-ring"></i>@lang('general.product_details_show_number_msg')
-                        </button>
                         <a id="phone" class="btn helep_btn_raise text-uppercase"
-                           href="tel:{{$product->shop->shopContactInfo->tel}}">{{$product->shop->shopContactInfo->tel}}</a>
+                           href="tel:{{$product->shop->shopContactInfo->tel}}">
+                            <i class="zmdi zmdi-phone"></i>
+                            {{$product->shop->shopContactInfo->tel}}</a>
                     </div>
                     <div class="col-md-2"></div>
                 </div>
