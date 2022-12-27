@@ -1253,6 +1253,10 @@ select:focus{
 .bg-light-gray{
     background-color: #f5f5f5 !important;
 }
+li.breadcrumb-item.helep_btn_raise{
+    padding: 8px;
+    margin-bottom: 5px;
+}
 /*loader*/
 .spin {
     background: #0000;
