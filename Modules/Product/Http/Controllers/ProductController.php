@@ -304,13 +304,19 @@ class ProductController extends Controller
     public function showProductQuoteDetails($QuoteID, ProductQuoteService $ProductQuoteService)
     {
 
-            $quote = $ProductQuoteService->findQuoteById($QuoteID);
+        $quote = $ProductQuoteService->findQuoteById($QuoteID);
         $data['quote']  = $quote;
         $data['quoteImages'] = $ProductQuoteService->getQuoteImages($QuoteID);
         $quote->read_status = 1;
         $quote->save();
 
         return view("product::show_quote_details")->with($data);
+    }
+
+    public function deleteQuote($QuoteID, ProductQuoteService $ProductQuoteService){
+        $quote = $ProductQuoteService->findQuoteById($QuoteID);
+        $quote->delete();
+        return redirect()->route('product_quote_list');
     }
 
     // FOR PRODUCT ENQUIRIES

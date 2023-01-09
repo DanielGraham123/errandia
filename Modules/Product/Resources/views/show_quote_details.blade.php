@@ -6,7 +6,18 @@
                 <button type="button" class="btn helep_btn_raise">
                     <i class="fa fa-arrow-left pr-1"></i>{{trans('admin.return_back_msg')}}</button>
             </a>
-            <p class="mb-0">{{ \Carbon\Carbon::parse($quote->created_at)->toFormattedDateString()}}</p>
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <form action="{{url('products/quotes/'.$quote->id)}}" method="POST">
+                    @method('DELETE')
+                    @csrf
+                    <button type="submit" class="bg-transparent border-0">
+                        <i class="fa fa-trash-alt text-danger"></i>
+                    </button>
+                </form>
+
+                <p class="mb-0">{{ \Carbon\Carbon::parse($quote->created_at)->toFormattedDateString()}}</p>
+            </div>
+
         </div>
 
 
