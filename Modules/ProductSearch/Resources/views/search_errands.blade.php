@@ -85,7 +85,8 @@
                                         <select class="form-control region" name="region" id="regionSearch"
                                                 onchange="getTownsByRegionErrand(this)">
                                             <option value="">Filter By Region</option>
-                                            @foreach($regions as $region)
+[]=
+                                            @foreach($allRegions as $region)
                                                 <option
                                                     value="{{$region->id}}">{{$region->name}}</option>
                                             @endforeach
@@ -144,7 +145,6 @@
         </div>
     </div>
 
-    {{--    </div>--}}
 @endsection
 @section('js')
     <script src="{{url('js/croppie.js')}}"></script>

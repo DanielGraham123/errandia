@@ -133,7 +133,6 @@ class ProductSearchController extends Controller
         $quoteData['description'] = $_POST['Description'];
         $quoteData['UserID'] = $user->id;
         $quoteData['categories'] = implode(',',$categories);
-//        $quoteData[''] = isset($_POST["dialogCategory"]) && $_POST["dialogCategory"] ? $_POST["dialogCategory"] : 0;
 
         $quoteData['created_at'] = date("Y-m-d h:i:s");
         $quoteData['updated_at'] = date("Y-m-d h:i:s");
@@ -142,23 +141,22 @@ class ProductSearchController extends Controller
         $data['town'] = $_REQUEST['town'] ?? '';
         $data['street'] = $_REQUEST['street'] ?? '';
         $data['search'] = $_POST['Title'] ?? '';
-        $quoteID = $ProductQuoteService->saveProductQuote($quoteData);
+        $quote = $ProductQuoteService->saveProductQuote($quoteData);
 
-//
+
         // FOR ENQUIRY IMAGE
-        if ($quoteID) {
-
+        if ($quote) {
             if ($request->file('image') && count($request->image) > 0) {
                 foreach ($request->image  as $image) {
                     if ($image){
                         $imagePath = $imageUploadService->uploadFile(['image'=>$image], 'image', "productquote");
-                        $ProductQuoteService->saveQuoteImages($quoteID->id, ['image_path' => $imagePath, 'quote_id' => $quoteID->id]);
+                        $ProductQuoteService->saveQuoteImages($quote->id, ['image_path' => $imagePath, 'quote_id' => $quote->id]);
                     }
                 }
             }
-            $quoteUrl = Str::random(5) . $quoteID->id;
+            $quoteUrl = Str::random(5) . $quote->id;
             $updateQuote = array('slug' => $quoteUrl);
-            $ProductQuoteService->updateQuote($updateQuote, $quoteID->id);
+            $ProductQuoteService->updateQuote($updateQuote, $quote->id);
             //get all active shop owners' contact and send an sms to them about
             $regionFilter = $_POST['region'] ?? 0;
             $townFilter = $_POST['town'] ?? 0;
@@ -175,7 +173,7 @@ class ProductSearchController extends Controller
                     $shopEmailList[] = $shopContact->shop_email;
                     $shop_quote = new ShopQuote();
                     $shop_quote['shop_id']=$shopContact->id;
-                    $shop_quote['product_quote_id']=$quoteID->id;
+                    $shop_quote['product_quote_id']=$quote->id;
                     $shop_quote->save();
                 }
                 $data = $shopContactsList;//->toArray();
@@ -187,10 +185,10 @@ class ProductSearchController extends Controller
 
                 $emailData = $shopEmailList;//->toArray();
 
-                $quoteID['image'] = collect($ProductQuoteService->getQuoteImages($quoteID->id))->first();
-                $quoteObj = array('link' => $quoteLink, 'quote' => $quoteID);
+                $quote['image'] = collect($ProductQuoteService->getQuoteImages($quote->id))->first();
+                $quoteObj = array('link' => $quoteLink, 'quote' => $quote);
                 SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
-                //        session()->flash('message', trans('Product Quote successfully sent !'));
+                        session()->flash('message', trans('Product Quote successfully sent !'));
 
                 return redirect()->route('run_errand_page', $data)->with(['success' => trans('Product Quote successfully sent !')]);
 
@@ -222,8 +220,9 @@ class ProductSearchController extends Controller
      */
     public function showCustomProductSearchPage()
     {
+        $data['allRegions'] = $this->Regions->getAllRegions();
         if (!auth()->check()) return redirect()->route("login_page", ['redirectTo' => route('run_errand_page')])->withErrors([trans('general.errands_custom_view_request_auth_msg')]);
-        return view('productsearch::search_errands');
+        return view('productsearch::search_errands')->with($data);
     }
 
     /**
