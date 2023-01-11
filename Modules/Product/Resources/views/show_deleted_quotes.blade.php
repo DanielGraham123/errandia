@@ -53,10 +53,6 @@
                                                    title="Restore quote" class="mr-4 mb-sm-3 mb-md-0">
                                                     <i class="fa fa-window-restore text-success  fa-lg"></i>
                                                 </a>
-{{--                                                <a href="{{ route('delete_quote_permanently', $quote->id) }}"--}}
-{{--                                                   title="Permanently delete" class="mb-sm-3 mb-md-0">--}}
-{{--                                                    <i class="fa fa-trash text-danger fa-lg"></i>--}}
-{{--                                                </a>--}}
                                                 <form action="{{route('restore_deleted_quote', $quote->id) }}" method="POST" class="mb-sm-3 mb-md-0">
                                                     @method('DELETE')
                                                     @csrf
@@ -89,7 +85,7 @@
             <div class="col-md-12">
                 <div class="d-flex align-items-center justify-content-center flex-column">
                     <h5>Trash is empty</h5>
-                    <a href="{{route('product_quote_list')}}" class="btn btn-primary">View quotes</a>
+                    <a href="{{route('product_quote_list')}}" class="btn btn-primary" style="text-transform: none;">View quotes</a>
                 </div>
             </div>
         </div>

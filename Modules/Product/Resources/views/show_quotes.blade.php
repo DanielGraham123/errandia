@@ -74,7 +74,7 @@
             <div class="col-md-12">
                 <div class="d-flex align-items-center justify-content-center flex-column">
                     <h5>No quote found</h5>
-                    <a href="{{route('show_deleted_quotes')}}" class="btn btn-primary text-normal">View trash</a>
+                    <a href="{{route('show_deleted_quotes')}}" class="btn btn-primary" style="text-transform: none;">View trash</a>
                 </div>
             </div>
         </div>
@@ -128,62 +128,6 @@
             background: #000;
         }
 
-        /*.quote-table .quote-title {*/
-        /*    width: 25%;*/
-        /*}*/
-
-        /*.quote-table .quote-time {*/
-        /*    width: 12%;*/
-        /*}*/
-
-        /*.xY {*/
-        /*    border-bottom: 1px rgba(100, 121, 143, 0.122) solid;*/
-        /*    empty-cells: show;*/
-        /*    height: 50px;*/
-        /*    outline: none;*/
-        /*    padding: 0;*/
-        /*    vertical-align: middle;*/
-        /*    white-space: nowrap;*/
-        /*}*/
-
-        /*.zA > .a4W {*/
-        /*    -webkit-font-smoothing: antialiased;*/
-        /*    font-family: "Google Sans", Roboto, RobotoDraft, Helvetica, Arial, sans-serif;*/
-        /*    font-size: .875rem;*/
-        /*    letter-spacing: normal;*/
-        /*    display: -webkit-box;*/
-        /*    display: -webkit-flex;*/
-        /*    display: flex;*/
-        /*    -webkit-box-flex: 1 1 auto;*/
-        /*    -webkit-flex: 1 1 auto;*/
-        /*    flex: 1 1 auto;*/
-        /*    height: auto;*/
-        /*    min-width: 0;*/
-        /*    padding-right: 10px;*/
-        /*}*/
-
-        /*.zA > .xY {*/
-        /*    -webkit-align-items: center;*/
-        /*    align-items: center;*/
-        /*    border: none;*/
-        /*    display: -webkit-box;*/
-        /*    display: -webkit-flex;*/
-        /*    display: flex;*/
-        /*    -webkit-box-flex: 0 0 auto;*/
-        /*    -webkit-flex: 0 0 auto;*/
-        /*    flex: 0 0 auto;*/
-        /*    line-height: 20px;*/
-        /*    -webkit-box-ordinal-group: 1;*/
-        /*    -webkit-order: 1;*/
-        /*    order: 1;*/
-        /*    padding: 0;*/
-        /*}*/
-
-        /*.a4W {*/
-        /*    -webkit-flex-wrap: wrap;*/
-        /*    flex-wrap: wrap;*/
-        /*}*/
-
     </style>
 @endsection
 
@@ -195,18 +139,9 @@
             //set link indicator
             $("#vendor_sidebar_manage_product_quote").addClass('active');
             $(document).on('click', 'table.quote-table tbody tr', function () {
-                console.log("i was cliked")
                 let route = $(this).attr("data-url");
                 window.location.href = route;
             });
-        });
-        jQuery(document).ready(function () {
-            // var table = jQuery('#example').DataTable({
-            //     responsive: true
-            // });
-
-
-            // new jQuery.fn.dataTable.FixedHeader(table);
         });
     </script>
 @endsection
