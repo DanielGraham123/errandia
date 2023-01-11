@@ -1,5 +1,5 @@
 @extends('helep.vendor.layout.master')
-@section('title') Product Quote List @endsection
+@section('title') Deleted Product Quote List @endsection
 @section('content')
     <div class="container">
         <h3></h3>
@@ -11,31 +11,31 @@
         </div>
         <div class=" row">
             <div class="col-md-12">
+
                 <!-- Nav tabs -->
-                <ul id="product-details-tab" class="nav nav-justified nav-fill fit-content"
+                <ul id="product-details-tab" class="fit-content nav nav-justified nav-fill"
                     role="tablist">
-                    <li class="nav-item active p-0">
+                    <li class="nav-item p-0">
                         <a class="nav-link withoutripple" href="{{route('product_quote_list')}}">
                             <span class="font-weight-bold">Quotes</span>
                         </a>
                     </li>
-                    <li class="nav-item p-0">
+                    <li class="nav-item active p-0">
                         <a class="nav-link withoutripple" href="{{route('show_deleted_quotes')}}">
                             <span class="font-weight-bold">Trash</span>
                         </a>
                     </li>
                 </ul>
+
                 <!-- Tab panes -->
                 <div class="tab-content py-4">
-                    {{--             description           --}}
                     <div role="tabpanel" class="tab-pane fade active show" id="description">
                         <div class="position-relative" style="overflow-x: scroll; padding: 10px 0">
                             <table class="w-100 quote-table">
                                 <thead class="sr-only">
                                     <th>Title and description</th>
                                     <th>Date</th>
-                                <th>Action</th>
-
+                                    <th>Action</th>
                                 </thead>
                                 <tbody>
                                 @foreach ($quotes as $quote)
@@ -52,15 +52,20 @@
 
                                             </div>
                                         </td>
-{{--                                        <td tabindex="-1" class="quote-description" role="gridcell">--}}
-{{--                                            <div>--}}
-{{--                                                {{ \Illuminate\Support\Str::words(strip_tags($quote->description), 15,'...')}}--}}
-{{--                                            </div>--}}
-{{--                                        </td>--}}
                                         <td class="quote-time" role="gridcell" tabindex="-1">
                                             <div>{{ \Carbon\Carbon::parse($quote->created_at)->toFormattedDateString() }}</div>
                                         </td>
-                                        <td><a href="{{url('products/quote-details/'.$quote->id)}}"><i class="fa fa-eye"></i></a></td>
+                                        <td>
+                                            <div class="d-flex align-items-center ">
+                                                <a href="{{ route('restore_deleted_quote', $quote->id) }}" title="Restore quote" class="mr-4 mb-sm-3 mb-md-0">
+                                                    <i class="fa fa-window-restore text-success  fa-lg"></i>
+                                                </a>
+                                                <a href="{{ route('delete_quote_permanently', $quote->id) }}" title="Permanently delete" class="mb-sm-3 mb-md-0">
+                                                    <i class="fa fa-trash text-danger fa-lg"></i>
+                                                </a>
+                                            </div>
+
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -101,6 +106,21 @@
             }
         }
 
+        /*#product-details-tab .nav-item:hover, #product-details-tab .nav-item.active {*/
+        /*    background-color: #fff !important;*/
+        /*    border-radius: 0 !important;*/
+        /*    cursor: pointer;*/
+        /*}*/
+
+        /*#product-details-tab .nav-item:hover a, #product-details-tab .nav-item.active a {*/
+        /*    color: #113d6b !important;*/
+
+        /*}*/
+
+        /*#product-details-tab .nav-item a:hover {*/
+        /*    background-color: transparent !important;*/
+        /*    color: #113d6b !important;*/
+        /*}*/
 
         /*   gmail style */
         table.quote-table tr {

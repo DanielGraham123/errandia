@@ -32,7 +32,11 @@ Route::prefix('products')->middleware('helep:' . $vendor_account_type)->group(fu
 	Route::get('/product-list', [ProductController::class, 'showProductList'])->name('product_list');
 
 	Route::get('/quote-list', [ProductController::class, 'showProductQuotes'])->name('product_quote_list');
-	Route::get('/quote-details/{id}', [ProductController::class, 'showProductQuoteDetails'])->name('product_quote_details');
+    Route::get('/quotes/trash',[ProductController::class,'showDeletedProductQuotes'])->name('show_deleted_quotes');
+    Route::get('/quotes/trash/{id}',[ProductController::class,'restoreDeletedQuote'])->name('restore_deleted_quote');
+    Route::delete('/quotes/trash/{id}',[ProductController::class,'deleteQuotePermanently'])->name('delete_quote_permanently');
+
+    Route::get('/quote-details/{id}', [ProductController::class, 'showProductQuoteDetails'])->name('product_quote_details');
     Route::delete('/quotes/{id}',[ProductController::class,'deleteQuote'])->name('delete_quote');
 
 	Route::get('/enquiry-list', [ProductController::class, 'showProductEnquiries'])->name('product_enquiry_list');

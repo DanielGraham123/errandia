@@ -19,4 +19,4 @@
 <body class="fix-header card-no-border fix-sidebar">
 @include('helep.general.components.loader')
 <input type="hidden" id="baseUrl" value="{{url('/')}}"/>
-<div class="d-flex flex-wrap bg-white flex-sm-nowrap">
+<div class="d-flex flex-wrap bg-white flex-sm-column flex-md-row">

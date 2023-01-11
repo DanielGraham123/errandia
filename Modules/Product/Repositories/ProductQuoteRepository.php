@@ -32,6 +32,10 @@ class ProductQuoteRepository
     {
         return $this->quoteModel->where('id', $quote_id)->with('product', 'user')->first();
     }
+    public function findDeletedById($quote_id)
+    {
+        return $this->quoteModel->where('id', $quote_id)->withTrashed()->with('product', 'user')->first();
+    }
 
     public function findQuoteBySlugUrl($slug)
     {

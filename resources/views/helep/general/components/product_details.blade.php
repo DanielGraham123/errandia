@@ -85,21 +85,21 @@
         padding-top: 17px;
     }
 
-    #product-details-tab .nav-item:hover, #product-details-tab .nav-item.active {
-        background-color: #fff !important;
-        border-radius: 0 !important;
-        cursor: pointer;
-    }
+    /*#product-details-tab .nav-item:hover, #product-details-tab .nav-item.active {*/
+    /*    background-color: #fff !important;*/
+    /*    border-radius: 0 !important;*/
+    /*    cursor: pointer;*/
+    /*}*/
 
-    #product-details-tab .nav-item:hover a, #product-details-tab .nav-item.active a {
-        color: #113d6b !important;
+    /*#product-details-tab .nav-item:hover a, #product-details-tab .nav-item.active a {*/
+    /*    color: #113d6b !important;*/
 
-    }
+    /*}*/
 
-    #product-details-tab .nav-item a:hover {
-        background-color: transparent !important;
-        color: #113d6b !important;
-    }
+    /*#product-details-tab .nav-item a:hover {*/
+    /*    background-color: transparent !important;*/
+    /*    color: #113d6b !important;*/
+    /*}*/
 </style>
 <link href='{{asset('/jquery-bar-rating-master/dist/themes/fontawesome-stars.css')}}' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="{{url('css/croppie.css')}}">
@@ -226,7 +226,7 @@
         <div class="col-md-12">
             <div class="card">
                 <!-- Nav tabs -->
-                <ul id="product-details-tab" class="nav nav-justified nav-fill helep-color"
+                <ul id="product-details-tab" class="nav nav-justified nav-fill"
                     role="tablist">
                     <li class="nav-item active"><a class="nav-link" href="#description"
                                                    aria-controls="home"

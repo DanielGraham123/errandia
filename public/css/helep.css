@@ -1318,6 +1318,32 @@ li.breadcrumb-item.helep_btn_raise{
     margin-right: -10px;
     margin-left: -10px;
 }
+
+#product-details-tab .nav-item:hover, #product-details-tab .nav-item.active {
+    background-color: #113d6b !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+    color: #fff
+}
+#product-details-tab.fit-content{
+    width: fit-content;
+}
+#product-details-tab.fit-content .nav-link{
+    padding: .5rem 1.7rem;
+}
+
+#product-details-tab .nav-item:hover a, #product-details-tab .nav-item.active a {
+    color: #fff !important;
+
+}
+
+#product-details-tab .nav-item a:hover {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+#product-details-tab .nav-item a {
+    color: #113d6b !important;
+}
 @media (max-width: 767px) {
     .mobile-only{
         display: block;

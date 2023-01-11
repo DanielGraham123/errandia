@@ -29,6 +29,10 @@ class ProductQuoteService
     {
         return $this->ProductQuoteRepository->findById($quote_id);
     }
+    public function findDeletedQuoteById($quote_id)
+    {
+        return $this->ProductQuoteRepository->findDeletedById($quote_id);
+    }
 
     public function updateQuote(array $quote, $quote_id)
     {

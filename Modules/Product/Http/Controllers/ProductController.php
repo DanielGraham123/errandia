@@ -6,6 +6,7 @@ use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Modules\Product\Entities\ProductQuote;
 use Modules\Product\Http\Requests\AddProductRequest;
 use Modules\Product\Http\Requests\UpdateProductRequest;
 use Modules\Product\Services\ProductService;
@@ -92,8 +93,7 @@ class ProductController extends Controller
 
     }
 
-    public
-    function showEditProductPage($slug, CategoryService $categoryService)
+    public function showEditProductPage($slug, CategoryService $categoryService)
     {
         $productExist = $this->productService->findProductBySlug($slug);
         if (!$productExist) {
@@ -300,6 +300,14 @@ class ProductController extends Controller
         $ProductQuoteService->getAllShopProductQuotes($shop_id);
         return view("product::show_quotes")->with($data);
     }
+    public function showDeletedProductQuotes(ProductQuoteService $ProductQuoteService)
+    {
+        $shop_id =  $this->utilityService->getCurrentUserShop()->id;
+        $shop = Shop::find($shop_id);
+        $data['quotes'] = $shop->quotes()->onlyTrashed()->paginate(20);
+        return view("product::show_deleted_quotes")->with($data);
+    }
+
 
     public function showProductQuoteDetails($QuoteID, ProductQuoteService $ProductQuoteService)
     {
@@ -316,7 +324,20 @@ class ProductController extends Controller
     public function deleteQuote($QuoteID, ProductQuoteService $ProductQuoteService){
         $quote = $ProductQuoteService->findQuoteById($QuoteID);
         $quote->delete();
-        return redirect()->route('product_quote_list');
+        return redirect()->route('product_quote_list')->with('success', 'Quote successfully added to trash.');
+    }
+    public function restoreDeletedQuote($QuoteID, ProductQuoteService $ProductQuoteService){
+        $quote = $ProductQuoteService->findDeletedQuoteById($QuoteID);
+        $quote->restore();
+        return redirect()->route('show_deleted_quotes')
+            ->with('success', 'Quote restored successfully');
+    }
+    public function deleteQuotePermanently($QuoteID, ProductQuoteService $ProductQuoteService){
+        $quote = $ProductQuoteService->findDeletedQuoteById($QuoteID);
+        $quote->forceDelete();
+
+        return  redirect()->route('projects.index')
+            ->with('success', 'You successfully deleted the quote from the Recycle Bin');
     }
 
     // FOR PRODUCT ENQUIRIES
