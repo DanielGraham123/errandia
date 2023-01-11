@@ -85,7 +85,6 @@
                                         <select class="form-control region" name="region" id="regionSearch"
                                                 onchange="getTownsByRegionErrand(this)">
                                             <option value="">Filter By Region</option>
-[]=
                                             @foreach($allRegions as $region)
                                                 <option
                                                     value="{{$region->id}}">{{$region->name}}</option>
