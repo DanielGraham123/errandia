@@ -7,10 +7,10 @@
                     <i class="fa fa-arrow-left pr-1"></i>{{trans('admin.return_back_msg')}}</button>
             </a>
             <div class="d-flex flex-wrap align-items-center justify-content-between">
-                <form action="{{url('products/quotes/'.$quote->id)}}" method="POST">
+                <form action="{{url('products/quotes/'.$quote->id)}}" method="POST" class="mr-4">
                     @method('DELETE')
                     @csrf
-                    <button type="submit" class="bg-transparent border-0">
+                    <button type="submit" class="bg-transparent border-0" title="Trash">
                         <i class="fa fa-trash-alt text-danger"></i>
                     </button>
                 </form>

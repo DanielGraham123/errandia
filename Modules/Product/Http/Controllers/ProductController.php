@@ -335,8 +335,7 @@ class ProductController extends Controller
     public function deleteQuotePermanently($QuoteID, ProductQuoteService $ProductQuoteService){
         $quote = $ProductQuoteService->findDeletedQuoteById($QuoteID);
         $quote->forceDelete();
-
-        return  redirect()->route('projects.index')
+        return  redirect()->route('show_deleted_quotes')
             ->with('success', 'You successfully deleted the quote from the Recycle Bin');
     }
 

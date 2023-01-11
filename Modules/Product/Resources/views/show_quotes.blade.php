@@ -2,13 +2,7 @@
 @section('title') Product Quote List @endsection
 @section('content')
     <div class="container">
-        <h3></h3>
-        <div class="d-flex justify-content-between">
-            <div class="d-flex flex-wrap">
-            </div>
-            <div class="d-flex flex-wrap"></div>
-            <div class="d-flex flex-wrap"></div>
-        </div>
+        @if(sizeof($quotes)):
         <div class=" row">
             <div class="col-md-12">
                 <!-- Nav tabs -->
@@ -52,11 +46,6 @@
 
                                             </div>
                                         </td>
-{{--                                        <td tabindex="-1" class="quote-description" role="gridcell">--}}
-{{--                                            <div>--}}
-{{--                                                {{ \Illuminate\Support\Str::words(strip_tags($quote->description), 15,'...')}}--}}
-{{--                                            </div>--}}
-{{--                                        </td>--}}
                                         <td class="quote-time" role="gridcell" tabindex="-1">
                                             <div>{{ \Carbon\Carbon::parse($quote->created_at)->toFormattedDateString() }}</div>
                                         </td>
@@ -67,18 +56,6 @@
                             </table>
                         </div>
 
-                        {{--                                    <div class="text-justify font-16 text-black">--}}
-                        {{--                                        <div class="quote-tile"></div>--}}
-
-                        {{--                                    </div>--}}
-                    </div>
-                    {{--              reviews          --}}
-                    <div role="tabpanel" class="tab-pane fade" id="reviews">
-                        <div>Unread</div>
-                    </div>
-                    {{--               enquiries         --}}
-                    <div role="tabpanel" class="tab-pane fade" id="enquiry">
-                        <div>Read</div>
                     </div>
                 </div>
                 <!-- card -->
@@ -92,6 +69,17 @@
             </div>
             <div class="col-md-2"></div>
         </div>
+        @else:
+        <div class="row">
+            <div class="col-md-12">
+                <div class="d-flex align-items-center justify-content-center flex-column">
+                    <h5>No quote found</h5>
+                    <a href="{{route('show_deleted_quotes')}}" class="btn btn-primary text-normal">View trash</a>
+                </div>
+            </div>
+        </div>
+
+        @endif
     </div>
 
     <style>

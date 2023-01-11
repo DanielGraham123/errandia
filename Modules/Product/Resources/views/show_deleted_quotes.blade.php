@@ -2,16 +2,9 @@
 @section('title') Deleted Product Quote List @endsection
 @section('content')
     <div class="container">
-        <h3></h3>
-        <div class="d-flex justify-content-between">
-            <div class="d-flex flex-wrap">
-            </div>
-            <div class="d-flex flex-wrap"></div>
-            <div class="d-flex flex-wrap"></div>
-        </div>
-        <div class=" row">
+        @if(sizeof($quotes)):
+        <div class="row">
             <div class="col-md-12">
-
                 <!-- Nav tabs -->
                 <ul id="product-details-tab" class="fit-content nav nav-justified nav-fill"
                     role="tablist">
@@ -26,16 +19,15 @@
                         </a>
                     </li>
                 </ul>
-
                 <!-- Tab panes -->
                 <div class="tab-content py-4">
                     <div role="tabpanel" class="tab-pane fade active show" id="description">
                         <div class="position-relative" style="overflow-x: scroll; padding: 10px 0">
                             <table class="w-100 quote-table">
                                 <thead class="sr-only">
-                                    <th>Title and description</th>
-                                    <th>Date</th>
-                                    <th>Action</th>
+                                <th>Title and description</th>
+                                <th>Date</th>
+                                <th>Action</th>
                                 </thead>
                                 <tbody>
                                 @foreach ($quotes as $quote)
@@ -57,12 +49,21 @@
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center ">
-                                                <a href="{{ route('restore_deleted_quote', $quote->id) }}" title="Restore quote" class="mr-4 mb-sm-3 mb-md-0">
+                                                <a href="{{ route('restore_deleted_quote', $quote->id) }}"
+                                                   title="Restore quote" class="mr-4 mb-sm-3 mb-md-0">
                                                     <i class="fa fa-window-restore text-success  fa-lg"></i>
                                                 </a>
-                                                <a href="{{ route('delete_quote_permanently', $quote->id) }}" title="Permanently delete" class="mb-sm-3 mb-md-0">
-                                                    <i class="fa fa-trash text-danger fa-lg"></i>
-                                                </a>
+{{--                                                <a href="{{ route('delete_quote_permanently', $quote->id) }}"--}}
+{{--                                                   title="Permanently delete" class="mb-sm-3 mb-md-0">--}}
+{{--                                                    <i class="fa fa-trash text-danger fa-lg"></i>--}}
+{{--                                                </a>--}}
+                                                <form action="{{route('restore_deleted_quote', $quote->id) }}" method="POST" class="mb-sm-3 mb-md-0">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="submit" class="bg-transparent border-0" title="Permanently delete">
+                                                        <i class="fa fa-trash-alt text-danger fa-lg"></i>
+                                                    </button>
+                                                </form>
                                             </div>
 
                                         </td>
@@ -71,25 +72,11 @@
                                 </tbody>
                             </table>
                         </div>
-
-                        {{--                                    <div class="text-justify font-16 text-black">--}}
-                        {{--                                        <div class="quote-tile"></div>--}}
-
-                        {{--                                    </div>--}}
-                    </div>
-                    {{--              reviews          --}}
-                    <div role="tabpanel" class="tab-pane fade" id="reviews">
-                        <div>Unread</div>
-                    </div>
-                    {{--               enquiries         --}}
-                    <div role="tabpanel" class="tab-pane fade" id="enquiry">
-                        <div>Read</div>
                     </div>
                 </div>
                 <!-- card -->
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
@@ -97,6 +84,17 @@
             </div>
             <div class="col-md-2"></div>
         </div>
+        @else:
+        <div class="row">
+            <div class="col-md-12">
+                <div class="d-flex align-items-center justify-content-center flex-column">
+                    <h5>Trash is empty</h5>
+                    <a href="{{route('product_quote_list')}}" class="btn btn-primary">View quotes</a>
+                </div>
+            </div>
+        </div>
+
+        @endif
     </div>
 
     <style>
@@ -129,10 +127,10 @@
             height: 50px;
             padding: 10px 5px;
         }
-        table.quote-table tbody tr{
+
+        table.quote-table tbody tr {
             cursor: pointer;
         }
-
 
 
         table.quote-table tbody tr:hover {
@@ -153,10 +151,11 @@
             color: #202124;
         }
 
-        table.quote-table td ,table.quote-table th{
+        table.quote-table td, table.quote-table th {
             padding: 0 10px;
         }
-        table.quote-table thead{
+
+        table.quote-table thead {
             background: #000;
         }
 
