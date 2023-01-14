@@ -25,7 +25,8 @@ class ProductQuoteRepository
 
     public function saveQuoteImage($quote_id, array $quote_image)
     {
-        return $this->quoteModel->find($quote_id)->images()->create($quote_image);
+        dd( $this->quoteModel->find($quote_id));
+//        return $this->quoteModel->find($quote_id)->images()->create($quote_image);
     }
 
     public function findById($quote_id)
