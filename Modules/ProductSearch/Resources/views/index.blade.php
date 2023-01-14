@@ -22,13 +22,15 @@
                         <select class="form-control" name="town" id="townSearch" onchange="this.form.submit();">
                             <option value="">Select Town</option>
                             @foreach($towns as $town)
-                                <option value="{{$town->id}}" <?php echo $town->id == request('town') ? 'selected="selected"' : '';?>>{{$town->name}}</option>
+                                <option
+                                    value="{{$town->id}}" <?php echo $town->id == request('town') ? 'selected="selected"' : '';?>>{{$town->name}}</option>
                             @endforeach
                         </select>
                         <select class="form-control" name="street" id="streetSearch" onchange="this.form.submit();">
                             <option value="">Select Street</option>
                             @foreach($streets as $street)
-                                <option value="{{$street->id}}" <?php echo $street->id == request('street') ? 'selected="selected"' : '';?>>{{$street->name}}</option>
+                                <option
+                                    value="{{$street->id}}" <?php echo $street->id == request('street') ? 'selected="selected"' : '';?>>{{$street->name}}</option>
                             @endforeach
                         </select>
                     </form>
@@ -36,7 +38,7 @@
                 <div class="mobile-only">
                     <form method="GET" action="{{route('productsearch')}}">
 
-{{--                        {{ csrf_field() }}--}}
+                        {{--                        {{ csrf_field() }}--}}
                         <input type="hidden" name="search" value="{{$keyword}}"/>
                         <select class="form-control" name="region" id="regionSearch" onchange="this.form.submit();">
                             <option value="">Region</option>
@@ -48,14 +50,16 @@
                         <select class="form-control mx-3" name="town" id="townSearch" onchange="this.form.submit();">
                             <option value="">Town</option>
                             @foreach($towns as $town)
-                                <option value="{{$town->id}}" <?php echo $town->id == request('town') ? 'selected="selected"' : '';?>>{{$town->name}}</option>
+                                <option
+                                    value="{{$town->id}}" <?php echo $town->id == request('town') ? 'selected="selected"' : '';?>>{{$town->name}}</option>
                             @endforeach
                         </select>
 
                         <select class="form-control" name="street" id="streetSearch" onchange="this.form.submit();">
                             <option value="">Street</option>
                             @foreach($streets as $street)
-                                <option value="{{$street->id}}" <?php echo $street->id == request('street') ? 'selected="selected"' : '';?>>{{$street->name}}</option>
+                                <option
+                                    value="{{$street->id}}" <?php echo $street->id == request('street') ? 'selected="selected"' : '';?>>{{$street->name}}</option>
                             @endforeach
                         </select>
                     </form>
@@ -83,7 +87,7 @@
 
                                     @foreach($products as $product)
                                         @php
-                                            $length= 30;
+                                            $length= 40;
                                                  if (preg_match('/^.{1,'.$length.'}\b/su', $product->name, $match)) {
                                                           $name= $match[0]."...";
                                                      } else{
@@ -101,7 +105,8 @@
                                                                 class="img-fluid center-block"
                                                                 src="{{asset('storage/'.$product->featured_image_path)}}"/>
                                                         @else
-                                                            <img height="130px" class="card-img-top"
+                                                            <img height="130px"
+                                                                 class="card-img-top"
                                                                  src="{{asset('storage/'.$product->featured_image_path)}}"/>
                                                         @endif
 
@@ -113,8 +118,8 @@
                                                         </div>
                                                     </a>
                                                     @if($product->unit_price)
-                                                        <div class="card-text"><h4
-                                                                class="font-weight-bold pb-1 mb-0 text-muted helep-text-color text-center">{{$product->currency}} {{$product->unit_price}}</h4>
+                                                        <div class="card-text">
+                                                            <h4 class="font-weight-bold pb-1 mb-0 text-muted helep-text-color text-center">{{$product->currency}} {{$product->unit_price}}</h4>
                                                         </div>
                                                     @endif
 
@@ -124,16 +129,18 @@
                                                             class="font-weight-bold text-black text-center">{{$product->shop_name}}</h5>
                                                     </div>
 
-                                                    <div class="card-text mb-1"><h6
+                                                    <div class="card-text mb-1">
+                                                        <h6
                                                             class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
                                                     </div>
                                                     <div class="card-text">
-{{--                                                        <a href="tel:{{$product->shop_tel}}">--}}
-{{--                                                            <h6--}}
-{{--                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>--}}
-{{--                                                        </a>--}}
+                                                        {{--                                                        <a href="tel:{{$product->shop_tel}}">--}}
+                                                        {{--                                                            <h6--}}
+                                                        {{--                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>--}}
+                                                        {{--                                                        </a>--}}
                                                         <a href="tel:{{$product->shop_tel}}"
-                                                           class="btn helep_btn_raise w-100" style="padding: 8px 0px;"><i
+                                                           class="btn helep_btn_raise w-100"
+                                                           style="padding: 8px 0px;"><i
                                                                 class="zmdi zmdi-phone"></i>Contact shop
                                                             <div class="ripple-container"></div>
                                                         </a>
@@ -150,7 +157,7 @@
                                 </div>
 
 
-                                                                {!! $products->appends(['search' => $keyword,'town'=>request('town'),'region'=>request('region'),'street'=>request('street')])->links() !!}
+                                {!! $products->appends(['search' => $keyword,'town'=>request('town'),'region'=>request('region'),'street'=>request('street')])->links() !!}
                             </div>
                             <style>
                                 @media (min-width: 992px) {
@@ -167,12 +174,26 @@
                     </div>
                 @endif
 
+                @if(!$products->isEmpty())
+                    <div class="card helep-color">
+                        <div class="m-4">
+                            @foreach($products as $product)
+
+                                @include('product::partials.product_card',['product'=>$product])
+
+                            @endforeach
+                        </div>
+                    </div>
+
+                @endif
+
                 @if(!$shops->isEmpty())
                     <div class="card box-shadow-none bg-light-gray">
                         <div class="row card-body">
                             <div class="text-left col-md-12 mb-1">
 
-                                    <h4 class="font-weight-bold text-black-50">Errandia Suggest the following businesses</h4>
+                                <h4 class="font-weight-bold text-black-50">Errandia Suggest the following
+                                    businesses</h4>
 
                             </div>
 
@@ -194,15 +215,16 @@
 
 
                                                         <div class="text-center">
-                                                                                                    <a href="{{route('show_shop_page',['id'=>$shop->slug])}}">
-                                                            <h5 class="text-black font-weight-bold text-capitalize">{{$shop->name}}</h5>
-                                                                                                    </a>
+                                                            <a href="{{route('show_shop_page',['id'=>$shop->slug])}}">
+                                                                <h5 class="text-black font-weight-bold text-capitalize">{{$shop->name}}</h5>
+                                                            </a>
                                                             <h5 class="text-black">
                                                                 <i class="zmdi zmdi-pin"></i>
                                                                 <span>{{$shop->store_street}}, {{$shop->store_town}} {{$shop->store_region}}</span>
                                                             </h5>
                                                             <a href="tel:{{$shop->shop_tel}}"
-                                                               class="btn helep_btn_raise w-100" style="padding: 8px 0px;"><i
+                                                               class="btn helep_btn_raise w-100"
+                                                               style="padding: 8px 0px;"><i
                                                                     class="zmdi zmdi-phone"></i>Contact shop
                                                                 <div class="ripple-container"></div>
 

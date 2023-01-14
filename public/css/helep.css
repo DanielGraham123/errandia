@@ -1344,6 +1344,9 @@ li.breadcrumb-item.helep_btn_raise{
 #product-details-tab .nav-item a {
     color: #113d6b !important;
 }
+.card img{
+    width: 100%;
+}
 @media (max-width: 767px) {
     .mobile-only{
         display: block;
