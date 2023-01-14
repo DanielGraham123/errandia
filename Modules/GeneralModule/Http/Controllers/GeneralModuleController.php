@@ -12,6 +12,7 @@ use App\Mail\accountCreated;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Modules\GeneralModule\Services\GeneralService;
@@ -47,9 +48,22 @@ class GeneralModuleController extends Controller
         $data['featuredShops'] = $this->generalService->getPopularShops();
         $data['sliders'] = $this->generalService->getAllSlider();
 
+        // uncomment the function call below to clear cached data.
+        // $this->clearCache();
         return view('generalmodule::index')->with($data);
     }
+    public function clearCache(){
 
+        $clearcache = Artisan::call('cache:clear');
+        echo "Cache cleared<br>";
+        $clearview = Artisan::call('view:clear');
+        echo "View cleared<br>";
+        $clearconfig = Artisan::call('config:cache');
+        echo "Config cleared<br>";
+        $clearRoute= Artisan::call('route:cache');
+        echo "Route cleared<br>";
+        echo $clearRoute;
+    }
     public function showProductDetailsPage($product_slug, ProductService $productService, ProductReviewService $ProductReviewService, UserService $UserService, ShopService $shopService, CategoryService $categoryService, ProductEnquiryService $ProductEnquiryService, ProductReplyService $ProductReplyService)
     {
         $productExist = $productService->findProductBySlug($product_slug);
