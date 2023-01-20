@@ -174,19 +174,6 @@
                     </div>
                 @endif
 
-                @if(!$products->isEmpty())
-                    <div class="card helep-color">
-                        <div class="m-4">
-                            @foreach($products as $product)
-
-                                @include('product::partials.product_card',['product'=>$product])
-
-                            @endforeach
-                        </div>
-                    </div>
-
-                @endif
-
                 @if(!$shops->isEmpty())
                     <div class="card box-shadow-none bg-light-gray">
                         <div class="row card-body">
