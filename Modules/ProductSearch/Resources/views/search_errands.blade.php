@@ -229,7 +229,7 @@
             const quoteImageCounter = $('#quoteImageCounter').val();
 
             html =
-                '  <div id="image-' + i + '"  class="col-6 col-sm-6 col-md-4 col-lg-3 mb-2 preview-image">' +
+                '  <div id="image-' + i + '"  class="col-md-3 mb-2 preview-image">' +
                 '     <div  class="d-flex border radius-15 position-relative w-100 flex-column h-100 select-photo">' +
                 '         <div class="product-img">' +
                 '             <input id="photo-' + i + '" oninput="processFiles(event,' + i + ')"  type="file"' +
