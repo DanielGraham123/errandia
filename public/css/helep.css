@@ -912,9 +912,15 @@ li.nav-item a {
     /*color: #1BA2D8 !important;*/
 }
 
-a.nav-link:hover {
+a.nav-link:hover{
     background-color: white !important;
     color: black !important;
+}
+a.nav-link:hover .text-white{
+    color: black !important;
+}
+.navbar-link li{
+    cursor: pointer;
 }
 
 .navbar-nav li:hover a {
