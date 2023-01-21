@@ -2,8 +2,7 @@
 @section('page_title') @lang('shop.create_shop_page_title') @endsection
 @section('title') @lang('shop.create_shop_page_title') @endsection
 @section('content')
-    <div class="">
-        <div class="p-2 shadow-sm">
+        <div class="p-4 shadow-sm bg-white">
             <div class=" d-flex justify-content-between">
                 <div class="d-flex flex-wrap">
                     <a href="{{route('shop_list')}}">
@@ -95,7 +94,7 @@
                             <div class="col-md-4"></div>
                         </div>
                         <div class="clearfix"><br/></div>
-                        <div class="row">
+                        <div class="row d-none">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <select name="main-category" id="main-category" class="form-control"
@@ -108,10 +107,23 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group ">
+                                <div class="form-group d-flex flex-column ">
                                     <select class="form-control" name="category"
                                             id="sub_category">
                                         <option value="none">@lang('shop.add_shop_placeholder_sub_category')</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group d-flex flex-column ">
+                                    <select id="product-categories" class="form-control" name="categories[]"
+                                            multiple="multiple" required>
+                                        @foreach($subcategories as $category)
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -207,13 +219,18 @@
                 </form>
             </div>
         </div>
-    </div>
 @endsection
 @section('js')
     <script>
+        console.log("could it be the script")
         $(function () {
             //set link indicator
             $("#admin_manage_shops").addClass('active');
+            console.log("What is happening")
+            $('#product-categories').select2({
+                closeOnSelect: false,
+                placeholder: "Select Shop Category"
+            });
         });
         shop_image.onchange = evt => {
             const [file] = shop_image.files

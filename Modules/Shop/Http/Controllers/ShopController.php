@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Modules\Location\Entities\Street;
 use Modules\Location\Services\Interfaces\LocationService;
+use Modules\ProductCategory\Entities\SubCategory;
 use Modules\ProductCategory\Services\CategoryService;
 use Modules\Shop\Http\Requests\CreateShopRequest;
 use Modules\Shop\Http\Requests\UpdateShopRequest;
@@ -18,11 +19,14 @@ class ShopController extends Controller
 {
     private $shopService;
     private $utilityService;
+    private $SubCategory;
 
-    public function __construct(ShopService $shopService, UtilityService $utilityService)
+
+    public function __construct(ShopService $shopService, UtilityService $utilityService,SubCategory $SubCategory)
     {
         $this->shopService = $shopService;
         $this->utilityService = $utilityService;
+        $this->SubCategory = $SubCategory;
     }
 
     //get a list of shops registered
@@ -34,10 +38,9 @@ class ShopController extends Controller
     //show create shop form
     public function create(CategoryService $categoryService, LocationService $locationService)
     {
-        // 'streets' => $locationService->getAllStreets()
-        // 'towns' => $locationService->getAllTowns(),
         return view('shop::create')->with(
             ['categories' => $categoryService->getActiveCategories(),
+                'subcategories'=>$this->SubCategory->getAllSubCategories(),
                 'regions' => $locationService->getAllRegions(),
             ]);
     }
@@ -49,8 +52,10 @@ class ShopController extends Controller
         $shopDetails = $request->getShopData();
         $shopContactInfo = $request->getShopContactData();
         $shopOwnerAccount = $request->getShopUserData();
+        $shopCategories = $request->getShopCategories();
         $shopContactInfo['facebook_link'] = is_null($shopContactInfo['facebook_link']) ? "" : $shopContactInfo['facebook_link'];
 
+        $shopDetails['category_id'] = $shopDetails['category_id'] !='none' ? $shopDetails['category_id']: '';
         //check if entered email address exist
         if ($userService->emailExist($shopOwnerAccount['email'])) {
             return redirect()
@@ -61,7 +66,7 @@ class ShopController extends Controller
         $shopOwnerAccount['status'] = 1;
         $shopDetails['slug'] = $this->utilityService->generateRandSlug();
         //start a db transaction
-        DB::transaction(function () use ($userService, $shopOwnerAccount, $shopDetails, $shopContactInfo) {
+        DB::transaction(function () use ($userService, $shopOwnerAccount, $shopDetails, $shopContactInfo,$shopCategories) {
             //save supplier/shop own account info
             $userId = $userService->saveUserAccount($shopOwnerAccount);
             //save shop details
@@ -69,6 +74,8 @@ class ShopController extends Controller
             $shop = $this->shopService->saveShop($shopDetails);
             //save shop contact info
             $this->shopService->saveShopContactInfo($shop->id, $shopContactInfo);
+            //save shop categories
+            $this->shopService->saveShopCategories($shop->id, $shopCategories);
         });
         $message = trans('shop.add_shop_success_msg');
         session()->flash('success', $message);

@@ -133,6 +133,9 @@ class ShopService
     {
         return $this->shopRepository->unSubscribeToShopNotification($user_id, $shop_id);
     }
+    public function saveShopCategories($shopId,$categories){
+        return $this->shopRepository->saveShopCategories($shopId, $categories);
+    }
 
     public function getActiveShops()
     {

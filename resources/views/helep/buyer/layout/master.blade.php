@@ -3,8 +3,8 @@
 <div id='pagecontent' class="pagecontent  flex-grow-1" style="background-color: rgb(245, 245, 245)">
     @include('helep.vendor.layout.top_bar')
     <div class="clearfix"><br/></div>
-    <div class="card bg-white helep_round pb-5 pt-3 mt-3 ml-1 mr-1">
-        <div class="container-fluid m-4">
+    <div class="bg-light-gray helep_round pb-5 pt-3 mt-3 ml-1 mr-1">
+        <div class="">
             <h4 class=" ml-n5 text-black-50 p-2 text-center font-weight-bold">@yield('title')</h4>
             <div class=" p-1">
                 @if(session('success'))

@@ -3,51 +3,6 @@
 
 @section('css')
     <link rel="stylesheet" href="{{url('css/croppie.css')}}">
-    <style>
-
-        .select2-container {
-            width: 100% !important;
-        }
-
-        .select2-container--default .select2-selection--multiple {
-            border: 0 !important;
-            background-image: linear-gradient(#03a9f4, #03a9f4), linear-gradient(#d2d2d2, #d2d2d2);
-            background-size: 0 2px, 100% 1px;
-            background-repeat: no-repeat;
-            background-position: center bottom, center calc(100% - 1px);
-            background-color: transparent;
-            transition: background 0s ease-out;
-            float: none;
-            box-shadow: none;
-            border-radius: 0;
-            width: 100%;
-        }
-
-        .select2-container .select2-search--inline .select2-search__field {
-            height: 23px !important;
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #5897fb !important;
-            border: 1px solid #5897fb !important;
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-            color: white !important;
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
-            color: #000 !important;
-        }
-
-        .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-            color: white !important;
-        }
-
-        .select2-results__option {
-            color: #999 !important;
-        }
-    </style>
 @endsection
 @section('content')
     {{--    <div class="py-5 container">--}}

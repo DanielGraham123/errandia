@@ -14,7 +14,8 @@
 use Illuminate\Support\Facades\Route;
 
 $admin_account_type = \Modules\GeneralModule\Config\AccountType::$IS_ADMIN;
-Route::prefix('shops')->middleware('helep:' . $admin_account_type)->group(function () {
+//->middleware('helep:' . $admin_account_type)
+Route::prefix('shops')->group(function () {
     Route::get('/', [\Modules\Shop\Http\Controllers\ShopController::class, 'index'])->name('shop_list');
     Route::get('/create', [\Modules\Shop\Http\Controllers\ShopController::class, 'create'])->name('add_shop');
     Route::post('/store', [\Modules\Shop\Http\Controllers\ShopController::class, 'store'])->name('save_shop');

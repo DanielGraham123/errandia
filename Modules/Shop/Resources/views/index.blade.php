@@ -2,7 +2,7 @@
 @section('page_title') @lang('shop.list_shops_title') @endsection
 @section('title') @lang('shop.list_shops_title') @endsection
 @section('content')
-    <div class="container p-2">
+    <div class="p-5">
         <div class=" d-flex justify-content-between">
             <div class="d-flex flex-wrap"></div>
             <div class="d-flex flex-wrap"></div>
@@ -15,7 +15,7 @@
         <div class="row card-deck my-5">
         <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
         	<thead>
-            <tr>            	
+            <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Category</th>
@@ -30,10 +30,23 @@
             @foreach($shops as $shop)
             <tr>
                 <td>{{$shop->id}}</td>
-                <td>{{$shop->name}}</td>
-                <td>{{$shop->category->name}}</td>
-                <td>{{$shop->user->name}}</td>
-                <td>{{$shop->user->email}}</td>
+                <td style="white-space: normal">{{$shop->name}}</td>
+
+
+                <td style="white-space: normal">
+                    @if( sizeof($shop->categories))
+                        @foreach($shop->categories as $key=>$category)
+                            {{$category->name}}
+                            @if($key < sizeof($shop->categories) -1)
+                                {{','}}
+                            @endif
+                        @endforeach
+                    @elseif($shop->category)
+                        {{$shop->category->name}}
+                    @endif
+                </td>
+                <td style="white-space: normal">{{$shop->user->name}}</td>
+                <td style="white-space: normal">{{$shop->user->email}}</td>
                 <td>{{$shop->user->tel}}</td>
                <!-- <td>{{$shop->shopContactInfo->website_link}}</td>-->
                 <td>

@@ -13,8 +13,9 @@ class CreateShopRequest extends FormRequest
      */
     public function rules()
     {
+//        category' => 'required|not_in:none' :category is no more required
         return ['supplier_name' => 'required', 'email' => 'required', 'password' => 'required|confirmed', 'shop_name' => 'required',
-            'description', 'category' => 'required|not_in:none', 'website'=>'required',
+            'description', 'categories' => 'required', 'website'=>'required',
             'town' => 'required', 'address' => 'required',
             'tel' => 'required', 'shop_image' => "required|max:3000|mimes:jpg,jpeg,png"];
     }
@@ -26,6 +27,10 @@ class CreateShopRequest extends FormRequest
             'category_id' => $this->input('category'),
             'image_path' => $this->file('shop_image')
         ];
+    }
+    public function getShopCategories()
+    {
+        return $this->input('categories');
     }
 
     public function getShopContactData()

@@ -11,6 +11,7 @@ namespace Modules\Shop\Repositories;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Shop\Entities\Shop;
+use Modules\Shop\Entities\ShopCategory;
 use Modules\Shop\Entities\ShopContactInfo;
 use Modules\Shop\Entities\ShopSubscriber;
 use Modules\Shop\Entities\ShopSubscription;
@@ -46,7 +47,7 @@ class ShopRepository
 
     public function getAll()
     {
-        return $this->model->with(['category.category', 'user', 'shopContactInfo'])->orderBy('name', 'asc')->get();
+        return $this->model->with(['category.category', 'user', 'shopContactInfo','categories'])->orderBy('name', 'asc')->get();
     }
 
     public function getRandomActiveShops()
@@ -179,5 +180,14 @@ class ShopRepository
             if (strtotime($query->end_date) > strtotime(date("Y-m-d"))) $response = true;
         }
         return $response;
+    }
+    public function saveShopCategories($shopId,$categories){
+        foreach ($categories as $category){
+            $shopCategory = new ShopCategory();
+            $shopCategory['shop_id']=$shopId;
+            $shopCategory['product_sub_category_id']=$category;
+            $shopCategory->save();
+        }
+        return true;
     }
 }

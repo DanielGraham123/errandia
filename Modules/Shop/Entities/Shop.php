@@ -53,4 +53,8 @@ class Shop extends Model
     {
         return $this->belongsToMany(ProductQuote::class ,'shop_quotes');
     }
+    public function categories()
+    {
+        return $this->belongsToMany(SubCategory::class ,'shop_categories','shop_id','product_sub_category_id');
+    }
 }

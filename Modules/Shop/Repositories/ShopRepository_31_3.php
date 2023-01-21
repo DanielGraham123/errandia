@@ -137,18 +137,18 @@ class ShopRepository
     {
         return $this->model->where('status', 0)->whereIn('id', $shop_ids)->inRandomOrder()->limit(6)->get();
     }
-	
+
 	public function savePackageSubscriptionInfo(array $subscriptionDatails)
     {
         return ShopSubscription::create($subscriptionDatails);
     }
-	
-	
+
+
 	public function getShopSubcription()
     {
         //return $this->model->with(['shop_subscriptions', 'subscriptions'])->get();
 		$Slider = ShopSubscription::join('subscriptions', 'shop_subscriptions.subscription_id', '=', 'subscriptions.id')->join('shops', 'shops.id', '=', 'shop_subscriptions.shop_id')->get(['shops.name as ShopName','subscriptions.name as SubName','subscriptions.duration','shop_subscriptions.start_date','shop_subscriptions.end_date'])->all();
-        
-		return $Slider;    	
+
+		return $Slider;
     }
 }
