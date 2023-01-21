@@ -107,7 +107,8 @@ class ShopController extends Controller
         }
 
         return view('shop::edit')->with(['categories' => $categoryService->getActiveCategories(),
-            'shop' => $shopExist, 'regions' => $locationService->getAllRegions()
+            'shop' => $shopExist, 'regions' => $locationService->getAllRegions(),
+             'subcategories'=>$this->SubCategory->getAllSubCategories(),
         ]);
     }
 
