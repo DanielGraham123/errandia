@@ -162,14 +162,16 @@ class ProductSearchController extends Controller
             $townFilter = $_POST['town'] ?? 0;
             $streetFilter = $_POST['street'] ?? 0;
             $searchCriteria = array('categories' => $categories, 'region' => $regionFilter, 'town' => $townFilter, 'street' => $streetFilter);
-            $shopContacts = $productService->getShopsBySubCategory($searchCriteria);
-
+            $shopContacts = $productService->getShopsBySubCategory($searchCriteria,true);
+            //  If search results returns 0 fetch stores without using shopcategories tacble
+            $shopContacts =sizeof($shopContacts)?$shopContacts:$productService->getShopsBySubCategory($searchCriteria);
             if (sizeof($shopContacts)) {
                 //send sms to all contacts
                 $shopContactsList = [];
                 $shopEmailList = [];
                 foreach ($shopContacts as $shopContact){
-                    $shopContactsList[] = "237" . $shopContact->shop_tel;
+                    // append 237 if number doesn't begin with 237
+                    $shopContactsList[] = str_starts_with($shopContact->shop_tel, "237") ? $shopContact->shop_tel : "237". $shopContact->shop_tel;
                     $shopEmailList[] = $shopContact->shop_email;
                     $shop_quote = new ShopQuote();
                     $shop_quote['shop_id']=$shopContact->id;

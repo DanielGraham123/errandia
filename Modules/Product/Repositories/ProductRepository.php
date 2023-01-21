@@ -98,8 +98,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                     $query = DB::table('shops')
                         ->join('users', 'shops.user_id', '=', 'users.id')
                         ->join('shop_contact_info', 'shops.id', '=', 'shop_contact_info.shop_id')
-                        ->where('category_id', $subCategoryId)
+                        ->join('shop_categories','shops.id','=', 'shop_categories.shop_id')
+                        ->where('shops.category_id', $subCategoryId)
                         ->where('street_id', $streetFilter)
+                        ->orWhere('shop_categories.product_sub_category_id','=',$subCategoryId)
                         ->select('shop_contact_info.tel', 'users.email', 'shops.id')
                         // ->groupBy('tel')
                         ->get();
@@ -110,8 +112,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                         ->join('shop_contact_info', 'shops.id', '=', 'shop_contact_info.shop_id')
                         ->join('streets', 'shop_contact_info.street_id', '=', 'streets.id')
                         ->join('towns', 'streets.town_id', '=', 'towns.id')
-                        ->where('category_id', $subCategoryId)
+                        ->join('shop_categories','shops.id','=', 'shop_categories.shop_id')
+                        ->where('shops.category_id', $subCategoryId)
                         ->where('towns.id', $townFilter)
+                        ->orWhere('shop_categories.product_sub_category_id','=',$subCategoryId)
                         ->select('shop_contact_info.tel', 'users.email', 'shops.id')
                         //->groupBy('tel')
                         ->get();
@@ -124,18 +128,25 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
                     ->join('streets', 'shop_contact_info.street_id', '=', 'streets.id')
                     ->join('towns', 'streets.town_id', '=', 'towns.id')
                     ->join('regions', 'towns.region_id', '=', 'regions.id')
+                    ->join('shop_categories','shops.id','=', 'shop_categories.shop_id')
+
                     ->where('shops.category_id', $subCategoryId)
                     ->where('towns.region_id', $regionFilter)
+                    ->orWhere('shop_categories.product_sub_category_id','=',$subCategoryId)
+
                     ->select('shop_contact_info.tel', 'users.email', 'shops.id as shop_id')
                     //->groupBy('tel')
                     ->get();
             }
         } else {
             $query = DB::table('shops')
-                ->where('category_id', $subCategoryId)
                 ->join('users', 'shops.user_id', '=', 'users.id')
                 ->join('shop_contact_info', 'shops.id', '=', 'shop_contact_info.shop_id')
+                ->join('shop_categories','shops.id','=', 'shop_categories.shop_id')
+                ->where('shops.category_id', $subCategoryId)
+                ->orWhere('shop_categories.product_sub_category_id','=',$subCategoryId)
                 ->select('shop_contact_info.tel', 'users.email', 'shops.id')
+
                 // ->groupBy('tel')
                 ->get();
         }
@@ -155,7 +166,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $response = array("tel" => $tels, "email" => $emails);
         return $response;
     }
-    public function geterrandShops($searchCriteria)
+    public function geterrandShops($searchCriteria,$useShopCategoriesTable = false)
     {
 
         $query = DB::table('shops')
@@ -165,8 +176,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             ->join('streets', 'shop_contact_info.street_id', '=', 'streets.id')
             ->join('towns', 'streets.town_id', '=', 'towns.id')
             ->join('regions', 'towns.region_id', '=', 'regions.id');
+            if($useShopCategoriesTable){
+                $query ->join('shop_categories','shops.id','=', 'shop_categories.shop_id');
+            }
+
         $query->where('shops.name', "!=", '');
-//
         $query->when(!empty($searchCriteria['region']), function ($query) use ($searchCriteria) {
             return $query->where(function ($q) use ($searchCriteria) {
                 $q->where('regions.id', '=', "{$searchCriteria['region']}");
@@ -184,16 +198,21 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         });
 
 
-        $query->when(!empty($searchCriteria['categories']), function ($query) use ($searchCriteria) {
-            return $query->where(function ($q) use ($searchCriteria) {
+        $query->when(!empty($searchCriteria['categories']), function ($query) use ($searchCriteria,$useShopCategoriesTable) {
+            return $query->where(function ($q) use ($searchCriteria,$useShopCategoriesTable) {
                 if ( sizeof( $searchCriteria['categories'])){
                     foreach ($searchCriteria['categories'] as $key=>$category){
                         if ($key == 0){
                             $q->where('shops.category_id', '=', "{$category}");
+                            if($useShopCategoriesTable){
+                                $q->orWhere('shop_categories.product_sub_category_id','=',$category);
+                            }
                         }else{
                             $q->orWhere('shops.category_id', '=', "{$category}");
+                            if($useShopCategoriesTable){
+                                $q->orWhere('shop_categories.product_sub_category_id','=',$category);
+                            }
                         }
-
                     }
                 }
             });

@@ -297,7 +297,6 @@ class ProductController extends Controller
 
         $shop = Shop::find($shop_id);
         $data['quotes'] = $shop->quotes()->orderBy('created_at','desc')->paginate(15);
-        $ProductQuoteService->getAllShopProductQuotes($shop_id);
         return view("product::show_quotes")->with($data);
     }
     public function showDeletedProductQuotes(ProductQuoteService $ProductQuoteService)

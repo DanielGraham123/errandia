@@ -80,7 +80,7 @@ return [
 	"street_add_success_msg" => "Street details saved",
 	"street_add_error_msg" => "Whoops! an error encountered saving details. Kindly refresh and try again",
 	"street_delete_success_msg" => "Street deleted successfully",
-	"sidebar_manage_product_quote" => "Manage Product Quotes",
+	"sidebar_manage_product_quote" => "Manage Product Request",
     "add_admin_title_msg"=>"Add a system administrator",
     "add_admin_btn_msg"=>"Add a new Admin",
     "view_admin_title_msg"=>"Manage System Administrators",

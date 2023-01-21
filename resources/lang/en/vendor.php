@@ -36,7 +36,7 @@ return [
     "product_details_review_title" => "Reviews",
     "product_details_enquiry_title" => "Enquiry",
     "delete_product_review_exist_msg" => "Whoops! This product has some associated data linked (reviews/buyer requests)",
-    "sidebar_manage_product_quote" => "Manage Product Quotes",
+    "sidebar_manage_product_quote" => "Manage Product Request",
     "sidebar_manage_product_enquiry" => "Manage Product Enquiries",
     "sidebar_manage_product_review" => "Manage Product Reviews",
     "subscribers_list_page_title" => "Manage subscribers currently subscribed to your Errandia shop profile",
