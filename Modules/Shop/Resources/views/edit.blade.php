@@ -80,14 +80,14 @@
                             </div>
                         </div>
                         <div class="clearfix"><br/></div>
-                        <div class="row">
+                        <div class="row d-none">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <select onchange="getSubCategoriesByCategory(this)" id="main-category"
                                             name="main-category" class="form-control">
                                         <option value="none">{{trans('shop.add_shop_placeholder_category')}}</option>
                                         @foreach($categories as $category)
-                                            @if($category->id == $shop->category->category->id)
+                                            @if($shop->category && $category->id == $shop->category->category->id)
                                                 <option selected value="{{$category->id}}">{{$category->name}}</option>
                                             @else
                                                 <option value="{{$category->id}}">{{$category->name}}</option>
@@ -101,8 +101,40 @@
                                     <select class="form-control" name="category"
                                             id="sub_category">
                                         <option value="none">@lang('shop.add_shop_placeholder_sub_category')</option>
+                                        @if($shop->category)
                                         <option selected
                                                 value="{{$shop->category->id}}">{{$shop->category->name}}</option>
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"><br/></div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group d-flex flex-column ">
+                                    <select id="product-categories" class="form-control" name="categories[]"
+                                            multiple="multiple" required>
+                                        @foreach($subcategories as $category)
+                                            @php
+                                                $isShopCategory = false;
+                                            @endphp
+                                            @if(sizeof($shop->categories))
+                                                @foreach($shop->categories as $key=>$shopcategory)
+                                                    @if($shopcategory->id == $category->id)
+                                                        @php
+                                                            $isShopCategory = true;
+                                                        @endphp
+                                                    @endif
+                                                @endforeach
+                                            @elseif($shop->category && $shop->category->id == $category->id)
+                                                @php
+                                                    $isShopCategory = true;
+                                                @endphp
+                                            @endif
+
+                                            <option @if($isShopCategory) selected @endif  value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -112,9 +144,11 @@
                             <div class="col-md-8">
                                 <label for="description">{{trans('shop.add_shop_placeholder_shop_description')}}</label>
                                 <div class="form-group">
-                            <textarea id="description" name="description" class="form-control">
-                                {{$shop->description}}
-                            </textarea>
+{{--                            <textarea id="description" name="description" class="form-control">--}}
+{{--                                {{}}--}}
+{{--                            </textarea>--}}
+                                    @include('helep.general.components.richtext_editor',['textareaName'=>'description','serverData'=>$shop->description])
+
                                 </div>
                             </div>
                             <div class="col-md-4"></div>
@@ -209,6 +243,10 @@
         $(function () {
             //set link indicator
             $("#admin_manage_shops").addClass('active');
+            $('#product-categories').select2({
+                closeOnSelect: false,
+                placeholder: "Select Shop Category"
+            });
         });
     </script>
     <script src="{!!asset("js/user-utilities.js")!!}"></script>

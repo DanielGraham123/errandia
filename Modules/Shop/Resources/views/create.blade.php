@@ -222,11 +222,9 @@
 @endsection
 @section('js')
     <script>
-        console.log("could it be the script")
         $(function () {
             //set link indicator
             $("#admin_manage_shops").addClass('active');
-            console.log("What is happening")
             $('#product-categories').select2({
                 closeOnSelect: false,
                 placeholder: "Select Shop Category"

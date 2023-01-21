@@ -34,7 +34,7 @@
 
 
                 <td style="white-space: normal">
-                    @if( sizeof($shop->categories))
+                    @if(sizeof($shop->categories))
                         @foreach($shop->categories as $key=>$category)
                             {{$category->name}}
                             @if($key < sizeof($shop->categories) -1)
