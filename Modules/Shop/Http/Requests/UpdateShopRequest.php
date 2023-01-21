@@ -13,7 +13,7 @@ class UpdateShopRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = ['supplier_name' => 'required', 'shop_name' => 'required', 'description', 'category' => 'required|not_in:none',
+        $rules = ['supplier_name' => 'required', 'shop_name' => 'required', 'description', 'categories' => 'required',
         'town' => 'required', 'address' => 'required', 'tel' => 'required','website'=>'required'
         ];
         if ($this->hasFile('shop_image')) {
@@ -37,7 +37,10 @@ class UpdateShopRequest extends FormRequest
             'whatsapp_number' => $this->input('whatsapp')
         ];
     }
-
+    public function getShopCategories()
+    {
+        return $this->input('categories');
+    }
     public function getShopUserData()
     {
         return ['name' => $this->input('supplier_name'), 'tel' => $this->input('tel')];

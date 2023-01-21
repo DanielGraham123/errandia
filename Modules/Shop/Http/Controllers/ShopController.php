@@ -105,13 +105,11 @@ class ShopController extends Controller
             return redirect()->route('shop_list')
                 ->withErrors([trans('shop.shop_not_found')]);
         }
-
         return view('shop::edit')->with(['categories' => $categoryService->getActiveCategories(),
             'shop' => $shopExist, 'regions' => $locationService->getAllRegions(),
              'subcategories'=>$this->SubCategory->getAllSubCategories(),
         ]);
     }
-
     //update shop details
     public function update(UpdateShopRequest $request, $slug, UserService $userService)
     {
@@ -123,17 +121,25 @@ class ShopController extends Controller
         //get shop details
         $shopDetails = $request->getShopData();
         $shopContactInfo = $request->getShopContactData();
-
+        $shopCategories = $request->getShopCategories();
         $shopOwnerAccount = $request->getShopUserData();
         $shopContactInfo['facebook_link'] = is_null($shopContactInfo['facebook_link']) ? "" : $shopContactInfo['facebook_link'];
+        $shopDetails['category_id'] = $shopDetails['category_id'] !='none' ? $shopDetails['category_id']: '';
+
         //start a db transaction
-        DB::transaction(function () use ($userService, $shopOwnerAccount, $shopDetails, $shopContactInfo, $shopExist) {
+        DB::transaction(function () use ($userService, $shopOwnerAccount, $shopDetails, $shopContactInfo, $shopExist,$shopCategories) {
             //save supplier/shop own account info
             $userService->updateUserAccount($shopOwnerAccount, $shopExist->user->id);
             //save shop details
             $this->shopService->updateShopInfo($shopExist->id, $shopDetails);
             //save shop contact info
             $this->shopService->updateShopContactInfo($shopExist->shopContactInfo->id, $shopContactInfo);
+            //delete existing shop categories
+            foreach ($shopExist->categories as $category) {
+                $category->delete();
+            }
+            //save shop categories
+            $this->shopService->saveShopCategories($shopExist->id, $shopCategories);
         });
         $message = trans('shop.update_shop_success_msg');
         session()->flash('success', $message);
