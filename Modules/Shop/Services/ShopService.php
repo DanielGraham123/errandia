@@ -74,7 +74,6 @@ class ShopService
     {
         return $this->shopRepository->saveShopRegistrationInfo($shop_id, $reg_info);
     }
-
     public function getShopBusinessRegistrationInfo($shop_id)
     {
         return $this->shopRepository->getShopRegistrationInfo($shop_id);

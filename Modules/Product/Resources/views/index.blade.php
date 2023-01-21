@@ -23,7 +23,22 @@
                     @endforeach
 
             </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    {{ $products->links() }}
+                </div>
+                <div class="col-md-2"></div>
+            </div>
 
+        @else
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex align-items-center justify-content-center flex-column">
+                        <h5>No product found</h5>
+                    </div>
+                </div>
+            </div>
         @endif
     </div>
 @endsection

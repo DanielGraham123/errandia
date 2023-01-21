@@ -151,7 +151,7 @@ class ProductController extends Controller
     function showUserProducts(ShopService $shopService)
     {
         $user_shop = $this->utilityService->getCurrentUserShop();
-        $products = $shopService->getProductsByShop($user_shop->id);
+        $products = $shopService->getPaginatedProductsByShop($user_shop->id);
         $data['products'] = $products;
         $data['currencies'] = $this->utilityService->getCurrencies();
         $data['shop'] = $user_shop;

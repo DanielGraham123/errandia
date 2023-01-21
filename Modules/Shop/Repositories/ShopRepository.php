@@ -79,7 +79,7 @@ class ShopRepository
 
     public function getPaginatedProductsByShop($shop_id)
     {
-        return $this->model->find($shop_id)->products()->paginate(20);
+        return $this->model->find($shop_id)->products()->paginate(15);
     }
 
     public function saveShopRegistrationInfo($shop_id, array $reg_info)
