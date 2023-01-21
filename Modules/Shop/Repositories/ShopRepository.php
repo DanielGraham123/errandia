@@ -32,12 +32,12 @@ class ShopRepository
 
     public function findById($shop_id)
     {
-        return $this->model->where('id', $shop_id)->with(['user', 'category.category', 'shopContactInfo', 'products'])->first();
+        return $this->model->where('id', $shop_id)->with(['user', 'category.category', 'shopContactInfo', 'products','categories'])->first();
     }
 
     public function findBySlug($slug)
     {
-        return $this->model->where('slug', $slug)->with(['category.category', 'user', 'shopContactInfo.street.town.region'])->first();
+        return $this->model->where('slug', $slug)->with(['category.category', 'user', 'shopContactInfo.street.town.region','categories'])->first();
     }
 
     public function update($shop_id, array $shop)
