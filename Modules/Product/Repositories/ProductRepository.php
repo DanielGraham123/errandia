@@ -166,7 +166,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $response = array("tel" => $tels, "email" => $emails);
         return $response;
     }
-    public function geterrandShops($searchCriteria,$useShopCategoriesTable = false)
+    public function geterrandShops($searchCriteria,$useShopCategoriesTable)
     {
 
         $query = DB::table('shops')

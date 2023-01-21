@@ -58,10 +58,29 @@
                                         <li class="breadcrumb-item shadow-2dp active"><span
                                                 class="text-black font-10">@lang('vendor.product_view_category_msg') </span>
                                         </li>
-                                        <li class="breadcrumb-item"><a class="helep_btn_raise"
-                                                href="{{route('show_cat_products',['category'=>$quote->category->category->slug])}}">{{$quote->category->category->name}}</a></li>
-                                        <li class="breadcrumb-item"><a class="helep_btn_raise"
-                                                href="{{route('show_collection_products',['category'=>$quote->category->slug])}}">{{$quote->category->name}}</a></li></ol>
+                                        @if(sizeof($categories))
+                                            @foreach($categories as $category)
+
+                                                <li class="breadcrumb-item">
+                                                    <a class="helep_btn_raise"
+                                                       href="{{route('show_collection_products',['category'=>$category->slug])}}">{{$category->name}}</a>
+                                                </li>
+]
+                                            @endforeach
+
+                                        @elseif($quote->category)
+                                            <li class="breadcrumb-item">
+                                                <a class="helep_btn_raise"
+                                                   href="{{route('show_cat_products',['category'=>$quote->category->category->slug])}}">
+                                                    {{$quote->category->category->name}}</a>
+                                            </li>
+                                            <li class="breadcrumb-item">
+                                                <a class="helep_btn_raise"
+                                                   href="{{route('show_collection_products',['category'=>$quote->category->slug])}}">{{$quote->category->name}}</a>
+                                            </li>
+                                        @endif
+
+                                    </ol>
                                 </nav>
                             </li>
                             <li class="">

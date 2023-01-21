@@ -314,6 +314,8 @@ class ProductController extends Controller
         $quote = $ProductQuoteService->findQuoteById($QuoteID);
         $data['quote']  = $quote;
         $data['quoteImages'] = $ProductQuoteService->getQuoteImages($QuoteID);
+        $categories = explode(',',$quote->categories);
+        $data['categories'] = sizeof($categories)?  SubCategory::whereIn('id',$categories)->get() : [];
         $quote->read_status = 1;
         $quote->save();
 

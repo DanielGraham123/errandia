@@ -190,12 +190,9 @@ class ProductSearchController extends Controller
                 $quote['image'] = collect($ProductQuoteService->getQuoteImages($quote->id))->first();
                 $quoteObj = array('link' => $quoteLink, 'quote' => $quote);
                 SendProductQuoteByEmail::dispatchSync(array('quote' => $quoteObj, 'emails' => $emailData));
-                        session()->flash('message', trans('Product Quote successfully sent !'));
-
                 return redirect()->route('run_errand_page', $data)->with(['success' => trans('Product Quote successfully sent !')]);
 
             } else {
-//                session()->flash('message', trans('general.errands_not_sent_msg'));
                 return redirect()->back()->withErrors(['No shop with the product you are looking for']);
             }
 
@@ -213,6 +210,9 @@ class ProductSearchController extends Controller
 
         $data['featured_image'] = $quoteExist->images->shift();
         $data['quote'] = $quoteExist;
+        $categories = explode(',',$quoteExist->categories);
+        $data['categories'] = sizeof($categories)?  SubCategory::whereIn('id',$categories)->get() : [];
+
         return view('productsearch::custom_quote')->with($data);
     }
 
