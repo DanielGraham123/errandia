@@ -56,6 +56,7 @@ class ShopController extends Controller
         $shopContactInfo['facebook_link'] = is_null($shopContactInfo['facebook_link']) ? "" : $shopContactInfo['facebook_link'];
 
         $shopDetails['category_id'] = $shopDetails['category_id'] !='none' ? $shopDetails['category_id']: '';
+        unset($shopDetails['category_id']);
         //check if entered email address exist
         if ($userService->emailExist($shopOwnerAccount['email'])) {
             return redirect()
@@ -126,6 +127,7 @@ class ShopController extends Controller
         $shopContactInfo['facebook_link'] = is_null($shopContactInfo['facebook_link']) ? "" : $shopContactInfo['facebook_link'];
         $shopDetails['category_id'] = $shopDetails['category_id'] !='none' ? $shopDetails['category_id']: '';
 
+        unset($shopDetails['category_id']);
         //start a db transaction
         DB::transaction(function () use ($userService, $shopOwnerAccount, $shopDetails, $shopContactInfo, $shopExist,$shopCategories) {
             //save supplier/shop own account info
