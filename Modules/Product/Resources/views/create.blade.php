@@ -22,13 +22,13 @@
                 <div>
                     <div class="form-group mb-3">
                         <input value="{{old('name')}}" name="name" type="text" class="form-control"
-                               placeholder="{{trans('vendor.add_product_name_label')}}">
+                               placeholder="{{trans('vendor.add_product_name_label')}}" required>
                     </div>
                 </div>
 
                 <div class="form-group mb-3">
                     <select id="sub_category" class="form-control"
-                            name="sub_category" >
+                            name="sub_category" required>
                         <option value="none">@lang('vendor.add_product_category_label')</option>
                         @foreach($categories as $category)
                             <option value="{{$category->id}}"
@@ -38,18 +38,12 @@
                     </select>
                 </div>
 
-{{--                <div class="form-group mb-3">--}}
-{{--                    <select class="form-control" name="sub_category"--}}
-{{--                            id="sub_category">--}}
-{{--                        <option value="none">@lang('vendor.add_product_sub_category_label')</option>--}}
-{{--                    </select>--}}
-{{--                </div>--}}
-                <div class="form-group  mb-3">
+                <div class="form-group mb-3">
                     <input value="{{old('price')}}" type="number" name="price" class="form-control"
-                           placeholder="{{trans('vendor.add_product_unit_price_label')}}">
+                           placeholder="{{trans('vendor.add_product_unit_price_label')}}" min="0" required>
                 </div>
                 <div class="form-group">
-                    <select name="currency" class="form-control">
+                    <select name="currency" class="form-control" required>
                         <option value="none">@lang('vendor.add_product_currency_label')</option>
                         @foreach($currencies as $key=>$currency)
                             <option value="{{$currency->id}}" @if($key == 0) selected @endif>{{$currency->name}}</option>
@@ -57,26 +51,26 @@
                     </select>
                 </div>
                 <div class="form-group mb-3">
-                    <input name="quantity" value="{{old('quantity',1)}}" type="number" class="form-control"
-                           placeholder="@lang('vendor.add_product_quantity_label')"/>
+                    <input name="quantity" value="{{old('quantity')}}" type="number" class="form-control"
+                           placeholder="@lang('vendor.add_product_quantity_label')" min="1"/>
                 </div>
                 <div class="form-group mb-3">
                                 <label>{{trans('vendor.add_product_description_label')}}</label>
                     <br/>
 
                     @include('helep.general.components.richtext_editor',['textareaName'=>'description'])
+                    <span class="text-danger d-none font-weight-bold" id="description-error">Product description is required</span>
 
                 </div>
 
                 <h6 class="text-black px-4 my-3">@lang('vendor.add_product_image_title')</h6>
 
-                <div id="product_images" class="row">
-
-                </div>
+                <div id="product_images" class="row"></div>
+                <span class="text-danger d-none font-weight-bold" id="image-error">Product image is required</span>
             </div>
             <div class="clearfix"><br/></div>
             <div class="align-self-center d-flex-column">
-                <button id="create_product_btn" class="btn helep_btn_raise mb-5 px-5  w-100">@lang('vendor.add_product_btn_label')</button>
+                <button type="submit" id="create_product_btn" class="btn helep_btn_raise mb-5 px-5 w-100">@lang('vendor.add_product_btn_label')</button>
             </div>
         </form>
     </div>
@@ -86,12 +80,36 @@
 
     <script>
         $(function () {
-            // previewProduct('','');
             //set link indicator
             $("#vendor_manage_product").addClass('active');
-            $(document).on('click','#create_product_btn',function (e){
-                $(this).attr('disabled',true);
-                $("#add_product_form").submit();
+            $(document).on('submit','#add_product_form',function (e){
+                e.preventDefault();
+                $("#create_product_btn").addClass('disabled');
+                let errorsCount = 0;
+                let image =$('input[name="image[]"]').val();
+                let description = $('textarea[name="description"]').val();
+                //validate image
+                if (!image){
+                    $('#image-error').removeClass('d-none');
+                    errorsCount++;
+                }else{
+                    $('#image-error').addClass('d-none');
+                    errorsCount--;
+                }
+                //validate description
+                if (!description){
+                    $('#description-error').removeClass('d-none');
+                    errorsCount++;
+                }else{
+                    $('#description-error').addClass('d-none');
+                    errorsCount--;
+                }
+                // submit form if there are no errors
+                if (!errorsCount){
+                    $(this).submit();
+                }
+
+
             })
         });
 

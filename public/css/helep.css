@@ -1400,6 +1400,10 @@ li.breadcrumb-item.helep_btn_raise{
 .card img{
     width: 100%;
 }
+.btn.disabled{
+    background: inherit !important;
+    cursor: not-allowed;
+}
 @media (max-width: 767px) {
     .mobile-only{
         display: block;
