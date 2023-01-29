@@ -180,8 +180,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             }
         if ($activeShops){
             $query->join('shop_subscriptions', 'shops.id', '=', 'shop_subscriptions.shop_id');
-
-//                $query->where('shop_subscriptions.end_date', '>=', Carbon::now());
+                $query->where('shop_subscriptions.end_date', '>=', Carbon::now());
             }
 
         $query->where('shops.name', "!=", '');
