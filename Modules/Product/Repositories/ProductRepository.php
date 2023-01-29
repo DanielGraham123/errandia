@@ -166,17 +166,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $response = array("tel" => $tels, "email" => $emails);
         return $response;
     }
-    public function geterrandShops($searchCriteria,$useShopCategoriesTable)
+    public function geterrandShops($searchCriteria,$useShopCategoriesTable,$paginate)
     {
 
         $query = DB::table('shops')
-            ->join('products', 'shops.id', '=', 'products.shop_id')
             ->join('users', 'shops.user_id', '=', 'users.id')
             ->join('shop_contact_info', 'shops.id', '=', 'shop_contact_info.shop_id')
             ->join('streets', 'shop_contact_info.street_id', '=', 'streets.id')
             ->join('towns', 'streets.town_id', '=', 'towns.id')
             ->join('regions', 'towns.region_id', '=', 'regions.id');
-            if($useShopCategoriesTable){
+            if($useShopCategoriesTable && !empty($searchCriteria['categories'])){
                 $query ->join('shop_categories','shops.id','=', 'shop_categories.shop_id');
             }
 
@@ -219,7 +218,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         });
 
 
-        return $query->select(
+         $query->select(
             'shops.*',
             'shop_contact_info.tel as shop_tel',
             'shop_contact_info.address as shop_address',
@@ -227,7 +226,12 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'streets.name as store_street',
             'regions.name as store_region',
             'users.email as shop_email'
-        )->distinct()->get();
+        )->distinct();
+
+        if ($paginate){
+            return $query->paginate(15);
+        }
+        return $query->get();
 
     }
 

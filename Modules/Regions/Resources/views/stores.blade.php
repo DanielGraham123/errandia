@@ -1,49 +1,50 @@
 @extends('helep.general.master')
+
 @section('content')
+    @php
+
+    @endphp
     <div class="py-5 container-lg">
         <div class="ml-lg-n2 mr-lg-n5">
             <div class="row  card-body helep_alert_round">
 
                 <div class="col-md-3">
 
-                    <form name="Sort" action="{{route('regions_stores',['id' => $RegionID])}}" method="get">
+                    <form name="Sort" action="{{route('regions_stores',['id' => $region->id])}}" method="get">
 
-                        {{--                <select  class="form-control" name="region" id="region"   onchange="getTowns(this)">--}}
-                        {{--                    <option value="">Select Region</option>--}}
-                        {{--                    @foreach($regions as $region)--}}
-                        {{--                        <option value="{{$region->id}}"  <?php echo $region->id==$regionid?'selected="selected"':'';?>>{{$region->name}}</option>--}}
-                        {{--                    @endforeach--}}
-                        {{--                </select>--}}
-                        {{--    --}}
-                        <select class="form-control" name="town" id="townSearch" onchange="getStreets(this)">
-                            <option value="null">Select Town</option>
-                            @foreach($region->towns as $town)
+                        <select class="form-control" name="town" id="townSearch" onchange="this.form.submit();">
+                            <option value="">Select Town</option>
+                            @foreach($towns as $town)
                                 <option
-                                    value="{{$town->id}}" <?php echo $townid == $town->id ? 'selected="selected"' : '';?>> {{$town->name}} </option>
+                                    value="{{$town->id}}" <?php echo $townId == $town->id ? 'selected="selected"' : '';?>> {{$town->name}} </option>
                             @endforeach
                         </select>
 
                         <select class="form-control" name="street" id="streetSearch" onchange="this.form.submit();">
                             <option value="">Select Street</option>
-                            {{--                    @foreach($streets as $street)--}}
-                            {{--                        <option value="{{$street->id}}" <?php echo $streetid==$street->id?'selected="selected"':'';?>>{{$street->name}}</option>--}}
-                            {{--                    @endforeach--}}
+                            @foreach($streets as $street)
+                                <option
+                                    value="{{$street->id}}" <?php echo $street->id == $streetId ? 'selected="selected"' : '';?>>{{$street->name}}</option>
+                            @endforeach
                         </select>
 
                         <select class="form-control" name="category" onchange="this.form.submit();">
-                            <option value="null"> All Category</option>
+                            <option value=""> All Category</option>
 
                             @foreach($categories as $category)
                                 <option
-                                    value="{{$category->id}}" <?php echo $categoryid == $category->id ? 'selected="selected"' : '';?>> {{$category->name}} </option>
+                                    value="{{$category->id}}" <?php echo $categoryId == $category->id ? 'selected="selected"' : '';?>> {{$category->name}} </option>
                             @endforeach
                         </select>
+                        <input type="hidden" id="townId" value="{{$townId}}">
+                        <input type="hidden" id="categoryId" value="{{$categoryId}}">
+                        <input type="hidden" id="streetId" value="{{$streetId}}">
                     </form>
                 </div>
                 <div class=" col-md-9 bg-helep-blue">
 
                     <div class="p-2 m-2">
-                        <h4 class="text-white font-weight-bold  pb-2 mb-2">
+                        <h4 class="text-white font-weight-bold pb-2 mb-2 text-center">
                             @lang('general.components_popular_search_shops_title',['region'=>$region->name])
                         </h4>
                     </div>
@@ -98,7 +99,6 @@
                 }
             });
         }
-
         function getStreets() {
 
             var town = $("#townSearch").val();
@@ -120,5 +120,17 @@
                 }
             });
         }
+        $(document).ready(function () {
+            const categoryId = $('#categoryId').val();
+            const streetId = $('#streetId').val();
+            const townId = $('#townId').val();
+            const urlParams = `&town=${townId}&street=${streetId}&category=${categoryId}`;
+            $('a.page-link').each((index,ele)=>{
+                let href = $(ele).attr('href');
+                href = href+urlParams;
+                $(ele).attr('href',href);
+            })
+
+        })
     </script>
 @endsection

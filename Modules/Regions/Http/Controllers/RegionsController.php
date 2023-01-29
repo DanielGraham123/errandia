@@ -5,10 +5,12 @@ namespace Modules\Regions\Http\Controllers;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Location\Entities\Country;
 use Modules\Location\Entities\Town;
 
 use Modules\Location\Services\Interfaces\LocationService;
+use Modules\Product\Services\ProductService;
 use Modules\ProductCategory\Services\CategoryService;
 use Modules\Regions\Entities\Regions;
 use Modules\Street\Entities\Street;
@@ -157,33 +159,31 @@ class RegionsController extends Controller
         return view('regions::regions', $data);
     }
 
-    public function stores($RegionID,CategoryService $categoryService)
+    public function stores($region, CategoryService $categoryService,ProductService $productService)
     {
-        $town = '';
-        $category = '';
-        $street = '';
-//        if (isset($_REQUEST['region'])) {
-//            $region = $_REQUEST['region'];
-//        }
-        if (isset($_REQUEST['town']) && !is_null($_REQUEST['town'])) {
-            $town = $_REQUEST['town'];
+        $town =  $_REQUEST['town'] ?? 0;
+        $category =$_REQUEST['category'] ?? 0;
+        $street = $_REQUEST['street'] ?? 0;
+        $searchCriteria = array( 'region' => intval( $region ), 'town' => $town, 'street' => $street);
+        if ($category){
+            $searchCriteria['categories'] = [$category];
         }
-        if (isset($_REQUEST['street']) && $_REQUEST['street'] != "null") {
-            $street = $_REQUEST['street'];
-        }
-        if (isset($_REQUEST['category']) && $_REQUEST['category'] != "null") {
-            $category = $_REQUEST['category'];
-        }
-        //$data['regions'] = $this->Regions->getAllRegions();
-        //$data['streets'] = $this->Street->getAllStreets();
-        //$data['regionid'] = $region;
-        $data['region'] = Regions::with('towns')->where('id', $RegionID)->first();
-        $data['stores'] = $this->Regions->getStores($RegionID, $street, $category,);
+        $data['stores']  = $productService->getShopsBySubCategory($searchCriteria,true,true);
         $data['categories'] = $categoryService->getActiveSubCategories();
-        $data['RegionID'] = $RegionID;
-        $data['townid'] = $town;
-        $data['streetid'] = $street;
-        $data['categoryid'] = $category;
+        $data['region'] =  DB::table('regions')->where('id', $region)->first();
+        $data['townId'] = $town;
+        $data['streetId'] = $street;
+        $data['categoryId'] = $category;
+        $data['towns'] = DB::table('towns')->where('region_id', $region)->get();
+        $data['streets'] = DB::table('streets')
+            ->join('towns', 'streets.town_id', '=', 'towns.id')
+            ->where('towns.region_id', $region)
+            ->select('streets.*')
+            ->get();
+
+        if ($town) {
+            $data['streets'] = DB::table('streets')->where('town_id', $town)->get();
+        }
         return view('regions::stores', $data);
     }
 }
