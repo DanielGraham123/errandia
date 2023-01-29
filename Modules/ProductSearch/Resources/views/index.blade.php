@@ -181,7 +181,7 @@
                             <div class="text-left col-md-12 mb-1">
 
                                 <h4 class="font-weight-bold text-black-50">Errandia Suggest the following
-                                    businesses</h4>
+                                    businesses that might have "{{$keyword}}"</h4>
 
                             </div>
 
