@@ -168,7 +168,7 @@ class RegionsController extends Controller
         if ($category){
             $searchCriteria['categories'] = [$category];
         }
-        $data['stores']  = $productService->getShopsBySubCategory($searchCriteria,true,true);
+        $data['stores']  = $productService->getShopsBySubCategory($searchCriteria,true,true,true);
         $data['categories'] = $categoryService->getActiveSubCategories();
         $data['region'] =  DB::table('regions')->where('id', $region)->first();
         $data['request']['town'] = $town;

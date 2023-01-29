@@ -77,7 +77,18 @@
                         <tr>
                             <th><i class="zmdi zmdi-account mr-1 color-warning"></i>@lang('shop.shop_list_category_msg')
                             </th>
-                            <td>{{$shop->category->name}}</td>
+                            <td>
+                                @if(sizeof($shop->categories))
+                                    @foreach($shop->categories as $key=>$category)
+                                        {{$category->name}}
+                                        @if($key < sizeof($shop->categories) -1)
+                                            {{','}}
+                                        @endif
+                                    @endforeach
+                                @elseif($shop->category)
+                                    {{$shop->category->name}}
+                                @endif
+                            </td>
                         </tr>
                         <tr>
                             <th>

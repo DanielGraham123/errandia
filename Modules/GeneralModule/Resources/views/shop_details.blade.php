@@ -158,7 +158,7 @@
                             </div>
                         </div>
                         <div class="col-md-9">
-                            @include('generalmodule::components.product_list',['category'=>$shopDetails->category->category,'products'=>$products,'subCategories'=>$subCategories])
+                            @include('generalmodule::components.product_list',['category'=>$shopDetails->category ?$shopDetails->category->category: '','products'=>$products,'subCategories'=>$subCategories])
                         </div>
                     </div>
                 @else
@@ -252,7 +252,7 @@
                             </div>
                         </div>
                         <div class="col-md-9">
-                            @include('generalmodule::components.product_list',['category'=>$shopDetails->category->category,'products'=>$products,'subCategories'=>$subCategories])
+                            @include('generalmodule::components.product_list',['category'=>$shopDetails->category ?$shopDetails->category->category: '','products'=>$products,'subCategories'=>$subCategories])
                         </div>
                     </div>
                 @endif

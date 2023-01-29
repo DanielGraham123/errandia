@@ -166,7 +166,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $response = array("tel" => $tels, "email" => $emails);
         return $response;
     }
-    public function geterrandShops($searchCriteria,$useShopCategoriesTable,$paginate)
+    public function geterrandShops($searchCriteria,$useShopCategoriesTable,$paginate,$activeShops)
     {
 
         $query = DB::table('shops')
@@ -178,8 +178,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             if($useShopCategoriesTable && !empty($searchCriteria['categories'])){
                 $query ->join('shop_categories','shops.id','=', 'shop_categories.shop_id');
             }
+        if ($activeShops){
+            $query->join('shop_subscriptions', 'shops.id', '=', 'shop_subscriptions.shop_id');
+
+//                $query->where('shop_subscriptions.end_date', '>=', Carbon::now());
+            }
 
         $query->where('shops.name', "!=", '');
+
         $query->when(!empty($searchCriteria['region']), function ($query) use ($searchCriteria) {
             return $query->where(function ($q) use ($searchCriteria) {
                 $q->where('regions.id', '=', "{$searchCriteria['region']}");
@@ -226,10 +232,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             'streets.name as store_street',
             'regions.name as store_region',
             'users.email as shop_email'
-        )->distinct();
+        )->distinct()->orderBy('name','asc');
 
         if ($paginate){
-            return $query->paginate(15);
+            return $query->paginate(18);
         }
         return $query->get();
 

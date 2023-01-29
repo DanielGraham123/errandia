@@ -14,10 +14,13 @@
                             href="{{route('show_cat_products',['category'=>$category->slug])}}">
                             <small>{{$category->name}}</small></a>
                     </li>
+{{--                    <li class="breadcrumb-item"><a href="">dmsmds dmsdmsmd,smds,</a></li>--}}
+                    @if(!empty($subCategory))
                     <li class="breadcrumb-item"><a
                             href="{{route('show_collection_products',['category'=>$subCategory->slug])}}">
                             <small>{{$subCategory->name}}</small></a>
                     </li>
+                    @endif
                 </ol>
             </nav>
         </div>

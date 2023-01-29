@@ -41,8 +41,8 @@
                              }
                         $currency = $currencies->where('id',$product->currency_id)->first();
                         $product_sub_category = $subCategories->where('id',$product->sub_category_id)->first();
-                        $categoryDetail = isset($category) ? $category :$product_sub_category->category;
-                     
+                        $categoryDetail = isset($category) && !empty($category) ? $category :$product_sub_category->category;
+
                     @endphp
                     <div class="col-md-6 card helep_round ms-feature">
                         @include('generalmodule::components.product_item_card_list',['product'=>$product,'category'=>$categoryDetail,'currency'=>$currency,'subCategory'=>$product_sub_category])
