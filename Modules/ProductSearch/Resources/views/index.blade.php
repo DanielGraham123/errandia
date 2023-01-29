@@ -212,7 +212,7 @@
                                                             <a href="tel:{{$shop->shop_tel}}"
                                                                class="btn helep_btn_raise w-100"
                                                                style="padding: 8px 0px;"><i
-                                                                    class="zmdi zmdi-phone"></i>Contact shop
+                                                                    class="zmdi zmdi-phone"></i>Contact
                                                                 <div class="ripple-container"></div>
 
                                                             </a>
