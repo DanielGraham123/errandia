@@ -153,7 +153,10 @@ class ShopService
 
     public function getShopSubscription()
     {
-        return $this->shopRepository->getShopSubcription();
+        //  gets all subscriptions including expired subscription
+        // return $this->shopRepository->getShopSubcription();
+        //  Gets subscriptions whose expiring date is today or after today
+         return $this->shopRepository->getActiveShopSubscription();
     }
 
     public function getPaginatedProductsByShop($shop_id)

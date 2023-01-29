@@ -9,6 +9,7 @@
 namespace Modules\Shop\Repositories;
 
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Modules\Shop\Entities\Shop;
 use Modules\Shop\Entities\ShopCategory;
@@ -166,7 +167,22 @@ class ShopRepository
         $Slider = ShopSubscription::join('subscriptions', 'shop_subscriptions.subscription_id', '=', 'subscriptions.id')
             ->join('shops', 'shops.id', '=', 'shop_subscriptions.shop_id')
             ->with('shop')
-            ->get(['shop_subscriptions.shop_id as shop_id','shop_subscriptions.id as shop_subscription_id', 'shops.name as ShopName', 'subscriptions.name as SubName', 'subscriptions.duration', 'shop_subscriptions.start_date', 'shop_subscriptions.end_date'])->all();
+            ->orderBy('shop_subscriptions.created_at', 'desc')
+            ->select(['shop_subscriptions.shop_id as shop_id','shop_subscriptions.id as shop_subscription_id', 'shops.name as ShopName', 'subscriptions.name as SubName', 'subscriptions.duration', 'shop_subscriptions.start_date', 'shop_subscriptions.end_date'])
+            ->paginate(15);
+
+        return $Slider;
+    }
+
+    public function getActiveShopSubscription()
+    {
+        $Slider = ShopSubscription::join('subscriptions', 'shop_subscriptions.subscription_id', '=', 'subscriptions.id')
+            ->join('shops', 'shops.id', '=', 'shop_subscriptions.shop_id')
+            ->with('shop')
+            ->where('end_date','>=',Carbon::now())
+            ->orderBy('shop_subscriptions.created_at', 'desc')
+            ->select(['shop_subscriptions.shop_id as shop_id','shop_subscriptions.id as shop_subscription_id', 'shops.name as ShopName', 'subscriptions.name as SubName', 'subscriptions.duration', 'shop_subscriptions.start_date', 'shop_subscriptions.end_date'])
+            ->paginate(15);
 
         return $Slider;
     }

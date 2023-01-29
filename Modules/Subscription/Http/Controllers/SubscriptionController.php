@@ -122,7 +122,6 @@ class SubscriptionController extends Controller
     public function ShopSubscription()
     {
         $data['subscriptions'] = $this->shopService->getShopSubscription();
-        //print_r($data['subscriptions']);die;
         return view('subscription::shop-subscription')->with($data);
     }
 

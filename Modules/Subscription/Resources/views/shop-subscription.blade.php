@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                 @foreach($subscriptions as $subscription)
-                    <?php
+                    @php
                     $suspendBtn = false;
                     if (strtotime($subscription->end_date) > strtotime(date("Y-m-d"))) {
                         $status = "Active";
@@ -45,9 +45,10 @@
                     }
                     $expireDays = (strtotime($subscription->end_date) - strtotime(date("Y-m-d"))) / 86400;
                     $expireDays = $expireDays < 0 ? 0 : $expireDays;
-                    ?>
-                    
-                    @if($status=="Active")
+
+                    @endphp
+
+
                     <tr>
                         <td>{{$subscription->ShopName}}</td>
                         <td>{!!$subscription->SubName!!}</td>
@@ -60,14 +61,14 @@
                             @elseif($status=="Active")
                                 <span style="color:#00CC00;font-weight:bold;">{{$status}}</span>
                             @else
-                                <span style="color:yellow;font-weight:bold;">{{$status}}</span>
+                                <span style="color:#CC6600;font-weight:bold;">{{$status}}</span>
                             @endif
                         </td>
                         <td>
-                            @if($status=="Active")
+                            @if($status=="Active" || $status!="Expired!")
                                 <a href="{{route('block_shop_profile',
                       ['shop_id'=>$subscription->shop_id,'subscriptionId'=>$subscription->shop_subscription_id])}}">
-                                    <button type="button" class="btn helep_btn_raise">
+                                    <button type="button" class="btn helep_btn_raise m-0">
                                         <i class="zmdi zmdi-undo" aria-hidden="true"></i>Cancel
                                     </button>
                                 </a>
@@ -77,10 +78,18 @@
                             @endif
                         </td>
                     </tr>
-                @endif
+
                 @endforeach
                 </tbody>
             </table>
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                {{ $subscriptions->links() }}
+            </div>
+            <div class="col-md-2"></div>
+        </div>
     </div>
 @endsection
 @section("css")
