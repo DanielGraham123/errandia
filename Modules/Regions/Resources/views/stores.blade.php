@@ -16,7 +16,7 @@
                             <option value="">Select Town</option>
                             @foreach($towns as $town)
                                 <option
-                                    value="{{$town->id}}" <?php echo $townId == $town->id ? 'selected="selected"' : '';?>> {{$town->name}} </option>
+                                    value="{{$town->id}}" <?php echo request('town') == $town->id ? 'selected="selected"' : '';?>> {{$town->name}} </option>
                             @endforeach
                         </select>
 
@@ -24,7 +24,7 @@
                             <option value="">Select Street</option>
                             @foreach($streets as $street)
                                 <option
-                                    value="{{$street->id}}" <?php echo $street->id == $streetId ? 'selected="selected"' : '';?>>{{$street->name}}</option>
+                                    value="{{$street->id}}" <?php echo $street->id == request('street') ? 'selected="selected"' : '';?>>{{$street->name}}</option>
                             @endforeach
                         </select>
 
@@ -33,12 +33,9 @@
 
                             @foreach($categories as $category)
                                 <option
-                                    value="{{$category->id}}" <?php echo $categoryId == $category->id ? 'selected="selected"' : '';?>> {{$category->name}} </option>
+                                    value="{{$category->id}}" <?php echo request('category') == $category->id ? 'selected="selected"' : '';?>> {{$category->name}} </option>
                             @endforeach
                         </select>
-                        <input type="hidden" id="townId" value="{{$townId}}">
-                        <input type="hidden" id="categoryId" value="{{$categoryId}}">
-                        <input type="hidden" id="streetId" value="{{$streetId}}">
                     </form>
                 </div>
                 <div class=" col-md-9 bg-helep-blue">
@@ -70,7 +67,7 @@
                             </div>
                         @endif
                     </div>
-                    {!! $stores->links() !!}
+                    {{ $stores->appends(['town'=>request('town'),'category'=>request('region'),'street'=>request('street')])->links() }}
                 </div>
             </div>
         </div>
@@ -120,17 +117,5 @@
                 }
             });
         }
-        $(document).ready(function () {
-            const categoryId = $('#categoryId').val();
-            const streetId = $('#streetId').val();
-            const townId = $('#townId').val();
-            const urlParams = `&town=${townId}&street=${streetId}&category=${categoryId}`;
-            $('a.page-link').each((index,ele)=>{
-                let href = $(ele).attr('href');
-                href = href+urlParams;
-                $(ele).attr('href',href);
-            })
-
-        })
     </script>
 @endsection

@@ -62,12 +62,13 @@
                                     value="{{$street->id}}" <?php echo $street->id == request('street') ? 'selected="selected"' : '';?>>{{$street->name}}</option>
                             @endforeach
                         </select>
+                        <input type="hidden" id="streetId" value="{{ request('street')}}">
+                        <input type="hidden" id="towndId" value="{{ request('town')}}">
+                        <input type="hidden" id="regionId" value="{{ request('region')}}">
                     </form>
                 </div>
             </div>
-            {{--            <div class="col-md-9  card">--}}
-            {{--                {{$products}}--}}
-            {{--            </div>--}}
+
             <div class="col-md-9 card">
                 @if(!$products->isEmpty())
                     <a href="{{route('run_errand_page')}}" class="btn helep_btn_raise">Send Custom Product Quote</a>
@@ -157,7 +158,7 @@
                                 </div>
 
 
-                                {!! $products->appends(['search' => $keyword,'town'=>request('town'),'region'=>request('region'),'street'=>request('street')])->links() !!}
+                                {{ $products->appends(['search' => $keyword,'town'=>request('town'),'region'=>request('region'),'street'=>request('street')])->links() }}
                             </div>
                             <style>
                                 @media (min-width: 992px) {
@@ -337,6 +338,5 @@
             {{--    }--}}
             {{--});--}}
         }
-
     </script>
 @endsection

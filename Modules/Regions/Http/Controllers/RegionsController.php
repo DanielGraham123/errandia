@@ -171,9 +171,9 @@ class RegionsController extends Controller
         $data['stores']  = $productService->getShopsBySubCategory($searchCriteria,true,true);
         $data['categories'] = $categoryService->getActiveSubCategories();
         $data['region'] =  DB::table('regions')->where('id', $region)->first();
-        $data['townId'] = $town;
-        $data['streetId'] = $street;
-        $data['categoryId'] = $category;
+        $data['request']['town'] = $town;
+        $data['request']['street'] = $street;
+        $data['request']['category'] = $category;
         $data['towns'] = DB::table('towns')->where('region_id', $region)->get();
         $data['streets'] = DB::table('streets')
             ->join('towns', 'streets.town_id', '=', 'towns.id')
