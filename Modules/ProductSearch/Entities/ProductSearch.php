@@ -78,7 +78,7 @@ class ProductSearch extends Model
             'currencies.name as currency'
 
         );
-        $products = $query->paginate(1);
+        $products = $query->paginate(18);
         $queryCollection = collect($products);
         $queryCollection = collect($queryCollection['data']);
         $shopIds = $queryCollection->pluck('shop_id')->groupBy('shop_id')->flatMap(function ($val) {
