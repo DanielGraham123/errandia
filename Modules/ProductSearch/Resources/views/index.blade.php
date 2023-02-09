@@ -135,14 +135,10 @@
                                                             class="m-0 text-muted text-center">{{$product->shop_address}}</h6>
                                                     </div>
                                                     <div class="card-text">
-                                                        {{--                                                        <a href="tel:{{$product->shop_tel}}">--}}
-                                                        {{--                                                            <h6--}}
-                                                        {{--                                                                class="m-0 p-0 text-black text-center">{{$product->shop_tel}}</h6>--}}
-                                                        {{--                                                        </a>--}}
                                                         <a href="tel:{{$product->shop_tel}}"
                                                            class="btn helep_btn_raise w-100"
                                                            style="padding: 8px 0px;"><i
-                                                                class="zmdi zmdi-phone"></i>Contact shop
+                                                                class="zmdi zmdi-phone"></i>Contact
                                                             <div class="ripple-container"></div>
                                                         </a>
 
