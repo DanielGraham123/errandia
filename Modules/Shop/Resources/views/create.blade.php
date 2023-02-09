@@ -165,15 +165,6 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <input value="{{ old('website') }}" name="website" type="url" class="form-control"
-                                           placeholder="{{trans('shop.add_shop_placeholder_website')}}" required>
-                                </div>
-                            </div>
-                            <div class="col-md-4"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group">
                                     <select id="region" name="region" class="form-control"
                                             onchange="getTownsByRegion(this)">
                                         <option value="">{{trans('shop.add_shop_placeholder_region')}}</option>

@@ -97,13 +97,6 @@
                             <td><a>{{$address}}</a></td>
                         </tr>
                         <tr>
-                            <th><i class="zmdi zmdi-link mr-1 color-info"></i>@lang('shop.add_shop_placeholder_website')
-                            </th>
-                            <td><a target="_blank"
-                                   href="{{$shop->shopContactInfo->website_link}}">{{$shop->shopContactInfo->website_link}}</a>
-                            </td>
-                        </tr>
-                        <tr>
                             <th><i class="zmdi zmdi-calendar mr-1 color-royal"></i>@lang('shop.shop_info_reg_date_msg')
                             </th>
                             <td>{{$shop->created_at->diffForHumans()}}</td>
