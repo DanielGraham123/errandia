@@ -15,7 +15,7 @@ class CreateShopRequest extends FormRequest
     {
 //        category' => 'required|not_in:none' :category is no more required
         return ['supplier_name' => 'required', 'email' => 'required', 'password' => 'required|confirmed', 'shop_name' => 'required',
-            'description', 'categories' => 'required', 'website'=>'required',
+            'description', 'categories' => 'required',
             'town' => 'required', 'address' => 'required',
             'tel' => 'required', 'shop_image' => "required|max:3000|mimes:jpg,jpeg,png"];
     }
@@ -35,8 +35,7 @@ class CreateShopRequest extends FormRequest
 
     public function getShopContactData()
     {
-        return ['street_id' => $this->input('street'), 'tel' => $this->input('tel'), 'address' => $this->input('address'),
-            'website_link' => $this->input('website'), 'facebook_link' => $this->input('facebook_link'), 'whatsapp_number' => $this->input('whatsapp')
+        return ['street_id' => $this->input('street'), 'tel' => $this->input('tel'), 'address' => $this->input('address'), 'facebook_link' => $this->input('facebook_link'), 'whatsapp_number' => $this->input('whatsapp')
         ];
     }
 

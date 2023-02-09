@@ -14,7 +14,7 @@ class UpdateShopRequest extends FormRequest
     public function rules()
     {
         $rules = ['supplier_name' => 'required', 'shop_name' => 'required', 'description', 'categories' => 'required',
-        'town' => 'required', 'address' => 'required', 'tel' => 'required','website'=>'required'
+        'town' => 'required', 'address' => 'required', 'tel' => 'required'
         ];
         if ($this->hasFile('shop_image')) {
             $rules['shop_image'] = 'required|max:3000|mimes:jpg,jpeg,png';
@@ -33,7 +33,7 @@ class UpdateShopRequest extends FormRequest
     public function getShopContactData()
     {
         return ['street_id' => $this->input('street'), 'tel' => $this->input('tel'), 'address' => $this->input('address'),
-            'website_link' => $this->input('website'), 'facebook_link' => $this->input('facebook_link'),
+            'facebook_link' => $this->input('facebook_link'),
             'whatsapp_number' => $this->input('whatsapp')
         ];
     }
