@@ -22,7 +22,8 @@
                                         <span class="font-weight-bold text-capitalize">{{$shopDetails->name}}</span>
                                     </a>
                                 </div>
-                               <div class="pl-2"><p class="pl-3 ml-3"><i class="zmdi zmdi-pin p-2"></i>&nbsp;<small>{{$address}}</small></p></div>
+                                <div class="pl-2"><p class="pl-3 ml-3"><i
+                                            class="zmdi zmdi-pin p-2"></i>&nbsp;<small>{{$address}}</small></p></div>
                                 <div class="ripple-container"></div>
                             </div>
                         </div>
@@ -45,7 +46,7 @@
                                             <a href="{{route('login_page',['redirectTo'=>route('show_shop_page',['id'=>$shopDetails->slug])])}}">
                                                 <button class="btn helep_btn_raise text-uppercase">Subscribe</button>
                                             </a>
-                                @endif
+                                        @endif
                                         <a id="whatsappNumber" target="_blank"
                                            href="https://wa.me/{{$shopDetails->shopContactInfo->whatsapp_number}}?text={{$whatsappText}}">
                                             <button type="button" class="btn helep_btn_raise text-lowercase"
@@ -137,23 +138,17 @@
                             </span>
                                         <div class="ripple-container"></div>
                                     </a>
-                                    <a href="{{$shopDetails->shopContactInfo->instagram_link}}" target="_blank"
-                                       class="list-group-item list-group-item-action withripple"><i
-                                            class="zmdi zmdi-instagram"></i>Instagram: <span
-                                            class=" pl-1 text-black-50">
-{{--                                        {{$shopDetails->shopContactInfo->instagram_link}}--}}
-                                    </span>
-                                        <div class="ripple-container"></div>
-                                    </a>
+                                    @if($shopDetails->shopContactInfo->instagram_link)
+                                        <a href="{{$shopDetails->shopContactInfo->instagram_link}}" target="_blank"
+                                           class="list-group-item list-group-item-action withripple"><i
+                                                class="zmdi zmdi-instagram"></i>Instagram: <span
+                                                class=" pl-1 text-black-50">
+                                            {{$shopDetails->shopContactInfo->instagram_link}}
+                                        </span>
+                                            <div class="ripple-container"></div>
+                                        </a>
+                                    @endif
 
-                                    <a href="{{$shopDetails->shopContactInfo->website_link}}" target="_blank"
-                                       class="list-group-item list-group-item-action withripple"><i
-                                            class="zmdi zmdi-view-web"></i>Website: <span
-                                            class=" pl-2 text-black-50">
-                                {{$shopDetails->shopContactInfo->website_link}}
-                            </span>
-                                        <div class="ripple-container"></div>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -231,23 +226,17 @@
                             </span>
                                         <div class="ripple-container"></div>
                                     </a>
-                                    <a href="{{$shopDetails->shopContactInfo->instagram_link}}" target="_blank"
-                                       class="list-group-item list-group-item-action withripple"><i
-                                            class="zmdi zmdi-instagram"></i>Instagram: <span
-                                            class=" pl-1 text-black-50">
-{{--                                        {{$shopDetails->shopContactInfo->instagram_link}}--}}
-                                    </span>
-                                        <div class="ripple-container"></div>
-                                    </a>
-
-                                    <a href="{{$shopDetails->shopContactInfo->website_link}}" target="_blank"
-                                       class="list-group-item list-group-item-action withripple"><i
-                                            class="zmdi zmdi-view-web"></i>Website: <span
-                                            class=" pl-2 text-black-50">
-                                {{$shopDetails->shopContactInfo->website_link}}
-                            </span>
-                                        <div class="ripple-container"></div>
-                                    </a>
+                                    @if($shopDetails->shopContactInfo->instagram_link)
+                                        <a href="{{$shopDetails->shopContactInfo->instagram_link}}" target="_blank"
+                                           class="list-group-item list-group-item-action withripple"><i
+                                                class="zmdi zmdi-instagram"></i>Instagram:
+                                            <span
+                                                class=" pl-1 text-black-50">
+                                                {{$shopDetails->shopContactInfo->instagram_link}}
+                                            </span>
+                                            <div class="ripple-container"></div>
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
