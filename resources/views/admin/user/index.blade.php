@@ -16,21 +16,18 @@
                         <th>{{__('text.word_email')}}</th>
                         <th>{{__('text.word_phone')}}</th>
                         <th>{{__('text.word_matricule')}}</th>
-                        <th>{{__('text.word_campus')}}</th>
                         <th>{{__('text.word_gender')}}</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                         @foreach($users as $k=>$user)
-                            @if((auth()->user()->campus_id == null) || ($user->campus_id == auth()->user()->campus_id))
                             <tr>
                                 <td>{{$k+1}}</td>
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->phone}}</td>
                                 <td>{{$user->matric}}</td>
-                                <td>{{!($user->campus_id == null) ? \App\Models\Campus::find($user->campus_id)->name ?? '' : ''}}</td>
                                 <td>{{$user->gender}}</td>
                                 <td  class="d-flex justify-content-end align-items-center" >
                                     <a class="btn btn-xs btn-primary" href="{{route('admin.users.show',[$user->id])}}"><i class="fa fa-eye">{{ __('text.word_profile')}}</i></a> |
@@ -48,7 +45,6 @@
                                     </form> --}}
                                 </td>
                             </tr>
-                            @endif
                         @endforeach
                     </tbody>
                 </table>

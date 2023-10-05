@@ -61,39 +61,63 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
     Route::get('', 'Admin\HomeController@index')->name('home');
     Route::get('home', 'Admin\HomeController@index')->name('home');
-    Route::get('background_image', 'Admin\HomeController@set_background_image')->name('set_background_image');
-    Route::post('background_image', 'Admin\HomeController@save_background_image');
-    Route::get('set_watermark', 'Admin\HomeController@set_watermark')->name('set_watermark');
-    Route::post('set_watermark', 'Admin\HomeController@save_watermark');
-    Route::get('course/date_line', 'Admin\HomeController@courses_date_line')->name('course.date_line');
-    Route::post('course/date_line', 'Admin\HomeController@save_courses_date_line');
-    Route::get('setayear', 'Admin\HomeController@setayear')->name('setayear');
-    Route::post('setayear/{id}', 'Admin\HomeController@setAcademicYear')->name('createacademicyear');
-    Route::get('setsemester', 'Admin\HomeController@setsemester')->name('setsemester');
-    Route::post('setsemester/{id}', 'Admin\HomeController@postsemester')->name('postsemester');
-    Route::post('setminsemesterfee/{id}', 'Admin\HomeController@postsemesterminfee')->name('postsemester.minfee');
-    Route::get('setcontacts/{id?}', 'Admin\HomeController@school_contacts')->name('setcontacts');
-    Route::post('setcontacts/{id?}', 'Admin\HomeController@save_school_contact');
-    Route::get('dropcontacts/{id}', 'Admin\HomeController@drop_school_contacts')->name('dropcontacts');
-    Route::get('deletebatch/{id}', 'Admin\HomeController@deletebatch')->name('deletebatch');
-    Route::get('sections', 'Admin\ProgramController@sections')->name('sections');
-    Route ::get('sub_units_of/{id}', 'Admin\ProgramController@subunitsOf')->name('subunits');
 
-    Route::get('sub_units/{parent_id}', 'Admin\ProgramController@index')->name('units.index');
-    Route::get('new_units/{parent_id}', 'Admin\ProgramController@create')->name('units.create');
-    Route::get('units/{parent_id}/edit', 'Admin\ProgramController@edit')->name('units.edit');
-    Route::resource('units', 'Admin\ProgramController')->except(['index', 'create', 'edit']);
-    Route::get('units/{program_level_id}/subjects', 'Admin\ProgramController@subjects')->name('units.subjects');
-    Route::get('units/{program_level_id}/drop_level', 'Admin\ProgramController@_drop_program_level')->name('units.drop_level');
-    Route::get('sections/{section_id}/subjects/{id}', 'Admin\ClassSubjectController@edit')->name('edit.class_subjects');
-    Route::get('sections/{section_id}/subjects/{id}/delete', 'Admin\ClassSubjectController@delete')->name('delete.class_subjects');
-    Route::put('sections/{section_id}/subjects/{id}', 'Admin\ClassSubjectController@update')->name('units.class_subjects.update');
+    Route::prefix('businesses')->name('businesses.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'businesses'])->name('index');
+        Route::get('create', [AdminHomeController::class, 'create_business'])->name('create');
+    });
 
-
-
-    Route::get('users/{user_id}/subjects', 'Admin\UserController@createSubject')->name('users.subjects.add');
-    Route::delete('users/{user_id}/subjects', 'Admin\UserController@dropSubject')->name('users.subjects.drop');
-    Route::post('users/{user_id}/subjects', 'Admin\UserController@saveSubject')->name('users.subjects.save');
+    Route::prefix('errands')->name('errands.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'errands'])->name('index');
+    });
+    Route::prefix('services')->name('services.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'services'])->name('index');
+    });
+    Route::prefix('products')->name('products.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'products'])->name('index');
+    });
+    Route::prefix('categories')->name('categories.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'categories'])->name('index');
+        Route::get('sub-categories', [AdminHomeController::class, 'sub_categories'])->name('sub_categories');
+    });
+    Route::prefix('locations')->name('locations.')->group(function(){
+        Route::get('streets', [AdminHomeController::class, 'business_streets'])->name('streets');
+        Route::get('towns', [AdminHomeController::class, 'business_towns'])->name('towns');
+    });
+    Route::prefix('reviews')->name('reviews.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'reviews'])->name('index');
+    });
+    Route::prefix('users')->name('users.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'users'])->name('index');
+        Route::get('create', [AdminHomeController::class, 'create_user'])->name('create');
+    });
+    Route::prefix('admins')->name('admins.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'admins'])->name('index');
+        Route::get('roles', [AdminHomeController::class, 'roles'])->name('roles');
+    });
+    Route::prefix('plans')->name('plans.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'subscription_plans'])->name('index');
+    });
+    Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'sms_bundles'])->name('index');
+    });
+    Route::prefix('reports')->name('reports.')->group(function(){
+        Route::get('sms', [AdminHomeController::class, 'sms_reports'])->name('sms');
+        Route::get('subscriptions', [AdminHomeController::class, 'subscription_report'])->name('subscription');
+    });
+    Route::prefix('settings')->name('settings.')->group(function(){
+        Route::get('profile', [AdminHomeController::class, 'my_profile'])->name('profile');
+        Route::get('footer', [AdminHomeController::class, 'footer_settings'])->name('footer');
+        Route::get('password', [AdminHomeController::class, 'change_password'])->name('change_password');
+    });
+    Route::prefix('pages')->name('pages.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'all_pages'])->name('index');
+        Route::get('team_members', [AdminHomeController::class, 'page_team_members'])->name('team_members');
+    });
+    Route::prefix('abuse')->name('abuse.')->group(function(){
+        Route::get('', [AdminHomeController::class, 'abuse_reports'])->name('reports');
+    });
+   
     Route::get('users/search', [Controller::class, 'search_user'])->name('users.search');
 
 

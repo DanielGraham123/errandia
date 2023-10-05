@@ -5,17 +5,14 @@
 
 
 @section('section')
-
     <div>
         <div class="col-8-xxxl col-12">
             <div class="card height-auto">
                 <div class="card-body">
                     <div class="heading-layout1">
-                        <div class="item-title d-flex align-items-center justify-content-between text-capitalize">
-                            <h3>{{__('text.user_roles')}}</h3>
-                            <a href="{{route('admin.roles.create')}}" class="btn btn-success">{{__('text.add_role')}}</a>
+                        <div class="item-title text-capitalize">
+                            <h3>{{request('role')?\App\Models\Role::whereSlug(request('role'))->first()->byLocale()->name." Permissions":__('text.user_permissions')}}</h3>
                         </div>
-
                     </div>
 
                     <div class="table-responsive">
@@ -27,15 +24,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($roles as $role)
+                            @foreach($permissions as $role)
                                 <tr>
                                     <td>{{$role->byLocale()->name}}</td>
                                     <td align="right">
-                                        <a class="btn btn-success" href="{{route('admin.roles.edit',$role->slug)}}?role={{$role->slug}}"> {{__('text.word_edit')}}</a>
-                                        <a class="btn btn-primary" href="{{route('admin.users.index')}}?role={{$role->slug}}">{{__('text.word_users')}}</a>
-                                        <a class="btn btn-info" href="{{route('admin.roles.permissions')}}?role={{$role->slug}}">{{__('text.word_permissions')}}</a>
-                                        <a class="btn btn-danger" onclick="confirm('You are about to delete role: {{$role->name}}. Any users associated to this role will be deleted.') ? $('#_delete_form_{{$role->id}}').submit() : null">{{__('text.word_delete')}}</a>
-                                        <form method="post" action="{{route('admin.roles.destroy', $role->id)}}" id="_delete_form_{{$role->id}}">@csrf</form>
+                                        <a class="btn btn-primary text-capitalize" href="{{route('admin.users.index')}}?permission={{$role->slug}}">{{__('text.word_users')}}</a>
                                     </td>
                                 </tr>
                             @endforeach

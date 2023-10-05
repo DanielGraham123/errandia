@@ -9,9 +9,6 @@
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- bootstrap & fontawesome -->
-    {{-- <link rel="stylesheet" href="{{url('/')}}/public/assets/css/*.css" /> --}}
-
     <link rel="stylesheet" href="{{asset('css/app.css')}}" />
     <link rel="stylesheet" href="{{asset('css/custom.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}" />
@@ -26,15 +23,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/responsive.dataTables.min.css">
 
-
-    {{-- <link rel="stylesheet" href="{{asset('richtexteditor/rte_theme_default.css')}}" />
-    <script type="text/javascript" src="{{asset('/richtexteditor/rte.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script> --}}
-    
-    <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.0.3/bootstrap-show-password.min.js"></script> -->
     @php
         $bg1 = 'white';
         $bg2 = '#113d6b';
@@ -102,7 +90,7 @@
         }
         
         .dashboard-item{
-            height: 14rem; width: 20rem; border-radius: 1rem; border: 1px solid #efefef; box-shadow: 1px 1px #efefef; background: white; padding: 1.3rem 0.9rem; margin: 1rem auto; display:inline-block;
+            height: 14rem; width: 20rem; border-radius: 1rem; border: 1px solid #eeeeee; box-shadow: 1px 1px #efefef; background: white; padding: 1.3rem 0.9rem; margin: 1rem auto; display:inline-block;
         }
         .dashboard-item > .icon-box{
             height: fit-content; width: 100% !important;
@@ -167,12 +155,12 @@
                 </small>
             </a>
         </div>
-        <div class="navbar-header pull-left border-right px-2 hidden d-md-inline">
-            <a class="navbar-brand">
+        <div class="navbar-header pull-left border-right px-2 d-md-inline">
+            <a class="navbar-brand" title="Add New">
                 <small class="text-body-sm"> 
                     <img src="{{ asset('assets/admin/icons/icon-add.svg') }}" class="w-auto" style="height: 1.3rem;">
-                    <span class=" text-capitalize mx-2">add new</span>
-                    <img src="{{ asset('assets/admin/icons/icon-dropdown.svg') }}" class="w-auto" style="height: 1.3rem;">
+                    {{-- <span class=" text-capitalize mx-2">add new</span>
+                    <img src="{{ asset('assets/admin/icons/icon-dropdown.svg') }}" class="w-auto" style="height: 1.3rem;"> --}}
                 </small>
             </a>
         </div>
@@ -208,7 +196,6 @@
     </div><!-- /.navbar-container -->
 </div>
 
-
 <div class="main-container ace-save-state" id="main-container">
 
     <div id="sidebar" class="sidebar responsive ace-save-state" style="background: {{ $bg2 }} !important;">
@@ -234,7 +221,7 @@
             </li>
             <li>
                 <a
-                    href="{{route('admin.home')}}">
+                    href="{{route('admin.errands.index')}}">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-errands.svg') }}"></span>
                     <span class="menu-text text-capitalize">Errands</span>
                 </a>
@@ -251,14 +238,14 @@
 
                 <ul class="submenu">
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.businesses.create') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Add New
                         </a>
                         <b class="arrow"></b>
                     </li>
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.businesses.index') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             All Businesses
                         </a>
@@ -271,7 +258,7 @@
 
             <li>
                 <a
-                    href="{{route('admin.home')}}">
+                    href="{{route('admin.products.index')}}">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-products.svg') }}"></span>
                     <span class="menu-text text-capitalize">Products</span>
                 </a>
@@ -280,7 +267,7 @@
 
             <li>
                 <a
-                    href="{{route('admin.home')}}">
+                    href="{{route('admin.services.index')}}">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-services.svg') }}"></span>
                     <span class="menu-text text-capitalize">Services</span>
                 </a>
@@ -297,14 +284,14 @@
 
                 <ul class="submenu">
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.categories.index') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             All Categories
                         </a>
                         <b class="arrow"></b>
                     </li>
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.categories.sub_categories') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Sub-Categories
                         </a>
@@ -322,14 +309,14 @@
 
                 <ul class="submenu">
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.locations.towns') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Manage Towns
                         </a>
                         <b class="arrow"></b>
                     </li>
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.locations.streets') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Manage Streets
                         </a>
@@ -342,7 +329,7 @@
             
             <li>
                 <a
-                    href="{{route('admin.home')}}">
+                    href="{{route('admin.locations.streets')}}">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-dashboard-review.svg') }}"></span>
                     <span class="menu-text text-capitalize">Manage Reviews</span>
                 </a>
@@ -350,7 +337,6 @@
             </li>
 
  
-            @if (\Auth::user()->hasPermissionTo('manage_user'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-manage-users.svg') }}"></span>
@@ -358,19 +344,50 @@
                     <b class="arrow fa fa-angle-down"></b>
                 </a>
 
+
                 <ul class="submenu">
-                    @if(auth()->user()->campus_id == null)
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="#" class="dropdown-toggle text-capitalize">
+                            <i  style="color: {{$bg1}}"class="menu-icon  fa fa-users"></i>
+                            <span class="menu-text">
+                                {{__('text.user_accounts')}}
+                                </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('admin.users.index')}}?type=admin" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{trans_choice('text.add_admin', 2)}}
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+
+                    <li>
+                        <a href="{{route('admin.users.index')}}?type=teacher" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            {{trans_choice('text.word_teacher', 2)}}
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+
+                    <li>
+                        <a href="{{route('admin.roles.index')}}" class="text-capitalize">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                        {{trans_choice('text.role', 2)}}
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.users.create') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Add New User
                         </a>
                         <b class="arrow"></b>
                     </li>
-                    @endif
 
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.users.index') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             All Users
                         </a>
@@ -378,9 +395,9 @@
                     </li>
                 </ul>
             </li>
-            @endif
+            {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+            @endif --}}
  
-            @if (\Auth::user()->hasPermissionTo('manage_user'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-manage-admins.svg') }}"></span>
@@ -389,18 +406,16 @@
                 </a>
 
                 <ul class="submenu">
-                    @if(auth()->user()->campus_id == null)
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.admins.index') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             All Admins
                         </a>
                         <b class="arrow"></b>
                     </li>
-                    @endif
 
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.admins.roles') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Manage Roles
                         </a>
@@ -409,12 +424,13 @@
 
                 </ul>
             </li>
-            @endif
+            {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+            @endif --}}
 
                         
             <li>
                 <a
-                    href="{{route('admin.home')}}">
+                    href="{{route('admin.plans.index')}}">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-subscription-plans.svg') }}"></span>
                     <span class="menu-text text-capitalize">Subscription Plans</span>
                 </a>
@@ -423,14 +439,13 @@
                         
             <li>
                 <a
-                    href="{{route('admin.home')}}">
+                    href="{{route('admin.sms_bundles.index')}}">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-sms-bundles.svg') }}"></span>
                     <span class="menu-text text-capitalize">SMS Bundles</span>
                 </a>
                 <b class="arrow"></b>
             </li>
 
-            @if (\Auth::user()->hasPermissionTo('manage_user'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-reports.svg') }}"></span>
@@ -439,18 +454,16 @@
                 </a>
 
                 <ul class="submenu">
-                    @if(auth()->user()->campus_id == null)
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.reports.subscription') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Subscriptions
                         </a>
                         <b class="arrow"></b>
                     </li>
-                    @endif
 
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.reports.sms') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             SMS
                         </a>
@@ -459,9 +472,9 @@
 
                 </ul>
             </li>
-            @endif
+            {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+            @endif --}}
 
-            @if (\Auth::user()->hasPermissionTo('manage_user'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-settings.svg') }}"></span>
@@ -471,7 +484,7 @@
 
                 <ul class="submenu">
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.settings.profile') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             My Profile
                         </a>
@@ -479,7 +492,7 @@
                     </li>
 
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.settings.footer') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Manage Footer
                         </a>
@@ -487,7 +500,7 @@
                     </li>
 
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.settings.change_password') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                            Change Password
                         </a>
@@ -496,9 +509,9 @@
 
                 </ul>
             </li>
-            @endif
+            {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+            @endif --}}
 
-            @if (\Auth::user()->hasPermissionTo('manage_user'))
             <li>
                 <a href="#" class="dropdown-toggle text-capitalize">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-manage-pages.svg') }}"></span>
@@ -507,18 +520,16 @@
                 </a>
 
                 <ul class="submenu">
-                    @if(auth()->user()->campus_id == null)
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.pages.index') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             All Pages
                         </a>
                         <b class="arrow"></b>
                     </li>
-                    @endif
 
                     <li>
-                        <a href="" class="text-capitalize">
+                        <a href="{{ route('admin.pages.team_members') }}" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             Team Members
                         </a>
@@ -526,10 +537,11 @@
                     </li>
                 </ul>
             </li>
-            @endif
+            {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+            @endif --}}
 
             <li>
-                <a href="{{route('admin.home')}}">
+                <a href="{{route('admin.abuse.reports')}}">
                     <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-business-locations.svg') }}"></span>
                     <span class="menu-text text-capitalize">Abuse Reports</span>
                 </a>
