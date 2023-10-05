@@ -1,0 +1,100 @@
+/*  */
+:root{
+    --color-lightblue: #3c7fc6;
+    --color-blue: #113d6b;
+    --color-darkblue: #091f36;
+    
+    --color-lightcyan: #e0f6fe;
+    --color-cyan: #66d2f8;
+    --color-darkcyan: #4d9eba;
+    
+    --color-lightred: #ff6666;
+    --color-red: #ff0000;
+    --color-darkred: #800000;
+    
+    --color-lightgray: #e0e6ec;
+    --color-gray: #c8dbee;
+    --color-darkgray: #8ba0b7;
+    
+    --color-light: #fafafa;
+    --color-black: #040f1b;
+    --color-green: #35c77e;
+    --color-yellow: #fbc418;
+}
+
+/* TEXT */
+.text-h1{ color: var(--color-blue); font-size: 57.22px; font-weight: 600; }
+.text-h2{ color: var(--color-blue); font-size: 45.78px; font-weight: 600; }
+.text-h3{ color: var(--color-blue); font-size: 36.62px; font-weight: 600; }
+.text-h4{ color: var(--color-blue); font-size: 29.3px; font-weight: 600; }
+.text-h5{ color: var(--color-blue); font-size: 23.44px; font-weight: 700; }
+.text-h6{ color: var(--color-blue); font-size: 18.75px; font-weight: 700; }
+.text-body{ color: var(--color-black); font-size: 15px; }
+.text-body-sm{ color: var(--color-black); font-size: 12px; }
+.text-link{ color: var(--color-blue); font-size: 15px; font-weight: 600; }
+.text-overline{ color: var(--color-darkgray); font-size: 9.6px; font-weight: 700; }
+.text-quote{ color: var(--color-darkgray); font-size: 9.6px; font-weight: 700; }
+.text-extra{ color: var(--color-black); font-size: 12px; font-weight: 700; }
+.text-semi-extra{ color: var(--color-black); font-size: 12px; font-weight: 600; }
+
+/* BUTTONS */
+.button-primary{ color: var(--color-lightcyan); background-color: var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.button-primary:disabled{ color: var(--color-darkgray); background-color: var(--color-gray);}
+.button-primary:active{ color: var(--color-lightcyan); background-color: var(--color-blue); }
+.button-primary:hover{ box-shadow: 1px 2px var(--color-cyan); }
+
+.button-secondary{ color: var(--color-blue); border: 1px solid var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.button-secondary:disabled{ color: var(--color-darkgray); background-color: var(--color-gray);}
+.button-secondary:active{ background-color: var(--color-gray); }
+.button-secondary:hover{ background-color: var(--color-lightcyan); }
+
+.button-tertiary{ color: var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.button-tertiary:disabled{ color: var(--color-darkgray); }
+.button-tertiary:active{ background-color: var(--color-gray); }
+.button-tertiary:hover{ background-color: var(--color-lightcyan); }
+
+/* ICON BUTTONS */
+.icon-button-primary{ color: var(--color-lightcyan); background-color: var(--color-lightblue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.icon-button-primary .icon{ background-color: var(--color-light); width: 5px; height: 5px; }
+.icon-button-primary:disabled{ color: var(--color-darkgray); background-color: var(--color-gray);}
+.icon-button-primary:disabled .icon{ background-color: var(--color-darkgray); width: 5px; height: 5px; }
+.icon-button-primary:active{ color: var(--color-lightcyan); background-color: var(--color-blue); }
+.icon-button-primary:hover{ box-shadow: 1px 2px var(--color-cyan); }
+
+.icon-button-secondary{ color: var(--color-blue); border: 1px solid var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.icon-button-secondary .icon{ background-color: var(--color-blue); width: 5px; height: 5px; }
+.icon-button-secondary:disabled{ color: var(--color-darkgray); background-color: var(--color-gray);}
+.icon-button-secondary:disabled .icon{ background-color: var(--color-darkgray); width: 5px; height: 5px; }
+.icon-button-secondary:active{ background-color: var(--color-gray); }
+.icon-button-secondary:hover{ background-color: var(--color-lightcyan); }
+
+.icon-button-tertiary{ color: var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.icon-button-tertiary{ background-color: var(--color-blue); width: 5px; height: 5px; }
+.icon-button-tertiary:disabled{ color: var(--color-darkgray); }
+.icon-button-tertiary:disabled{ background-color: var(--color-darkgray); width: 5px; height: 5px; }
+.icon-button-tertiary:active{ background-color: var(--color-gray); }
+.icon-button-tertiary:hover{ background-color: var(--color-lightcyan); }
+
+/* INPUT FIELDS */
+.input-field{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); margin: 5px; width: inherit; }
+.input-field + .hint{ color: var(--color-black); padding: 2px 1rem; }
+.input-field:focus{ color: var(--color-blue); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-blue); margin-block: 5px; }
+.input-field:focus + .hint{ color: var(--color-black); padding: 2px 1rem; }
+.input-field:hover{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-blue); margin-block: 5px; }
+.input-field:hover + .hint{ color: var(--color-black); padding: 2px 1rem; }
+.input-field:disabled{ color: var(--color-darkgray); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); background-color: var(--color-gray); margin-block: 5px; }
+.input-field:disabled + .hint{ color: var(--color-black); padding: 2px 1rem; }
+.input-field.error{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-red); margin-block: 5px; }
+.input-field.error + .hint{ color: var(--color-red); padding: 2px 1rem; }
+
+.select-field{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); margin-block: 5px; }
+.select-field option{ color: var(--color-black); padding: 2px 0.4rem; border-radius: 7px; border: 1px 0 solid var(--color-gray); background-color: var(--color-light);}
+.select-field > option:hover{ background-color: var(--color-lightcyan); }
+.select-field + .hint{ color: var(--color-cyan); padding: 2px 1rem; }
+
+.tag{ background-color: var(--color-lightcyan); color: var(--color-blue); padding: 1px 3px; margin: 1px 2px; border-radius: 4px;}
+.tag .icon{ background-color: var(--color-darkblue); height: 5px; width: 5px; margin: 3px; }
+
+.checkbox-field{}
+
+.radio-field{}
