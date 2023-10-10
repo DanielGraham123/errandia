@@ -347,26 +347,9 @@
 
                 <ul class="submenu">
                     <li>
-                        <a href="#" class="dropdown-toggle text-capitalize">
-                            <i  style="color: {{$bg1}}"class="menu-icon  fa fa-users"></i>
-                            <span class="menu-text">
-                                {{__('text.user_accounts')}}
-                                </span>
-                            <b class="arrow fa fa-angle-down"></b>
-                        </a>
-                    </li>
-                    <li>
                         <a href="{{route('admin.users.index')}}?type=admin" class="text-capitalize">
                             <i class="menu-icon fa fa-caret-right"></i>
                             {{trans_choice('text.add_admin', 2)}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li>
-                        <a href="{{route('admin.users.index')}}?type=teacher" class="text-capitalize">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            {{trans_choice('text.word_teacher', 2)}}
                         </a>
                         <b class="arrow"></b>
                     </li>
@@ -637,12 +620,12 @@
             responsive: true,
             dom: 'Bfrtip',
             buttons: [
-                'copy', 'csv', 'excel',
+                 // 'copy', 'csv', 'excel',
                 {
-                    text: 'Download PDF',
-                    extend: 'pdfHtml5',
-                    message: '',
-                    orientation: 'portrait',
+                    // text: 'Download PDF',
+                    // extend: 'pdfHtml5',
+                    // message: '',
+                    // orientation: 'portrait',
                     exportOptions: {
                         columns: ':visible'
                     },

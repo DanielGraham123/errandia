@@ -15,7 +15,6 @@
                             <h3>{{__('text.user_roles')}}</h3>
                             <a href="{{route('admin.roles.create')}}" class="btn btn-success">{{__('text.add_role')}}</a>
                         </div>
-
                     </div>
 
                     <div class="table-responsive">
