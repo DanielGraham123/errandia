@@ -2,7 +2,7 @@
 @section('section')
     <div class="py-2">
         <div class="d-flex justify-content-end py-3 px-2">
-            <a class=" btn btn-primary bg-sm py-2 px-4 text-white text-capitalize rounded"><span class="text-white fa fa-plus mx-2"></span>Add new business</a>
+            <a href="{{ route('admin.businesses.create') }}" class=" btn btn-primary bg-sm py-2 px-4 text-white text-capitalize rounded"><span class="text-white fa fa-plus mx-2"></span>Add new business</a>
         </div>
         <div class="py-1 px-2 d-flex">
 
@@ -53,13 +53,14 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <button data-toggle="dropdown" class="btn btn-success dropdown-toggle" aria-expanded="false">
+                                    <button data-toggle="dropdown" class="btn btn-xs btn-secondary dropdown-toggle" aria-expanded="false">
                                         <span class="ace-icon fa fa-caret-down icon-only"></span>
                                     </button>
 
-                                    <ul class="dropdown-menu dropdown-success">
-                                        <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">view</a></li>
+                                    <ul class="dropdown-menu dropdown-light">
+                                        <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.show', 'business') }}" class="text-decoration-none text-secondary">view</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">edit</a></li>
+                                        <li class="list-item py-1 border-y"> <a href="{{route('admin.businesses.branch.create', '123')}}" class="text-decoration-none text-secondary">add branch</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">view owner profile</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">suspend</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">Mark as verified</a></li>

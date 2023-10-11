@@ -27,25 +27,6 @@
                     </div>
                 </div>
 
-                <div class="form-group @error('campus') has-error @enderror">
-                    <label for="cname" class="control-label col-lg-2 text-capitalize">{{__('text.word_campus')}}</label>
-                    <div class="col-lg-10">
-                        @if(\Auth::user()->campus_id != null)
-                            <input type="hidden" name="campus" id="" value="{{\Auth::user()->campus_id}}">
-                        @endif
-                        <select class=" form-control" name="campus" type="text" {{\Auth::user()->campus_id != null ? 'readonly' : ''}}>
-                            <option value="" selected>{{__('text.word_campus')}}</option>
-                            @foreach(\App\Models\Campus::all()  as $cmps)
-                                <option value="{{$cmps->id}}" {{\Auth::user()->campus_id == $cmps->id ? 'selected' : ''}}>{{$cmps->name}}</option>
-                            @endforeach
-                        </select>
-                        @error('campus')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-
                 <div class="form-group @error('phone') has-error @enderror">
                     <label for="cname" class="control-label col-lg-2">Phone</label>
                     <div class="col-lg-10">

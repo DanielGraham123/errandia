@@ -18,10 +18,14 @@
     <link rel="stylesheet" href="{{asset('assets/css/ace-part2.min.css')}}" class="ace-main-stylesheet" />
     <link rel="stylesheet" href="{{asset('assets/css/ace-skins.min.css')}}"/>
     <link rel="stylesheet" href="{{asset('assets/css/ace-rtl.min.css')}}"/>
+
+
+
     <script src="{{asset('assets/js/ace-extra.min.js')}}"></script>
     <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}" class="ace-main-stylesheet" id="main-ace-style"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/responsive.dataTables.min.css">
+    <link href="{{ asset('tel_input_build/css/intlTelInput.css') }}" rel="stylesheet">
 
     @php
         $bg1 = 'white';
@@ -613,7 +617,8 @@
 <script src="{{ asset('libs')}}/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('libs')}}/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" ></script>
-
+<script src="{{ asset('tel_input_build/js/intlTelInput.min.js') }}"></script>
+<script src="{{ asset('tel_input_build/js/intlTelInput-jquery.min.js') }}"></script>
 <script>
     $(function () {
         $('.table , .adv-table table').DataTable({
@@ -706,6 +711,10 @@
             }
         });
     })(jQuery)
+
+    $(".telephone").intlTelInput({
+        utilsScript: "{{ asset('tel_input_build/js/utils.js') }}"
+    });
 </script>
 @yield('script')
 </body>

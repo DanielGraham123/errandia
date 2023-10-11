@@ -22,6 +22,10 @@
     --color-yellow: #fbc418;
 }
 
+a{
+    text-decoration: none !important;
+}
+
 /* TEXT */
 .text-h1{ color: var(--color-blue); font-size: 57.22px; font-weight: 600; }
 .text-h2{ color: var(--color-blue); font-size: 45.78px; font-weight: 600; }
@@ -38,17 +42,17 @@
 .text-semi-extra{ color: var(--color-black); font-size: 12px; font-weight: 600; }
 
 /* BUTTONS */
-.button-primary{ color: var(--color-lightcyan); background-color: var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.button-primary{ color: var(--color-lightcyan); background-color: var(--color-blue); border-radius: 5px; padding: 0.7em 2.4rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none; }
 .button-primary:disabled{ color: var(--color-darkgray); background-color: var(--color-gray);}
 .button-primary:active{ color: var(--color-lightcyan); background-color: var(--color-blue); }
 .button-primary:hover{ box-shadow: 1px 2px var(--color-cyan); }
 
-.button-secondary{ color: var(--color-blue); border: 1px solid var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.button-secondary{ color: var(--color-blue); border: 1px solid var(--color-blue); border-radius: 5px; padding: 0.7em 2.4rem;  margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none; }
 .button-secondary:disabled{ color: var(--color-darkgray); background-color: var(--color-gray);}
 .button-secondary:active{ background-color: var(--color-gray); }
 .button-secondary:hover{ background-color: var(--color-lightcyan); }
 
-.button-tertiary{ color: var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
+.button-tertiary{ color: var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none;}
 .button-tertiary:disabled{ color: var(--color-darkgray); }
 .button-tertiary:active{ background-color: var(--color-gray); }
 .button-tertiary:hover{ background-color: var(--color-lightcyan); }
@@ -76,18 +80,18 @@
 .icon-button-tertiary:hover{ background-color: var(--color-lightcyan); }
 
 /* INPUT FIELDS */
-.input-field{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); margin: 5px; width: inherit; }
+.input-field{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); margin: 4px; }
 .input-field + .hint{ color: var(--color-black); padding: 2px 1rem; }
-.input-field:focus{ color: var(--color-blue); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-blue); margin-block: 5px; }
+.input-field:focus{ color: var(--color-blue); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-blue); margin: 4px; }
 .input-field:focus + .hint{ color: var(--color-black); padding: 2px 1rem; }
-.input-field:hover{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-blue); margin-block: 5px; }
+.input-field:hover{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-blue); margin: 4px !important; }
 .input-field:hover + .hint{ color: var(--color-black); padding: 2px 1rem; }
-.input-field:disabled{ color: var(--color-darkgray); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); background-color: var(--color-gray); margin-block: 5px; }
+.input-field:disabled{ color: var(--color-darkgray); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); background-color: var(--color-gray); margin: 4px !important; }
 .input-field:disabled + .hint{ color: var(--color-black); padding: 2px 1rem; }
-.input-field.error{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-red); margin-block: 5px; }
+.input-field.error{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-red); margin: 4px !important; }
 .input-field.error + .hint{ color: var(--color-red); padding: 2px 1rem; }
 
-.select-field{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); margin-block: 5px; }
+.select-field{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); margin: 4px !important; }
 .select-field option{ color: var(--color-black); padding: 2px 0.4rem; border-radius: 7px; border: 1px 0 solid var(--color-gray); background-color: var(--color-light);}
 .select-field > option:hover{ background-color: var(--color-lightcyan); }
 .select-field + .hint{ color: var(--color-cyan); padding: 2px 1rem; }

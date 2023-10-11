@@ -75,4 +75,67 @@ class HomeController  extends Controller
         $data['title'] = "Create New Business";
         return view('admin.businesses.create', $data);
     }
+    public function create_business_branch(Request $reuest, $business = null)
+    {
+        # code...
+        $data['title'] = "Create New Business Branch";
+        return view('admin.businesses.branches.create', $data);
+    }
+    public function show_business(Request $reuest, $business = null)
+    {
+        # code...
+        $data['title'] = "Business Details";
+        return view('admin.businesses.show', $data);
+    }
+
+    public function products(Request $reuest)
+    {
+        # code...
+        $data['title'] = "All Products";
+        return view('admin.products.index', $data);
+    }
+
+
+    public function create_products(Request $reuest)
+    {
+        # code...
+        $data['title'] = "Create New Product";
+        return view('admin.products.create', $data);
+    }
+
+    public function show_product(Request $reuest)
+    {
+        # code...
+        $data['title'] = "Create New Product";
+        return view('admin.products.show', $data);
+    }
+
+    public function services(Request $reuest)
+    {
+        # code...
+        $data['title'] = "All Services";
+        return view('admin.services.index', $data);
+    }
+
+    public function show_service(Request $reuest)
+    {
+        # code...
+        $data['title'] = "Service Details";
+        return view('admin.services.show', $data);
+    }
+
+    public function create_service(Request $reuest)
+    {
+        # code...
+        $data['title'] = "Create New Services";
+        return view('admin.services.create', $data);
+    }
+    
+    public function categories (Request $reuest)
+    {
+        # code...
+        $data['title'] = "All Categories";
+        $data['categories'] = \App\Models\Category::all();
+        return view('admin.categories.index', $data);
+    }
 }

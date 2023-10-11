@@ -64,7 +64,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
     Route::prefix('businesses')->name('businesses.')->group(function(){
         Route::get('', [AdminHomeController::class, 'businesses'])->name('index');
+        Route::get('show/{business}', [AdminHomeController::class, 'show_business'])->name('show');
         Route::get('create', [AdminHomeController::class, 'create_business'])->name('create');
+        Route::get('create_branch/{business}', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
@@ -72,13 +74,18 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     });
     Route::prefix('services')->name('services.')->group(function(){
         Route::get('', [AdminHomeController::class, 'services'])->name('index');
+        Route::get('show/{service}', [AdminHomeController::class, 'show_service'])->name('show');
+        Route::get('create', [AdminHomeController::class, 'create_service'])->name('create');
     });
     Route::prefix('products')->name('products.')->group(function(){
         Route::get('', [AdminHomeController::class, 'products'])->name('index');
+        Route::get('show/{product}', [AdminHomeController::class, 'show_product'])->name('show');
+        Route::get('create', [AdminHomeController::class, 'create_products'])->name('create');
     });
     Route::prefix('categories')->name('categories.')->group(function(){
         Route::get('', [AdminHomeController::class, 'categories'])->name('index');
         Route::get('sub-categories', [AdminHomeController::class, 'sub_categories'])->name('sub_categories');
+        Route::get('create', [AdminHomeController::class, 'create_category'])->name('create');
     });
     Route::prefix('locations')->name('locations.')->group(function(){
         Route::get('streets', [AdminHomeController::class, 'business_streets'])->name('streets');
