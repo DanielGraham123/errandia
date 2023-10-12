@@ -2,135 +2,85 @@
 
 @section('section')
 
-<div>
-    <div id="user-profile-1" class="user-profile row">
-        <div class=" col-md-6 center">
+<div class="row col-md-6">
+    <div class="py-4 px-5 shadow my-2" style="border-radius: 0.6rem;">
+        <div class="text-h6 text-uppercase">user details</div>
+        <div class="row">
+            <img class="img img-rounded img-responsive mx-auto my-3" style=" width: 7rem; width: 7rem;" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}">
+        </div>
+        <div class="row py-3 border-bottom shadow-md">
+            <div class="col-sm-4 col-md-3 text-extra">Name</div>
+            <div class="text-body col-sm-8 col-md-9">{{ $user->name }}</div>
+        </div>
+        <div class="row py-3 border-bottom shadow-md">
+            <div class="col-sm-4 col-md-3 text-extra">Status</div>
+            <div class="text-body col-sm-8 col-md-9"> 
+                <span class="label label-out label-warning mx-3">Suspended</span>
+                <span> Suspended on: <i class="text-body-sm">{{ now() }}</i></span>
+            </div>
+        </div>
+        <div class="row py-3 border-bottom shadow-md">
+            <div class="col-sm-4 col-md-3 text-extra">Phone</div>
+            <div class="text-body col-sm-8 col-md-9">{{ $user->phone }}</div>
+        </div>
+        <div class="row py-3 border-bottom shadow-md">
+            <div class="col-sm-4 col-md-3 text-extra">Email</div>
+            <div class="text-body col-sm-8 col-md-9">{{ $user->email }}</div>
+        </div>
+        <div class="row py-3 border-bottom shadow-md">
+            <div class="col-sm-4 col-md-3 text-extra">Member since</div>
+            <div class="text-body col-sm-8 col-md-9">{{ $user->created_at->format('d m Y') }}</div>
+        </div>
+        <div class="row py-3 border-bottom shadow-md">
+            <div class="col-sm-4 col-md-3 text-extra">Location</div>
+            <div class="text-body col-sm-8 col-md-9">{{ $user->address }}</div>
+        </div>
+        <div class="row py-3 border-bottom shadow-md">
+            <div class="col-sm-4 col-md-3 text-extra">Shop</div>
+            <div class="text-body col-sm-8 col-md-9">Clara Jada Schema</div>
+        </div>
+        <div class="d-flex py-4">
+            <a class="button-secondary"> <img style="height: 1.6rem; width: 1.6rem;" src="{{ asset('assets/admin/icons/icon-edit.svg') }}"> Edit User</a>
+            <a class="button-tertiary"> <img style="height: 1.6rem; width: 1.6rem;" src="{{ asset('assets/admin/icons/icon-manage-users.svg') }}"> Reactivate User</div>
+        </div>
+    </div>
+</div>
+<div class="row col-md-6">
+<div class="py-4 px-5 shadow my-2" style="border-radius: 0.6rem;">
+        <div class="text-h6 text-uppercase">Businesses</div>
+        <form method="POST">
+            @csrf
             <div>
-                <span class="profile-picture">
-                    <img width="200px" height="" id="avatar" class="editable img-responsive"
-                    alt="Alex's Avatar" src="{{url('assets/images/avatars/profile-pic.jpg')}}"/>
-                </span>
-                
-                    <div class="space-4"></div>
+                <label for="form-field-select-3">Chosen</label>
 
-                    <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
-                        <div class="inline position-relative">
-                            <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown">
-                                <i class="ace-icon fa fa-circle light-green"></i>
-                                &nbsp
-                                <span
-                                    class="white">{{$user->name}}</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-6"></div>
-
-                <div class="profile-contact-info"></div>
-
-                <div class="hr hr12 dotted"></div>
-
-                <div class="hr hr16 dotted"></div>
+                <br>
+                <select class="chosen-select form-control" id="form-field-select-3" data-placeholder="Choose a State...">
+                    <option value="">  </option>
+                    <option value="AL">Alabama</option>
+                </select>
             </div>
-
-            <div class="col-md-6">
-                <div class="space-12"></div>
-
-                <h3>
-                    <b>{{$user->name}}</b>
-                </h3>
-
-
-                <div class="profile-user-info profile-user-info-striped">
-
-                    <div class="profile-info-row">
-                        <div class="profile-info-name"> Gender</div>
-
-                        <div class="profile-info-value">
-                            <span class="editable"
-                                  id="username"> {{$user->gender}}</span>
-                        </div>
-                    </div>
-
-                    <div class="profile-info-row">
-                        <div class="profile-info-name"> Email</div>
-
-                        <div class="profile-info-value">
-                            <span class="editable"
-                                  id="username"> {{$user->email}}</span>
-                        </div>
-                    </div>
-                    <div class="profile-info-row">
-                        <div class="profile-info-name text-capitalize"> {{__('text.word_matricule')}}</div>
-
-                        <div class="profile-info-value">
-                            <span class="editable"
-                                  id="username"> {{$user->matric}}</span>
-                        </div>
-                    </div>
-                    <div class="profile-info-row">
-                        <div class="profile-info-name"> Contact</div>
-
-                        <div class="profile-info-value">
-                            <span class="editable" id="username"> {{$user->phone}}</span>
-                        </div>
-                    </div>
-                    <div class="profile-info-row">
-                        <div class="profile-info-name"> Type</div>
-
-                        <div class="profile-info-value">
-                            <span class="editable" id="username"> {{$user->type}}</span>
-                        </div>
-                    </div>
-                    <div class="profile-info-row">
-                        <div class="profile-info-name"></div>
-                    </div>
-                </div>
-                <div class="space-20"></div>
+            <div class="py-3 d-flex justify-content-end">
+                <button type="submit" class="button-secondary">add</button>
             </div>
-        </div>
+        </form>
+        <table class="table table-light">
+            <thead>
+                <th>#</th>
+                <th>Business</th>
+                <th>Category</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                @php
+                    $k = 1;
+                @endphp
+                @foreach (\App\Models\Shop::all() as $shop)
+                    <tr class=" border-bottom shadow-sm">
+                        <td ></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
-    <div class="col-sm-12">
-        <p class="text-muted">
-            <a href="{{route('admin.users.subjects.add', $user->id)}}" class="btn btn-info btn-xs text-capitalize">{{__('text.assign_course')}}</a>
-        </p>
-
-        <div class="content-panel">
-            <div class="adv-table table-responsive">
-                <table cellpadding="0" cellspacing="0" border="0" class="table" id="hidden-table-info">
-                    <thead>
-                        <tr class="text-capitalize">
-                            <th>#</th>
-                            <th>{{__('text.course_code')}}</th>
-                            <th>{{__('text.word_name')}}</th>
-                            <th>{{__('text.word_class')}}</th>
-                            <th>{{__('text.word_campus')}}</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($courses as $k=>$subject)
-                        <tr>
-                            @php($value = \App\Models\ProgramLevel::find($subject->class))
-                            <td>{{$k+1}}</td>
-                            <td>{{$subject->code}}</td>
-                            <td>{{$subject->name}}</td>
-                            <td>{{$value->name()}}</td>
-                            <td>{{\App\Models\Campus::find($subject->campus_id)->name ?? '----'}}</td>
-                            <td style="float: right;">
-                                <a onclick="event.preventDefault();
-                                            $('#delete{{$subject->id}}').submit();" class=" btn btn-danger btn-xs m-2">DROP</a>
-                                <form id="delete{{$subject->id}}" action="{{route('admin.users.subjects.drop',$subject->teacher_subject_id)}}" method="POST" style="display: none;">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+</div>
 @endsection

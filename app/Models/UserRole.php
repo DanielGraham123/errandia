@@ -11,4 +11,10 @@ class UserRole extends Authenticatable
 {
     public $table = "users_roles";
     protected $connection = 'mysql';
+
+    public function role()
+    {
+        # code...
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 }

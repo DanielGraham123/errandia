@@ -23,31 +23,10 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // auth()->logout();
-        if(\request()->has('role') || \request()->has('type')){
-            $data['type'] = \request('role') ? \request('role') : \request('type');
-            $data['title'] = "Role ".($data['type'] ?? " Users");
-            if(\request()->has('role')){
-                $data['users'] = DB::table('roles')->where('slug', '=', $request->role)
-                    ->join('users_roles', 'users_roles.role_id', '=', 'roles.id')
-                    ->join('users', 'users.id', '=', 'users_roles.user_id')
-                    ->get('users.*');
-            }else{
-                $data['users'] = \App\Models\User::where('type', request('type', 'teacher'))->get();
-            }
-            // dd($data['users']);
+         
+            $data['users'] = User::all();
+            $data['title'] = "All Users";
             return view('admin.user.index')->with($data);
-        }else if(\request('permission')){
-            $data['type'] = \App\Models\Permission::whereSlug(\request('permission'))->first()->name;
-            $data['title'] = "Permission ".($data['type'] ?? "Users");
-            $data['users'] =\App\Models\Permission::whereSlug(\request('permission'))->first()->users()->get();
-            return view('admin.user.index')->with($data);
-        }else{
-            $data['type'] = request('teacher', 'user');
-            $data['users'] = \App\Models\User::where('type', request('type', 'teacher'))->get();
-            $data['title'] = "Manage " . $data['type']. 's';
-            return view('admin.user.index')->with($data);
-        }
     }
 
     public function create(Request $request)
@@ -59,45 +38,30 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * param \Illuminate\Http\Request $request
+     * return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validity = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|unique:users|email',
             'phone' => 'required',
             'address' => 'nullable',
-            'campus' => 'nullable',
-            'gender' => 'required',
-            'type' => 'required',
+            'user_type' => 'required',
+            'phone_code' => 'required',
         ]);
-        $pattern = Matriculation::first();
-        $pattern->last_number = $pattern->last_number+1;
-        if(User::where('matric', $pattern->pattern . $pattern->last_number)->count() > 0){
-            $pattern->last_number = $pattern->last_number+1;
+        // dd($request->all());
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
         }
+        
         $input = $request->all();
         $input['password'] = Hash::make('password');
-        $input['username'] = $request->email;
-        $input['campus_id'] = $request->campus ?? null;
-        $input['matric'] = $pattern->pattern . str_pad($pattern->last_number, 4, '0', STR_PAD_LEFT); ;
-        if($request->type == "teacher"){
-            $input['type'] = "teacher";
-        }else{
-            $input['type'] = "admin";
-        }
-        $user = new \App\Models\User($input);
+        $input['type'] = $request->user_type;
+        $input['phone'] = $request->phone_code.$request->phone;
+        $user = new User($input);
         $user->save();
-
-        $pattern->save();
-        if($request->type != "teacher"){
-            $user_role = new \App\Models\UserRole();
-            $user_role->role_id = DB::table('roles')->where('slug', '=', $request->type)->first()->id;
-            $user_role->user_id = $user->id;
-            $user_role->save();
-        }
 
         return redirect()->to(route('admin.users.index', [$request->type=='teacher' ? 'type' : 'role' =>$request->type]))->with('success', "User Created Successfully !");
     }
@@ -111,12 +75,7 @@ class UserController extends Controller
     public function show(Request $request, $id)
     {
         $data['title'] = "User details";
-        $data['user'] = \App\Models\User::find($id);
-        $data['courses'] = \App\Models\TeachersSubject::where([
-            'teacher_id' => $id,
-            'batch_id' => \App\Helpers\Helpers::instance()->getCurrentAccademicYear(),
-        ])->join('subjects', ['subjects.id'=>'teachers_subjects.subject_id'])
-        ->distinct()->select(['subjects.*', 'teachers_subjects.class_id as class', 'teachers_subjects.campus_id', 'teachers_subjects.id as teacher_subject_id'])->get();
+        $data['user'] = User::find($id);
         // dd($data);
         return view('admin.user.show')->with($data);
     }

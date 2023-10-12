@@ -34,7 +34,7 @@ class CustomLoginController extends Controller
         ]);
         session()->flush();
 
-        if( Auth::attempt(['username'=>$request->username,'password'=>$request->password]) ||  Auth::attempt(['matric'=>$request->username,'password'=>$request->password])){
+        if( Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
             return redirect()->route('admin.home')->with('success','Welcome to Admin Dashboard '.Auth::user()->name);
         }
         

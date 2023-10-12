@@ -84,12 +84,15 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     });
     Route::prefix('categories')->name('categories.')->group(function(){
         Route::get('', [AdminHomeController::class, 'categories'])->name('index');
-        Route::get('sub-categories', [AdminHomeController::class, 'sub_categories'])->name('sub_categories');
+        Route::get('subcategories', [AdminHomeController::class, 'sub_categories'])->name('sub_categories');
+        Route::get('subcategories/create', [AdminHomeController::class, 'create_sub_category'])->name('sub_categories.create');
         Route::get('create', [AdminHomeController::class, 'create_category'])->name('create');
     });
     Route::prefix('locations')->name('locations.')->group(function(){
-        Route::get('streets', [AdminHomeController::class, 'business_streets'])->name('streets');
-        Route::get('towns', [AdminHomeController::class, 'business_towns'])->name('towns');
+        Route::get('streets', [AdminHomeController::class, 'streets'])->name('streets');
+        Route::get('streets/create', [AdminHomeController::class, 'create_street'])->name('streets.create');
+        Route::get('towns', [AdminHomeController::class, 'towns'])->name('towns');
+        Route::get('towns/create', [AdminHomeController::class, 'create_town'])->name('towns.create');
     });
     Route::prefix('reviews')->name('reviews.')->group(function(){
         Route::get('', [AdminHomeController::class, 'reviews'])->name('index');
@@ -104,6 +107,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     });
     Route::prefix('plans')->name('plans.')->group(function(){
         Route::get('', [AdminHomeController::class, 'subscription_plans'])->name('index');
+        Route::get('create', [AdminHomeController::class, 'create_subscription_plan'])->name('create');
     });
     Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
         Route::get('', [AdminHomeController::class, 'sms_bundles'])->name('index');

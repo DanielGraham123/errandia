@@ -52,7 +52,7 @@ a{
 .button-secondary:active{ background-color: var(--color-gray); }
 .button-secondary:hover{ background-color: var(--color-lightcyan); }
 
-.button-tertiary{ color: var(--color-blue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none;}
+.button-tertiary{ color: var(--color-blue); border-radius: 5px; padding: 0.7em 2.4rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none;}
 .button-tertiary:disabled{ color: var(--color-darkgray); }
 .button-tertiary:active{ background-color: var(--color-gray); }
 .button-tertiary:hover{ background-color: var(--color-lightcyan); }
@@ -80,7 +80,7 @@ a{
 .icon-button-tertiary:hover{ background-color: var(--color-lightcyan); }
 
 /* INPUT FIELDS */
-.input-field{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); margin: 4px; }
+.input-field{ color: var(--color-black); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-gray); margin: 4px; display: block; width: 100%;}
 .input-field + .hint{ color: var(--color-black); padding: 2px 1rem; }
 .input-field:focus{ color: var(--color-blue); padding: 3px 1rem; border-radius: 7px; border: 1px solid var(--color-blue); margin: 4px; }
 .input-field:focus + .hint{ color: var(--color-black); padding: 2px 1rem; }
