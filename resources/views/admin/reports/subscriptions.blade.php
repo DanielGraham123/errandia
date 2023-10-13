@@ -1,29 +1,65 @@
 @extends('admin.layout')
 @section('section')
     <div class="py-2">
+        <form method="get">
+            <div class="input-group imput-group-merge">
+                <span class="input-group-addon" style="width: 7rem;">Month</span>
+                <input class="form-control" name="month" type="month">
+            </div>
+        </form>
         <div class="d-flex justify-content-start flex-wrap">
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-users.svg') }}"></div>
-            <span class="title">Users</span>
-            <div class="stats">
-                <span class="qty text-extra">46</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
+            <div class="dashboard-item">
+                    <div class="text-h6 text-capitalize">total subscriptions</div>
+                    <div class="stats d-flex justify-content-between">
+                        <span class="text-h5 d-block">46</span>
+                        <span class="act text-link d-block">XAF 600K</span>
+                    </div>
+                    <div class="">
+                        <a href="#" class="act text-link">view </a>
+                    </div>
             </div>
-       </div>
-
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-businesses.svg') }}"></div>
-            <span class="title">Businesses</span>
-            <div class="stats">
-                <span class="qty text-extra">22</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
+            <div class="dashboard-item">
+                    <div class="text-h6 text-capitalize">expired subscriptions</div>
+                    <div class="stats d-flex justify-content-between">
+                        <span class="text-h5 d-block">05</span>
+                    </div>
+                    <div class="">
+                        <a href="#" class="act text-link">view </a>
+                    </div>
             </div>
-       </div>
+            <div class="dashboard-item">
+                    <div class="text-h6 text-capitalize">total renewals</div>
+                    <div class="stats d-flex justify-content-between">
+                        <span class="text-h5 d-block">110</span>
+                    </div>
+                    <div class="">
+                        <a href="#" class="act text-link">view </a>
+                    </div>
+            </div>
+            <div class="dashboard-item">
+                    <div class="text-h6 text-capitalize">cancelled subscriptions</div>
+                    <div class="stats d-flex justify-content-between">
+                        <span class="text-h5 d-block">16</span>
+                        <span class="act text-link d-block">XAF 600K</span>
+                    </div>
+                    <div class="">
+                        <a href="#" class="act text-link">view </a>
+                    </div>
+            </div>
+            <div class="dashboard-item">
+                    <div class="text-h6 text-capitalize">refunds</div>
+                    <div class="stats d-flex justify-content-between">
+                        <span class="text-h5 d-block">02</span>
+                    </div>
+                    <div class="">
+                        <a href="#" class="act text-link"> </a>
+                    </div>
+            </div>
 
-    </div>
-        <div class="py-1 px-2 d-flex">
-
+        </div>
+        <div class="py-1 px-2">
+            <div class="text-h6"> All Subscriptions</div>
             <table class="table">
                 <thead class="text-capitalize">
                     <th></th>
@@ -32,8 +68,8 @@
                     <th>subscription plan</th>
                     <th>amount</th>
                     <th>expiry date</th>
-                    <th>status</th>
                     <th>action</th>
+                    <th>status</th>
                 </thead>
                 <tbody>
                     @php $k = 1;
@@ -42,11 +78,10 @@
                         <tr class="shadow-sm border-bottom">
                             <td>{{ $k++}}</td>
                             <td>{{ $sub->business->name??'' }}</td>
-                            <td>{{  }}</td>
-                            <td>{{  }}</td>
+                            <td>business user</td>
+                            <td>plan</td>
                             <td>{{ $sub->plan->amount }}</td>
                             <td>{{ \Illuminate\Support\Carbon::parse($sub->end_date)->format('d M Y') }}</td>
-                            <td><span class="label label-sm label-info arrowed arrowed-righ">Active</span></td>
                             <td>
                                 <div class="btn-group">
                                     <button data-toggle="dropdown" class="btn btn-xs btn-secondary dropdown-toggle" aria-expanded="false">
@@ -61,6 +96,7 @@
                                     </ul>
                                 </div>
                              </td>
+                            <td><span class="label label-sm label-info arrowed arrowed-righ">Active</span></td>
                         </tr>
                     @endforeach
                 </tbody>

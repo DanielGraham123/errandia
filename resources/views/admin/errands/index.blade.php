@@ -15,38 +15,45 @@
                 <tbody>
                     @php $k = 1;
                     @endphp
-                    @for($i = 0; $i <= 50; $i++)
+                    @foreach($errands as $errn)
                         <tr class="shadow-sm border-bottom">
                             <td>{{ $k++}}</td>
                             <td>
-                                <div class="row bg-white">
+                                <div class="row border-0 bg-white">
                                     <span class="col-sm-2" style="hieght: 4rem; width: 4rem; border-radius: 0.5rem;">
                                         <img style="hieght: 4rem; width: 4rem; border-radius: 0.5rem;" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}">
                                     </span>
                                     <div class="col-sm-10">
-                                        <span class="d-block my-1 h5 text-primary">We need a rounded top PC</span>
-                                        <span class="text-secondary d-block">Sunt aliquid et itaque tempore repudiandae. Quia expedita deserunt sapiente</span>
-                                        <span class="d-block mt-4 h5 text-dark">Posted: 02 April 2023</span>
+                                        <span class="d-block my-1 h5 text-primary">{{ $errn->title }}</span>
+                                        <span class="text-secondary d-block">{{ $errn->description }}</span>
+                                        <span class="d-block mt-4 h5 text-dark">{{ \Illuminate\Support\Carbon::parse($errn->created_at)->format(DATE_ATOM) }}</span>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <span class="d-block text-info my-2">Dr. Pearline Cummings</span>
-                                <span class="d-block my-2">Phone: +237 698752586</span>
+                                <span class="d-block text-info my-2">{{ $errn->posted_by->name??'' }}</span>
+                                <span class="d-block my-2">Phone: {{ $errn->phone_number }}</span>
                             </td>
                             <td>
                                 Molyko, Buea, South West Region
                             </td>
                             <td>
-                                Found/Pending/Cancelled
+                                @if ($errn->read_status == 1)
+                                    <span class="label label-out label-primary label-lg">Found</span>
+                                @else
+                                    <span class="label label-out label-warning label-lg">Pending</span>
+                                @endif
                             </td>
                             <td>
-                                <a href="#" class="text-danger"><img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> Delete</a>
+                                <a href="#" class="text-primary d-flex"><img src="{{ asset('assets/admin/icons/icon-view.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> View on site</a>
+                                <a href="#" class="text-danger d-flex"><img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> Delete</a>
                             </td>
                         </tr>
-                    @endfor
+                    @endforeach
+                    
                 </tbody>
             </table>
         </div>
+        <div>{{ $errands->links() }}</div>
     </div>
 @endsection

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CampusSemesterConfig;
 use App\Models\Category;
 use App\Models\Config;
+use App\Models\Errand;
 use App\Models\File;
 use App\Models\PlatformCharge;
 use App\Models\Region;
@@ -66,6 +67,8 @@ class HomeController  extends Controller
     {
         # code...
         $data['title'] = "Errands";
+        $data['errands'] = Errand::paginate(100);
+        // dd($data);
         return view('admin.errands.index', $data);
     }
 
