@@ -140,98 +140,11 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = \App\Models\User::find($id);
-        if (\Auth::user()->id == $id || \Auth::user()->id != 1) {
+        if (auth()->user()->id == $id || auth()->user()->id != 1) {
             return redirect()->to(route('admin.users.index', ['type' => $user->type]))->with('error', "User can't be deleted");
         }
         $user->delete();
         return redirect()->to(route('admin.users.index', ['type' => $user->type]))->with('success', "User deleted successfully!");
     }
 
-
-    public function createSubject($id)
-    {
-        $data['user'] = \App\Models\User::find($id);
-        $data['title'] = "Assign Subject to " . $data['user']->name;
-        $data['classes'] = StudentController::baseClasses();
-        return view('admin.user.assignSubject')->with($data);
-    }
-
-    public function classmaster()
-    {
-        $data['users'] = \App\Models\ClassMaster::paginate(20);
-        $data['title'] = "HOD";
-        return view('admin.user.classmaster')->with($data);
-    }
-
-    public function classmasterCreate()
-    {
-        $data['title'] = "Assign HOD";
-        $data['classes'] = StudentController::baseClasses();
-        $data['units'] = \App\Models\SchoolUnits::where('parent_id', 0)->get();
-        return view('admin.user.create_classmaster')->with($data);
-    }
-
-    public function saveClassmaster(Request  $request)
-    {
-        $this->validate($request, [
-            'user_id' => 'required',
-            'campus_id' => 'required',
-            'section' => 'required',
-        ]);
-        if (ClassMaster::where('user_id', $request->user_id)->where('department_id',  $request->section)->where('campus_id',  $request->campus_id)->count() > 0) {
-            return redirect()->back()->with('error', "User already assigned to this class !");
-        }
-
-        $master = new ClassMaster();
-        $master->user_id = $request->user_id;
-        $master->campus_id = $request->campus_id;
-        $master->department_id = $request->section;
-        $master->batch_id = \App\Helpers\Helpers::instance()->getCurrentAccademicYear();
-        $master->save();
-
-        return redirect()->to(route('admin.users.classmaster'))->with('success', "User updated Successfully !");
-    }
-
-    public function  deleteMaster(Request  $request)
-    {
-        $master = ClassMaster::findOrFail($request->master);
-        $master->delete();
-        return redirect()->to(route('admin.users.classmaster'))->with('success', "User unassigned Successfully !");
-    }
-
-
-    public function dropSubject($id)
-    {
-        $s = TeachersSubject::find($id);
-        if ($s) {
-            $s->delete();
-        }
-        return back()->with('success', "Subject deleted successfully!");
-    }
-
-    public function saveSubject(Request $request, $id)
-    {
-        $subject = TeachersSubject::where([
-            'teacher_id' => $id,
-            'batch_id' => \App\Helpers\Helpers::instance()->getCurrentAccademicYear(),
-            'subject_id' => $request->subject,
-            'class_id' => $request->section,
-            'campus_id' => $request->campus,
-        ]);
-
-        if ($subject->count() == 0) {
-            TeachersSubject::create([
-                'teacher_id' => $id,
-                'subject_id' => $request->subject,
-                'class_id' => $request->section,
-                'campus_id' => $request->campus,
-                'batch_id' => \App\Helpers\Helpers::instance()->getCurrentAccademicYear()
-            ]);
-            Session::flash('success', "Subject assigned successfully!");
-        } else {
-            Session::flash('error', "Subject assigned already");
-        }
-
-        return redirect()->to(route('admin.users.show', $id));
-    }
 }

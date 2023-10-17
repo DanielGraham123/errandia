@@ -41,16 +41,6 @@ return [
             'provider' => 'users',
         ],
 
-        'user' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
-        'student' => [
-            'driver' => 'session',
-            'provider' => 'students',
-        ],
-
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -86,15 +76,6 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        'students' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Students::class,
-        ],
-
-        'parents' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Guardian::class,
-        ],
 
         // 'users' => [
         //     'driver' => 'database',

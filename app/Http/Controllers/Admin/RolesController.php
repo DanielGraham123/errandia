@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RolesController extends Controller{
 
@@ -21,12 +23,12 @@ class RolesController extends Controller{
 
     public function store(Request $request)
     {
-        if(\Auth::user()->can('manage_roles')){
+        if(auth()->user()->can('manage_roles')){
             $this->validate($request, [
                 'name' => 'required',
                 'permissions' => 'required',
             ]);
-            \DB::beginTransaction();
+            DB::beginTransaction();
             try{
                 $role = new \App\Models\Role();
                 $role->name = $request->name;
@@ -34,15 +36,15 @@ class RolesController extends Controller{
                 $role->save();
 
                 foreach($request->permissions as $perm){
-                    \DB::table('roles_permissions')->insert([
+                    DB::table('roles_permissions')->insert([
                         'role_id' => $role->id,
                         'permission_id'=>$perm,
                     ]);
                 }
-                \DB::commit();
+                DB::commit();
                 $request->session()->flash('success', __('text.word_done'));
             }catch(\Exception $e){
-                \DB::rollback();
+                DB::rollback();
                 $request->session()->flash('error', $e->getMessage());
             }
         }else{
@@ -100,7 +102,7 @@ class RolesController extends Controller{
             'permissions' => 'required',
         ]);
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         try{
             if($slug !== 'admin' || $slug !== 'teacher' || $slug !== 'parent'){
                 $role = \App\Models\Role::whereSlug($slug)->first();
@@ -110,18 +112,18 @@ class RolesController extends Controller{
                     $pem->delete();
                 }
                 foreach($request->permissions as $perm){
-                    \DB::table('roles_permissions')->insert([
+                    DB::table('roles_permissions')->insert([
                         'role_id' => $role->id,
                         'permission_id'=>$perm,
                     ]);
                 }
-                \DB::commit();
+                DB::commit();
                 $request->session()->flash('success', __('text.word_done'));
             }else{
                 $request->session()->flash('error', __('text.can_not_edit_this_role'));
             }
         }catch(\Exception $e){
-            \DB::rollback();
+            DB::rollback();
             $request->session()->flash('error', $e->getMessage());
         }
 
@@ -140,7 +142,7 @@ class RolesController extends Controller{
     }
 
     public function rolesView(Request $request){
-        $data['user'] = \App\User::whereSlug(request('user'))->first();
+        $data['user'] = User::whereSlug(request('user'))->first();
         return view('admin.roles.assign')->with($data);
     }
 
@@ -150,10 +152,10 @@ class RolesController extends Controller{
             'role_id' => 'required',
         ]);
 
-        $user = \App\User::find($request->user_id);
+        $user = User::find($request->user_id);
         if(!$user->hasRole('admin')){
             $role = \App\Models\Role::find($request->role_id);
-            \DB::beginTransaction();
+            DB::beginTransaction();
             try{
                 if($user == null || $role == null){
                     abort(404);
@@ -162,15 +164,15 @@ class RolesController extends Controller{
                 foreach ($user->roleR as $r){
                     $r->delete();
                 }
-                \DB::table('users_roles')->insert([
+                DB::table('users_roles')->insert([
                     'role_id' => $role->id,
                     'user_id'=>$user->id,
                 ]);
-                \DB::commit();
+                DB::commit();
                 $request->session()->flash('success', __('text.word_done'));
 
             }catch(\Exception $e){
-                \DB::rollback();
+                DB::rollback();
                 $request->session()->flash('error', $e->getMessage());
             }
         }else{
