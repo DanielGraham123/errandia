@@ -62,9 +62,9 @@
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">edit</a></li>
                                         <li class="list-item py-1 border-y"> <a href="{{route('admin.businesses.branch.create', '123')}}" class="text-decoration-none text-secondary">add branch</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">view owner profile</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">suspend</a></li>
+                                        <li class="list-item py-1 border-y"> <a href="#" onclick="_prompt('url', 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">Mark as verified</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">Delete</a></li>
+                                        <li class="list-item py-1 border-y"> <a href="#" onclick="_prompt('url', 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none text-secondary">Delete</a></li>
                                     </ul>
                                 </div>
                              </td>

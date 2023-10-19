@@ -50,7 +50,7 @@
                                     <ul class="dropdown-menu dropdown-light">
                                         <li class="list-item py-1 border-y"> <a href="{{ route('admin.services.show', 'business') }}" class="text-decoration-none text-secondary">view service</a></li>
                                         <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.show', 'business') }}" class="text-decoration-none text-secondary">view business profile</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">Delete</a></li>
+                                        <li class="list-item py-1 border-y"> <a href="#" onclick="_prompt('url', 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none text-secondary">Delete</a></li>
                                     </ul>
                                 </div>
                              </td>

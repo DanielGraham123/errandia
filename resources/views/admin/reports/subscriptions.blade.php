@@ -92,7 +92,7 @@
                                         <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.show', 'business') }}" class="text-decoration-none text-secondary">Reniew Subscription</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">View User Profile</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">View Business Profile</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">Cancel Subscription</a></li>
+                                        <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary" onclick="_prompt('url', 'Are you sure you intend to delete this item? This process cannot be undone.')">Cancel Subscription</a></li>
                                     </ul>
                                 </div>
                              </td>

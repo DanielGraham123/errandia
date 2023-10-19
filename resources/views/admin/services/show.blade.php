@@ -53,6 +53,7 @@
                     @endfor
                 <div>
             </div>
+            
         </div>
     </div>
 @endsection

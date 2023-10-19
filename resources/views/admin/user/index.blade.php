@@ -41,7 +41,7 @@
                                             <li class="list-item py-1 border-y"> <a href="{{ route('admin.users.show', $user->id) }}" class="text-decoration-none text-secondary">view profile</a></li>
                                             <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">edit</a></li>
                                             <li class="list-item py-1 border-y"> <a href="{{route('admin.businesses.show', '123')}}" class="text-decoration-none text-secondary">view business profile</a></li>
-                                            <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">Ban User</a></li>
+                                            <li class="list-item py-1 border-y"> <a href="#" onclick="_prompt('url', 'Are you sure you intend to ban this item?')" class="text-decoration-none text-secondary">Ban User</a></li>
                                             <li class="list-item py-1 border-y"> <a href="#" class="text-decoration-none text-secondary">Reactivate</a></li>
                                         </ul>
                                     </div>

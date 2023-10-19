@@ -3,7 +3,7 @@
     <div class="py-2">
         <div class="py-1 px-2 d-flex">
 
-            <table class="table">
+            <table class="table table-stripped">
                 <thead class="text-capitalize">
                     <th></th>
                     <th>title</th>
@@ -16,7 +16,7 @@
                     @php $k = 1;
                     @endphp
                     @foreach($errands as $errn)
-                        <tr class="shadow-sm border-bottom">
+                        <tr class="shadow-md border-bottom bordere-dark">
                             <td>{{ $k++}}</td>
                             <td>
                                 <div class="row border-0 bg-white">
@@ -46,7 +46,7 @@
                             </td>
                             <td>
                                 <a href="#" class="text-primary d-flex"><img src="{{ asset('assets/admin/icons/icon-view.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> View on site</a>
-                                <a href="#" class="text-danger d-flex"><img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> Delete</a>
+                                <a href="#" class="text-danger d-flex" onclick="_prompt('url', 'Are you sure you intend to delete this item? This process cannot be undone.')"><img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> Delete</a>
                             </td>
                         </tr>
                     @endforeach
