@@ -6,11 +6,8 @@ use App\Helpers\Helpers;
 use App\Http\Controllers\SMS\Helpers as SMSHelpers;
 use App\Services\FocusTargetSms;
 use App\Models\CampusProgram;
-use App\Models\ClassSubject;
 use App\Models\Config as ModelsConfig;
 use App\Models\Message;
-use App\Models\Students;
-use App\Models\TeachersSubject;
 use App\Models\User;
 use App\Models\Wage;
 use Illuminate\Database\Eloquent\Collection;
@@ -58,8 +55,6 @@ class Controller extends BaseController
         $data['title'] = "Reset Password";
         if (auth()->user()->type == 'admin') {
             return view('admin.reset_password', $data);
-        }else{
-            return view('teacher.reset_password', $data);
         }
     
     }

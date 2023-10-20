@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Guardian;
-use App\Models\Students;
 use App\Models\User;
 // use Auth;
 use Illuminate\Support\Facades\Artisan;
@@ -45,8 +44,6 @@ class CustomLoginController extends Controller
 
     public function logout(Request $request){
         Auth::logout();
-        Auth::guard('student')->logout();
-        Auth::guard('parents')->logout();
         return redirect(route('login'));
     }
 

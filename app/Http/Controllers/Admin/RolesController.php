@@ -104,7 +104,7 @@ class RolesController extends Controller{
 
         DB::beginTransaction();
         try{
-            if($slug !== 'admin' || $slug !== 'teacher' || $slug !== 'parent'){
+            if($slug !== 'admin'){
                 $role = \App\Models\Role::whereSlug($slug)->first();
                 $role->name = $request->name;
                 $role->save();

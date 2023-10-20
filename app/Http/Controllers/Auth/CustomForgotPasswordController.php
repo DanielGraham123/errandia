@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\Students;
 use App\Mail\ResetEmail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -33,18 +32,12 @@ class CustomForgotPasswordController extends Controller
         //dd($request->type);
         $type = $request->type;
         $email = $request->email;
-      if($type){
-            $user = Students::where('email', $email)->get();
-            //dd($user);
-            if ($user->count() == 0) {
-                return redirect()->back()->with('e','Student does not exist with this email');
-            }
-      }else{
+      
         $user = User::where('email',  $email)->get();
         if ($user->count() == 0) {
             return redirect()->back()->with('e','User does not exist with this email');
         }
-      }
+      
       
         //Create Password Reset Token
         \DB::table('password_resets')->insert([
@@ -93,13 +86,6 @@ class CustomForgotPasswordController extends Controller
         $user->save();
         //login the user immediately they change password successfully
         \Auth::login($user);
-    }else{
-        $user = Students::where('email', $tokenData->email)->first();
-        if (!$user) return redirect()->back()->withErrors(['email' => 'Email not found']);//Hash and update the new password
-        $user->password = \Hash::make($password);
-        $user->save();
-        //login the user immediately they change password successfully
-        \Auth::guard('student')->login($user);
     }
    
     //Delete the token
@@ -117,19 +103,5 @@ return redirect()->route('login')->with('s','Password Changed Successfully');
         return view('auth.passwords.reset')->with($data);
     }
 
-    public function recover_username(Request $request)
-    {
-        $validity = Validator::make($request->all(), ['matric'=>'required']);
-        if($validity->fails()){
-            return back()->with('error', $validity->errors()->first());
-        }
-        $student = Students::where('matric', $request->matric)->first();
-        if($student != null){
-            if($student->username == null){
-                return back()->with('error', __('text.no_username_registered_for_this_account'));
-            }
-            return back()->with('success', __('text.word_done'));
-        }
-        return back()->with('error', __('text.could_not_find_any_account_with_specified_matricule'));
-    }
+
 }

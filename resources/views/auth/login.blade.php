@@ -204,11 +204,6 @@
 														</span>
 													</label>
 
-													{{-- <label class="block clearfix">
-														<span class="block input-icon input-icon-right">
-															<input type="checkbox" name="type">  Am a student
-														</span>
-													</label> --}}
 
 													<div class="clearfix">
 														<button type="submit" class="form-control btn-black btn-sm"  style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; text-transform: capitalize; margin-block: 2rem;">
@@ -239,7 +234,6 @@
 		</div><!-- /.main-container -->
 
 
-{{--		@include('inc.student.footer')--}}
 				</div>
 		<script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
 		<script type="text/javascript">

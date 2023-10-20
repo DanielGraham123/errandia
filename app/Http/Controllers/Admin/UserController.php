@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClassMaster;
-use App\Models\Matriculation;
-use App\Models\TeachersSubject;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Option;
@@ -63,7 +60,7 @@ class UserController extends Controller
         $user = new User($input);
         $user->save();
 
-        return redirect()->to(route('admin.users.index', [$request->type=='teacher' ? 'type' : 'role' =>$request->type]))->with('success', "User Created Successfully !");
+        return redirect()->to(route('admin.users.index'))->with('success', "User Created Successfully !");
     }
 
     /**

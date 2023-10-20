@@ -52,7 +52,7 @@ INSERT INTO `permissions` (`id`, `name`, `name_fr`, `slug`, `created_at`, `updat
 (9, 'Manage Incomes', NULL, 'manage_incomes', NULL, NULL),
 (10, 'Manage Expenses', NULL, 'manage_expenses', NULL, NULL),
 (11, 'Manage Setting', NULL, 'manage_setting', NULL, NULL),
-(12, 'Promote students', NULL, 'promote_students', NULL, NULL),
+(12, 'Promote s', NULL, 'promote_students', NULL, NULL),
 (13, 'Approve promotion', NULL, 'approve_promotion', NULL, NULL),
 (15, 'MANAGE STATISTICS', NULL, 'manage_statistics', NULL, NULL),
 (16, 'Manage Notifications', NULL, 'manage_notifications', NULL, NULL),

@@ -77,7 +77,6 @@
                     <div class="col-lg-10">
                         <select class="form-control" name="type">
                             <option selected disabled>{{__('text.select_type')}}</option>
-                            <option {{old('type', $user->type) == 'teacher'?'selected':''}} value="teacher">Teacher</option>
                             <option {{old('type', $user->type) == 'admin'?'selected':''}} value="admin">Admin</option>
                         </select>
                         @error('type')

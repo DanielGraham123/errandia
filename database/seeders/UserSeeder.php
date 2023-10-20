@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'email' => 'nishang80@gmail.com',
             'username' => 'nishang80@gmail.com',
             'password' => Hash::make('password'),
-            'type'     => 'teacher',
+            'type'     => 'admin',
             'gender' => 'male',
             'address' => 'New Town',
             'phone' => '7485892354980'
@@ -33,17 +33,11 @@ class UserSeeder extends Seeder
             'username' => 'PeterBeryJ',
             'email' => 'peterberyj@gmail.com',
             'password' =>  Hash::make('password'),
-            'type'     => 'teacher',
+            'type'     => 'admin',
             'gender' => 'male',
             'address' => 'New Town',
             'phone' => '7489354980'
         ]);
 
-        Config::create([
-            'seq_id' => 5,
-            'year_id' => 1,
-            'start_date' => '2021-09-09',
-            'end_date' => '2021-12-02'
-        ]);
     }
 }
