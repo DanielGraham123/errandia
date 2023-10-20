@@ -9,6 +9,7 @@
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+
     <link rel="stylesheet" href="{{asset('css/app.css')}}" />
     <link rel="stylesheet" href="{{asset('css/custom.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}" />
@@ -240,6 +241,31 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
+                      
+                <li>
+                    <a href="" class="dropdown-toggle text-capitalize">
+                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-business-locations.svg') }}"></span>
+                        <span class="menu-text">Business Locations</span>
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="{{ route('admin.locations.towns') }}" class="text-capitalize">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Manage Towns
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.locations.streets') }}" class="text-capitalize">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Manage Streets
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
                 
             
                 <li>
@@ -312,34 +338,7 @@
                         </li>
                     </ul>
                 </li>
-                        
-                <li>
-                    <a href="" class="dropdown-toggle text-capitalize">
-                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-business-locations.svg') }}"></span>
-                        <span class="menu-text">Business Locations</span>
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-
-                    <ul class="submenu">
-                        <li>
-                            <a href="{{ route('admin.locations.towns') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Manage Towns
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.locations.streets') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Manage Streets
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
-
-
-                    </ul>
-                </li>
-                
+                  
                 <li>
                     <a
                         href="{{route('admin.reviews.index')}}">
@@ -636,7 +635,6 @@
 <script src="{{ asset('assets/js/jquery.inputlimiter.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.maskedinput.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap-tag.min.js') }}"></script>
-
 
 
 <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>

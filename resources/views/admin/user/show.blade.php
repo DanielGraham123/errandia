@@ -46,20 +46,19 @@
     </div>
 </div>
 <div class="row col-md-6">
-<div class="py-4 px-5 shadow my-2" style="border-radius: 0.6rem;">
+    <div class="py-4 px-5 shadow my-2" style="border-radius: 0.6rem;">
         <div class="text-h6 text-uppercase">Businesses</div>
-        <form method="POST">
+        <form method="POST" class="border-bottom py-2">
             @csrf
-            <div>
-                <label for="form-field-select-3">Chosen</label>
-
-                <br>
-                <select class="chosen-select form-control" id="form-field-select-3" data-placeholder="Choose a State...">
-                    <option value="">  </option>
-                    <option value="AL">Alabama</option>
+            <div class="form-group">
+                <select class="form-control" name="business" required>
+                    @foreach (\App\Models\Shop::orderBy('name')->get() as $shop)
+                        <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                    @endforeach
                 </select>
             </div>
-            <div class="py-3 d-flex justify-content-end">
+
+            <div class="py-2 d-flex justify-content-end">
                 <button type="submit" class="button-secondary">add</button>
             </div>
         </form>
@@ -74,7 +73,7 @@
                 @php
                     $k = 1;
                 @endphp
-                @foreach (\App\Models\Shop::all() as $shop)
+                @foreach (\App\Models\Shop::take(5)->get() as $shop)
                     <tr class=" border-bottom shadow-sm">
                         <td ></td>
                     </tr>

@@ -21,12 +21,12 @@
                             <td>
                                 <div class="row border-0 bg-white">
                                     <span class="col-sm-2" style="hieght: 4rem; width: 4rem; border-radius: 0.5rem;">
-                                        <img style="hieght: 4rem; width: 4rem; border-radius: 0.5rem;" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}">
+                                        {{-- <img style="hieght: 4rem; width: 4rem; border-radius: 0.5rem;" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}"> --}}
                                     </span>
                                     <div class="col-sm-10">
                                         <span class="d-block my-1 h5 text-primary">{{ $errn->title }}</span>
                                         <span class="text-secondary d-block">{{ $errn->description }}</span>
-                                        <span class="d-block mt-4 h5 text-dark">{{ \Illuminate\Support\Carbon::parse($errn->created_at)->format(DATE_ATOM) }}</span>
+                                        <span class="d-block mt-4 h5 text-dark">{{ \Illuminate\Support\Carbon::parse($errn->created_at)->format('l d M Y') }}</span>
                                     </div>
                                 </div>
                             </td>
@@ -46,7 +46,7 @@
                             </td>
                             <td>
                                 <a href="#" class="text-primary d-flex"><img src="{{ asset('assets/admin/icons/icon-view.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> View on site</a>
-                                <a href="#" class="text-danger d-flex" onclick="_prompt('url', 'Are you sure you intend to delete this item? This process cannot be undone.')"><img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> Delete</a>
+                                <a href="#" class="text-danger d-flex" onclick="_prompt(`{{ route('admin.errands.delete', $errn->slug) }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')"><img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.3rem; width: 1.3rem; margin-right: 1rem;"> Delete</a>
                             </td>
                         </tr>
                     @endforeach

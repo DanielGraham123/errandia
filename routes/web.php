@@ -50,13 +50,21 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
     Route::prefix('businesses')->name('businesses.')->group(function(){
         Route::get('', [AdminHomeController::class, 'businesses'])->name('index');
-        Route::get('show/{business}', [AdminHomeController::class, 'show_business'])->name('show');
         Route::get('create', [AdminHomeController::class, 'create_business'])->name('create');
-        Route::get('create_branch/{business}', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
+        Route::post('create', [AdminHomeController::class, 'save_business']);
+        Route::get('{slug}/show', [AdminHomeController::class, 'show_business'])->name('show');
+        Route::get('{slug}/owner', [AdminHomeController::class, 'show_business_owner'])->name('show_owner');
+        Route::get('{slug}/edit', [AdminHomeController::class, 'edit_business'])->name('edit');
+        Route::post('{slug}/edit', [AdminHomeController::class, 'update_business']);
+        Route::get('{slug}/delete', [AdminHomeController::class, 'delete_business'])->name('delete');
+        Route::get('{slug}/suspend', [AdminHomeController::class, 'suspend_business'])->name('suspend');
+        Route::get('{slug}/verify', [AdminHomeController::class, 'verify_business'])->name('verify');
+        Route::get('{slug}/create_branch', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
         Route::get('', [AdminHomeController::class, 'errands'])->name('index');
+        Route::get('delete/{slug}', [AdminHomeController::class, 'delete_errand'])->name('delete');
     });
     Route::prefix('services')->name('services.')->group(function(){
         Route::get('', [AdminHomeController::class, 'services'])->name('index');
@@ -77,8 +85,16 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::prefix('locations')->name('locations.')->group(function(){
         Route::get('streets', [AdminHomeController::class, 'streets'])->name('streets');
         Route::get('streets/create', [AdminHomeController::class, 'create_street'])->name('streets.create');
+        Route::post('streets/create', [AdminHomeController::class, 'save_street']);
+        Route::get('streets/{slug}/edit', [AdminHomeController::class, 'edit_street'])->name('streets.edit');
+        Route::post('streets/{slug}/edit', [AdminHomeController::class, 'update_street']);
+        Route::get('streets/{slug}/delete', [AdminHomeController::class, 'delete_street'])->name('streets.delete');
         Route::get('towns', [AdminHomeController::class, 'towns'])->name('towns');
         Route::get('towns/create', [AdminHomeController::class, 'create_town'])->name('towns.create');
+        Route::post('towns/create', [AdminHomeController::class, 'save_town']);
+        Route::get('towns/{slug}/edit', [AdminHomeController::class, 'edit_town'])->name('towns.edit');
+        Route::post('towns/{slug}/edit', [AdminHomeController::class, 'update_town']);
+        Route::get('towns/{slug}/delete', [AdminHomeController::class, 'delete_town'])->name('towns.delete');
     });
     Route::prefix('reviews')->name('reviews.')->group(function(){
         Route::get('', [AdminHomeController::class, 'reviews'])->name('index');
@@ -114,6 +130,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::prefix('abuse')->name('abuse.')->group(function(){
         Route::get('', [AdminHomeController::class, 'abuse_reports'])->name('reports');
     });
+
+    Route::get('region/{id}/towns', [Controller::class, 'region_towns'])->name('region.towns');
+    Route::get('town/{id}/streets', [Controller::class, 'town_streets'])->name('town.streets');
    
     Route::get('users/search', [Controller::class, 'search_user'])->name('users.search');
 

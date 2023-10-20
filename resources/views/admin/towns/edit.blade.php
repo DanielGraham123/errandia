@@ -3,16 +3,16 @@
     <form class="py-4" method="POST">
         @csrf
         <div class="mx-auto border py-5 px-4" style="width: 36rem; border-radius: 0.9rem;">
-            <div class="text-h6 text-capitalize my-3">Add new street</div>
+            <div class="text-h6 text-capitalize my-3">Edit Town</div>
             
             <div class=" my-3">
-                <input type="text" name="name" class="form-control input-field rounded" placeholder="street Name*">
+                <input type="text" name="name" class="form-control input-field rounded" placeholder="Town Name*" value="{{ $town->name }}">
             </div>
             <div class=" my-3">
-                <select name="town_id" class="form-control select-field rounded">
-                    <option>select town</option>
-                    @foreach ($towns as $tn)
-                        <option value="{{ $tn->id }}">{{ $tn->name }}</option>
+                <select name="region_id" class="form-control select-field rounded">
+                    <option>select region</option>
+                    @foreach ($regions as $reg)
+                        <option value="{{ $reg->id }}" {{ $town->region_id == $reg->id ? 'selected' : '' }}>{{ $reg->name }}</option>
                     @endforeach
                 </select>
             </div>

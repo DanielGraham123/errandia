@@ -5,25 +5,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
-use App\Models\CampusSemesterConfig;
 use App\Models\Category;
 use App\Models\Config;
 use App\Models\Errand;
 use App\Models\File;
-use App\Models\PlatformCharge;
 use App\Models\Region;
-use App\Models\Resit;
-use App\Models\SchoolContact;
-use App\Models\SchoolUnits;
-use App\Models\Semester;
+use App\Models\Shop;
 use App\Models\ShopSubscription;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Subscription;
 use App\Models\Town;
 use App\Models\User;
-use App\Models\Wage;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -74,6 +67,7 @@ class HomeController  extends Controller
     {
         # code...
         $data['title'] = "Businesses";
+        $data['businesses'] = Shop::orderBy('id', 'DESC')->get();
         return view('admin.businesses.index', $data);
     }
 
@@ -81,6 +75,8 @@ class HomeController  extends Controller
     {
         # code...
         $data['title'] = "Create New Business";
+        $data['categories'] = Category::orderBy('name')->get();
+        $data['regions'] = Region::orderBy('name')->get();
         return view('admin.businesses.create', $data);
     }
     public function create_business_branch(Request $reuest, $business = null)
@@ -174,7 +170,7 @@ class HomeController  extends Controller
     {
         # code...
         $data['title'] = "All Towns";
-        $data['towns'] = Town::all();
+        $data['towns'] = Town::orderBy('id', 'DESC')->get();
         return view('admin.towns.index', $data);
     }
 
@@ -182,7 +178,7 @@ class HomeController  extends Controller
     {
         # code...
         $data['title'] = "All Streets";
-        $data['streets'] = Street::all();
+        $data['streets'] = Street::orderBy('id', 'DESC')->get();
         return view('admin.streets.index', $data);
     }
 
@@ -232,4 +228,191 @@ class HomeController  extends Controller
         $data['subscriptions'] = ShopSubscription::all();
         return view('admin.reports.subscriptions', $data);
     }
+
+    public function delete_errand($errand_slug){
+        $errand = Errand::whereSlug($errand_slug)->first();
+        if($errand != null){
+            $errand->delete();
+            return back()->with('success', 'Successfully deleted');
+        }
+        return back()->with('error', 'Errand not found');
+    }
+
+    public function save_town(Request $request){
+        $validity = Validator::make($request->all(), ['name'=>'required', 'region_id'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        $town = ['name'=>$request->name, 'region_id'=>$request->region_id];
+        if(Town::where($town)->count() > 0){
+            return redirect(route('admin.locations.towns'))->with('error', 'Town already exist');
+        }
+        Town::insert($town);
+        return redirect(route('admin.locations.towns'))->with('success', 'Town successfully created');
+    }
+
+    public function edit_town(Request $request, $slug){
+        $data['town'] = Town::find($slug);
+        $data['regions'] = Region::all();
+        $data['title'] = "Edit Town";
+        return view('admin.towns.edit', $data);
+    }
+
+    public function update_town(Request $request, $id){
+        $validity = Validator::make($request->all(), ['name'=>'required', 'region_id'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        $town_record = Town::find($id);
+        if($town_record == null){
+            return back()->with('error', "Town not found");
+        }
+
+        $town = ['name'=>$request->name, 'region_id'=>$request->region_id];
+        if(Town::where($town)->count() > 0){
+            return redirect(route('admin.locations.towns'))->with('error', 'Town already exist');
+        }
+        $town_record->update($town);
+        return redirect(route('admin.locations.towns'))->with('success', 'Town successfully created');
+    }
+
+    public function delete_town($id){
+        $town = Town::find($id);
+        if($town != null){
+            $town->delete();
+            return redirect(route('admin.locations.towns'))->with('success', 'Town successfully deleted');
+        }
+        return redirect(route('admin.locations.towns'))->with('error', 'Town not found');
+    }
+
+    public function save_street(Request $request){
+        // dd($request->all());
+        $validity = Validator::make($request->all(), ['name'=>'required', 'town_id'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        $street = ['name'=>$request->name, 'town_id'=>$request->town_id];
+
+        if(Street::where($street)->count() > 0){
+            return back()->with('error', "Street already exist");
+        }
+
+        Street::insert($street);
+        return redirect(route('admin.locations.streets'))->with('success', "Street succesfully created");
+    }
+
+    public function edit_street($id){
+        $data['street'] = street::find($id);
+        $data['title'] = "Edit Street";
+        $data['towns'] = Town::orderBy('name')->get();
+        return view('admin.streets.edit', $data);
+    }
+
+    public function update_street(Request $request, $id){
+        $validity = Validator::make($request->all(), ['name'=>'required', 'town_id'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        $street = Street::find($id);
+        if($street == null){
+            return back()->with('error', 'Street not found');
+        }
+        $street_data = ['name'=>$request->name, 'town_id'=>$request->town_id];
+        if(Street::where($street_data)->count() > 0){
+            return  redirect(route('admin.locations.streets'))->with('error', "Street already exist");
+        }
+        $street->update($street_data);
+        return redirect(route('admin.locations.streets'))->with('success', 'Street successfully updated');
+    }
+
+    public function delete_street($id){
+        if(($street = Street::find($id)) != null){
+            $street->delete();
+            return redirect(route('admin.locations.streets'))->with('success', 'Street successfully deleted');
+        }
+        return redirect(route('admin.locations.streets'))->with('error', 'Street not found');
+    }
+
+    public function save_business(Request $request){
+        
+        $validity = Validator::make($request->all(), [
+            'name'=>'required', 'category'=>'required', 'region'=>'required', 
+            'town'=>'required', 'street'=>'required', 'website'=>'url',
+            'business_type'=>'required', 'verification_status'=>'required', 'phone'=>'required|integer', 'phone_code'=>'required_with:phone', 
+            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
+        ]);
+
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        $business = new \App\Models\shop();
+        $data = [
+            'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
+            'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
+            'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'type'=>$request->business_type, 'status'=>$request->verification_status, 
+        ];
+        if(Shop::where(['name'=>$request->name])->count() > 0){
+            return redirect(route('admin.businesses.index'))->with('error', 'Business with same name already exist');
+        }
+        $business->fill($data);
+        if(($file = $request->file('logo')) != null){
+            $path = public_path('uploads/logos/');
+            $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+            $file->move($path, $fname);
+            $business->image_path = $path.$fname;
+        }
+        $business->save();
+        return redirect(route('admin.businesses.index'))->with('success', 'Business successfully created');
+    }
+
+    public function edit_business($slug){
+        $data['business'] = Shop::whereSlug($slug)->first();
+        if($data['business'] != null){
+            $data['title'] = "Edit Business";
+            $data['categories'] = Category::orderBy('name')->get();
+            $data['regions'] = Region::orderBy('name')->get();
+            $data['towns'] = Town::orderBy('name')->get();
+            $data['streets'] = Street::orderBy('name')->get();
+            return view('admin.businesses.edit', $data);
+        }
+    }
+    public function update_business(Request $request, $slug){
+        
+        $validity = Validator::make($request->all(), [
+            'name'=>'required', 'category'=>'required', 'region'=>'required', 
+            'town'=>'required', 'street'=>'required', 'website'=>'url',
+            'business_type'=>'required', 'verification_status'=>'required', 'phone'=>'required|integer',
+            //  'phone_code'=>'required_with:phone', 
+            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
+        ]);
+
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        $business = \App\Models\shop::whereSlug($slug)->first();
+
+        if($business != null){
+            $data = [
+                'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
+                'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
+                'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'type'=>$request->business_type, 'status'=>$request->verification_status, 
+            ];
+            if(Shop::where(['name'=>$request->name])->where('slug', '!=', $slug)->count() > 0){
+                return redirect(route('admin.businesses.index'))->with('error', 'Business with same name already exist');
+            }
+            $business->fill($data);
+            
+            $business->save();
+            return redirect(route('admin.businesses.index'))->with('success', 'Business successfully created');
+        }
+        return redirect(route('admin.businesses.index'))->with('error', 'Business not found');
+    }
+
+
 }
