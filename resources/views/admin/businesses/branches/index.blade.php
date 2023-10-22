@@ -2,7 +2,7 @@
 @section('section')
     <div class="py-2">
         <div class="d-flex justify-content-end py-3 px-2">
-            <a href="{{ route('admin.businesses.create') }}" class=" btn btn-primary bg-sm py-2 px-4 text-white text-capitalize rounded"><span class="text-white fa fa-plus mx-2"></span>Add new business</a>
+            <a href="{{ route('admin.businesses.branch.create', $item->slug) }}" class=" btn btn-primary bg-sm py-2 px-4 text-white text-capitalize rounded"><span class="text-white fa fa-plus mx-2"></span>Add new branch</a>
         </div>
         <div class="py-1 px-2 d-flex">
 
@@ -48,7 +48,7 @@
                                     <ul class="dropdown-menu dropdown-light">
                                         <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.show', $business->slug) }}" class="text-decoration-none text-secondary">view</a></li>
                                         <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.edit', $business->slug) }}" class="text-decoration-none text-secondary">edit</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="{{route('admin.businesses.branch.index', $business->slug)}}" class="text-decoration-none text-secondary">branches</a></li>
+                                        {{-- <li class="list-item py-1 border-y"> <a href="{{route('admin.businesses.branches', $business->slug)}}" class="text-decoration-none text-secondary">branches</a></li> --}}
                                         <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.show_owner', $business->slug) }}" class="text-decoration-none text-secondary">view owner profile</a></li>
                                         <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.suspend', $business->slug) }}" onclick="_prompt('url', 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
                                         <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.verify', $business->slug) }}" class="text-decoration-none text-secondary">Mark as verified</a></li>

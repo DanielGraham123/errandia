@@ -29,6 +29,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $data['title'] = "Add ".(request('type') ?? "User");
+        $data['regions'] = \App\Models\Region::orderBy('name')->get();
         return view('admin.user.create')->with($data);
     }
 
@@ -42,24 +43,31 @@ class UserController extends Controller
     {
         $validity = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|unique:users|email',
-            'phone' => 'required',
-            'address' => 'nullable',
-            'user_type' => 'required',
+            'email'=>'nullable|email',
+            'phone' => 'required|required_with:phone_code',
             'phone_code' => 'required',
+            'region' => 'required',
+            'town' => 'required',
+            'street' => 'required',
+            'photo' => 'file|nullable',
         ]);
         // dd($request->all());
         if($validity->fails()){
-            return back()->with('error', $validity->errors()->first());
+            return back()->with('error', $validity->errors()->first())->withInput();
         }
-        
-        $input = $request->all();
-        $input['password'] = Hash::make('password');
-        $input['type'] = $request->user_type;
-        $input['phone'] = $request->phone_code.$request->phone;
+        if(User::where(['name'=>$request->name, 'phone'=>$request->phone_code.$request->phone])->count() > 0){
+            return back()->with('error', 'User with name or phone number already exist')->withInput();
+        }
+        $input = ['name'=>$request->name, 'email'=>$request->email??null, 'region_id'=>$request->region, 'town_id'=>$request->town, 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'password'=>Hash::make('password')];
         $user = new User($input);
+        if(($file = $request->file('photo')) != null){
+            $fname = '/photo_'.time().'rnd'.random_int(100000, 999999).'.'.$file->getClientOriginalExtension();
+            $folder = public_path('uploads/user_photos');
+            $_folder = asset('uploads/user_photos');
+            $file->move($folder, $fname);
+            $user->photo = $_folder.$fname;
+        }
         $user->save();
-
         return redirect()->to(route('admin.users.index'))->with('success', "User Created Successfully !");
     }
 

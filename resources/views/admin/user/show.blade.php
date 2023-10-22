@@ -6,7 +6,7 @@
     <div class="py-4 px-5 shadow my-2" style="border-radius: 0.6rem;">
         <div class="text-h6 text-uppercase">user details</div>
         <div class="row">
-            <img class="img img-rounded img-responsive mx-auto my-3" style=" width: 7rem; width: 7rem;" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}">
+            <img class="img img-rounded img-responsive mx-auto my-3" style=" width: 7rem; width: 7rem;" src="{{ $user->photo }}">
         </div>
         <div class="row py-3 border-bottom shadow-md">
             <div class="col-sm-4 col-md-3 text-extra">Name</div>

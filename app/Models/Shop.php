@@ -14,7 +14,7 @@ class Shop extends Model
         'name', 'description', 'category_id', 'user_id', 'slug', 
         'image_path', 'status', 'name', 'category', 
         'description', 'region_id', 'town_id', 'street_id', 'website', 
-        'phone', 'whatsapp_phone', 'email', 'type'
+        'phone', 'whatsapp_phone', 'email', 'is_branch', 'parent_slug'
     ];
 
     public function user(){
@@ -24,5 +24,13 @@ class Shop extends Model
 
     public function category(){
         return $this->belongsTo(Category::class,'category_id');
+    }
+
+    public function parent(){
+        return $this->belongsTo(Shop::class, 'parent_slug', 'slug');
+    }
+
+    public function branches(){
+        return $this->hasMany(Shop::class, 'parent_slug', 'slug');
     }
 }

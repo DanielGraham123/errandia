@@ -59,7 +59,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('{slug}/delete', [AdminHomeController::class, 'delete_business'])->name('delete');
         Route::get('{slug}/suspend', [AdminHomeController::class, 'suspend_business'])->name('suspend');
         Route::get('{slug}/verify', [AdminHomeController::class, 'verify_business'])->name('verify');
+        Route::get('{slug}/branches', [AdminHomeController::class, 'business_branches'])->name('branch.index');
         Route::get('{slug}/create_branch', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
+        Route::post('{slug}/create_branch', [AdminHomeController::class, 'save_business_branch']);
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
