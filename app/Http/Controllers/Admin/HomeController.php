@@ -368,7 +368,7 @@ class HomeController  extends Controller
             return back()->with('error', $validity->errors()->first())->withInput();
         }
 
-        $business = new \App\Models\shop();
+        $business = new Shop();
         $data = [
             'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 'is_branch'=>true, 'parent_slug'=>$business_slug,
             'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
