@@ -25,6 +25,7 @@ class AdminMiddleware
         }elseif(Auth::user()->type != 'admin') //If user does //not have this permission
         {
             auth()->logout();
+            session()->flush();
             return redirect(route('login'))->with('error', __('text.permission_denied'));
         }
         return $next($request);

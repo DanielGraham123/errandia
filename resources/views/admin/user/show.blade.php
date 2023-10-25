@@ -44,42 +44,42 @@
             <a class="button-tertiary"> <img style="height: 1.6rem; width: 1.6rem;" src="{{ asset('assets/admin/icons/icon-manage-users.svg') }}"> Reactivate User</div>
         </div>
     </div>
-</div>
-<div class="row col-md-6">
-    <div class="py-4 px-5 shadow my-2" style="border-radius: 0.6rem;">
-        <div class="text-h6 text-uppercase">Businesses</div>
-        <form method="POST" class="border-bottom py-2">
-            @csrf
-            <div class="form-group">
-                <select class="form-control" name="business" required>
-                    @foreach (\App\Models\Shop::orderBy('name')->get() as $shop)
-                        <option value="{{ $shop->id }}">{{ $shop->name }}</option>
-                    @endforeach
-                </select>
-            </div>
+    <div class="row col-md-6">
+        <div class="py-4 px-5 shadow my-2 w-100" style="border-radius: 0.6rem;">
+            <div class="text-h6 text-uppercase">Businesses</div>
+            {{-- <form method="POST" class="border-bottom py-2" action="{{ route('admin.users.add_business') }}">
+                @csrf
+                <div class="form-group">
+                    <select class="form-control" name="business" required>
+                        @foreach (\App\Models\Shop::orderBy('name')->get() as $shop)
+                            <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <div class="py-2 d-flex justify-content-end">
-                <button type="submit" class="button-secondary">add</button>
-            </div>
-        </form>
-        <table class="table table-light">
-            <thead>
-                <th>#</th>
-                <th>Business</th>
-                <th>Category</th>
-                <th>Action</th>
-            </thead>
-            <tbody>
-                @php
-                    $k = 1;
-                @endphp
-                @foreach (\App\Models\Shop::take(5)->get() as $shop)
-                    <tr class=" border-bottom shadow-sm">
-                        <td ></td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                <div class="py-2 d-flex justify-content-end">
+                    <button type="submit" class="button-secondary">add</button>
+                </div>
+            </form> --}}
+            <table class="table table-light">
+                <thead>
+                    <th>#</th>
+                    <th>Business</th>
+                    <th>Category</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    @php
+                        $k = 1;
+                    @endphp
+                    @foreach (\App\Models\Shop::take(5)->get() as $shop)
+                        <tr class=" border-bottom shadow-sm">
+                            <td ></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @endsection

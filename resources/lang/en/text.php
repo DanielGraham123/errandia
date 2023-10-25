@@ -857,5 +857,27 @@ return [
     'word_confirm'=>'confirm',
     'record_attendance'=>'record attendance',
     'record_attendance_for'=>'record attendance for :title (:code)',
+
+
+
+
+
+    // ERRANDIA ONLY PAIRS
+    'dashboard_business_welcome_phrase'=>'Welcome to your Errandia Dashboard',
+    'business_admin_welcome_caption'=>'You can start by adding a product, creating a shop or adding an errand.',
+    'create_a_shop'=>'Create a shop',
+    'create_a_shop_phrase'=>'Create a shop and start selling online',
+    'new_shop'=>'New shop',
+    'run_errand'=>'run errand',
+    'run_errand_caption'=>'Search any product of your choice',
+    'run_an_errand'=>'Run an errand',
+    'complete_profile'=>'Complete Profile', 
+    'complete_profile_caption'=>'Complete your profile to have the best experience with errandia', 
+    'update_profile'=>'Update Profile',
+    'update_profile_quote'=>'Your profile is <span class="text-danger"> :stat </span> complete',
+    'manage_products'=>'Manage Products',
+    'manage_products_quote'=>'Manage and add products to your Shop',
+    'word_errands'=>'errands',
+    'manage_errands'=>'Manage Errands',
     ''
 ];

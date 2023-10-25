@@ -28,14 +28,21 @@ a{
 
 /* TEXT */
 .text-h1{ color: var(--color-blue); font-size: 57.22px; font-weight: 600; }
+.text-h1-lightcyan{ color: var(--color-lightcyan); font-size: 57.22px; font-weight: 600; }
 .text-h2{ color: var(--color-blue); font-size: 45.78px; font-weight: 600; }
+.text-h2-lightcyan{ color: var(--color-lightcyan); font-size: 45.78px; font-weight: 600; }
 .text-h3{ color: var(--color-blue); font-size: 36.62px; font-weight: 600; }
+.text-h3-lightcyan{ color: var(--color-lightcyan); font-size: 36.62px; font-weight: 600; }
 .text-h4{ color: var(--color-blue); font-size: 29.3px; font-weight: 600; }
+.text-h4-lightcyan{ color: var(--color-lightcyan); font-size: 29.3px; font-weight: 500; }
+.text-h4-lightgray{ color: var(--color-lightgray); font-size: 29.3px; font-weight: 500; }
 .text-h5{ color: var(--color-blue); font-size: 23.44px; font-weight: 700; }
 .text-h6{ color: var(--color-blue); font-size: 18.75px; font-weight: 700; }
+.text-h6-cyan{ color: var(--color-lightgray); font-size: 18.75px; font-weight: 400; }
 .text-body{ color: var(--color-black); font-size: 15px; }
+.text-body{ color: var(--color-cyan); font-size: 15px; }
 .text-body-sm{ color: var(--color-black); font-size: 12px; }
-.text-link{ color: var(--color-blue); font-size: 15px; font-weight: 600; }
+.text-link{ color: var(--color-lightblue); font-size: 15px; font-weight: 600; }
 .text-overline{ color: var(--color-darkgray); font-size: 9.6px; font-weight: 700; }
 .text-quote{ color: var(--color-darkgray); font-size: 9.6px; font-weight: 700; }
 .text-extra{ color: var(--color-black); font-size: 12px; font-weight: 700; }
@@ -187,4 +194,12 @@ a{
 .trigger-btn {
 	display: inline-block;
 	margin: 100px auto;
+}
+
+.no-scrollbar::-webkit-scrollbar{
+	display: none;
+}
+
+input{
+	border-radius: 0.2rem !important;
 }

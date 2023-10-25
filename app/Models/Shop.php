@@ -33,4 +33,20 @@ class Shop extends Model
     public function branches(){
         return $this->hasMany(Shop::class, 'parent_slug', 'slug');
     }
+
+    public function region(){
+        return $this->belongsTo(Region::class, 'region_id');
+    }
+
+    public function town(){
+        return $this->belongsTo(Town::class, 'town_id');
+    }
+
+    public function street(){
+        return $this->belongsTo(Street::class, 'street_id');
+    }
+
+    public function location(){
+        return ($this->street->name??null).', '.($this->town->name??null).', '.($this->region->name??null);
+    }
 }

@@ -137,13 +137,24 @@
 											@csrf
 												<fieldset style="color: black;">
 													<label class="block clearfix">
-														<span class="text-capitalize">{{__('text.word_username')}}</span>
+														<span class="text-capitalize">{{__('text.word_name')}}</span>
 														<span class="block input-icon input-icon-right" style="background-color: white !important;">
-															<input type="text" required class="form-control" value="{{old("username")}}" name="username" style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
+															<input type="text" required class="form-control" value="{{old("name")}}" name="name" style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
 														</span>
-														@error('username')
+														@error('name')
 															<span class="invalid-feedback red" role="alert">
 																<strong>{{ $message }}</strong>
+															</span>
+														@enderror
+													</label>
+													<label class="block clearfix">
+														<span class="text-capitalize">{{__('text.word_phone')}}</span>
+														<span class="block input-icon input-icon-right" style="background-color: white !important;">
+															<input type="tel" required class="form-control" value="{{old("phone")}}" name="phone" style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
+														</span>
+														@error('phone')
+															<span class="invalid-feedback red" role="alert">
+																<strong>{{ $phone }}</strong>
 															</span>
 														@enderror
 													</label>
@@ -165,7 +176,7 @@
 													<div class="clearfix">
 														<button type="submit" class="form-control btn-black btn-sm" style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white;">
 															{{-- <i class="ace-icon fa fa-key"></i> --}}
-															<span class="bigger-110">{{__('text.log_in')}}</span>
+															<span class="bigger-110">{{__('text.register')}}</span>
 														</button>
 													</div>
 
@@ -175,52 +186,16 @@
 										</div><!-- /.widget-main -->
 
 										<div class="clearfix toolbar"  style=" border: 0px;  font-size: xsmall !important; width: 77% !important; margin-inline: auto; ">
-											<a  href="#" data-target="#forgot-box" class="text-center form-control btn-black btn-sm" style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; font-weight: normal !important;">
-												<span class="bigger-110">{{__('text._forgot_password')}}</span>
-											</a>
-										</div>
+											
+												<a  href="#" data-target="#forgot-box" class="text-center form-control btn-black btn-sm" style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; font-weight: normal !important;">
+													<span class="bigger-110">{{__('text.word_login')}}</span>
+												</a>
+											<div>
+											</div>
 
 										</div>
 									</div><!-- /.widget-body -->
 								</div><!-- /.login-box -->
-
-								<div id="forgot-box" class="forgot-box widget-box no-border">
-									<div class="widget-body">
-										<div class="widget-main">
-											<h4 class="bigger text-capitalize" style="color: black; font-size: xlarge;">
-											 	<b>{{__('text.forgot_password')}}</b>
-											</h4>
-											<span style="font-size: small; margin-bottom: 1rem;">{{__('text.pass_reset_phrase')}}</span>
-
-											<form method="POST" action="{{ route('reset_password_without_token') }}" style="padding-block: 1rem !important;">
-												@csrf
-												<fieldset>
-													<label class="block clearfix">
-														<span class="text-capitalize">{{__('text.word_email')}}</span>
-														<span class="block input-icon input-icon-right">
-															<input type="email" required name="email" class="form-control"  style="border-radius: 0.5rem !important; background-color: white !important; color: black"/>
-														</span>
-													</label>
-
-
-													<div class="clearfix">
-														<button type="submit" class="form-control btn-black btn-sm"  style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; text-transform: capitalize; margin-block: 2rem;">
-															{{__('text.reset_password')}}
-														</button>
-													</div>
-												</fieldset>
-											</form>
-										</div><!-- /.widget-main -->
-
-										<div class="toolbar clearfix" style="border: 0px; padding-inline: 4rem;">
-											<a href="#" data-target="#login-box" class="form-control btn-black btn-sm text-center"  style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; text-transform: capitalize; font-weight: normal !important;">
-												<i class="ace-icon fa fa-arrow-left"></i>
-												{{__('text.back_to_login')}}
-											</a>
-										</div>
-									</div><!-- /.widget-body -->
-								</div><!-- /.forgot-box -->
-
 							</div>
 						</div>
 				</div><!-- /.row -->

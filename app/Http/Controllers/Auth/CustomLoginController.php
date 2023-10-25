@@ -34,7 +34,18 @@ class CustomLoginController extends Controller
         session()->flush();
 
         if( Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
-            return redirect()->route('admin.home')->with('success','Welcome to Admin Dashboard '.Auth::user()->name);
+            if(auth()->user()->type == 'admin'){
+                return redirect()->route('admin.home')->with('success','Welcome to Admin Dashboard '.Auth::user()->name);
+            }
+            if(auth()->user()->type == '2'){
+                return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.Auth::user()->name);
+            }
+            if(auth()->user()->type == 'customer'){
+                // return redirect()->route('customer.home')->with('success','Welcome to Customer Dashboard '.Auth::user()->name);
+            }
+            auth()->logout();
+            session()->flush();
+            return redirect()->route('login');
         }
         
         // return "Spot 3";
@@ -44,7 +55,21 @@ class CustomLoginController extends Controller
 
     public function logout(Request $request){
         Auth::logout();
+        session()->flush();
         return redirect(route('login'));
     }
 
+    public function register(){
+        return view('auth.register');
+    }
+
+    public function signup(Request $request){
+        $validator = Validator::make($request->all(), []);
+        if($validator->fails()){
+            return back()->with('error', $validator->errors()->first())->withInput();
+        }
+        $user = new User($request->all());
+        $user->save();
+        return view('auth.register');
+    }
 }

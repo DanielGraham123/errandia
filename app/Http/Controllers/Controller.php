@@ -53,9 +53,9 @@ class Controller extends BaseController
     {
         # code...
         $data['title'] = "Reset Password";
-        if (auth()->user()->type == 'admin') {
-            return view('admin.reset_password', $data);
-        }
+        return view('admin.reset_password', $data);
+        // if (auth()->user()->type == 'admin') {
+        // }
     
     }
 
