@@ -14,7 +14,8 @@ class Shop extends Model
         'name', 'description', 'category_id', 'user_id', 'slug', 
         'image_path', 'status', 'name', 'category', 
         'description', 'region_id', 'town_id', 'street_id', 'website', 
-        'phone', 'whatsapp_phone', 'email', 'is_branch', 'parent_slug'
+        'phone', 'whatsapp_phone', 'email', 'is_branch', 'parent_slug',
+        'manager_id', 'fb_link', 'ins_link', 'address'
     ];
 
     public function user(){

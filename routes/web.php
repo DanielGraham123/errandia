@@ -178,6 +178,22 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('{slug}/delete', [AdminHomeController::class, 'delete_business'])->name('delete');
         Route::get('{slug}/suspend', [AdminHomeController::class, 'suspend_business'])->name('suspend');
         Route::get('{slug}/verify', [AdminHomeController::class, 'verify_business'])->name('verify');
+        Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
+        Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
+        Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
+    });
+
+    Route::prefix('managers')->name('managers.')->group(function(){
+        Route::get('', 'BAdmin\HomeController@managers')->name('index');
+        Route::get('create', 'BAdmin\HomeController@create_manager')->name('create');
+        Route::post('create', 'BAdmin\HomeController@save_manager');
+        Route::get('{slug}/show', [AdminHomeController::class, 'show_business'])->name('show');
+        Route::get('{slug}/owner', [AdminHomeController::class, 'show_business_owner'])->name('show_owner');
+        Route::get('{slug}/edit', [AdminHomeController::class, 'edit_business'])->name('edit');
+        Route::post('{slug}/edit', [AdminHomeController::class, 'update_business']);
+        Route::get('{slug}/delete', [AdminHomeController::class, 'delete_business'])->name('delete');
+        Route::get('{slug}/suspend', [AdminHomeController::class, 'suspend_business'])->name('suspend');
+        Route::get('{slug}/verify', [AdminHomeController::class, 'verify_business'])->name('verify');
         Route::get('{slug}/branches', [AdminHomeController::class, 'business_branches'])->name('branch.index');
         Route::get('{slug}/create_branch', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
         Route::post('{slug}/create_branch', [AdminHomeController::class, 'save_business_branch']);
@@ -203,34 +219,12 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('subcategories/create', [AdminHomeController::class, 'create_sub_category'])->name('sub_categories.create');
         Route::get('create', [AdminHomeController::class, 'create_category'])->name('create');
     });
-    Route::prefix('locations')->name('locations.')->group(function(){
-        Route::get('streets', [AdminHomeController::class, 'streets'])->name('streets');
-        Route::get('streets/create', [AdminHomeController::class, 'create_street'])->name('streets.create');
-        Route::post('streets/create', [AdminHomeController::class, 'save_street']);
-        Route::get('streets/{slug}/edit', [AdminHomeController::class, 'edit_street'])->name('streets.edit');
-        Route::post('streets/{slug}/edit', [AdminHomeController::class, 'update_street']);
-        Route::get('streets/{slug}/delete', [AdminHomeController::class, 'delete_street'])->name('streets.delete');
-        Route::get('towns', [AdminHomeController::class, 'towns'])->name('towns');
-        Route::get('towns/create', [AdminHomeController::class, 'create_town'])->name('towns.create');
-        Route::post('towns/create', [AdminHomeController::class, 'save_town']);
-        Route::get('towns/{slug}/edit', [AdminHomeController::class, 'edit_town'])->name('towns.edit');
-        Route::post('towns/{slug}/edit', [AdminHomeController::class, 'update_town']);
-        Route::get('towns/{slug}/delete', [AdminHomeController::class, 'delete_town'])->name('towns.delete');
-    });
     Route::prefix('reviews')->name('reviews.')->group(function(){
         Route::get('', [AdminHomeController::class, 'reviews'])->name('index');
     });
-    Route::prefix('users')->name('users.')->group(function(){
-        Route::get('', [AdminHomeController::class, 'users'])->name('index');
-        Route::get('create', [AdminHomeController::class, 'create_user'])->name('create');
-    });
-    Route::prefix('admins')->name('admins.')->group(function(){
-        Route::get('', [AdminHomeController::class, 'admins'])->name('index');
-        Route::get('roles', [AdminHomeController::class, 'roles'])->name('roles');
-    });
-    Route::prefix('plans')->name('plans.')->group(function(){
-        Route::get('', [AdminHomeController::class, 'subscription_plans'])->name('index');
-        Route::get('create', [AdminHomeController::class, 'create_subscription_plan'])->name('create');
+
+    Route::prefix('enquiries')->name('enquiries.')->group(function(){
+        Route::get('', 'BAdmin\HomeController@enquiries')->name('index');
     });
     Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
         Route::get('', [AdminHomeController::class, 'sms_bundles'])->name('index');

@@ -265,7 +265,7 @@
             </div>
            
             <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New">
+                <a class="nav-link" title="Add New" href="{{ route('business_admin.enquiries.index') }}">
                     <small class="text-link"> 
                         <span class="text-capitalize mx-2">Enquiries</span>
                     </small>

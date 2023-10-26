@@ -26,7 +26,7 @@ class User extends Authenticatable
         'address',
         'type',
         'password',
-        'active'
+        'active',
     ];
     protected $connection = 'mysql';
 
@@ -56,6 +56,10 @@ class User extends Authenticatable
 
     public function shops(){
         return $this->hasMany(Shop::class, 'user_id');
+    }
+
+    public function managers(){
+        return $this->hasMany(Manager::class, 'user_id');
     }
 
 }

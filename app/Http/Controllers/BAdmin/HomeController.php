@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\BAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Manager;
 use App\Models\Region;
 use App\Models\Shop;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -19,10 +23,7 @@ class HomeController extends Controller
 
     public function businesses(){
         $shops = auth()->user()->shops;
-        if($shops->count() > 0){
-            $data['businesses'] = $shops;
-        }else
-        $data['businesses'] = Shop::take(5)->orderBy('name')->get();
+        $data['businesses'] = $shops;
         return view('b_admin.businesses.index', $data);
     }
 
@@ -39,21 +40,24 @@ class HomeController extends Controller
     public function save_business(Request $request){
         
         $validity = Validator::make($request->all(), [
-            'name'=>'required', 'category'=>'required', 'region'=>'required', 
             'town'=>'required', 'street'=>'required', 'website'=>'url|nullable',
-            'verification_status'=>'required', 'phone'=>'required|integer', 'phone_code'=>'required_with:phone', 
-            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
+            'name'=>'required', 'category'=>'required', 'region'=>'required', 
+            'phone'=>'required|integer', 'phone_code'=>'required_with:phone', 
+            'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
+            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 
+            'fb_link'=>'url|nullable', 'ins_link'=>'url|nullable',
         ]);
 
         if($validity->fails()){
             return back()->with('error', $validity->errors()->first())->withInput();
         }
-
+        
         $business = new \App\Models\Shop();
         $data = [
             'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
             'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
-            'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'status'=>$request->verification_status, 
+            'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'status'=>0, 'is_branch'=>$request->is_branch,
+            'fb_link'=>$request->fb_link, 'ins_link'=>$request->ins_link, 'manager_id'=>$request->manager, 'address'=>$request->address
         ];
         if(Shop::where(['name'=>$request->name])->count() > 0){
             return redirect(route('admin.businesses.index'))->with('error', 'Business with same name already exist');
@@ -65,21 +69,25 @@ class HomeController extends Controller
             $file->move($path, $fname);
             $business->image_path = $path.$fname;
         }
+        // dd($request->all());
         $business->save();
-        return redirect(route('admin.businesses.index'))->with('success', 'Business successfully created');
+        return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
     }
+
 
     public function edit_business($slug){
         $data['business'] = Shop::whereSlug($slug)->first();
         if($data['business'] != null){
             $data['title'] = "Edit Business";
-            $data['categories'] = Category::orderBy('name')->get();
+            $data['categories'] = SubCategory::orderBy('name')->get();
             $data['regions'] = Region::orderBy('name')->get();
             $data['towns'] = Town::orderBy('name')->get();
             $data['streets'] = Street::orderBy('name')->get();
             return view('admin.businesses.edit', $data);
         }
     }
+
+
     public function update_business(Request $request, $slug){
         
         $validity = Validator::make($request->all(), [
@@ -111,5 +119,53 @@ class HomeController extends Controller
             return redirect(route('admin.businesses.index'))->with('success', 'Business successfully created');
         }
         return redirect(route('admin.businesses.index'))->with('error', 'Business not found');
+    }
+
+
+    public function managers(){
+        $data['managers'] = auth()->user()->managers;
+        return view('b_admin.businesses.managers.index', $data);
+    }
+
+    public function create_manager(Request $request){
+        $data['user'] = auth()->user();
+        $data['businesses'] = $data['user']->shops;
+        return view('b_admin.businesses.managers.create', $data);
+    }
+
+
+    public function save_manager(Request $request){
+        // dd($request->all());
+        $validity = Validator::make($request->all(), [
+            'name'=>'required', 'email'=>'email|required',
+            'confirm_password'=>'required|min:6', 'password'=>'required|same:confirm_password'
+        ]);
+
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first())->withInput();
+        }
+
+        if(Manager::where(['email'=>$request->email])->count() > 0){
+            return back()->with('error', "A manager already exist with this email");
+        }
+        $data = ['name'=>$request->name, 'email'=>$request->email, 'password'=>Hash::make($request->password), 'user_id'=>auth()->id(), 'slug'=>'mana'.random_bytes(12).'ger'.random_int(1000000, 9999999)];
+        $instance = new Manager($data);
+        $instance->save();
+
+        return redirect(route('business_admin.managers.index'))->with('success', 'Manager successfully created.');
+    }
+
+
+    public function business_branches($slug){
+        $business = Shop::whereSlug($slug)->first();
+        $data['business'] = $business;
+        $data['branches'] = $business->branches;
+        return view('b_admin.businesses.branches.index', $data);
+    }
+
+
+    public function enquiries(){
+        $data['enquiries'] = [];
+        return view('b_admin.enquiries.index', $data);
     }
 }
