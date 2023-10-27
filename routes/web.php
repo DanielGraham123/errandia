@@ -209,9 +209,10 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('create', [AdminHomeController::class, 'create_service'])->name('create');
     });
     Route::prefix('products')->name('products.')->group(function(){
-        Route::get('', [AdminHomeController::class, 'products'])->name('index');
-        Route::get('show/{product}', [AdminHomeController::class, 'show_product'])->name('show');
-        Route::get('create', [AdminHomeController::class, 'create_products'])->name('create');
+        Route::get('show/{product}', 'BAdmin\HomeController@show_product')->name('show');
+        Route::get('create/{shop_slug}', 'BAdmin\HomeController@create_products')->name('create');
+        Route::post('create/{shop_slug}', 'BAdmin\HomeController@save_products');
+        Route::get('{shop_slug?}', 'BAdmin\HomeController@products')->name('index');
     });
     Route::prefix('categories')->name('categories.')->group(function(){
         Route::get('', [AdminHomeController::class, 'categories'])->name('index');
@@ -225,6 +226,9 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
 
     Route::prefix('enquiries')->name('enquiries.')->group(function(){
         Route::get('', 'BAdmin\HomeController@enquiries')->name('index');
+        Route::get('{slug}/show', 'BAdmin\HomeController@show_enquiry')->name('show');
+        Route::get('{slug}/mail', 'BAdmin\HomeController@enquiry_sendmail')->name('mail');
+        Route::get('{slug}/delete', 'BAdmin\HomeController@delete_enquiry')->name('delete');
     });
     Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
         Route::get('', [AdminHomeController::class, 'sms_bundles'])->name('index');

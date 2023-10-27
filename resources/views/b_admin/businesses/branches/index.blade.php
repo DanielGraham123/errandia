@@ -85,8 +85,8 @@
                                     <span class="card-img-top rounded fa fa-star fa-5x mx-auto text-center" style="color: var(--color-lightcyan);"></span>
                                 @endif
                                 <div class="card-body">
-                                    <span class="text-overline">{{ $business->category->name??'' }}</span>
-                                    <h4 class="card-title">{{ $business->name }}</h4>
+                                    <span class="text-semi-extra">{{ $business->category->name??'category' }}</span>
+                                    <h4 class="card-title text-link">{{ $business->name }}</h4>
                                     <p class="card-text"><img style="height: 1.3rem; width: 1.3rem;" class="mr-3" src="{{ asset('assets/badmin/icon-location.svg') }}"> {{ $business->location() }}</p>
                                 </div>
 
@@ -104,8 +104,8 @@
                                         <span class="card-img-top rounded fa fa-star fa-5x mx-auto text-center" style="color: var(--color-lightcyan);"></span>
                                     @endif
                                     <div class="card-body">
-                                        <span class="text-overline">{{ $branch->category->name??'' }}</span>
-                                        <h4 class="card-title">{{ $branch->name }}</h4>
+                                        <span class="text-semi-extra">{{ $branch->category->name??'category' }}</span>
+                                        <h4 class="card-title text-link">{{ $branch->name }}</h4>
                                         <p class="card-text"><img style="height: 1.3rem; width: 1.3rem;" class="mr-3" src="{{ asset('assets/badmin/icon-location.svg') }}"> {{ $branch->location() }}</p>
                                     </div>
 

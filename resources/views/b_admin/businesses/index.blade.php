@@ -48,7 +48,10 @@
                                     <ul class="dropdown-menu dropdown-light">
                                         <li class="list-item py-1 border-y"> <a href="{{ route('business_admin.businesses.show', $business->slug) }}" class="text-decoration-none text-secondary">view</a></li>
                                         <li class="list-item py-1 border-y"> <a href="{{ route('business_admin.businesses.edit', $business->slug) }}" class="text-decoration-none text-secondary">edit</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="{{route('business_admin.businesses.branch.index', $business->slug)}}" class="text-decoration-none text-secondary">branches</a></li>
+                                        <li class="list-item py-1 border-y"> <a href="{{ route('business_admin.products.index', $business->slug) }}" class="text-decoration-none text-secondary">products</a></li>
+                                        @if ($business->parent_slug == null)
+                                            <li class="list-item py-1 border-y"> <a href="{{route('business_admin.businesses.branch.create', $business->slug)}}" class="text-decoration-none text-secondary">add branch</a></li>
+                                        @endif
                                         <li class="list-item py-1 border-y"> <a href="#" onclick="_prompt(`{{ route('business_admin.businesses.suspend', $business->slug) }}`, 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
                                         <li class="list-item py-1 border-y"> <a href="#" onclick="_prompt(`{{ route('business_admin.businesses.delete', $business->slug) }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none text-secondary">Delete</a></li>
                                     </ul>

@@ -250,7 +250,7 @@
                 </a>
             </div>
             <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New">
+                <a class="nav-link" title="Add New" href="{{route('business_admin.products.index', 'shop')}}">
                     <small class="text-link"> 
                         <span class="text-capitalize mx-2">Manage Products</span>
                     </small>
@@ -265,7 +265,7 @@
             </div>
            
             <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New" href="{{ route('business_admin.enquiries.index') }}">
+                <a class="nav-link" href="{{ route('business_admin.enquiries.index') }}">
                     <small class="text-link"> 
                         <span class="text-capitalize mx-2">Enquiries</span>
                     </small>
@@ -460,63 +460,63 @@
 <script>
     $(function () {
         $('.table , .adv-table table').DataTable(
-        //     {
-        //     responsive: true,
-        //     dom: 'Bfrtip',
-        //     buttons: [
-        //          // 'copy', 'csv', 'excel',
-        //         {
-        //             // text: 'Download PDF',
-        //             // extend: 'pdfHtml5',
-        //             // message: '',
-        //             // orientation: 'portrait',
-        //             exportOptions: {
-        //                 columns: ':visible'
-        //             },
-        //             customize: function (doc) {
-        //                 doc.pageMargins = [10,10,10,10];
-        //                 doc.defaultStyle.fontSize = 7;
-        //                 doc.styles.tableHeader.fontSize = 7;
-        //                 doc.styles.title.fontSize = 9;
-        //                 doc.content[0].text = doc.content[0].text.trim();
+            {
+            responsive: true,
+            dom: 'Bfrtip',
+            buttons: [
+                 // 'copy', 'csv', 'excel',
+                {
+                    // text: 'Download PDF',
+                    // extend: 'pdfHtml5',
+                    // message: '',
+                    // orientation: 'portrait',
+                    exportOptions: {
+                        columns: ':visible'
+                    },
+                    customize: function (doc) {
+                        doc.pageMargins = [10,10,10,10];
+                        doc.defaultStyle.fontSize = 7;
+                        doc.styles.tableHeader.fontSize = 7;
+                        doc.styles.title.fontSize = 9;
+                        doc.content[0].text = doc.content[0].text.trim();
 
-        //                 doc['footer']=(function(page, pages) {
-        //                     return {
-        //                         columns: [
-        //                             "{!! $title ?? '' !!}",
-        //                             {
-        //                                 // This is the right column
-        //                                 alignment: 'right',
-        //                                 text: ['page ', { text: page.toString() },  ' of ', { text: pages.toString() }]
-        //                             }
-        //                         ],
-        //                         margin: [10, 0]
-        //                     }
-        //                 });
-        //                 // Styling the table: create style object
-        //                 var objLayout = {};
-        //                 // Horizontal line thickness
-        //                 objLayout['hLineWidth'] = function(i) { return .5; };
-        //                 // Vertikal line thickness
-        //                 objLayout['vLineWidth'] = function(i) { return .5; };
-        //                 // Horizontal line color
-        //                 objLayout['hLineColor'] = function(i) { return '#aaa'; };
-        //                 // Vertical line color
-        //                 objLayout['vLineColor'] = function(i) { return '#aaa'; };
-        //                 // Left padding of the cell
-        //                 objLayout['paddingLeft'] = function(i) { return 4; };
-        //                 // Right padding of the cell
-        //                 objLayout['paddingRight'] = function(i) { return 4; };
-        //                 // Inject the object in the document
-        //                 doc.content[1].layout = objLayout;
-        //             }
-        //         }
+                        doc['footer']=(function(page, pages) {
+                            return {
+                                columns: [
+                                    "{!! $title ?? '' !!}",
+                                    {
+                                        // This is the right column
+                                        alignment: 'right',
+                                        text: ['page ', { text: page.toString() },  ' of ', { text: pages.toString() }]
+                                    }
+                                ],
+                                margin: [10, 0]
+                            }
+                        });
+                        // Styling the table: create style object
+                        var objLayout = {};
+                        // Horizontal line thickness
+                        objLayout['hLineWidth'] = function(i) { return .5; };
+                        // Vertikal line thickness
+                        objLayout['vLineWidth'] = function(i) { return .5; };
+                        // Horizontal line color
+                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
+                        // Vertical line color
+                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
+                        // Left padding of the cell
+                        objLayout['paddingLeft'] = function(i) { return 4; };
+                        // Right padding of the cell
+                        objLayout['paddingRight'] = function(i) { return 4; };
+                        // Inject the object in the document
+                        doc.content[1].layout = objLayout;
+                    }
+                }
 
-        //     ],
-        //     info:     true,
-        //     searching: true,
-        //     lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
-        // }
+            ],
+            info:     true,
+            searching: true,
+            lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
+        }
         );
 
     });

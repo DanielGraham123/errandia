@@ -50,4 +50,8 @@ class Shop extends Model
     public function location(){
         return ($this->street->name??null).', '.($this->town->name??null).', '.($this->region->name??null);
     }
+
+    public function products(){
+        return $this->hasMany(Product::class, 'shop_id');
+    }
 }

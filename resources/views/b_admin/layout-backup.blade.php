@@ -158,7 +158,7 @@
             <div class="navbar-header pull-left border-right px-md-5">
                 <a class="navbar-brand">
                     <small style="color: white;">
-                        <img src="{{ asset('assets/admin/logo/errandia-logo.png') }}" class="w-auto" style="height: 2.6rem;">
+                        <img src="{{ asset('assets/admin/logo/errandia-logo.jpg') }}" class="w-auto" style="height: 2.6rem;">
                     </small>
                 </a>
             </div>

@@ -40,13 +40,13 @@ a{
 .text-h6{ color: var(--color-blue); font-size: 18.75px; font-weight: 700; }
 .text-h6-cyan{ color: var(--color-lightgray); font-size: 18.75px; font-weight: 400; }
 .text-body{ color: var(--color-black); font-size: 15px; }
-.text-body{ color: var(--color-cyan); font-size: 15px; }
+.text-body-cyan{ color: var(--color-cyan); font-size: 15px; }
 .text-body-sm{ color: var(--color-black); font-size: 12px; }
 .text-link{ color: var(--color-lightblue); font-size: 15px; font-weight: 600; }
 .text-overline{ color: var(--color-darkgray); font-size: 9.6px; font-weight: 700; }
 .text-quote{ color: var(--color-darkgray); font-size: 9.6px; font-weight: 700; }
 .text-extra{ color: var(--color-black); font-size: 12px; font-weight: 700; }
-.text-semi-extra{ color: var(--color-black); font-size: 12px; font-weight: 600; }
+.text-semi-extra{ color: var(--color-darkblue); font-size: 12px; font-weight: 600; }
 
 /* BUTTONS */
 .button-primary{ color: var(--color-lightcyan); background-color: var(--color-blue); border-radius: 5px; padding: 0.7em 2.4rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none; }
