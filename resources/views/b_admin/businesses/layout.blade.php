@@ -235,9 +235,9 @@
                 </a>
             </div>
              <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New">
+                <a class="nav-link" title="Add New" href="{{ route('business_admin.businesses.index') }}">
                     <small class="text-link"> 
-                        <span class="text-capitalize mx-2">Manage Businesses</span>
+                        <span class="text-capitalize mx-2">Businesses</span>
                     </small>
                 </a>
             </div>
@@ -252,14 +252,14 @@
             <div class="nav-item border border-bottom-0 px-3 py-1">
                 <a class="nav-link" title="Add New" href="{{route('business_admin.products.index')}}">
                     <small class="text-link"> 
-                        <span class="text-capitalize mx-2">Manage Products</span>
+                        <span class="text-capitalize mx-2">Products</span>
                     </small>
                 </a>
             </div>
             <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New">
+                <a class="nav-link" title="Add New" href="{{ route('business_admin.services.index') }}">
                     <small class="text-link"> 
-                        <span class="text-capitalize mx-2">Manage Services</span>
+                        <span class="text-capitalize mx-2">Services</span>
                     </small>
                 </a>
             </div>

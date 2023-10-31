@@ -1,9 +1,10 @@
 @extends('b_admin.layout')
 @section('section')
+
     <div class="py-2 container">
         <div class="d-flex justify-content-between py-3 my-2 px-2">
-            <span><span class="text-h4 d-block">Products @if(isset($shop)) For {{ $shop->name }} <i class="text-link">({{ $shop->location() }})</i> @endif <span class="text-h6">({{ count($products) }})</span></span> <span class="d-block text-extra">Manage all your products</span></span>
-            <span>@if(isset($shop))<a class="button-primary" href="{{ route('business_admin.products.create', $shop->slug) }}"><img src="{{ asset('assets/admin/icons/icon-add.svg') }}" style="height: 1.4rem; width: 1.4rem; margin-right: 0.3rem;">Add Product</a>@endif</span>
+            <span><span class="text-h4 d-block">Services @if(isset($shop)) For {{ $shop->name }} <i class="text-link">({{ $shop->location() }})</i> @endif <span class="text-h6">({{ count($products) }})</span></span> <span class="d-block text-extra">Manage all your Services</span></span>
+            <span>@if(isset($shop))<a class="button-primary" href="{{ route('business_admin.services.create', $shop->slug) }}"><img src="{{ asset('assets/admin/icons/icon-add.svg') }}" style="height: 1.4rem; width: 1.4rem; margin-right: 0.3rem;">Add Service</a>@endif</span>
             <span class="d-inlineblock">
                 <div class="tabbable">
                     <ul class="nav nav-tabs nav-right" id="myTab">
@@ -50,7 +51,7 @@
                     @php $k = 1;
                     @endphp
                     @foreach(count($products) > 0 ? $products : collect([null, null, null, null, null, null]) as $prod)
-                        <tr class="shadow-sm border-bottom bg-white">
+                        <tr class="border-bottom bg-white">
                             <td>{{ $k++}}</td>
                             <td>
                                 <span class="">

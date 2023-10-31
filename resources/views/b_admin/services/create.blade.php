@@ -2,7 +2,7 @@
 @section('section')
     <div class="container">
         <div class="d-flex py-3 my-2 px-2">
-            <span class="text-h4 d-block">Add New Product For {{ $shop->name }} <i class="text-link">({{ $shop->location() }})</i></span>
+            <span class="text-h4 d-block">Add New Service For {{ $shop->name }} <i class="text-link">({{ $shop->location() }})</i></span>
         </div>
         <form method="POST" enctype="multipart/form-data">
             @csrf

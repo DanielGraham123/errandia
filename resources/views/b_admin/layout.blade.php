@@ -67,16 +67,27 @@
             margin: 0;
             position: relative;
         }
-        table{padding: 0px !important; filter: brightness(105%);}
+        table{padding: 0px !important;}
         table th, table td{
             padding: 10px;
         }
         .table td{
             border-bottom: 1px  solid  #f1f1f1 !important;
         }
+        .table tr{
+            border-bottom: 2px  solid  #000 !important;
+        }
         .nav > li {
             display: block;
             width: 100% !important;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-light) !important;
+            background: {{ $bg2 }} !important;
+        }
+        .nav.nav-tabs > li {
+            display: inline-block;
+            width: auto !important;
             font-size: 15px;
             font-weight: 600;
             color: var(--color-light) !important;
@@ -217,16 +228,7 @@
     <div id="navbar2" class="border-bottom container-fluid pt-4 d-flex justify-content-center ace-save-state no-scrollbar" style="background: {{$bg1}}; overflow-x: scroll">
         <div class="container py-0 my-0 d-flex mx-auto navbar-nav justify-content-center text-nowrap">
             
-            
-            {{-- <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link">
-                    <small class="text-link"> 
-                        <img src="{{ asset('assets/admin/icons/icon-add.svg') }}" class="w-auto mr-2" style="height: 1.3rem;" title="Visit Errandia Website">
-                        <span class="d-md-inline text-capitalize">New</span>
-                        <img src="{{ asset('assets/admin/icons/icon-dropdown.svg') }}" class="w-auto ml-2" style="height: 1.3rem;" title="Visit Errandia Website">
-                    </small>
-                </a>
-            </div> --}}
+
             <div class="nav-item border border-bottom-0 px-3 py-1">
                 <a class="nav-link" title="Add New" href="{{ route('business_admin.home') }}">
                     <small class="text-link"> 
@@ -235,14 +237,14 @@
                 </a>
             </div>
              <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New">
+                <a class="nav-link" title="Add New" href="{{ route('business_admin.businesses.index') }}">
                     <small class="text-link"> 
-                        <span class="text-capitalize mx-2">Manage Businesses</span>
+                        <span class="text-capitalize mx-2">Businesses</span>
                     </small>
                 </a>
             </div>
             <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New">
+                <a class="nav-link" title="Add New"  href="{{route('business_admin.errands.index')}}">
                     <small class="text-link"> 
                         <span class="text-capitalize mx-2">Errands</span>
                         <span class="text-body-sm">(6)</span>
@@ -250,16 +252,16 @@
                 </a>
             </div>
             <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New" href="{{route('business_admin.products.index', 'shop')}}">
+                <a class="nav-link" title="Add New" href="{{route('business_admin.products.index')}}">
                     <small class="text-link"> 
-                        <span class="text-capitalize mx-2">Manage Products</span>
+                        <span class="text-capitalize mx-2">Products</span>
                     </small>
                 </a>
             </div>
             <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New">
+                <a class="nav-link" title="Add New"  href="{{ route('business_admin.services.index') }}">
                     <small class="text-link"> 
-                        <span class="text-capitalize mx-2">Manage Services</span>
+                        <span class="text-capitalize mx-2">Services</span>
                     </small>
                 </a>
             </div>
@@ -299,31 +301,12 @@
                     </small>
                 </a>
             </div>
-
-
-
-
-
-            
-
         </div><!-- /.navbar-container -->
     </div>
 
     <div class="main-container ace-save-state bg-light" id="main-container">
         <div class="main-content">
             <div class="main-content-inner">
-
-                {{-- <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                    <ul class="breadcrumb text-capitalize">
-                        <li>
-                            <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="#">{{__('text.word_home')}}</a>
-                        </li>
-                        <li class="active">{{__('text.word_dashboard')}}</li>
-                        <li class="active"> {{__('text.fullname')}} : <b style="color: #e30000">{{\Auth::user()->name}}</b></li>
-
-                    </ul><!-- /.breadcrumb -->
-                </div> --}}
 
                 <div class="mx-5 my-3">
                     <div style="max-height: 65vh; overflow:auto">

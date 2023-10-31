@@ -16,4 +16,13 @@ class Errand extends Model
         # code...
         return $this->belongsTo(User::class, 'UserID');
     }
+
+    public function location(){
+        return null;
+    }
+
+    public function _categories(){
+        $cats = explode($this->categories, ',');
+        return Subcategory::whereIn('id', $cats);
+    }
 }

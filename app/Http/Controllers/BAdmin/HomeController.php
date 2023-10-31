@@ -248,7 +248,110 @@ class HomeController extends Controller
         $user = auth()->user();
         $data['shop'] = Shop::whereSlug($slug)->first();
         $data['currencies'] = Currency::all();
-        $data['categories'] = SubCategory::orderBy('name')->get();
         return view('b_admin.products.create', $data);
+    }
+
+    public function save_products(Request $request, $slug){
+
+        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required', 'description'=>'required']);
+        if($validity->fails()){
+            return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+        }
+        $data['categories'] = SubCategory::orderBy('name')->get();
+        $data['shop'] = Shop::whereSlug($slug)->first();
+
+        return view('b_admin.products.create_categ_images', $data);
+    }
+
+    public function update_save_products(Request $request, $slug)
+    {
+        dd($request->all());
+    }
+
+    public function services(Request $request, $slug=null){
+        $user = auth()->user();
+        if($request->shop_slug == null)
+            $data['products'] = Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('is_service', 1)->get();
+        else {
+            $data['shop'] = Shop::whereSlug($request->shop_slug)->first();
+            $data['products'] = $data['shop']->products->where('is_service', 1)??[];
+        }
+        return view('b_admin.services.index', $data);
+    }
+
+    
+    public function create_service($slug){
+        $user = auth()->user();
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['currencies'] = Currency::all();
+        return view('b_admin.services.create', $data);
+    }
+
+    
+    public function save_service(Request $request, $slug){
+
+        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required', 'description'=>'required']);
+        if($validity->fails()){
+            return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+        }
+        $data['categories'] = SubCategory::orderBy('name')->get();
+        $data['shop'] = Shop::whereSlug($slug)->first();
+
+        return view('b_admin.services.create_categ_images', $data);
+    }
+
+
+    
+    public function update_save_service(Request $request, $slug)
+    {
+        dd($request->all());
+    }
+
+
+    public function errands(Request $request){
+        $data['errands'] = \App\Models\Errand::take(100)->get();
+        return view('b_admin.errands.index', $data);
+    }
+
+    public function create_errand(){
+        $data['regions'] = Region::orderBy('name')->get();
+        $data['towns'] = Town::orderBy('name')->get();
+        $data['streets'] = Street::orderBy('name')->get();
+        return view('b_admin.errands.create', $data);
+    }
+
+    public function save_errand(Request $request){
+        // save and forward errand for image update
+        $data['errand'] = $request->all();
+        $data['categories'] = SubCategory::orderBy('name')->get();
+        return view('b_admin.errands.create_categ_images', $data);
+    }
+
+    public function update_save_errand(Request $request){
+        // save and forward errand for image update
+        return back()->with('success', 'Done');
+    }
+
+    public function show_errand ($slug){
+        $data['errand'] = \App\Models\Errand::whereSlug($slug)->first();
+        return view('b_admin.errands.show', $data);
+    }
+
+    public function edit_errand($slug){
+        $data['errand'] = \App\Models\Errand::whereSlug($slug)->first();
+        $data['regions'] = Region::orderBy('name')->get();
+        $data['towns'] = Town::orderBy('name')->get();
+        $data['categories'] = SubCategory::orderBy('name')->get();
+        $data['streets'] = Street::orderBy('name')->get();
+        return view('b_admin.errands.edit', $data);
+    }
+
+    public function update_errand($slug){
+        $data['errand'] = \App\Models\Errand::whereSlug($slug)->first();
+        $data['regions'] = Region::orderBy('name')->get();
+        $data['towns'] = Town::orderBy('name')->get();
+        $data['categories'] = SubCategory::orderBy('name')->get();
+        $data['streets'] = Street::orderBy('name')->get();
+        return view('b_admin.errands.edit', $data);
     }
 }

@@ -200,19 +200,29 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
-        Route::get('', [AdminHomeController::class, 'errands'])->name('index');
-        Route::get('delete/{slug}', [AdminHomeController::class, 'delete_errand'])->name('delete');
-    });
-    Route::prefix('services')->name('services.')->group(function(){
-        Route::get('', [AdminHomeController::class, 'services'])->name('index');
-        Route::get('show/{service}', [AdminHomeController::class, 'show_service'])->name('show');
-        Route::get('create', [AdminHomeController::class, 'create_service'])->name('create');
+        Route::get('delete/{slug}', 'BAdmin\HomeController@delete_errand')->name('delete');
+        Route::get('edit/{slug}', 'BAdmin\HomeController@edit_errand')->name('edit');
+        Route::post('edit/{slug}', 'BAdmin\HomeController@update_errand');
+        Route::get('show/{slug}', 'BAdmin\HomeController@show_errand')->name('show');
+        Route::get('set_found/{slug}', 'BAdmin\HomeController@show_errand')->name('set_found');
+        Route::get('create', 'BAdmin\HomeController@create_errand')->name('create');
+        Route::post('create', 'BAdmin\HomeController@save_errand');
+        Route::post('create_update', 'BAdmin\HomeController@update_save_errand')->name('create_update');
+        Route::get('', 'BAdmin\HomeController@errands')->name('index');
     });
     Route::prefix('products')->name('products.')->group(function(){
         Route::get('show/{product}', 'BAdmin\HomeController@show_product')->name('show');
         Route::get('create/{shop_slug}', 'BAdmin\HomeController@create_products')->name('create');
         Route::post('create/{shop_slug}', 'BAdmin\HomeController@save_products');
+        Route::post('create_update/{shop_slug}', 'BAdmin\HomeController@update_save_products')->name('create_update');
         Route::get('{shop_slug?}', 'BAdmin\HomeController@products')->name('index');
+    });
+    Route::prefix('services')->name('services.')->group(function(){
+        Route::get('show/{product}', 'BAdmin\HomeController@show_service')->name('show');
+        Route::get('create/{shop_slug}', 'BAdmin\HomeController@create_service')->name('create');
+        Route::post('create/{shop_slug}', 'BAdmin\HomeController@save_service');
+        Route::post('create_update/{shop_slug}', 'BAdmin\HomeController@update_save_service')->name('create_update');
+        Route::get('{shop_slug?}', 'BAdmin\HomeController@services')->name('index');
     });
     Route::prefix('categories')->name('categories.')->group(function(){
         Route::get('', [AdminHomeController::class, 'categories'])->name('index');
