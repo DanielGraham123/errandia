@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>{!! $title ?? '' !!} | {{env('APP_NAME')}}</title>
+    <title>{!! $title ?? '' !!} | {{__('text.app_name')}}</title>
 
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -158,7 +158,7 @@
             <div class="navbar-header pull-left border-right px-md-5">
                 <a class="navbar-brand">
                     <small style="color: white;">
-                        <img src="{{ asset('assets/admin/logo/errandia-logo.png') }}" class="w-auto" style="height: 2.6rem;">
+                        <img src="{{ asset('assets/admin/logo/errandia-logo.jpg') }}" class="w-auto" style="height: 2.6rem;">
                     </small>
                 </a>
             </div>
@@ -593,14 +593,14 @@
                     <div class="mb-4 mx-3">
                         <h4 id="title" class="font-weight-bold text-capitalize">{!! $title ?? '' !!}</h4>
                     </div>
-                    @if ((auth()->user()->password_reset != 1) && (now()->diffInDays(\Illuminate\Support\Carbon::createFromTimestamp(auth()->user()->created_at)) >= 14) && (url()->current() != route('admin.reset_password')))
+                    {{-- @if ((auth()->user()->password_reset != 1) && (now()->diffInDays(\Illuminate\Support\Carbon::createFromTimestamp(auth()->user()->created_at)) >= 14) && (url()->current() != route('admin.reset_password')))
                         <div class="py-5 h3 text-center text-danger mt-5 text-capitalize">{{__('text.password_reset_request')}}</div>
                         <div class="py-3 d-flex justify-content-center mt-2">
                             <a class="btn btn-lg col-sm-4 rounded btn-primary text-center" href="{{route('admin.reset_password')}}">{{__('text.word_proceed')}}</a>
                         </div>
                     @else
-                        @yield('section')
-                    @endif
+                    @endif --}}
+                    @yield('section')
                 </div>
             </div>
         </div>
@@ -652,63 +652,63 @@
 <script>
     $(function () {
         $('.table , .adv-table table').DataTable(
-            {
-            responsive: true,
-            dom: 'Bfrtip',
-            buttons: [
-                 // 'copy', 'csv', 'excel',
-                {
-                    // text: 'Download PDF',
-                    // extend: 'pdfHtml5',
-                    // message: '',
-                    // orientation: 'portrait',
-                    exportOptions: {
-                        columns: ':visible'
-                    },
-                    customize: function (doc) {
-                        doc.pageMargins = [10,10,10,10];
-                        doc.defaultStyle.fontSize = 7;
-                        doc.styles.tableHeader.fontSize = 7;
-                        doc.styles.title.fontSize = 9;
-                        doc.content[0].text = doc.content[0].text.trim();
+        //     {
+        //     responsive: true,
+        //     dom: 'Bfrtip',
+        //     buttons: [
+        //          // 'copy', 'csv', 'excel',
+        //         {
+        //             // text: 'Download PDF',
+        //             // extend: 'pdfHtml5',
+        //             // message: '',
+        //             // orientation: 'portrait',
+        //             exportOptions: {
+        //                 columns: ':visible'
+        //             },
+        //             customize: function (doc) {
+        //                 doc.pageMargins = [10,10,10,10];
+        //                 doc.defaultStyle.fontSize = 7;
+        //                 doc.styles.tableHeader.fontSize = 7;
+        //                 doc.styles.title.fontSize = 9;
+        //                 doc.content[0].text = doc.content[0].text.trim();
 
-                        doc['footer']=(function(page, pages) {
-                            return {
-                                columns: [
-                                    "{!! $title ?? '' !!}",
-                                    {
-                                        // This is the right column
-                                        alignment: 'right',
-                                        text: ['page ', { text: page.toString() },  ' of ', { text: pages.toString() }]
-                                    }
-                                ],
-                                margin: [10, 0]
-                            }
-                        });
-                        // Styling the table: create style object
-                        var objLayout = {};
-                        // Horizontal line thickness
-                        objLayout['hLineWidth'] = function(i) { return .5; };
-                        // Vertikal line thickness
-                        objLayout['vLineWidth'] = function(i) { return .5; };
-                        // Horizontal line color
-                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
-                        // Vertical line color
-                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
-                        // Left padding of the cell
-                        objLayout['paddingLeft'] = function(i) { return 4; };
-                        // Right padding of the cell
-                        objLayout['paddingRight'] = function(i) { return 4; };
-                        // Inject the object in the document
-                        doc.content[1].layout = objLayout;
-                    }
-                }
+        //                 doc['footer']=(function(page, pages) {
+        //                     return {
+        //                         columns: [
+        //                             "{!! $title ?? '' !!}",
+        //                             {
+        //                                 // This is the right column
+        //                                 alignment: 'right',
+        //                                 text: ['page ', { text: page.toString() },  ' of ', { text: pages.toString() }]
+        //                             }
+        //                         ],
+        //                         margin: [10, 0]
+        //                     }
+        //                 });
+        //                 // Styling the table: create style object
+        //                 var objLayout = {};
+        //                 // Horizontal line thickness
+        //                 objLayout['hLineWidth'] = function(i) { return .5; };
+        //                 // Vertikal line thickness
+        //                 objLayout['vLineWidth'] = function(i) { return .5; };
+        //                 // Horizontal line color
+        //                 objLayout['hLineColor'] = function(i) { return '#aaa'; };
+        //                 // Vertical line color
+        //                 objLayout['vLineColor'] = function(i) { return '#aaa'; };
+        //                 // Left padding of the cell
+        //                 objLayout['paddingLeft'] = function(i) { return 4; };
+        //                 // Right padding of the cell
+        //                 objLayout['paddingRight'] = function(i) { return 4; };
+        //                 // Inject the object in the document
+        //                 doc.content[1].layout = objLayout;
+        //             }
+        //         }
 
-            ],
-            info:     true,
-            searching: true,
-            lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
-        }
+        //     ],
+        //     info:     true,
+        //     searching: true,
+        //     lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
+        // }
         );
 
     });

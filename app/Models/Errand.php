@@ -23,6 +23,6 @@ class Errand extends Model
 
     public function _categories(){
         $cats = explode($this->categories, ',');
-        return Subcategory::whereIn('id', $cats);
+        return SubCategory::whereIn('id', $cats);
     }
 }

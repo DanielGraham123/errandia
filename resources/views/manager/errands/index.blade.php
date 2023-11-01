@@ -1,4 +1,4 @@
-@extends('b_admin.layout')
+@extends('manager.layout')
 @section('section')
 
     <div class="py-2 container">
@@ -8,7 +8,7 @@
                 <div class="tabbable">
                     <ul class="nav nav-tabs nav-right" id="myTab">
                         <li class="">
-                            <a href="{{ route('business_admin.errands.create') }}" aria-expanded="false">
+                            <a href="{{ route('manager.errands.create') }}" aria-expanded="false">
                                 Run an errand
                             </a>
                         </li>
@@ -56,9 +56,9 @@
                             {{-- @if(!isset($shop)) <td> <span class="text-link d-block">{{ ($err != null ? ($err->shop->name??'Shop') : 'Shop name') .' ('. ($err != null ? ($err->shop->location()??'Location') : 'Location') }})</span></td> @endif  --}}
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{ route('business_admin.errands.show', $err->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-view.svg') }}" style="height: 1.1rem;"> view details</a> <br>
-                                    <a href="{{ route('business_admin.errands.set_found', $err->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-mark-check.svg') }}" style="height: 1.1rem;"> Mark as found</a> <br>
-                                    <a href="#" onclick="_prompt(`{{ route('business_admin.errands.delete', $err->slug??'slug') }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.1rem;"> Delete</a>
+                                    <a href="{{ route('manager.errands.show', $err->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-view.svg') }}" style="height: 1.1rem;"> view details</a> <br>
+                                    <a href="{{ route('manager.errands.set_found', $err->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-mark-check.svg') }}" style="height: 1.1rem;"> Mark as found</a> <br>
+                                    <a href="#" onclick="_prompt(`{{ route('manager.errands.delete', $err->slug??'slug') }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.1rem;"> Delete</a>
                                 </div>
                             </td>
                             <td>@if ($err->status??null == 1)

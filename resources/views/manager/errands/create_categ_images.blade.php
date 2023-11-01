@@ -1,10 +1,10 @@
-@extends('b_admin.layout')
+@extends('manager.layout')
 @section('section')
     <div class="container">
         <div class="d-flex py-3 my-2 px-2">
             <span class="text-h4 d-block">Run an Errand</span>
         </div>
-        <form method="POST" action="{{ route('business_admin.errands.create_update') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('manager.errands.create_update') }}" enctype="multipart/form-data">
             @csrf
             <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
                 <span class="d-block mt-4" style="font-weight: 700;">Categories *</span>

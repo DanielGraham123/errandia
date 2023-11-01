@@ -46,6 +46,8 @@ class CustomLoginController extends Controller
             auth()->logout();
             session()->flush();
             return redirect()->route('login');
+        }elseif(auth('manager')->attempt(['email'=>$request->username,'password'=>$request->password])){
+            return redirect()->route('manager.home')->with('success','Welcome to Manager\'s Dashboard '.auth('manager')->user()->name);
         }
         
         // return "Spot 3";

@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'permission' => \App\Http\Middleware\PermissionMiddleware::class,
         'isBusinessAdmin' => \App\Http\Middleware\BusinessAdminMiddleware::class,
+        'isManager' => \App\Http\Middleware\ManagerMiddleware::class,
         'isCustomer' => \App\Http\Middleware\CustomerMiddleware::class,
     ];
 }

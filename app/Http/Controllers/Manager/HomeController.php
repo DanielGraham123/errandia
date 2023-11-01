@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\BAdmin;
+namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -20,32 +20,32 @@ class HomeController extends Controller
 {
     //
     public function home(){
-        return view('b_admin.dashboard');
+        return view('manager.dashboard');
     }
 
     public function businesses(){
-        $shops = auth()->user()->shops;
+        $shops = auth('manager')->user()->shops;
         $data['businesses'] = $shops;
-        return view('b_admin.businesses.index', $data);
+        return view('manager.businesses.index', $data);
     }
 
     public function create_business(){
-        $data['user'] = auth()->user();
+        $data['user'] = auth('manager')->user();
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['regions'] = Region::orderBy('name')->get();
         $data['towns'] = Town::orderBy('name')->get();
         $data['streets'] = Street::orderBy('name')->get();
-        return view('b_admin.businesses.create', $data);
+        return view('manager.businesses.create', $data);
     }
 
     public function create_business_branch($slug){
-        $data['user'] = auth()->user();
+        $data['user'] = auth('manager')->user();
         $data['parent'] = Shop::whereSlug($slug)->first();
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['regions'] = Region::orderBy('name')->get();
         $data['towns'] = Town::orderBy('name')->get();
         $data['streets'] = Street::orderBy('name')->get();
-        return view('b_admin.businesses.branches.create', $data);
+        return view('manager.businesses.branches.create', $data);
     }
 
     
@@ -66,7 +66,7 @@ class HomeController extends Controller
         
         $business = new \App\Models\Shop();
         $data = [
-            'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
+            'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth('manager')->id(), 
             'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
             'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'status'=>0, 'is_branch'=>$request->is_branch,
             'fb_link'=>$request->fb_link, 'ins_link'=>$request->ins_link, 'manager_id'=>$request->manager, 'address'=>$request->address, 'parent_slug'=>$request->parent_slug??null
@@ -108,7 +108,7 @@ class HomeController extends Controller
         }
         $business = new \App\Models\Shop();
         $data = [
-            'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
+            'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth('manager')->id(), 
             'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
             'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'status'=>$request->status, 'is_branch'=>$request->is_branch,
             'fb_link'=>$request->fb_link, 'ins_link'=>$request->ins_link, 'manager_id'=>$request->manager, 'address'=>$request->address, 'parent_slug'=>$request->parent_slug??null
@@ -161,7 +161,7 @@ class HomeController extends Controller
 
         if($business != null){
             $data = [
-                'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
+                'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth('manager')->id(), 
                 'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
                 'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'type'=>$request->business_type, 'status'=>$request->verification_status, 
             ];
@@ -178,14 +178,14 @@ class HomeController extends Controller
 
 
     public function managers(){
-        $data['managers'] = auth()->user()->managers;
-        return view('b_admin.businesses.managers.index', $data);
+        $data['managers'] = auth('manager')->user()->managers;
+        return view('manager.businesses.managers.index', $data);
     }
 
     public function create_manager(Request $request){
-        $data['user'] = auth()->user();
+        $data['user'] = auth('manager')->user();
         $data['businesses'] = $data['user']->shops;
-        return view('b_admin.businesses.managers.create', $data);
+        return view('manager.businesses.managers.create', $data);
     }
 
 
@@ -203,7 +203,7 @@ class HomeController extends Controller
         if(Manager::where(['email'=>$request->email])->count() > 0){
             return back()->with('error', "A manager already exist with this email");
         }
-        $data = ['name'=>$request->name, 'email'=>$request->email, 'password'=>Hash::make($request->password), 'user_id'=>auth()->id(), 'slug'=>'mana'.time().'ger'.random_int(1000000, 9999999)];
+        $data = ['name'=>$request->name, 'email'=>$request->email, 'password'=>Hash::make($request->password), 'user_id'=>auth('manager')->id(), 'slug'=>'mana'.random_bytes(12).'ger'.random_int(1000000, 9999999)];
         $instance = new Manager($data);
         $instance->save();
 
@@ -215,7 +215,7 @@ class HomeController extends Controller
         $business = Shop::whereSlug($slug)->first();
         $data['business'] = $business;
         $data['branches'] = $business->branches;
-        return view('b_admin.businesses.branches.index', $data);
+        return view('manager.businesses.branches.index', $data);
     }
 
 
@@ -224,16 +224,16 @@ class HomeController extends Controller
 
     public function enquiries(){
         $data['enquiries'] = [];
-        return view('b_admin.enquiries.index', $data);
+        return view('manager.enquiries.index', $data);
     }
 
 
     public function show_enquiry(Request $request, $slug){
-        return view('b_admin.enquiries.create');
+        return view('manager.enquiries.create');
     }
 
     public function products(Request $request){
-        $user = auth()->user();
+        $user = auth('manager')->user();
 
         if($request->shop_slug == null)
             $data['products'] = Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->get();
@@ -241,14 +241,14 @@ class HomeController extends Controller
             $data['shop'] = Shop::whereSlug($request->shop_slug)->first();
             $data['products'] = $data['shop']->products??[];
         }
-        return view('b_admin.products.index', $data);
+        return view('manager.products.index', $data);
     }
 
     public function create_products($slug){
-        $user = auth()->user();
+        $user = auth('manager')->user();
         $data['shop'] = Shop::whereSlug($slug)->first();
         $data['currencies'] = Currency::all();
-        return view('b_admin.products.create', $data);
+        return view('manager.products.create', $data);
     }
 
     public function save_products(Request $request, $slug){
@@ -260,7 +260,7 @@ class HomeController extends Controller
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['shop'] = Shop::whereSlug($slug)->first();
 
-        return view('b_admin.products.create_categ_images', $data);
+        return view('manager.products.create_categ_images', $data);
     }
 
     public function update_save_products(Request $request, $slug)
@@ -269,22 +269,22 @@ class HomeController extends Controller
     }
 
     public function services(Request $request, $slug=null){
-        $user = auth()->user();
+        $user = auth('manager')->user();
         if($request->shop_slug == null)
             $data['products'] = Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('is_service', 1)->get();
         else {
             $data['shop'] = Shop::whereSlug($request->shop_slug)->first();
             $data['products'] = $data['shop']->products->where('is_service', 1)??[];
         }
-        return view('b_admin.services.index', $data);
+        return view('manager.services.index', $data);
     }
 
     
     public function create_service($slug){
-        $user = auth()->user();
+        $user = auth('manager')->user();
         $data['shop'] = Shop::whereSlug($slug)->first();
         $data['currencies'] = Currency::all();
-        return view('b_admin.services.create', $data);
+        return view('manager.services.create', $data);
     }
 
     
@@ -297,7 +297,7 @@ class HomeController extends Controller
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['shop'] = Shop::whereSlug($slug)->first();
 
-        return view('b_admin.services.create_categ_images', $data);
+        return view('manager.services.create_categ_images', $data);
     }
 
 
@@ -310,21 +310,21 @@ class HomeController extends Controller
 
     public function errands(Request $request){
         $data['errands'] = \App\Models\Errand::take(100)->get();
-        return view('b_admin.errands.index', $data);
+        return view('manager.errands.index', $data);
     }
 
     public function create_errand(){
         $data['regions'] = Region::orderBy('name')->get();
         $data['towns'] = Town::orderBy('name')->get();
         $data['streets'] = Street::orderBy('name')->get();
-        return view('b_admin.errands.create', $data);
+        return view('manager.errands.create', $data);
     }
 
     public function save_errand(Request $request){
         // save and forward errand for image update
         $data['errand'] = $request->all();
         $data['categories'] = SubCategory::orderBy('name')->get();
-        return view('b_admin.errands.create_categ_images', $data);
+        return view('manager.errands.create_categ_images', $data);
     }
 
     public function update_save_errand(Request $request){
@@ -334,7 +334,7 @@ class HomeController extends Controller
 
     public function show_errand ($slug){
         $data['errand'] = \App\Models\Errand::whereSlug($slug)->first();
-        return view('b_admin.errands.show', $data);
+        return view('manager.errands.show', $data);
     }
 
     public function edit_errand($slug){
@@ -343,7 +343,7 @@ class HomeController extends Controller
         $data['towns'] = Town::orderBy('name')->get();
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['streets'] = Street::orderBy('name')->get();
-        return view('b_admin.errands.edit', $data);
+        return view('manager.errands.edit', $data);
     }
 
     public function update_errand($slug){
@@ -352,6 +352,6 @@ class HomeController extends Controller
         $data['towns'] = Town::orderBy('name')->get();
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['streets'] = Street::orderBy('name')->get();
-        return view('b_admin.errands.edit', $data);
+        return view('manager.errands.edit', $data);
     }
 }

@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 
-class Manager extends Model
+class Manager extends User
 {
     use HasFactory;
 
@@ -15,7 +16,7 @@ class Manager extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function shop(){
+    public function shops(){
         return $this->belongsTo(Shop::class, 'business_id');
     }
 }

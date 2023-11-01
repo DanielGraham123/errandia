@@ -54,4 +54,8 @@ class Shop extends Model
     public function products(){
         return $this->hasMany(Product::class, 'shop_id');
     }
+
+    public function manager(){
+        return $this->hasOne(Manager::class, 'business_id');
+    }
 }

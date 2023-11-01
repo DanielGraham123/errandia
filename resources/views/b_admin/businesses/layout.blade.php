@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>{!! $title ?? '' !!} | {{__('text.app_name')}}</title>
+    <title>{!! $title ?? '' !!} | {{env('APP_NAME')}}</title>
 
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -215,18 +215,7 @@
 
 
     <div id="navbar2" class="border-bottom container-fluid pt-4 d-flex justify-content-center ace-save-state no-scrollbar" style="background: {{$bg1}}; overflow-x: scroll">
-        <div class="container py-0 my-0 d-flex mx-auto navbar-nav justify-content-center text-nowrap">
-            
-            
-            {{-- <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link">
-                    <small class="text-link"> 
-                        <img src="{{ asset('assets/admin/icons/icon-add.svg') }}" class="w-auto mr-2" style="height: 1.3rem;" title="Visit Errandia Website">
-                        <span class="d-md-inline text-capitalize">New</span>
-                        <img src="{{ asset('assets/admin/icons/icon-dropdown.svg') }}" class="w-auto ml-2" style="height: 1.3rem;" title="Visit Errandia Website">
-                    </small>
-                </a>
-            </div> --}}
+        <div class="container py-0 my-0 d-flex mx-auto navbar-nav text-nowrap">
             <div class="nav-item border border-bottom-0 px-3 py-1">
                 <a class="nav-link" title="Add New" href="{{ route('business_admin.home') }}">
                     <small class="text-link"> 
@@ -242,7 +231,7 @@
                 </a>
             </div>
             <div class="nav-item border border-bottom-0 px-3 py-1">
-                <a class="nav-link" title="Add New">
+                <a class="nav-link" title="Add New" href="{{route('business_admin.errands.index')}}">
                     <small class="text-link"> 
                         <span class="text-capitalize mx-2">Errands</span>
                         <span class="text-body-sm">(6)</span>
