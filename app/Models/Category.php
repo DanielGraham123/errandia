@@ -10,4 +10,8 @@ class Category extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'product_categories';
+
+    public function sub_categories(){
+        return $this->hasMany(SubCategory::class, 'category_id');
+    }
 }

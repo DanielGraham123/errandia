@@ -374,6 +374,12 @@ Route::prefix('manager')->name('manager.')->middleware('isManager')->group(funct
 
 Route::name('public.')->group(function(){
     Route::get('', 'WelcomeController@home')->name('home');
+    Route::get('businesses/{region_id?}', 'WelcomeController@businesses')->name('businesses');
+    Route::get('business/{slug}', 'WelcomeController@show_business')->name('business.show');
+    Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run');
+    Route::post('errands/run', 'WelcomeController@run_arrnd_save');
+    Route::post('errands/run/update', 'WelcomeController@run_arrnd_update')->name('errands.run.update');
+    Route::get('search', 'WelcomeController@search')->name('search');
 });
 
 
