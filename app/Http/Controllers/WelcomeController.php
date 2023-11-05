@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Errand;
 use App\Models\Region;
 use App\Models\Street;
 use App\Models\SubCategory;
@@ -67,6 +68,20 @@ class WelcomeController extends Controller
         $data['results'] = Shop::first();
         // dd($data);
         return view('public.search', $data);
+    }
+
+
+    public function errands(Request $request)
+    {
+        return view('public.errands.index');
+    }
+
+    public function view_errand(Request $request)
+    {
+        $data['errand'] = Errand::first();
+        if(auth()->user() != null)
+            return view('public.errands.show', $data);
+        return view('public.errands.preview', $data);
     }
 
 }

@@ -50,9 +50,16 @@
     <!-- Plugin CSS file with desired skin css -->
     <link rel="stylesheet" href="{{ asset('assets/public/assets/css/vendors/ion.rangeSlider.min.css') }}">
 
+
     <style>
     .no-scrollbar::-webkit-scrollbar{
         display: none;
+    }
+    .line-clamp-3{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
     }
     </style>
 </head>
@@ -324,7 +331,7 @@
                                     <div class="offcanvas-body">
                                         <ul class="navbar-nav">
                                             <li class="nav-item ">
-                                                <a class="nav-link " href="#">Errands</a>
+                                                <a class="nav-link " href="{{ route('public.errands') }}">Errands</a>
                                             </li>
 
                                             <li class="nav-item dropdown">
@@ -821,6 +828,36 @@
     </div>
     <!-- Location Modal End -->
 
+    <!-- Location Modal Start -->
+    <div class="modal location-modal fade theme-modal" id="errandModal" tabindex="-1"
+        aria-labelledby="errandModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text" id="errandModalLabel">Contact Errand Author</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="text-body">In order t call or contact this author via WhatsApp , you need
+                        to create you Errandia account</p>
+                    <div class="d-flex rounded-md border bg-light py-3 px-2">
+                        <div class="w-25">
+                            <img class="img-responsive" style="width: 100%; height: 100%; border-radius: 0.5rme;" src="{{ asset('assetsassets/images/charger.png') }}">
+                        </div>
+                        <div>
+                            <span class="text-h6 my-2 d-block">I need a Laptop charger</span>
+                            <p class="text-body">Quia minus eaque quisquam. Dolores eos ea. Veritatis recusandae minus accusamus deserunt animi impedit</p>
+                        </div>
+                    </div>
+                    <div class="my-3 d-flex justify-content-netween">
+                        <a class="button-primary" href="#">Create your Account</a>
+                        <a class="button-tertiary" href="#">Sign in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Location Modal End -->
+
     <!-- Cookie Bar Box Start -->
     {{-- <div class="cookie-bar-box">
         <div class="cookie-box">
@@ -935,6 +972,12 @@
     <div class="bg-overlay"></div>
     <!-- Bg overlay End -->
 
+    <script>
+        let showErrandModal = function(event){
+            $('#errandModal').modal().show();
+        }
+    </script>
+
     <!-- latest jquery-->
     <script src="{{ asset('assets/public/assets/js/jquery-3.6.0.min.js') }}"></script>
 
@@ -996,7 +1039,15 @@
     <script src="{{ asset('assets/public/assets/js/copy-clipboard.js') }}"></script>
 
 
+    <!-- sidebar open js -->
+    <script src="{{ asset('assets/public/assets/js/filter-sidebar.js') }}"></script>
 
+    <!-- Zoom Js -->
+    <script src="{{ asset('assets/public/assets/js/jquery.elevatezoom.js') }}"></script>
+    <script src="{{ asset('assets/public/assets/js/zoom-filter.js') }}"></script>
+
+    <!-- Sticky-bar js -->
+    <script src="{{ asset('assets/public/assets/js/sticky-cart-bottom.js') }}"></script>
 
     @yield('script')
 </body>

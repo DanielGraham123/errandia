@@ -445,7 +445,7 @@
                                             <a href="product-left-thumbnail.html">
                                                 <h5 class="name">I need a Dell Laptop charger</h5>
                                             </a>
-                                            <p class="text-content mt-1 mb-2 product-content">Cheesy feet cheesy grin brie.
+                                            <p class="text-content mt-1 mb-2 line-clamp-3">Cheesy feet cheesy grin brie.
                                                 Mascarpone cheese and wine hard cheese the big cheese everyone loves smelly
                                                 cheese macaroni cheese croque monsieur.</p>
                                             
