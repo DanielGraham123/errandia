@@ -84,4 +84,8 @@ class WelcomeController extends Controller
         return view('public.errands.preview', $data);
     }
 
+    public function show_product($slug){
+        return view('public.products.show');
+    }
+
 }

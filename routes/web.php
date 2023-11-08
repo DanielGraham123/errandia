@@ -382,6 +382,8 @@ Route::name('public.')->group(function(){
     Route::post('errands/run', 'WelcomeController@run_arrnd_save');
     Route::post('errands/run/update', 'WelcomeController@run_arrnd_update')->name('errands.run.update');
     Route::get('search', 'WelcomeController@search')->name('search');
+    Route::get('products', 'WelcomeController@products')->name('products.index');
+    Route::get('products/show/{slug}', 'WelcomeController@show_product')->name('products.show');
 });
 
 

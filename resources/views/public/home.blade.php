@@ -131,224 +131,38 @@
         </div>
     </section>
 
-    <section class="product-section-3 py-5">
+
+    <section class="product-section">
         <div class="container-fluid-lg">
-            <div class="title">
-                <h2>Featured Businesses</h2>
-            </div>
-            <div class="row">
+            <div class="row g-sm-4 g-3">
                 <div class="col-12">
-                    <div class="slider-7_1 arrow-slider img-slider slick-initialized slick-slider"><button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="">Previous</button>
+
+                    <div class="title">
+                        <h2>Featured Businesses</h2>
+                    </div>
+                    <div class="d-flex no-scrollbar" style="overflow-x: scroll;">
+                        <div class="d-flex category-slider-2 product-wrapper no-arrow slick-initialized slick-slider slick-dotted">
+                            @foreach (\App\Models\Shop::inRandomOrder()->get() as $shop)
+                                <div class="slick-slide slick-cloned" style="width: 189px;" tabindex="-1" role="tabpanel" id="" aria-describedby="slick-slide-control06" data-slick-index="13" aria-hidden="true">
+                                    <a href="{{ route('public.business.show', $shop->slug) }}" class="category-box category-dark" tabindex="-1">
+                                        <div>
+                                            <img src=" {{ asset('assets/admin/images/business-logo-thumb-0.png') }}" class="blur-up lazyloaded" alt="">
+                                            <h5>{{ $shop->name }}</h5>
+                                            <p class="text-overline">{{ $shop->location() }}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                
+                            @endforeach
+                        </div>
+                        </div>
                         
-                    <div class="slick-list draggable"><div class="slick-track" style="opacity: 1; width: 4740px; transform: translate3d(-948px, 0px, 0px);"><div class="slick-slide slick-cloned" style="width: 237px;" data-slick-index="-4" id="" aria-hidden="true" tabindex="-1">
-
-
-                        </div><div class="slick-slide slick-cloned" style="width: 237px;" data-slick-index="-3" id="" aria-hidden="true" tabindex="-1">
-                            <div class="product-box-4 wow fadeInUp" data-wow-delay="0.25s" style="visibility: visible; animation-delay: 0.25s; animation-name: fadeInUp;">
-                                <div class="product-image product-image-2">
-                                    <a href="product-left-thumbnail.html" tabindex="-1">
-                                        <img src="{{ asset('assets/public/assets/images/grocery/product/fruits-vegetables/6.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                    </a>
-
-                                   
-                                </div>
-
-                                <div class="product-detail">
-                                    <ul class="rating">
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                    </ul>
-                                    <a href="product-left-thumbnail.html" tabindex="-1">
-                                        <h5 class="name text-title">Broccoli</h5>
-                                    </a>
-                                    <h5 class="price theme-color">$65.21<del>$71.25</del></h5>
-                                    <div class="addtocart_btn">
-                                        <button class="add-button addcart-button btn buy-button text-light" tabindex="-1">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                        <div class="qty-box cart_qty">
-                                            <div class="input-group">
-                                                <button type="button" class="btn qty-left-minus" data-type="minus" data-field="" tabindex="-1">
-                                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                                </button>
-                                                <input class="form-control input-number qty-input" type="text" name="quantity" value="1" tabindex="-1">
-                                                <button type="button" class="btn qty-right-plus" data-type="plus" data-field="" tabindex="-1">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><div class="slick-slide slick-cloned" style="width: 237px;" data-slick-index="-2" id="" aria-hidden="true" tabindex="-1">
-                            <div class="product-box-4 wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                                <div class="product-image product-image-2">
-                                    <a href="product-left-thumbnail.html" tabindex="-1">
-                                        <img src="{{ asset('assets/public/assets/images/grocery/product/fruits-vegetables/7.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                    </a>
-
-                                    <ul class="option">
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Quick View">
-                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#view" tabindex="-1">
-                                                <i class="iconly-Show icli"></i>
-                                            </a>
-                                        </li>
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Wishlist">
-                                            <a href="javascript:void(0)" class="notifi-wishlist" tabindex="-1">
-                                                <i class="iconly-Heart icli"></i>
-                                            </a>
-                                        </li>
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Compare">
-                                            <a href="compare.html" tabindex="-1">
-                                                <i class="iconly-Swap icli"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="product-detail">
-                                    <ul class="rating">
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                    </ul>
-                                    <a href="product-left-thumbnail.html" tabindex="-1">
-                                        <h5 class="name text-title">Apple</h5>
-                                    </a>
-                                    <h5 class="price theme-color">$65.21<del>$71.25</del></h5>
-                                    
-                                </div>
-                            </div>
-                        </div><div class="slick-slide slick-cloned" style="width: 237px;" data-slick-index="-1" id="" aria-hidden="true" tabindex="-1">
-                            <div class="product-box-4 wow fadeInUp" data-wow-delay="0.35s" style="visibility: visible; animation-delay: 0.35s; animation-name: fadeInUp;">
-                                <div class="product-image product-image-2">
-                                    <a href="product-left-thumbnail.html" tabindex="-1">
-                                        <img src="{{ asset('assets/public/assets/images/grocery/product/fruits-vegetables/8.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                    </a>
-                                </div>
-
-                                <div class="product-detail">
-                                    
-                                    <a href="product-left-thumbnail.html" tabindex="-1">
-                                        <h5 class="name text-title">Strawberry</h5>
-                                    </a>
-                                    <h5 class="price theme-color">$65.21<del>$71.25</del></h5>
-                                    <div class="addtocart_btn">
-                                        <button class="add-button addcart-button btn buy-button text-light" tabindex="-1">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                        <div class="qty-box cart_qty">
-                                            <div class="input-group">
-                                                <button type="button" class="btn qty-left-minus" data-type="minus" data-field="" tabindex="-1">
-                                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                                </button>
-                                                <input class="form-control input-number qty-input" type="text" name="quantity" value="1" tabindex="-1">
-                                                <button type="button" class="btn qty-right-plus" data-type="plus" data-field="" tabindex="-1">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="slick-slide slick-cloned" style="width: 237px;" data-slick-index="14" id="" aria-hidden="true" tabindex="-1">
-                            <div class="product-box-4 wow fadeInUp" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
-                                <div class="product-image product-image-2">
-                                    <a href="product-left-thumbnail.html" tabindex="-1">
-                                        <img src="{{ asset('assets/public/assets/images/grocery/product/fruits-vegetables/7.png') }}" class="img-fluid blur-up lazyload" alt="">
-                                    </a>
-
-                                    <ul class="option">
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Quick View">
-                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#view" tabindex="-1">
-                                                <i class="iconly-Show icli"></i>
-                                            </a>
-                                        </li>
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Wishlist">
-                                            <a href="javascript:void(0)" class="notifi-wishlist" tabindex="-1">
-                                                <i class="iconly-Heart icli"></i>
-                                            </a>
-                                        </li>
-                                        <li data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Compare">
-                                            <a href="compare.html" tabindex="-1">
-                                                <i class="iconly-Swap icli"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="product-detail">
-                                    <ul class="rating">
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                        <li>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                        </li>
-                                    </ul>
-                                    <a href="product-left-thumbnail.html" tabindex="-1">
-                                        <h5 class="name text-title">Apple</h5>
-                                    </a>
-                                    <h5 class="price theme-color">$65.21<del>$71.25</del></h5>
-                                    {{-- <div class="addtocart_btn">
-                                        <button class="add-button addcart-button btn buy-button text-light" tabindex="-1">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                        <div class="qty-box cart_qty">
-                                            <div class="input-group">
-                                                <button type="button" class="btn qty-left-minus" data-type="minus" data-field="" tabindex="-1">
-                                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                                </button>
-                                                <input class="form-control input-number qty-input" type="text" name="quantity" value="1" tabindex="-1">
-                                                <button type="button" class="btn qty-right-plus" data-type="plus" data-field="" tabindex="-1">
-                                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                </div>
-                            </div>
-                        </div>
-                        </div></div><button class="slick-next slick-arrow" aria-label="Next" type="button" style="">Next</button></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
 
 
     <section class="section-b-space shop-section">
@@ -428,7 +242,7 @@
                     </div>
 
                     <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
-                        @for($i = 0; $i < 18; $i++)
+                        @for($i = 0; $i < 9; $i++)
                             <div>
                                 <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-header">
@@ -518,12 +332,12 @@
                     </div>
 
                     <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
-                        @for($i = 0; $i < 18; $i++)
+                        @for($i = 0; $i < 8; $i++)
                             <div>
                                 <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-header">
                                         <div class="product-image">
-                                            <a href="product-left-thumbnail.html">
+                                            <a href="{{ route('public.products.show', 'slug') }}">
                                                 <img src="{{ asset('assets/public/assets/images/charger.png') }}" class="img-fluid blur-up lazyloaded" alt="">
                                             </a>
 
@@ -532,7 +346,7 @@
                                     </div>
                                     <div class="product-footer">
                                         <div class="product-detail">
-                                            <a href="product-left-thumbnail.html">
+                                            <a href="{{ route('public.products.show', 'slug') }}">
                                                 <h5 class="name">I need a Dell Laptop charger</h5>
                                             </a>
                                             <p class="text-content mt-1 mb-2 product-content">Cheesy feet cheesy grin brie.
@@ -590,6 +404,66 @@
     </section>
 
 
+    <section>
+        <div class="container-fluid-lg shadow my-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="banner-contain">
+                        <div class="banner-contain hover-effect bg-size blur-up lazyloaded" style="background-image: url({{ asset('asstes/public/assets/images/vegetable/banner/15.jpg') }}); background-size: cover; background-position: center center; background-repeat: no-repeat; display: block;">
+                            <img src="{{ asset('assets/public/assets/images/vegetable/banner/15.jpg' )}}" class="bg-img blur-up lazyload" alt="" style="display: none;">
+                            <div class="banner-details p-center p-sm-4 p-3 text-white text-center">
+                                <div>
+                                    <h3 class="lh-base fw-bold text-light">Get $3 Cashback! Min Order of $30</h3>
+                                    <h6 class="coupon-code">Use Code : GROCERY1920</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section-b-space shop-section">
+        <div class="container-fluid-lg">
+            <div class="">
+
+                <div class="fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                    <div class="show-button">
+                        
+                        <div class="top-filter-menu">
+                            <div class="category-dropdown">
+                                <h2 class="text-content">Popular Categories (<a class="nav-item" id="low" href="#">See All</a>)</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
+                        @foreach (\App\Models\Category::orderBy('name')->get() as $category)
+                            <div class="MuiBox-root css-q4zoya">
+                                <div  class="d-flex">
+                                    <img alt="motors" src="{{ asset('assets/admin/icons/'.$category->image_path.'.svg') }}" style="width: 2.2rem; height: 2.2rem; mr-4 mb-2">
+                                    <h5 class=" d-inlineblock ml-3"><b>{{ $category->name }}</b> <small> (N errands recieved)</small></h5>
+                                </div>
+                                <div class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column css-1wkwmmc">
+                                    @foreach ($category->sub_categories()->take(4)->get() as $subcat)
+                                        <div class="MuiGrid-root MuiGrid-item css-1wxaqej">
+                                            <a class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-u00jnd" data-testid="subcategory-link" href="/motors/used-cars/">{{ $subcat->name }}</a>
+                                        </div>
+                                    @endforeach
+                                    <div class="">
+                                        <a class="text-danger" tabindex="0" href="/classified/mobile-phones-pdas/">All in Mobile Phones &amp; Tablets</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
 
 @endsection
 @section('script')

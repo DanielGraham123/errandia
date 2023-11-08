@@ -99,12 +99,12 @@
                                                                         <div class="col-12 col-lg-4 col-xxl-3 px-0">
                                                                             <div class="product-box shadow">
                                                                                 <div class="product-image">
-                                                                                    <a href="product-left-thumbnail.html" tabindex="0">
+                                                                                    <a href="{{ route('public.products.show', 'slug') }}" tabindex="0">
                                                                                         <img src="{{ asset('assets/public/assets/images/vegetable/product/3.png') }}" class="img-fluid blur-up lazyloaded" alt="">
                                                                                     </a>
                                                                                 </div>
                                                                                 <div class="product-detail">
-                                                                                    <a href="product-left-thumbnail.html" tabindex="0">
+                                                                                    <a href="{{ route('public.products.show', 'slug') }}" tabindex="0">
                                                                                         <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">Peanut Butter Bite Premium Butter Cookies 600 g
                                                                                         </h6>
                                                                                     </a>
@@ -114,7 +114,7 @@
                                                                                     </h5>
 
                                                                                     <div class="add-to-cart-box">
-                                                                                        <a href="#" class="button-secondary">see more</a>
+                                                                                        <a href="{{ route('public.products.show', 'slug') }}" class="button-secondary">see more</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
