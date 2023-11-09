@@ -15,10 +15,6 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        if (User::where('type', 'admin')->count() > 0) {
-            return;
-        }
-
         $user = Admin::create([
             'name' => 'Admin',
             'email' => 'admin',

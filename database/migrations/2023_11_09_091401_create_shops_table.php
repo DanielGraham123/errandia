@@ -25,6 +25,7 @@ class CreateShopsTable extends Migration
             $table->string('parent_slug')->nullable();
             $table->string('slug');
             $table->string('slogan')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

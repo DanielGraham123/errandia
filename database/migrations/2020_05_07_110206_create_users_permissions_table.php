@@ -12,7 +12,7 @@ class CreateUsersPermissionsTable extends Migration
             $table->id();
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('permission_id');
-
+            $table->string('user_type');
         });
     }
 
