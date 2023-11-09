@@ -36,11 +36,11 @@ class Shop extends Model
     }
 
     public function region(){
-        return $this->belongsTo(Region::class, 'region_id');
+        return $this->town->region;
     }
 
     public function town(){
-        return $this->belongsTo(Town::class, 'town_id');
+        return $this->street->town;
     }
 
     public function street(){

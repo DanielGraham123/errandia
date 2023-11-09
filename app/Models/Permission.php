@@ -8,6 +8,7 @@ class Permission extends Model
 {
 
     protected $connection = 'mysql';
+    protected $fillable = ['name', 'slug', 'name_fr'];
     public function roles() {
 
         return $this->belongsToMany(Role::class,'roles_permissions');

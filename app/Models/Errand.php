@@ -10,11 +10,12 @@ class Errand extends Model
     use HasFactory;
 
     protected $table = 'product_quote';
+    protected $fillable = ['title', 'description', 'user_id', 'slug', 'read_status', 'categories'];
 
     public function posted_by()
     {
         # code...
-        return $this->belongsTo(User::class, 'UserID');
+        return $this->belongsTo(User::class, 'user-id');
     }
 
     public function location(){

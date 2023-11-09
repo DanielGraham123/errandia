@@ -1,7 +1,9 @@
 <?php
 
 
+use App\Models\Admin;
 use App\Models\User;
+use Faker\Provider\bg_BG\PhoneNumber;
 use Illuminate\Database\Seeder;
 
 class AdminSeeder extends Seeder
@@ -17,12 +19,12 @@ class AdminSeeder extends Seeder
             return;
         }
 
-        $user = User::create([
+        $user = Admin::create([
             'name' => 'Admin',
-            'username' => 'admin',
             'email' => 'admin',
+            'phone' => '237983432334',
             'password' => \Illuminate\Support\Facades\Hash::make('password'),
-            'type' => 'admin',
+            'active'=>1
         ]);
     }
 }
