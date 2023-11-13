@@ -17,12 +17,16 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'username' => $this->username,
-            'matric' => $this->matric,
-            'type' => $this->type,
+            'email' => $this->email ?? '',
             'phone' => $this->phone,
-            'address' => $this->address,
+            'address' => $this->address ?? '',
+            'gender' => $this->profile->gender == 'M' ? 'Male' : 'Female',
+            'profile' => $this->getProfileUrl(),
+            'street' => $this->profile->street->name,
+            'town' => $this->profile->street->town->name,
+            'region' => $this->profile->street->town->region->name,
+            'place_of_birth' => $this->profile->pob ?? '',
+            'date_of_birth' => $this->profile->dob ?? '',
         ];
     }
 }

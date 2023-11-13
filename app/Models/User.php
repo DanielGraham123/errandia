@@ -12,6 +12,11 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
+    const TYPE_CUSTOMER = 'customer';
+    const TYPE_SERVICE_PROVIDER = 'service provider';
+    const TYPE_VENDOR = 'business owner';
+    const TYPE_ADMIN = 'admin';
+
     use HasFactory, Notifiable, HasApiTokens;
 
     /**
