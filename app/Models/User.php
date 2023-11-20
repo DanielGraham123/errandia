@@ -12,6 +12,11 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
+    const TYPE_CUSTOMER = 'customer';
+    const TYPE_SERVICE_PROVIDER = 'service provider';
+    const TYPE_VENDOR = 'business owner';
+    const TYPE_ADMIN = 'admin';
+
     use HasFactory, Notifiable, HasApiTokens;
 
     /**
@@ -62,4 +67,13 @@ class User extends Authenticatable
         return $this->hasMany(Manager::class, 'user_id');
     }
 
+    public function getProfileUrl()
+    {
+        return $this->photo ? asset('storage/'. $this->photo) : '';
+    }
+
+    public function street()
+    {
+        return $this->belongsTo(Street::class, 'street_id');
+    }
 }
