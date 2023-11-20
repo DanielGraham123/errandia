@@ -47,4 +47,24 @@ class Shop extends Model
     public function managers(){
         return $this->belongsToMany(User::class, 'shop_managers', 'shop_id', 'user_id');
     }
+
+    public function subCategories()
+    {
+        return $this->belongsToMany(SubCategory::class, 'shop_categories', 'shop_id', 'sub_category_id');
+    }
+
+    public function getImage()
+    {
+        return $this->image_path ? asset('storage/'. $this->image_path) : '';
+    }
+
+    public function info()
+    {
+        return $this->hasOne(ShopContactInfo::class, 'shop_id');
+    }
+
+    public function registration()
+    {
+        return $this->hasOne(ShopRegistrationInfo::class, 'shop_id');
+    }
 }

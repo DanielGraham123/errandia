@@ -14,4 +14,9 @@ class Category extends Model
     public function sub_categories(){
         return $this->hasMany(SubCategory::class, 'category_id');
     }
+
+    public function getIcon()
+    {
+        return $this->image_path ? asset('assets/admin/icons/'. $this->image_path. '.svg') : '';
+    }
 }
