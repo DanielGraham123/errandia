@@ -70,16 +70,12 @@ class AuthController extends Controller
                 $user->email = $request->email;
                 $user->phone = $request->phone;
                 $user->password = Hash::make($request->password);
+                $user->address = $request->address ?? '';
+                $user->street_id = $request->street_id;
                 if ($request->file('profile')) {
-                    $user->profile = $request->file('profile')->store('users');
+                    $user->photo = $request->file('profile')->store('users');
                 } 
                 $user->save();
-    
-                $profile = UserProfile::firstOrNew([
-                    'user_id' => $user->id
-                ]);
-                $profile->street_id = $request->street_id;
-                $profile->save();
                 return $user;
             });
             $token = $user->createToken('token')->accessToken;

@@ -20,13 +20,13 @@ class UserResource extends JsonResource
             'email' => $this->email ?? '',
             'phone' => $this->phone,
             'address' => $this->address ?? '',
-            'gender' => $this->profile->gender == 'M' ? 'Male' : 'Female',
+            'gender' =>  $this->profile ? ($this->profile->gender ?? '') : '',
             'profile' => $this->getProfileUrl(),
-            'street' => $this->profile->street->name,
-            'town' => $this->profile->street->town->name,
-            'region' => $this->profile->street->town->region->name,
-            'place_of_birth' => $this->profile->pob ?? '',
-            'date_of_birth' => $this->profile->dob ?? '',
+            'street' => $this->street ? $this->street->name : '',
+            'town' => $this->street ? $this->street->town->name: '',
+            'region' => $this->street ? $this->street->town->region->name : '',
+            'place_of_birth' => $this->profile ? $this->profile->pob : '',
+            'date_of_birth' => $this->profile ? $this->profile->dob : '',
         ];
     }
 }

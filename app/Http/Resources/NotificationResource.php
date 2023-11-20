@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryResource extends JsonResource
+class NotificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,10 @@ class CategoryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'icon_url' => $this->getIcon(),
-            'icon_name' => $this->image_path . '.svg'
+            'id'   => $this->id,
+            'data' => $this->data,
+            'date' => $this->created_at->diffForHumans(),
+            'read_at' => $this->read_at ?? ""
         ];
     }
 }
