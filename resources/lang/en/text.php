@@ -798,7 +798,7 @@ return [
     'log_in'=> 'log in',
     'forgot_username'=>'forgot username',
     'need_an_account?'=>'need an account ?',
-    'nishang_system'=>'Nishang System',
+    'nishang_system'=>'Errandia',
     'powered_by'=>'powered by',
     'pass_reset_phrase'=>'enter your email where you want to receive instructions from',
     'recover_your_username'=>'recover your username',

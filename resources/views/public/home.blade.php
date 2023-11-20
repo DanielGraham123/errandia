@@ -7,7 +7,7 @@
                     <div class="slider-animate">
                         <div>
                             <div class="home-contain rounded-0 p-0 bg-size blur-up lazyloaded" style="background-image: url({{asset('assets/public/assets/images/landing-image/home.png')}}); background-size: cover; background-position: center center; background-repeat: no-repeat; display: block;">
-                                <img src="{{asset('assets/images/search.jpg')}}" class="img-fluid bg-img blur-up lazyloaded" alt="" style="display: none;">
+                                <img src="{{asset('assets/images/search.png')}}" class="img-fluid bg-img blur-up lazyloaded" alt="" style="display: none;">
                                 <div class="home-detail home-big-space home-overlay position-relative" style="background: rgba(90,90,90,0.7);">
                                     <div class="container-fluid-lg">
                                          <header class="pb-md-4 pb-0">
