@@ -23,7 +23,7 @@ class RolesController extends Controller{
 
     public function store(Request $request)
     {
-        if(auth()->user()->can('manage_roles')){
+        if(auth('admin')->user()->can('manage_roles')){
             $this->validate($request, [
                 'name' => 'required',
                 'permissions' => 'required',
@@ -81,7 +81,7 @@ class RolesController extends Controller{
     }
 
     public function edit(Request $request, $slug){
-        if(!auth()->user()->can('manage_permissions')){
+        if(!auth('admin')->user()->can('manage_permissions')){
             return redirect(route('admin.roles.index'))->with('error', __('text.operation_not_allowed'));
         }
         $data['role'] = \App\Models\Role::whereSlug($slug)->first();

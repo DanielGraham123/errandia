@@ -64,17 +64,18 @@
     </style>
 </head>
 
+
 <body class="bg-effect">
 
     <!-- Loader Start -->
-    <!-- <div class="fullpage-loader">
+      <div class="fullpage-loader">
         <span></span>
         <span></span>
         <span></span>
         <span></span>
         <span></span>
         <span></span>
-    </div> -->
+    </div> 
     <!-- Loader End -->
 
     <!-- Header Start -->
@@ -85,7 +86,7 @@
                     <div class="col-xxl-3 d-xxl-block d-none">
                         <div class="top-left-header">
                             <i class="iconly-Location icli text-white"></i>
-                            <span class="text-white">St. Claire Building, Molyko, Buea, SWR, Cameroon</span>
+                            <span class="text-white"><?php echo  date('l- d-m-Y'); ?></span>
                         </div>
                     </div>
 
@@ -94,22 +95,13 @@
                             <div class="notification-slider">
                                 <div>
                                     <div class="timer-notification">
-                                        <h6><strong class="me-1">Welcome to Errandia!</strong>Wrap new offers/gift
-                                            every signle day on Weekends.<strong class="ms-1">New Coupon Code: Fast024
+                                        <h6><strong class="me-1">Please beware of scammers. Do not transfer money to anyone without seeing and or testing the product/Service
                                             </strong>
 
                                         </h6>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <div class="timer-notification">
-                                        <h6>Something you love is now on sale!
-                                            <a href="shop-left-sidebar.html" class="text-white">Buy Now
-                                                !</a>
-                                        </h6>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -120,7 +112,7 @@
                                 <div class="dropdown theme-form-select">
                                     <button class="btn dropdown-toggle" type="button" id="select-language"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="{{ asset('assets/public/assets/images/country/united-states.png') }}"
+                                        <img src="{{ asset('assets/public/assets/images/country/united-kingdom.png') }}"
                                             class="img-fluid blur-up lazyload" alt="">
                                         <span>English</span>
                                     </button>
@@ -134,7 +126,7 @@
                                         </li>
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0)" id="france">
-                                                <img src="{{ asset('assets/public/assets/images/country/germany.png') }}"
+                                                <img src="{{ asset('assets/public/assets/images/country/French.png') }}"
                                                     class="img-fluid blur-up lazyload" alt="">
                                                 <span>French</span>
                                             </a>
@@ -199,7 +191,7 @@
                                     <div class="input-group">
                                         <input type="search" class="form-control" placeholder="I'm searching for..."
                                             aria-label="Recipient's username" aria-describedby="button-addon2">
-                                        <button class="btn" type="button" id="button-addon2">
+                                        <button class="btn" type="button" id="button-addon2" style="background:#113d6b">
                                             <i data-feather="search"></i>
                                         </button>
                                     </div>
@@ -234,8 +226,8 @@
                                                 <i data-feather="phone-call"></i>
                                             </div>
                                             <div class="delivery-detail">
-                                                <h6>24/7 Delivery</h6>
-                                                <h5>+91 888 104 2340</h5>
+                                                <h6>24/7 Availability</h6>
+                                                <h5>+237 68895055</h5>
                                             </div>
                                         </a>
                                     </li>
@@ -247,24 +239,32 @@
                                             </div>
                                             <div class="delivery-detail">
                                                 <h6>Hello,</h6>
-                                                <h5>My Account</h5>
+                                                <h5>{{ auth()->check() ? auth()->user()->name : auth('admin')->user()->name ?? "User Account" }}</h5>
                                             </div>
                                         </div>
 
                                         <div class="onhover-div onhover-div-login">
                                             <ul class="user-box-name">
-                                                <li class="product-box-contain">
-                                                    <i></i>
-                                                    <a href="login.html">Log In</a>
-                                                </li>
+                                                @if (auth()->check() || auth('admin')->check())
+                                                    <li class="product-box-contain">
+                                                        <i></i>
+                                                        <a href="{{ route('logout') }}">Log Out</a>
+                                                    </li>   
+                                                @else
+                                                    <li class="product-box-contain">
+                                                        <i></i>
+                                                        <a href="{{ route('login') }}">Log In</a>
+                                                    </li>
+                                                @endif
 
                                                 <li class="product-box-contain">
-                                                    <a href="sign-up.html">Register</a>
+                                                    <a href="{{ route('register') }}">Register</a>
                                                 </li>
-
-                                                <li class="product-box-contain">
-                                                    <a href="forgot.html">Forgot Password</a>
-                                                </li>
+                                                @if (auth()->check() || auth('admin')->check())
+                                                    <li class="product-box-contain">
+                                                        <a href="@if(auth()->check()) {{ route('business_admin.home') }} @else {{ route('admin.home') }} @endif">My Dashboard</a>
+                                                    </li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </li>
@@ -418,8 +418,7 @@
                             </div>
 
                             <div class="footer-logo-contain">
-                                <p>We are a friendly bar serving a variety of cocktails, wines and beers. Our bar is a
-                                    perfect place for a couple.</p>
+                                <p>Stay at home and let errandia do the search for you</p>
 
                                 <ul class="address">
                                     <li>
@@ -442,24 +441,12 @@
 
                         <div class="footer-contain">
                             <ul>
+                                @foreach (\App\Models\Category::orderBy('name')->get() as $category)
                                 <li>
-                                    <a href="shop-left-sidebar.html" class="text-content">Vegetables & Fruit</a>
+                                    <a href="#" class="text-content">{{ $category->name }}</a>
                                 </li>
                                 <li>
-                                    <a href="shop-left-sidebar.html" class="text-content">Beverages</a>
-                                </li>
-                                <li>
-                                    <a href="shop-left-sidebar.html" class="text-content">Meats & Seafood</a>
-                                </li>
-                                <li>
-                                    <a href="shop-left-sidebar.html" class="text-content">Frozen Foods</a>
-                                </li>
-                                <li>
-                                    <a href="shop-left-sidebar.html" class="text-content">Biscuits & Snacks</a>
-                                </li>
-                                <li>
-                                    <a href="shop-left-sidebar.html" class="text-content">Grocery & Staples</a>
-                                </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
@@ -471,21 +458,11 @@
 
                         <div class="footer-contain">
                             <ul>
+                                @for($i = 0; $i < 6; $i++)
                                 <li>
-                                    <a href="index.html" class="text-content">Home</a>
+                                    <a href="#" class="text-content">Page Name</a>
                                 </li>
-                                <li>
-                                    <a href="shop-left-sidebar.html" class="text-content">Shop</a>
-                                </li>
-                                <li>
-                                    <a href="about-us.html" class="text-content">About Us</a>
-                                </li>
-                                <li>
-                                    <a href="blog-list.html" class="text-content">Blog</a>
-                                </li>
-                                <li>
-                                    <a href="contact-us.html" class="text-content">Contact Us</a>
-                                </li>
+                                @endfor
                             </ul>
                         </div>
                     </div>
@@ -498,21 +475,10 @@
                         <div class="footer-contain">
                             <ul>
                                 <li>
-                                    <a href="order-success.html" class="text-content">Your Order</a>
+                                    <a href="#" class="text-content">Register/Sign In</a>
                                 </li>
                                 <li>
-                                    <a href="user-dashboard.html" class="text-content">Your Account</a>
-                                </li>
-                                <li>
-                                    <a href="order-tracking.html" class="text-content">Track Order</a>
-                                </li>
-                                <li>
-                                    <a href="wishlist.html" class="text-content">Your Wishlist</a>
-                                </li>
-                                <li>
-                                    <a href="search.html" class="text-content">Search</a>
-                                </li>
-                                <li>
+                                  
                                     <a href="faq.html" class="text-content">FAQ</a>
                                 </li>
                             </ul>
@@ -574,9 +540,10 @@
                     <h6 class="text-content">©2023 {{ env('APP_NAME') ?? 'Errandia' }} All rights reserved</h6>
                 </div>
 
-                <div class="payment">
+                <!--<div class="payment">
                     <img src="{{ asset('assets/public/assets/images/payment/1.png') }}" class="blur-up lazyload" alt="">
                 </div>
+                ---->
 
                 <div class="social-link">
                     <h6 class="text-content">Stay connected :</h6>
@@ -746,81 +713,7 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
 
-                        {{-- <div class="disabled-box">
-                            <h6>Select a Location</h6>
-                        </div>
-
-                        <ul class="location-select custom-height">
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>Alabama</h6>
-                                    <span>Min: $130</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>Arizona</h6>
-                                    <span>Min: $150</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>California</h6>
-                                    <span>Min: $110</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>Colorado</h6>
-                                    <span>Min: $140</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>Florida</h6>
-                                    <span>Min: $160</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>Georgia</h6>
-                                    <span>Min: $120</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>Kansas</h6>
-                                    <span>Min: $170</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>Minnesota</h6>
-                                    <span>Min: $120</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>New York</h6>
-                                    <span>Min: $110</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="javascript:void(0)">
-                                    <h6>Washington</h6>
-                                    <span>Min: $130</span>
-                                </a>
-                            </li>
-                        </ul> --}}
+                    
                     </div>
                 </div>
             </div>
@@ -877,86 +770,6 @@
         </div>
     </div> --}}
     <!-- Cookie Bar Box End -->
-
-    <!-- Deal Box Modal Start -->
-    <div class="modal fade theme-modal deal-modal" id="deal-box" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div>
-                        <h5 class="modal-title w-100" id="deal_today">Deal Today</h5>
-                        <p class="mt-1 text-content">Recommended deals for you.</p>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="deal-offer-box">
-                        <ul class="deal-offer-list">
-                            <li class="list-1">
-                                <div class="deal-offer-contain">
-                                    <a href="shop-left-sidebar.html" class="deal-image">
-                                        <img src="{{ asset('assets/public/assets/images/vegetable/product/10.png') }}" class="blur-up lazyload"
-                                            alt="">
-                                    </a>
-
-                                    <a href="shop-left-sidebar.html" class="deal-contain">
-                                        <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
-                                        <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <li class="list-2">
-                                <div class="deal-offer-contain">
-                                    <a href="shop-left-sidebar.html" class="deal-image">
-                                        <img src="{{ asset('assets/public/assets/images/vegetable/product/11.png') }}" class="blur-up lazyload"
-                                            alt="">
-                                    </a>
-
-                                    <a href="shop-left-sidebar.html" class="deal-contain">
-                                        <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
-                                        <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <li class="list-3">
-                                <div class="deal-offer-contain">
-                                    <a href="shop-left-sidebar.html" class="deal-image">
-                                        <img src="{{ asset('assets/public/assets/images/vegetable/product/12.png') }}" class="blur-up lazyload"
-                                            alt="">
-                                    </a>
-
-                                    <a href="shop-left-sidebar.html" class="deal-contain">
-                                        <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
-                                        <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
-                                    </a>
-                                </div>
-                            </li>
-
-                            <li class="list-1">
-                                <div class="deal-offer-contain">
-                                    <a href="shop-left-sidebar.html" class="deal-image">
-                                        <img src="{{ asset('assets/public/assets/images/vegetable/product/13.png') }}" class="blur-up lazyload"
-                                            alt="">
-                                    </a>
-
-                                    <a href="shop-left-sidebar.html" class="deal-contain">
-                                        <h5>Blended Instant Coffee 50 g Buy 1 Get 1 Free</h5>
-                                        <h6>$52.57 <del>57.62</del> <span>500 G</span></h6>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Deal Box Modal End -->
 
     <!-- Tap to top start -->
     <div class="theme-option">

@@ -116,7 +116,7 @@ class UserController extends Controller
             'type' => 'required',
         ]);
         $user = \App\Models\User::find($id);
-        // if (\Auth::user()->id == $id || \Auth::user()->id == 1) {
+        // if (\auth('admin')->user()->id == $id || \auth('admin')->user()->id == 1) {
         //     return redirect()->to(route('admin.users.index', ['type' => $user->type]))->with('error', "User can't be updated");
         // }
 
@@ -145,7 +145,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = \App\Models\User::find($id);
-        if (auth()->user()->id == $id || auth()->user()->id != 1) {
+        if (auth('admin')->user()->id == $id || auth('admin')->user()->id != 1) {
             return redirect()->to(route('admin.users.index', ['type' => $user->type]))->with('error', "User can't be deleted");
         }
         $user->delete();

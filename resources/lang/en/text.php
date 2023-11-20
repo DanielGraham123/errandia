@@ -879,5 +879,5 @@ return [
     'manage_products_quote'=>'Manage and add products to your Shop',
     'word_errands'=>'errands',
     'manage_errands'=>'Manage Errands',
-    ''
+    'have_an_account?'=>'have an account?'
 ];

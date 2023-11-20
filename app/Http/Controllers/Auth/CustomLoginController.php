@@ -34,20 +34,9 @@ class CustomLoginController extends Controller
         session()->flush();
 
         if( Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
-            if(auth()->user()->type == 'admin'){
-                return redirect()->route('admin.home')->with('success','Welcome to Admin Dashboard '.Auth::user()->name);
-            }
-            if(auth()->user()->type == '2'){
-                return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.Auth::user()->name);
-            }
-            if(auth()->user()->type == 'customer'){
-                // return redirect()->route('customer.home')->with('success','Welcome to Customer Dashboard '.Auth::user()->name);
-            }
-            auth()->logout();
-            session()->flush();
-            return redirect()->route('login');
-        }elseif(auth('manager')->attempt(['email'=>$request->username,'password'=>$request->password])){
-            return redirect()->route('manager.home')->with('success','Welcome to Manager\'s Dashboard '.auth('manager')->user()->name);
+            return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.Auth::user()->name);
+        }elseif(auth('admin')->attempt(['email'=>$request->username,'password'=>$request->password])){
+            return redirect()->route('admin.home')->with('success','Welcome to Admin Dashboard '.auth('admin')->user()->name);
         }
         
         // return "Spot 3";
@@ -66,12 +55,19 @@ class CustomLoginController extends Controller
     }
 
     public function signup(Request $request){
-        $validator = Validator::make($request->all(), []);
+        $validator = Validator::make($request->all(), ['name'=>'required', 'phone'=>'required', 'email'=>'required|email', 'confirm_password'=>'required|min:6', 'password'=>'required|same:confirm_password']);
         if($validator->fails()){
             return back()->with('error', $validator->errors()->first())->withInput();
         }
-        $user = new User($request->all());
+        $data = ['name'=>$request->name, 'email'=>$request->email, 'phone'=>$request->phone, 'password'=>\Hash::make($request->password)];
+        $user = new User($data);
         $user->save();
-        return view('auth.register');
+
+        // Auth::login();
+        // auto log user in aftrer user registration
+        if( Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
+            return redirect(route('business_admin.home'));
+        }
+        return redirect(route('login'))->with('success', 'Your account successfully created.');
     }
 }

@@ -7,43 +7,17 @@
                     <div class="slider-animate">
                         <div>
                             <div class="home-contain rounded-0 p-0 bg-size blur-up lazyloaded" style="background-image: url({{asset('assets/public/assets/images/landing-image/home.png')}}); background-size: cover; background-position: center center; background-repeat: no-repeat; display: block;">
-                                <img src="{{asset('assets/public/assets/images/landing-image/home.png')}}" class="img-fluid bg-img blur-up lazyloaded" alt="" style="display: none;">
+                                <img src="{{asset('assets/images/search.jpg')}}" class="img-fluid bg-img blur-up lazyloaded" alt="" style="display: none;">
                                 <div class="home-detail home-big-space home-overlay position-relative" style="background: rgba(90,90,90,0.7);">
                                     <div class="container-fluid-lg">
                                          <header class="pb-md-4 pb-0">
                                             <div class="top-nav top-header">
                                                 <div class="container-fluid-lg">
                                                     <div class="container text-center">
-                                                        <h3 class="h3 mt-3 text-white">Search for Products.Run Errands</h3>
-                                                        <span class="d-block h5 mb-3 text-white">Find or sell products and services</span>
+                                                        <h3 class="h3 mt-3 text-white">Search for Products and Services within Cameroon with Errandia</h3>
+                                                        <span class="d-block h5 mb-3 text-white">And let the suppliers Contact you with Proposals</span>
                                                     </div>
-                                                    <div class="navbar-top mx-auto">
-                                                        
-                                                        <div class="middle-box mx-auto">
-                                                            <div class="location-box bg-white">
-                                                                <button class="btn location-button" data-bs-toggle="modal"
-                                                                    data-bs-target="#locationModal">
-                                                                    <span class="location-arrow">
-                                                                        <i data-feather="map-pin"></i>
-                                                                    </span>
-                                                                    <span class="locat-name">Your Location</span>
-                                                                    <i class="fa-solid fa-angle-down"></i>
-                                                                </button>
-                                                            </div>
-
-                                                            <div class="search-box">
-                                                                <div class="input-group">
-                                                                    <input type="search" class="form-control" placeholder="I'm searching for..."
-                                                                        aria-label="Recipient's username" aria-describedby="button-addon2">
-                                                                    <button class="btn" type="button" id="button-addon2">
-                                                                        <i data-feather="search"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
+                                               
                                                     <div class="container-fluid-lg">
                                                         <div class="row">
                                                             <div class="col-12">
@@ -77,6 +51,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -95,13 +70,14 @@
     </section>
 
 
+
     <section class="product-section">
         <div class="container-fluid-lg">
             <div class="row g-sm-4 g-3">
                 <div class="col-12">
 
                     <div class="title">
-                        <h2>Bowse by Categories</h2>
+                        <h2>Browse by Categories</h2>
                         <span class="title-leaf">
                             <svg class="icon-width">
                                 <use xlink:href=" {{ asset('assets/public/assets/svg/leaf.svg') }}"></use>
@@ -109,6 +85,7 @@
                         </span>
                         <p>Top Categories Of The Week</p>
                     </div>
+                    
                     <div class="d-flex no-scrollbar" style="overflow-x: scroll;">
                         <div class="d-flex category-slider-2 product-wrapper no-arrow slick-initialized slick-slider slick-dotted">
                             @foreach (\App\Models\Category::inRandomOrder()->get() as $category)
@@ -165,15 +142,23 @@
 
 
 
+
+
+    
+
+
+
     <section class="section-b-space shop-section">
         <div class="container-fluid-lg">
+
+
+            
             <div class="row">
                 <div class="col-custome-3 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                     <div class="left-box">
-                        <div class="shop-left-sidebar">
+                        <div class="shop-left-sidebar">                           
                             
-                            <div class="accordion custome-accordion" id="accordionExample">
-                                
+                            <div class="accordion custome-accordion" id="accordionExample">                                                         
 
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
@@ -204,6 +189,25 @@
                                             </ul>
                                         </div>
                                     </div>
+
+
+                                    <!----banner on sidebar---->
+                                        <div class="ratio_156">
+                                            <div class="banner-contain-2 hover-effect bg-size blur-up lazyloaded" style="background-image: url(&quot;../assets/images/fashion/banner/3.jpg&quot;); background-size: cover; background-position: center center; background-repeat: no-repeat; display: block;">
+                                                <img src="{{ asset('assets/images/default1.jpg') }}" class="bg-img blur-up lazyload" alt="" style="display: none;">
+                                                <div class="banner-detail-2 p-bottom-center text-center home-p-medium">
+                                                    <div>
+                                                        <h2 class="text-qwitcher">Stay at Home</h2>
+                                                        <h4>and let Errandia do the search for you</h4>
+                                                        <button onclick="location.href = '#';" class="btn btn-md">Run Errand
+                                                            Now <i class="fa-solid fa-arrow-right icon"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+
+                                    <!---end banneron sidebar-------->
                                 </div>
                             </div>
                         </div>

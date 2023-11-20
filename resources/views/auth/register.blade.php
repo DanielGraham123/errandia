@@ -42,7 +42,7 @@
 			#login-frame{
 				position: relative;
 				width: 350px;
-				height: 450px;
+				height: 600px;
 				min-height: fit-content;
 				margin-inline: auto;
 				border-radius: 24px;
@@ -99,7 +99,7 @@
 	<body class="login-layout" id="frame">
 		<div class="main-container px-5" style="padding-inline: 2rem;">
 			<div class="py-5 mx-5 w-100 text-uppercase text-center" style="padding: 2rem; font-weight: bolder; vertical-align: middle;">
-				<h3> <span style="color: white; text-shadow: -1px -1px 0 #113d6b, 1px -1px 0 #113d6b, -1px 1px 0 #113d6b, 1px 1px 0 #113d6b; font-weight: bolder; font-size: xx-large;">Errandia Login</span></h3>
+				<h3> <span style="color: white; text-shadow: -1px -1px 0 #113d6b, 1px -1px 0 #113d6b, -1px 1px 0 #113d6b, 1px 1px 0 #113d6b; font-weight: bolder; font-size: xx-large;">Errandia Signup</span></h3>
 			</div>
 			<div class="main-content">
 				<div class="w-100">
@@ -113,7 +113,7 @@
 									<div class="widget-body">
 										<div class="widget-main">
 											<h4 class="bigger text-capitalize text-center" style="color: #113d6b; font-size: 29.44px;">
-											 	<b>{{__('text.log_in')}}</b>
+											 	<b>{{__('text.word_register')}}</b>
 											</h4>
 
 											@if(Session::has('error'))
@@ -133,7 +133,7 @@
 											@endif
 											<div class="space-6"></div>
 
-											<form method="post" action="{{route('login.submit')}}">
+											<form method="post" action="{{route('register')}}">
 											@csrf
 												<fieldset style="color: black;">
 													<label class="block clearfix">
@@ -158,15 +158,36 @@
 															</span>
 														@enderror
 													</label>
-													<div class="space"></div>
+													<label class="block clearfix">
+														<span class="text-capitalize">{{__('text.word_email')}}</span>
+														<span class="block input-icon input-icon-right" style="background-color: white !important;">
+															<input type="email" required class="form-control" value="{{old("email")}}" name="email" style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
+														</span>
+														@error('email')
+															<span class="invalid-feedback red" role="alert">
+																<strong>{{ $email }}</strong>
+															</span>
+														@enderror
+													</label>
 													<label class="block clearfix">
 														<span class="text-capitalize">{{__('text.word_password')}}</span>
 														<span class="block input-icon input-icon-right">
-															<input  type="password" id="password" name="password" data-toggle="password" required class="form-control" style="border-radius: 0.5rem !important; background-color: white !important; color: black"/>
+															<input  type="password" id="password" name="password" value="{{ old('password') }}" data-toggle="password" required class="form-control" style="border-radius: 0.5rem !important; background-color: white !important; color: black"/>
 														</span>
 														@error('password')
 															<span class="invalid-feedback red" role="alert">
 																<strong>{{ $message }}</strong>
+															</span>
+														@enderror
+													</label>
+													<label class="block clearfix">
+														<span class="text-capitalize">{{__('text.confirm_password')}}</span>
+														<span class="block input-icon input-icon-right">
+															<input  type="password" id="password" name="confirm_password" value="{{ old('confirm_password') }}" data-toggle="password" required class="form-control" style="border-radius: 0.5rem !important; background-color: white !important; color: black"/>
+														</span>
+														@error('confirm_password')
+															<span class="invalid-feedback red" role="alert">
+																<strong>{{ $confirm_password }}</strong>
 															</span>
 														@enderror
 													</label>
@@ -176,7 +197,7 @@
 													<div class="clearfix">
 														<button type="submit" class="form-control btn-black btn-sm" style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white;">
 															{{-- <i class="ace-icon fa fa-key"></i> --}}
-															<span class="bigger-110">{{__('text.register')}}</span>
+															<span class="bigger-110">{{__('text.word_register')}}</span>
 														</button>
 													</div>
 
@@ -187,8 +208,8 @@
 
 										<div class="clearfix toolbar"  style=" border: 0px;  font-size: xsmall !important; width: 77% !important; margin-inline: auto; ">
 											
-												<a  href="#" data-target="#forgot-box" class="text-center form-control btn-black btn-sm" style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; font-weight: normal !important;">
-													<span class="bigger-110">{{__('text.word_login')}}</span>
+												<a  href="{{ route('login') }}" data-target="#forgot-box" class="text-center form-control btn-black btn-sm" style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; font-weight: normal !important;">
+													<span class="bigger-110">{{__('text.have_an_account?')}}</span>
 												</a>
 											<div>
 											</div>

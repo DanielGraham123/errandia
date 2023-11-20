@@ -20,6 +20,9 @@ class CreateItemsTable extends Migration
             $table->integer('description');
             $table->integer('unit_price');
             $table->integer('slug');
+            $table->boolean('is_service')->default(false);
+            $table->bigInteger('views')->nullable();
+            $table->text('search_index')->nullable();
             $table->boolean('status')->default(0);
             $table->string('featured_image');
             $table->integer('quantity')->nullable();

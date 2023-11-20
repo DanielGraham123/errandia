@@ -20,11 +20,12 @@ class HomeController extends Controller
 {
     //
     public function home(){
+        // dd(1231231230);
         return view('b_admin.dashboard');
     }
 
     public function businesses(){
-        $shops = auth()->user()->shops;
+        $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')->where('shop_managers.user_id', auth()->id())->select('shops.*')->get();
         $data['businesses'] = $shops;
         return view('b_admin.businesses.index', $data);
     }
@@ -52,37 +53,42 @@ class HomeController extends Controller
     public function save_business(Request $request){
         
         $validity = Validator::make($request->all(), [
-            'town'=>'required', 'street'=>'required', 'website'=>'url|nullable',
             'name'=>'required', 'category'=>'required', 'region'=>'required', 
+            'town'=>'required', 'street'=>'required', 'website'=>'url|nullable',
             'phone'=>'required|integer', 'phone_code'=>'required_with:phone', 
-            'whatsapp_phone'=>'integer|nullable', 'email'=>'email|nullable',
-            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 
-            'fb_link'=>'url|nullable', 'ins_link'=>'url|nullable',
+            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
         ]);
 
         if($validity->fails()){
             return back()->with('error', $validity->errors()->first())->withInput();
         }
-        
+
         $business = new \App\Models\Shop();
-        $data = [
-            'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
-            'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
-            'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'status'=>0, 'is_branch'=>$request->is_branch,
-            'fb_link'=>$request->fb_link, 'ins_link'=>$request->ins_link, 'manager_id'=>$request->manager, 'address'=>$request->address, 'parent_slug'=>$request->parent_slug??null
-        ];
+
+
+        $shop_data = ['name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
+                    'status'=>false, ];
         if(Shop::where(['name'=>$request->name])->count() > 0){
-            return redirect(route('admin.businesses.index'))->with('error', 'Business with same name already exist');
+            return redirect(route('business_admin.businesses.index'))->with('error', 'Business with same name already exist');
         }
-        $business->fill($data);
+        // SAVE BUSINESS DATA
+        $business->fill($shop_data);
         if(($file = $request->file('logo')) != null){
             $path = public_path('uploads/logos/');
             $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
             $file->move($path, $fname);
             $business->image_path = $path.$fname;
         }
-        // dd($request->all());
         $business->save();
+
+        // SAVE BUSINESS CONTACT INFO
+        $contact_data = ['shop_id'=>$business->id, 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+        \App\Models\ShopContactInfo::updateOrInsert(['shop_id'=>$business->id], $contact_data);
+        
+        // SET DEFAULT BUSINESS MANAGER
+        $manager_data = ['shop_id'=>$business->id, 'user_id'=>auth()->id(), 'is_owner'=>true, 'status'=>true];
+        \App\Models\ShopManager::updateOrInsert(['shop_id'=>$business->id, 'user_id'=>auth()->id()], $manager_data);
+
         return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
     }
 
@@ -176,6 +182,10 @@ class HomeController extends Controller
         return redirect(route('admin.businesses.index'))->with('error', 'Business not found');
     }
 
+    public function show_business ($slug){
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        return view('b_admin.businesses.show', $data);
+    }
 
     public function managers(){
         $data['managers'] = auth()->user()->managers;

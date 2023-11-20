@@ -1,9 +1,9 @@
-@extends('admin.layout')
+@extends('b_admin.layout')
 @section('section')
 @php
 
 @endphp
-<div class="container">
+<div>
     <div class="text-h5 my-3">Rubiliams Hair Clinic</div>
     <div class="d-flex justify-content-start flex-wrap">
 

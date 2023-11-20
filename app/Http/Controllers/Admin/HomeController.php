@@ -267,7 +267,7 @@ class HomeController  extends Controller
         if(Town::where($town)->count() > 0){
             return redirect(route('admin.locations.towns'))->with('error', 'Town already exist');
         }
-        Town::insert($town);
+        Town::insert(['name'=>$request->name, 'region_id'=>$request->region_id, 'status'=>1]);
         return redirect(route('admin.locations.towns'))->with('success', 'Town successfully created');
     }
 
@@ -289,12 +289,12 @@ class HomeController  extends Controller
             return back()->with('error', "Town not found");
         }
 
-        $town = ['name'=>$request->name, 'region_id'=>$request->region_id];
+        $town = ['name'=>$request->name, 'region_id'=>$request->region_id, 'status'=>$request->status??1];
         if(Town::where($town)->count() > 0){
             return redirect(route('admin.locations.towns'))->with('error', 'Town already exist');
         }
         $town_record->update($town);
-        return redirect(route('admin.locations.towns'))->with('success', 'Town successfully created');
+        return redirect(route('admin.locations.towns'))->with('success', 'Town successfully updated');
     }
 
     public function delete_town($id){
@@ -319,7 +319,7 @@ class HomeController  extends Controller
             return back()->with('error', "Street already exist");
         }
 
-        Street::insert($street);
+        Street::insert(['name'=>$request->name, 'town_id'=>$request->town_id, 'status'=>1]);
         return redirect(route('admin.locations.streets'))->with('success', "Street succesfully created");
     }
 
@@ -337,10 +337,14 @@ class HomeController  extends Controller
         }
 
         $street = Street::find($id);
-        if($street == null){
-            return back()->with('error', 'Street not found');
-        }
         $street_data = ['name'=>$request->name, 'town_id'=>$request->town_id];
+        // if street doesn't exist, insert; else update
+        if($street == null){
+            if(Street::where($street_data)->count() == 0){
+                Street::insert(['name'=>$request->name, 'town_id'=>$request->town_id, 'status'=>1]);
+            }
+            return redirect(route('admin.locations.streets'))->with('success', 'Street successfully updated');
+        }
         if(Street::where($street_data)->count() > 0){
             return  redirect(route('admin.locations.streets'))->with('error', "Street already exist");
         }
@@ -402,15 +406,15 @@ class HomeController  extends Controller
         }
 
         $business = new \App\Models\Shop();
-        $data = [
-            'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
-            'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
-            'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'status'=>$request->verification_status, 
-        ];
+
+
+        $shop_data = ['name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description,  'user_id'=>auth('admin')->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
+                    'status'=>$request->verification_status, ];
         if(Shop::where(['name'=>$request->name])->count() > 0){
             return redirect(route('admin.businesses.index'))->with('error', 'Business with same name already exist');
         }
-        $business->fill($data);
+        // SAVE BUSINESS DATA
+        $business->fill($shop_data);
         if(($file = $request->file('logo')) != null){
             $path = public_path('uploads/logos/');
             $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
@@ -418,6 +422,10 @@ class HomeController  extends Controller
             $business->image_path = $path.$fname;
         }
         $business->save();
+
+        // SAVE BUSINESS CONTACT INFO
+        $contact_data = ['shop_id'=>$business->id, 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+        \App\Models\ShopContactInfo::updateOrInsert(['shop_id'=>$business->id], $contact_data);
         return redirect(route('admin.businesses.index'))->with('success', 'Business successfully created');
     }
 

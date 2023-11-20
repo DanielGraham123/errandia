@@ -58,8 +58,8 @@ class User extends Authenticatable
         return $this->hasMany(Shop::class, 'user_id');
     }
 
-    public function managers(){
-        return $this->hasMany(Manager::class, 'user_id');
+    public function managedShops(){
+        return $this->belongsToMany(Shop::class, 'shop_managers', 'shop_id', 'user_id');
     }
 
 }

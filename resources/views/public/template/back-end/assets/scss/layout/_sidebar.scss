@@ -153,7 +153,7 @@
                         color: $white;
                         font-family: remixicon !important;
                         font-style: normal;
-                        background-color: #ffa53b;
+                        background-color: #113d6b;
                         padding: 10px 18px 9px;
                         border-radius: 0 8px 8px 0;
 
@@ -1217,7 +1217,7 @@
                     @include pseudowh($width: 280px, $height: auto);
                     text-align: left;
                     box-shadow: 0 0 21px 0 rgba($semi-dark, 0.1);
-                    background: linear-gradient(-45deg, #0da487, #009289, #ffa53b);
+                    background: linear-gradient(-45deg, #0da487, #009289, #113d6b);
                     background-size: 400% 400%;
                     animation: gradient 15s ease infinite;
                     overflow: hidden;

@@ -17,9 +17,6 @@ class BusinessAdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if(auth()->user() == null){
-            return redirect(route('login'));
-        }
-        if(auth()->user()->type != 2){
             auth()->logout();
             session()->flush();
             return redirect(route('login'));

@@ -4018,7 +4018,7 @@
             @include pseudowh($width: calc(106px + (175 - 106) * ((100vw - 320px) / (1920 - 320))), $height: 3px);
             bottom: calc(-7px + (6 - 7) * ((100vw - 320px) / (1920 - 320)));
             left: 0;
-            background: #ffa53b;
+            background: #113d6b;
         }
 
         &.center {
@@ -6779,7 +6779,7 @@
 .deactivate-box {
     padding: 15px 22px;
     background: rgba(255, 165, 59, 0.1);
-    border: 1px dashed #ffa53b;
+    border: 1px dashed #113d6b;
     border-radius: 7px;
     display: flex;
     flex-wrap: nowrap;

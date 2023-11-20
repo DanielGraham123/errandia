@@ -395,7 +395,6 @@ Route::get('mode/{locale}', function ($batch) {
 
 Route::any('{any?}', function(){
     auth()->logout();
-    auth('manager')->logout();
     session()->flush();
     return redirect(route('login'));
 });

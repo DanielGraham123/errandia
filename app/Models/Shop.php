@@ -12,10 +12,7 @@ class Shop extends Model
 
     protected $fillable = [
         'name', 'description', 'category_id', 'user_id', 'slug', 
-        'image_path', 'status', 'name', 'category', 
-        'description', 'region_id', 'town_id', 'street_id', 'website', 
-        'phone', 'whatsapp_phone', 'email', 'is_branch', 'parent_slug',
-        'manager_id', 'fb_link', 'ins_link', 'address'
+        'image_path', 'status', 'is_branch', 'parent_slug'
     ];
 
     public function user(){
@@ -35,27 +32,19 @@ class Shop extends Model
         return $this->hasMany(Shop::class, 'parent_slug', 'slug');
     }
 
-    public function region(){
-        return $this->town->region;
-    }
-
-    public function town(){
-        return $this->street->town;
-    }
-
-    public function street(){
-        return $this->belongsTo(Street::class, 'street_id');
+    public function contactInfo(){
+        return $this->hasOne(ShopContactInfo::class, 'shop_id');
     }
 
     public function location(){
-        return ($this->street->name??null).', '.($this->town->name??null).', '.($this->region->name??null);
+        return $this->contactInfo->location() ?? null;
     }
 
     public function products(){
         return $this->hasMany(Product::class, 'shop_id');
     }
 
-    public function manager(){
-        return $this->hasOne(Manager::class, 'business_id');
+    public function managers(){
+        return $this->belongsToMany(User::class, 'shop_managers', 'shop_id', 'user_id');
     }
 }

@@ -393,7 +393,7 @@
                         </li>
                     </ul>
                 </li>
-                {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+                {{-- @if (\auth('admin')->user()->hasPermissionTo('manage_user'))
                 @endif --}}
     
                 <li>
@@ -422,7 +422,7 @@
 
                     </ul>
                 </li>
-                {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+                {{-- @if (\auth('admin')->user()->hasPermissionTo('manage_user'))
                 @endif --}}
 
                             
@@ -470,7 +470,7 @@
 
                     </ul>
                 </li>
-                {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+                {{-- @if (\auth('admin')->user()->hasPermissionTo('manage_user'))
                 @endif --}}
 
                 <li>
@@ -507,7 +507,7 @@
 
                     </ul>
                 </li>
-                {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+                {{-- @if (\auth('admin')->user()->hasPermissionTo('manage_user'))
                 @endif --}}
 
                 <li>
@@ -535,7 +535,7 @@
                         </li>
                     </ul>
                 </li>
-                {{-- @if (\Auth::user()->hasPermissionTo('manage_user'))
+                {{-- @if (\auth('admin')->user()->hasPermissionTo('manage_user'))
                 @endif --}}
 
                 <li>
@@ -562,7 +562,7 @@
                             <a href="#">{{__('text.word_home')}}</a>
                         </li>
                         <li class="active">{{__('text.word_dashboard')}}</li>
-                        <li class="active"> {{__('text.fullname')}} : <b style="color: #e30000">{{\Auth::user()->name}}</b></li>
+                        <li class="active"> {{__('text.fullname')}} : <b style="color: #e30000">{{\auth('admin')->user()->name}}</b></li>
 
                     </ul><!-- /.breadcrumb -->
                 </div>
@@ -593,14 +593,7 @@
                     <div class="mb-4 mx-3">
                         <h4 id="title" class="font-weight-bold text-capitalize">{!! $title ?? '' !!}</h4>
                     </div>
-                    @if ((auth()->user()->password_reset != 1) && (now()->diffInDays(\Illuminate\Support\Carbon::createFromTimestamp(auth()->user()->created_at)) >= 14) && (url()->current() != route('admin.reset_password')))
-                        <div class="py-5 h3 text-center text-danger mt-5 text-capitalize">{{__('text.password_reset_request')}}</div>
-                        <div class="py-3 d-flex justify-content-center mt-2">
-                            <a class="btn btn-lg col-sm-4 rounded btn-primary text-center" href="{{route('admin.reset_password')}}">{{__('text.word_proceed')}}</a>
-                        </div>
-                    @else
                         @yield('section')
-                    @endif
                 </div>
             </div>
         </div>

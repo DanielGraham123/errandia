@@ -17,6 +17,8 @@ class CreateShopManagersTable extends Migration
             $table->id();
             $table->integer('shop_id');
             $table->integer('user_id');
+            $table->boolean('is_owner')->default(false);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
