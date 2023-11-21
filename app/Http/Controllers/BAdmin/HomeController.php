@@ -289,7 +289,7 @@ class HomeController extends Controller
             $path = public_path('uploads/item_images/');
             $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
             
-            $file->move($path, $fname);
+            // $file->move($path, $fname);
             // dd($fname);
             $fpathname = asset('uploads/item_images').'/'.$fname;
             $item['featured_image'] = $fpathname;
