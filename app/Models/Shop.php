@@ -58,7 +58,7 @@ class Shop extends Model
 
     public function subCategories()
     {
-        return $this->belongsToMany(SubCategory::class, 'shop_categories', 'shop_id', 'sub_category_id');
+        return $this->belongsToMany(SubCategory::class, 'shop_categories', 'shop_id', 'sub_category_id')??'';
     }
 
     public function getImage()
