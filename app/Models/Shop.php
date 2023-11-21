@@ -39,7 +39,9 @@ class Shop extends Model
     }
 
     public function location(){
-        return $this->contactInfo->location() ?? null;
+        if(($cntct = $this->contactInfo) != null){
+            return $this->contactInfo->location() ?? null;
+        }return '';
     }
 
     public function products(){
