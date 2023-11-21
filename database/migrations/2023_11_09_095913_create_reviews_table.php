@@ -17,7 +17,7 @@ class CreateReviewsTable extends Migration
             $table->id();
             $table->integer('item_id');
             $table->integer('buyer_id');
-            $table->string('rating');
+            $table->double('rating')->unsigned();
             $table->string('review');
             $table->boolean('status')->default(0);
             $table->timestamps();

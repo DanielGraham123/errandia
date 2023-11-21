@@ -156,14 +156,14 @@
             </button>
 
             <div class="navbar-header pull-left border-right px-md-5">
-                <a class="navbar-brand">
+                <a href="{{ route('business_admin.home') }}" class="navbar-brand">
                     <small style="color: white;">
                         <img src="{{ asset('assets/admin/logo/errandia-logo.png') }}" class="w-auto" style="height: 2.6rem;">
                     </small>
                 </a>
             </div>
             <div class="navbar-header pull-left border-right px-2">
-                <a class="navbar-brand">
+                <a href="{{ route('public.home') }}" class="navbar-brand" target="new">
                     <small class="text-body-sm"> <span class="hidden d-md-inline text-capitalize">visit errandia website</span>
                         <img src="{{ asset('assets/admin/icons/icon-external-link.svg') }}" class="w-auto" style="height: 1.3rem;" title="Visit Errandia Website">
                     </small>

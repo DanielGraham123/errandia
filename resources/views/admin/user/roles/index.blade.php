@@ -31,7 +31,7 @@
                                 <tr>
                                     <td>{{$role->byLocale()->name}}</td>
                                     <td align="right">
-                                        @if(\Auth::user()->campus_id == null)<a class="btn btn-success" href="{{route('admin.roles.edit',$role->slug)}}?role={{$role->slug}}"> {{__('text.word_edit')}}</a>@endif
+                                        @if(\auth('admin')->user()->campus_id == null)<a class="btn btn-success" href="{{route('admin.roles.edit',$role->slug)}}?role={{$role->slug}}"> {{__('text.word_edit')}}</a>@endif
                                         <a class="btn btn-primary" href="{{route('admin.users.index')}}?role={{$role->slug}}">{{__('text.word_users')}}</a>
                                         <a class="btn btn-info" href="{{route('admin.roles.permissions')}}?role={{$role->slug}}">{{__('text.word_permissions')}}</a>
                                         <a class="btn btn-danger" onclick="confirm('You are about to delete role: {{$role->name}}. Any users associated to this role will be deleted.') ? $('#_delete_form_{{$role->id}}').submit() : null">{{__('text.word_delete')}}</a>

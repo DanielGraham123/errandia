@@ -9,7 +9,7 @@ class Errand extends Model
 {
     use HasFactory;
 
-    protected $table = 'product_quote';
+    protected $table = 'item_quotes';
     protected $fillable = ['title', 'description', 'user_id', 'slug', 'read_status', 'categories'];
 
     public function posted_by()
@@ -25,5 +25,15 @@ class Errand extends Model
     public function _categories(){
         $cats = explode($this->categories, ',');
         return SubCategory::whereIn('id', $cats);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ErrandImage::class, 'item_quote_id');
     }
 }

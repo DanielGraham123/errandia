@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
             $table->boolean('active');
             $table->string('address')->nullable();
             $table->integer('street_id')->nullable();
-            $table->enum('type', ['business_owner', 'customer'])->default('business_owner');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

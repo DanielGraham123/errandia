@@ -3,7 +3,7 @@
 @php
 
 @endphp
-<div>
+<div class="container">
     <div class="text-h5 my-3">Rubiliams Hair Clinic</div>
     <div class="d-flex justify-content-start flex-wrap">
 

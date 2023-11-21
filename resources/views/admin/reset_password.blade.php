@@ -8,7 +8,7 @@
             <div class="col-sm-9">
                 <label class="form-control">
 
-                        {{auth()->user()->email  ?? auth()->user()->name}}
+                        {{auth('admin')->user()->email  ?? auth('admin')->user()->name}}
                 </label>
             </div>
         </div>

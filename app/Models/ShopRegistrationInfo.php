@@ -9,5 +9,10 @@ class ShopRegistrationInfo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['shop_id', 'registration_date', 'registration_number', 'tax_payer_number', 'tax_payer_doc_path', 'years_of_existence'];
+    protected $table = 'shop_registration_info';
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class, 'shop_id');
+    }
 }

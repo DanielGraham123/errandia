@@ -12,11 +12,10 @@ class Shop extends Model
 
     protected $fillable = [
         'name', 'description', 'category_id', 'user_id', 'slug', 
-        'image_path', 'status', 'name', 'category', 
-        'description', 'region_id', 'town_id', 'street_id', 'website', 
-        'phone', 'whatsapp_phone', 'email', 'is_branch', 'parent_slug',
-        'manager_id', 'fb_link', 'ins_link', 'address'
+        'image_path', 'status', 'is_branch', 'parent_slug'
     ];
+
+    protected $dates = ['created_at', 'updated_at'];
 
     public function user(){
         
@@ -35,39 +34,51 @@ class Shop extends Model
         return $this->hasMany(Shop::class, 'parent_slug', 'slug');
     }
 
-    public function region(){
-        return $this->town->region??'';
-    }
-
-    public function town(){
-        return $this->street->town??'';
-    }
-
-    public function street(){
-        return $this->belongsTo(Street::class, 'street_id');
+    public function contactInfo(){
+        return $this->hasOne(ShopContactInfo::class, 'shop_id');
     }
 
     public function location(){
-        return ($this->street->name??null).', '.($this->town->name??null).', '.($this->region->name??null);
+        if(($cntct = $this->contactInfo) != null){
+            return $this->contactInfo->location() ?? null;
+        }return '';
     }
 
     public function products(){
-        return $this->hasMany(Product::class, 'shop_id');
+        return $this->hasMany(Product::class, 'shop_id')->where('service', 0);
+    }
+
+    public function services(){
+        return $this->hasMany(Product::class, 'shop_id')->where('service', 1);
     }
 
     public function managers(){
-        return $this->belongsToMany(User::class, 'shop_managers', 'user_id', 'shop_id');
+        return $this->belongsToMany(User::class, 'shop_managers', 'shop_id', 'user_id');
     }
 
-    public function subscriptions(){
-        return $this->belongsToMany(Subscription::class, 'shop_subscriptions');
+    public function subCategories()
+    {
+        return $this->belongsToMany(SubCategory::class, 'shop_categories', 'shop_id', 'sub_category_id')??'';
     }
 
-    public function shop_subscriptions(){
-        return $this->belongsToMany(ShopSubscription::class, 'shop_subscriptions');
+    public function getImage()
+    {
+        return $this->image_path ? asset('storage/'. $this->image_path) : '';
     }
 
-    public function subscribers(){
-        return $this->belongsToMany(User::class, 'shop_subscribers', 'shop_id', 'user_id');
+    public function info()
+    {
+        return $this->hasOne(ShopContactInfo::class, 'shop_id');
+    }
+
+    public function registration()
+    {
+        return $this->hasOne(ShopRegistrationInfo::class, 'shop_id');
+    }
+
+    public function reviews()
+    {
+        # code...
+        return $this->hasManyThrough(Review::class, Product::class, 'id', 'item_id');
     }
 }

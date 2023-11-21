@@ -17,10 +17,16 @@ class CreateItemsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('shop_id');
-            $table->integer('description');
+            $table->text('description');
             $table->integer('unit_price');
             $table->integer('slug');
+            $table->boolean('is_service')->default(false);
+            $table->bigInteger('views')->nullable();
+            $table->text('search_index')->nullable();
             $table->boolean('status')->default(0);
+            $table->boolean('service')->default(false);
+            $table->text('search_index');
+            $table->text('views');
             $table->string('featured_image');
             $table->integer('quantity')->nullable();
             $table->timestamps();

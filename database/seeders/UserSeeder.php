@@ -20,21 +20,15 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Ni shang',
             'email' => 'nishang80@gmail.com',
-            'username' => 'nishang80@gmail.com',
             'password' => Hash::make('password'),
-            'type'     => 'admin',
-            'gender' => 'male',
             'address' => 'New Town',
             'phone' => '7485892354980'
         ]);
 
         User::create([
             'name' => 'Peter Bery J',
-            'username' => 'PeterBeryJ',
             'email' => 'peterberyj@gmail.com',
             'password' =>  Hash::make('password'),
-            'type'     => 'admin',
-            'gender' => 'male',
             'address' => 'New Town',
             'phone' => '7489354980'
         ]);

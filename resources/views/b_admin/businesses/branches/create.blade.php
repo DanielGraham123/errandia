@@ -1,13 +1,16 @@
-@extends('b_admin.businesses.layout')
+@extends('b_admin.layout')
 @section('section')
 <form method="POST" enctype="multipart/form-data">
     @csrf
-    <div>
+    <div class="container">
         <div class="py-4 my-5 px-3 shadow" style="border-radius: 0.8rem;">
             <div class="text-h4 text-center text-uppercase my-3">Business details</div>
             <div class="row mx-5 my-2">
                 <div class="col-md-12 px-2 py-2">
                     <input type="text" name="name" class="form-control" value="{{ old('name', $parent->name) }}" placeholder="Business Name">
+                </div>
+                <div class="col-md-12 px-2 py-2">
+                    <input type="file" name="image" accept="image/*" class="form-control" value="{{ old('image') }}" placeholder="Logo">
                 </div>
                 <div class="col-md-12 px-2 py-2">
                     <select name="category" class="form-control" placeholder="">
@@ -87,30 +90,9 @@
                 <span class="mx-4"><input type="radio" name="is_branch" checked value="1" class="mx-3" required>Branch</span>
             </div>
         </div>
-        <div class="py-4 my-5 px-3 shadow" style="border-radius: 0.8rem;">
-            <div class="text-h4 text-center text-uppercase my-3">Social Media Links</div>
-            <div class="px-2 py-2 mx-4 row">
-                <div class="col-md-6 py-2 px-3">
-                    <input type="url" name="fb_link" value="{{ old('fb_link', $parent->fb_link) }}" class="form-control" placeholder="Facebook Link">
-                </div>
-                <div class="col-md-6 py-2 px-3">
-                    <input type="url" name="ins_link" value="{{ old('ins_link', $parent->ins_link) }}" class="form-control" placeholder="Instagram Link">
-                </div>
-            </div>
-        </div>
         <input type="hidden" name="parent_slug" value="{{ $parent->slug }}">
         <input type="hidden" name="status" value="{{ $parent->status }}">
-        <div class="py-4 my-5 px-3 shadow" style="border-radius: 0.8rem;">
-            <div class="text-h4 text-center text-uppercase my-3">Manager</div>
-            <div class="px-2 py-2 mx-4">
-                <div class="py-2 px-3">
-                    <select name="manager" class="form-control">
-                        <option></option>
-                        <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+        
         <div class="py-2">
             <button href="#" class="button-primary btn-lg">Add Business</button>
         </div>

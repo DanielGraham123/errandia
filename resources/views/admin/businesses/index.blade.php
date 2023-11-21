@@ -36,7 +36,7 @@
                             </td>
                             <td>{{ $business->category->name ?? null }}</td>
                             <td>
-                                Gerson Emmerich
+                                {{$business->user->name??null}}
                             </td>
                             <td>{{ \Carbon\Carbon::parse($business->created_at)->format('D dS M Y') }}</td>
                             <td>
@@ -57,9 +57,9 @@
                                 </div>
                              </td>
                             <td>
-                                <span class="d-block my-1">products: <span class="text-success ml-2">22</span> </span>
-                                <span class="d-block my-1">services: <span class="text-primary ml-2">22</span> </span>
-                                <span class="d-block my-1">views: <span class="text-primary ml-2">22</span> </span>
+                                <span class="d-block my-1">products: <span class="text-success ml-2">{{ $business->products->where('is_service', 0)->count() }}</span> </span>
+                                <span class="d-block my-1">services: <span class="text-primary ml-2">{{ $business->products->where('is_service', 1)->count() }}</span> </span>
+                                <span class="d-block my-1">views: <span class="text-primary ml-2">{{ $business->products()->select(\DB::raw(`SUM(items.views) as total_views`))->first() }}</span> </span>
                             </td>
                             <td>
                                 <span class="label label-sm label-info arrowed arrowed-righ">Active</span>

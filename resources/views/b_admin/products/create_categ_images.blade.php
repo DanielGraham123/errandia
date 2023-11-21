@@ -11,7 +11,7 @@
                 <div class="d-flex flex-wrap my-3 border-left border-right rounded">
                     @foreach ($categories as $cat)
                         <span class="d-inlineblock rounded border bg-light py-1 px-3 my-2 mx-2">
-                            <input type="checkbox" class="input mx-2" name="categories[]" value="{{ $cat->id }}">
+                            <input type="checkbox" class="input mx-2" name="categories[]" {{ in_array($cat, $proposed_categories) ? 'checked' : '' }} value="{{ $cat->id }}">
                             <span class="text-extra">{{ $cat->name }}</span>
                         </span>
                     @endforeach

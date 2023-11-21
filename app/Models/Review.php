@@ -9,9 +9,18 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['item_id', 'rating', 'review', 'buyer_id', 'status'];
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'item_id');
+    }
 
-    public function images(){
-        return $this->hasMany('review_images', 'review_id');
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'buyer_id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ReviewImage::class, 'review_id');
     }
 }
