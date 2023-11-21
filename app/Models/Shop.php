@@ -36,11 +36,11 @@ class Shop extends Model
     }
 
     public function region(){
-        return $this->town->region;
+        return $this->town->region??'';
     }
 
     public function town(){
-        return $this->street->town;
+        return $this->street->town??'';
     }
 
     public function street(){
@@ -55,7 +55,19 @@ class Shop extends Model
         return $this->hasMany(Product::class, 'shop_id');
     }
 
-    public function manager(){
-        return $this->hasOne(Manager::class, 'business_id');
+    public function managers(){
+        return $this->belongsToMany(User::class, 'shop_managers', 'user_id', 'shop_id');
+    }
+
+    public function subscriptions(){
+        return $this->belongsToMany(Subscription::class, 'shop_subscriptions');
+    }
+
+    public function shop_subscriptions(){
+        return $this->belongsToMany(ShopSubscription::class, 'shop_subscriptions');
+    }
+
+    public function subscribers(){
+        return $this->belongsToMany(User::class, 'shop_subscribers', 'shop_id', 'user_id');
     }
 }

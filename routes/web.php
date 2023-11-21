@@ -41,6 +41,10 @@ Route::post('reset_password_with_token/password/reset', [CustomForgotPasswordCon
 Route::get('reset_password_with_token/{token}/{email}', [CustomForgotPasswordController::class, 'resetForm'])->name('reset');
 Route::post('reset_password_with_token', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password_with_token');
 
+Route::get('widgets', function(){
+    return view('widgets');
+});
+
 Route::get('', 'WelcomeController@home');
 Route::get('home', 'WelcomeController@home');
 
