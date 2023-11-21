@@ -286,12 +286,12 @@ class HomeController extends Controller
         // save product
         $item = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'unit_price'=>$request->price??'', 'description'=>$request->description, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 'service'=>false];
         if(($file = $request->file('image')) != null){
-            $path = asset('uploads/item_images');
+            $path = public_path('uploads/item_images/');
             $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
             
             $file->move($path, $fname);
             // dd($fname);
-            $fpathname = $path.'/'.$fname;
+            $fpathname = asset('uploads/item_images').'/'.$fname;
             $item['featured_image'] = $fpathname;
         }
 
