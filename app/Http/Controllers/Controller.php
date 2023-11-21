@@ -34,7 +34,7 @@ class Controller extends BaseController
     {
         # code...
         ini_set('max_execution_time', 360);
-
+        ini_set('extension', 'php_fileinfo.so');
     }
 
     public function set_local(Request $request, $lang)

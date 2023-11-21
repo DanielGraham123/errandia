@@ -73,7 +73,7 @@ class HomeController extends Controller
         }
         // SAVE BUSINESS DATA
         $business->fill($shop_data);
-        if(($file = $request->file('logo')) != null){
+        if(($file = $request->file('image')) != null){
             $path = public_path('uploads/logos/');
             $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
             $file->move($path, $fname);
@@ -82,7 +82,7 @@ class HomeController extends Controller
         $business->save();
 
         // SAVE BUSINESS CONTACT INFO
-        $contact_data = ['shop_id'=>$business->id, 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+        $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
         \App\Models\ShopContactInfo::updateOrInsert(['shop_id'=>$business->id], $contact_data);
         
         // SET DEFAULT BUSINESS MANAGER
@@ -120,11 +120,14 @@ class HomeController extends Controller
             'fb_link'=>$request->fb_link, 'ins_link'=>$request->ins_link, 'manager_id'=>$request->manager, 'address'=>$request->address, 'parent_slug'=>$request->parent_slug??null
         ];
 
+        $shop_data = ['name'=>$request->name, 'description'=>$request->description, 'category_id'=>$request->category, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
+        'status'=>$request->status, 'is_branch'=>true, 'parent_slug'=>$request->parent_slug??null];
+
         // if(Shop::where(['name'=>$request->name])->count() > 0){
         //     return back()->with('error', 'Business with same name already exist');
         // }
-        $business->fill($data);
-        if(($file = $request->file('logo')) != null){
+        $business->fill($shop_data);
+        if(($file = $request->file('image')) != null){
             $path = public_path('uploads/logos/');
             $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
             $file->move($path, $fname);
@@ -132,6 +135,15 @@ class HomeController extends Controller
         }
         // dd($request->all());
         $business->save();
+
+        // SAVE BUSINESS CONTACT INFO
+        $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+        \App\Models\ShopContactInfo::updateOrInsert(['shop_id'=>$business->id], $contact_data);
+        
+        // SET DEFAULT BUSINESS MANAGER
+        $manager_data = ['shop_id'=>$business->id, 'user_id'=>auth()->id(), 'is_owner'=>true, 'status'=>true];
+        \App\Models\ShopManager::updateOrInsert(['shop_id'=>$business->id, 'user_id'=>auth()->id()], $manager_data);
+
         return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
     }
 
@@ -257,18 +269,58 @@ class HomeController extends Controller
     public function create_products($slug){
         $user = auth()->user();
         $data['shop'] = Shop::whereSlug($slug)->first();
-        $data['currencies'] = Currency::all();
+        // $data['currencies'] = Currency::all();
         return view('b_admin.products.create', $data);
     }
 
     public function save_products(Request $request, $slug){
 
-        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required', 'description'=>'required']);
+        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required|file', 'description'=>'required']);
         if($validity->fails()){
             return back()->withInput(request()->all())->with('error', $validity->errors()->first());
         }
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['shop'] = Shop::whereSlug($slug)->first();
+        //  dd($request->all());
+
+        // save product
+        $item = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'unit_price'=>$request->price??'', 'description'=>$request->description, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 'service'=>false];
+        if(($file = $request->file('image')) != null){
+            $path = asset('uploads/item_images');
+            $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
+            
+            $file->move($path, $fname);
+            // dd($fname);
+            $fpathname = $path.'/'.$fname;
+            $item['featured_image'] = $fpathname;
+        }
+
+        $product_instance = new \App\Models\Product($item);
+        $product_instance->save();
+        
+        //Update product images and categories 
+        $data['item'] = $product_instance;
+        $strx = $request->name.', '.$request->tags;
+
+        $categs = explode(', ', $strx);
+
+        $cats = collect();
+        foreach ($categs as $key => $tok) {
+            # code...
+            $cats->push(\App\Models\SubCategory::where('name', 'LIKE', '% '.$tok.' %')->orWhere('description', 'LIKE', '%'.$tok.'%')->get());
+        }
+        // dd($cats);
+        $guess = [];
+        foreach ($cats as $key => $col) {
+            # code...
+            foreach ($col as $key => $elm) {
+                # code...
+                $guess[] = $elm;
+            }
+        }
+        
+        $data['proposed_categories'] = $guess;
+        $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
 
         return view('b_admin.products.create_categ_images', $data);
     }
@@ -293,7 +345,7 @@ class HomeController extends Controller
     public function create_service($slug){
         $user = auth()->user();
         $data['shop'] = Shop::whereSlug($slug)->first();
-        $data['currencies'] = Currency::all();
+        // $data['currencies'] = Currency::all();
         return view('b_admin.services.create', $data);
     }
 

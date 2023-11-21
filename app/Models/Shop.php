@@ -15,6 +15,8 @@ class Shop extends Model
         'image_path', 'status', 'is_branch', 'parent_slug'
     ];
 
+    protected $dates = ['created_at', 'updated_at'];
+
     public function user(){
         
         return $this->belongsTo(User::class, 'user_id');
@@ -41,7 +43,11 @@ class Shop extends Model
     }
 
     public function products(){
-        return $this->hasMany(Product::class, 'shop_id');
+        return $this->hasMany(Product::class, 'shop_id')->where('service', 0);
+    }
+
+    public function services(){
+        return $this->hasMany(Product::class, 'shop_id')->where('service', 1);
     }
 
     public function managers(){
@@ -66,5 +72,11 @@ class Shop extends Model
     public function registration()
     {
         return $this->hasOne(ShopRegistrationInfo::class, 'shop_id');
+    }
+
+    public function reviews()
+    {
+        # code...
+        return $this->hasManyThrough(Review::class, Product::class, 'id', 'item_id');
     }
 }

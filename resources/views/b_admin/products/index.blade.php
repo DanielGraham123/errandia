@@ -1,39 +1,18 @@
 @extends('b_admin.layout')
 @section('section')
     <div class="py-2 container">
-        <div class="d-flex justify-content-between py-3 my-2 px-2">
-            <span><span class="text-h4 d-block">Products @if(isset($shop)) For {{ $shop->name }} <i class="text-link">({{ $shop->location() }})</i> @endif <span class="text-h6">({{ count($products) }})</span></span> <span class="d-block text-extra">Manage all your products</span></span>
-            <span>@if(isset($shop))<a class="button-primary" href="{{ route('business_admin.products.create', $shop->slug) }}"><img src="{{ asset('assets/admin/icons/icon-add.svg') }}" style="height: 1.4rem; width: 1.4rem; margin-right: 0.3rem;">Add Product</a>@endif</span>
-            <span class="d-inlineblock">
-                <div class="tabbable">
-                    <ul class="nav nav-tabs nav-right" id="myTab">
-                        <li class="">
-                            <a href="{{ Request::url() }}?action=all" aria-expanded="false">
-                                All
-                            </a>
-                        </li>
 
-                        <li class="">
-                            <a href="{{ Request::url() }}?action=published" aria-expanded="false">
-                                Published
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{{ Request::url() }}?action=draft" aria-expanded="true">
-                                Draft
-                            </a>
-                        </li>
-
-                        <li class="">
-                            <a href="{{ Request::url() }}?action=trash" aria-expanded="true">
-                                Trash
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-            </span>
+        <div class="clearfix">
+            <div class="pull-right tableTools-container">
+                <div class="dt-buttons btn-overlap btn-group">
+                    @if(isset($shop))<a href="{{ route('business_admin.products.create', $shop->slug) }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-plus bigger-110 blue"></i> <span class="">Add</span></span></a>@endif
+                    <a href="{{ Request::url() }}?action=all" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-search bigger-110 blue"></i> <span class="">All</span></span></a>
+                    <a href="{{ Request::url() }}?action=published" class="dt-button buttons-copy buttons-html5 btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-copy bigger-110 pink"></i> <span class="">Published</span></span></a>
+                    <a href="{{ Request::url() }}?action=draft" class="dt-button buttons-csv buttons-html5 btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-database bigger-110 orange"></i> <span class="">Draft</span></span></a>
+                    <a href="{{ Request::url() }}?action=trash" class="dt-button buttons-print btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-trash bigger-110 grey"></i> <span class="">Trash</span></span></a></div></div>
+        </div>
+        <div class="table-header">
+            Products @if(isset($shop)) For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i> @endif <span class="text-h6">({{ count($products) }})</span></span>
         </div>
         <div class="py-1">
 

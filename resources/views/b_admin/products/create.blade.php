@@ -1,8 +1,8 @@
 @extends('b_admin.layout')
 @section('section')
     <div class="container">
-        <div class="d-flex py-3 my-2 px-2">
-            <span class="text-h4 d-block">Add New Product For {{ $shop->name }} <i class="text-link">({{ $shop->location() }})</i></span>
+        <div class="table-header">
+            Add New Product For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i>
         </div>
         <form method="POST" enctype="multipart/form-data">
             @csrf
@@ -12,16 +12,16 @@
                 <span class="d-block mt-4" style="font-weight: 700;">Unit Price *</span>
                 <div class="input-group border rounded">
                     <select class="form-control w-25 rounded-left border-0" name="currency">
-                        <option></option>
-                        @foreach ($currencies as $cur)
+                        <option value="XAF" selected >XAF</option>
+                        @foreach ($currencies??[] as $cur)
                             <option value="{{ $cur->name }}" {{ $cur->name == 'XAF' ? 'selected' : '' }}>{{ $cur->name }}</option>
                         @endforeach
                     </select>
                     <input class="form-control border-0 rounded-right" name="price" value="{{ old('price') }}" placeholder="price">
                 </div>
                 <span class="d-block mt-4" style="font-weight: 700;">Description</span>
-                <textarea class="form-control rounded" name="description" rows='4' required>{{ old('description', 'Description') }}</textarea>
-                <span class="d-block mt-4" style="font-weight: 700;">Product Tags</span>
+                <textarea class="form-control rounded" name="description" rows='4' required>{{ old('description', '') }}</textarea>
+                <span class="d-block mt-4" style="font-weight: 700;">Product Tags <span class="text-info">(related names separated by commas)</span></span>
                 <input class="form-control rounded" name="tags" value="{{ old('tags') }}" placeholder="tags" required>
                 <span class="d-block text-overline" style="font-weight: 700;">Enter terms related to your product</span>
                 <span class="d-block mt-4" style="font-weight: 700;">Upload Default image *</span>

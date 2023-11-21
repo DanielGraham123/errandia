@@ -12,8 +12,8 @@
                 <span class="d-block mt-4" style="font-weight: 700;">Unit Price *</span>
                 <div class="input-group border rounded">
                     <select class="form-control w-25 rounded-left border-0" name="currency">
-                        <option></option>
-                        @foreach ($currencies as $cur)
+                        <option value="XAF">XAF</option>
+                        @foreach ($currencies??[] as $cur)
                             <option value="{{ $cur->name }}" {{ $cur->name == 'XAF' ? 'selected' : '' }}>{{ $cur->name }}</option>
                         @endforeach
                     </select>
@@ -21,7 +21,7 @@
                 </div>
                 <span class="d-block mt-4" style="font-weight: 700;">Description</span>
                 <textarea class="form-control rounded" name="description" rows='4' required>{{ old('description', 'Description') }}</textarea>
-                <span class="d-block mt-4" style="font-weight: 700;">Product Tags</span>
+                <span class="d-block mt-4" style="font-weight: 700;">Product Tags<span class="text-info">(related names separated by commas)</span></span>
                 <input class="form-control rounded" name="tags" value="{{ old('tags') }}" placeholder="tags" required>
                 <span class="d-block text-overline" style="font-weight: 700;">Enter terms related to your product</span>
                 <span class="d-block mt-4" style="font-weight: 700;">Upload Default image *</span>

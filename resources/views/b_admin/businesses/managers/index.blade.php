@@ -1,4 +1,4 @@
-@extends('b_admin.businesses.layout')
+@extends('b_admin.layout')
 @section('section')
     <div class="py-2">
         <div class="d-flex justify-content-between py-3 my-2 px-2">

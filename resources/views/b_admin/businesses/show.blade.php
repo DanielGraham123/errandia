@@ -3,37 +3,37 @@
 @php
 
 @endphp
-<div>
-    <div class="text-h5 my-3">Rubiliams Hair Clinic</div>
+<div class="container">
+    <div class="text-h5 my-3">{{ $shop->name??"Business Name Here" }}</div>
     <div class="d-flex justify-content-start flex-wrap">
 
        <div class="dashboard-item">
             <span class="title">Products</span>
             <div class="stats">
-                <span class="qty text-extra">46</span>
-                <span><a class="act text-link">view <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
+                <span class="qty text-extra">{{ $shop->products->count() }}</span>
+                <span><a href="{{ route('business_admin.products.index', $shop->slug) }}" class="act text-link">view <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
             </div>
        </div>
 
        <div class="dashboard-item">
             <span class="title">Services</span>
             <div class="stats">
-                <span class="qty text-extra">22</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
+                <span class="qty text-extra">{{ $shop->services->count() }}</span>
+                <span><a href="{{ route('business_admin.products.index', $shop->slug) }}?service=1" class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
             </div>
        </div>
 
        <div class="dashboard-item">
             <span class="title">Shop Views</span>
             <div class="stats">
-                <span class="qty text-extra">10</span>
+                <span class="qty text-extra">{{ $shop->products()->sum('views') + $shop->services()->sum('views') }}</span>
             </div>
        </div>
 
        <div class="dashboard-item">
-            <span class="title">Review</span>
+            <span class="title">Reviews</span>
             <div class="stats">
-                <span class="qty text-extra">10</span>
+                <span class="qty text-extra">{{ $shop->reviews->count() }}</span>
                 <span><a class="act text-link">view <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
             </div>
        </div>
@@ -51,34 +51,34 @@
     <div class="mx-3 rounded py-4 px-2">
         <span class="text-uppercase h6 my-3 d-block">Business details</span>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Business name  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic <label class="label label-in label-primary">Head Office</label></span>
+            <span class="mr-5 text-capitalize text-extra">Business name  </span><span class="text-secondary text-capitalize">{{ $shop->name }} @if($shop->id_branch != 1) <label class="label label-in label-primary">Head Office</label> @endif</span>
         </div>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Ratings  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic</span>
+            <span class="mr-5 text-capitalize text-extra">Ratings  </span><span class="text-secondary text-capitalize">{{ number_format($shop->reviews()->sum('rating') / (($cnt = ($shop->reviews->count())) == 0 ? 1 : $cnt), 1) }}</span>
         </div>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Verification status  </span><span class="text-secondary text-capitalize fa fa"><span class="fa fa-certificate fa-2x text-primary"></span> Verified</span>
+            <span class="mr-5 text-capitalize text-extra">Verification status  </span><span class="text-secondary text-capitalize fa fa"> @if($shop->status == 1) <span class="fa fa-certificate fa-2x text-primary"></span> Verified @else <span class="fa fa-question fa-2x text-primary"></span> Unverified @endif </span>
         </div>
         <div class="row my-3 border-bottom">
             <span class="mr-5 text-capitalize text-extra">Categories  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic</span>
         </div>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Website  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic</span>
+            <span class="mr-5 text-capitalize text-extra">Website  </span><span class="text-secondary text-capitalize">{{ $shop->contactInfo->website??'' }}</span>
         </div>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Phone  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic</span>
+            <span class="mr-5 text-capitalize text-extra">Phone  </span><span class="text-secondary text-capitalize">{{  $shop->contactInfo->phone??'' }}</span>
         </div>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Email  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic</span>
+            <span class="mr-5 text-capitalize text-extra">Email  </span><span class="text-secondary text-capitalize">{{  $shop->contactInfo->email??'' }}</span>
         </div>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Location  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic</span>
+            <span class="mr-5 text-capitalize text-extra">Location  </span><span class="text-secondary text-capitalize">{{  $shop->contactInfo->location() }}</span>
         </div>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Created On  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic</span>
+            <span class="mr-5 text-capitalize text-extra">Created On  </span><span class="text-secondary text-capitalize">{{ $shop->created_at->format('D dS M Y') }}</span>
         </div>
         <div class="row my-3 border-bottom">
-            <span class="mr-5 text-capitalize text-extra">Business Category  </span><span class="text-secondary text-capitalize">Rubiliams Hair clinic</span>
+            <span class="mr-5 text-capitalize text-extra">Business Category  </span><span class="text-secondary text-capitalize">{{ $shop->category->name??'' }}</span>
         </div>
         <div class="row my-3 d-flex text-capitalize">
             <a hred="#" class="button-primary text-white"><span class="fa fa-edit icon"></span>edit business</a>

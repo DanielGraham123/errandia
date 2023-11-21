@@ -1,4 +1,4 @@
-@extends('b_admin.businesses.layout')
+@extends('b_admin.layout')
 @section('section')
 <form method="POST" enctype="multipart/form-data">
     @csrf
