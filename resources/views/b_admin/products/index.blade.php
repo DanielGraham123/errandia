@@ -40,7 +40,9 @@
                             <td> <span class="text-link d-block">{{ $prod->unit_price ?? 'unit price' }}</span></td>
                             @if(!isset($shop)) <td> <span class="text-link d-block">{{ ($prod != null ? $prod->shop->name : 'Shop name') .' ('. ($prod != null ? $prod->shop->location() : 'Location') }})</span></td> @endif 
                             <td>
-                                <div class="btn-group">
+
+                                
+                                <div class="dropdown-item">
                                     <a href="{{ route('business_admin.enquiries.show', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-edit.svg') }}" style="height: 1.1rem;"> edit</a> <br>
                                     <a href="{{ route('business_admin.enquiries.show', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-view.svg') }}" style="height: 1.1rem;"> view details</a> <br>
                                     <a href="{{ route('business_admin.enquiries.mail', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-edit-photo.svg') }}" style="height: 1.1rem;"> edit photo</a> <br>

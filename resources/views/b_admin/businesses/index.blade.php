@@ -1,10 +1,16 @@
 @extends('b_admin.layout')
 @section('section')
     <div class="py-2 container">
+        
         <div class="d-flex justify-content-between py-3 my-2 px-2">
-            <span><span class="text-h4 d-block">Manage Businesses</span> <span class="d-block text-extra">Manage all your shops</span></span>
+            <div class="about-us-title text-center">
+                <h4>Manage all your Businesses</h4>
+                <h2 class="center">Manage Businesses</h2>
+            </div>
+           
+            <span><span class="text-h4 d-block"> </span> <span class="d-block text-extra"></span></span>
             <span>
-                <a href="{{ route('business_admin.businesses.create') }}" class=" btn btn-primary bg-sm py-2 px-4 text-white text-capitalize rounded"><span class="text-white fa fa-plus mx-2"></span>Add new business</a>
+                <a href="{{ route('business_admin.businesses.create') }}" class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color"><span class="text-white fa fa-plus mx-2"></span>Add new business</a>
             </span>
         </div>
         <div class="py-1 px-2 d-flex">
@@ -15,7 +21,7 @@
                     <th>name</th>
                     <th>location</th>
                     <th>created at</th>
-                    <th>Managed By</th>
+                    
                     <th>action</th>
                     <th>status</th>
                 </thead>
@@ -28,18 +34,33 @@
                             <td>
                                 <div class="row border-0">
                                     <span class="col-sm-2">
-                                        <span class="fa fa-certificate fa-2x text-primary"></span>
+                                        <span class="fa  fa-handshake-o fa-2x text-primary"></span>
                                     </span>
-                                    <div class="col-sm-10">
-                                        <span class="d-block my-1 h5 my-2 text-dark">{{ $business->name }}</span>
+                                    <div class="col-sm-10" style="font-size:12px">
+                                        <span class="d-block my-1 h5 my-2 text-dark" style="font-size:12px">{{ $business->name }}</span>
                                         <span><span class="text-quote"> 4 Products</span><span class="text-body-sm"> 2 Services</span></span>
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ $business->location() }} @if($business->is_branch == 0) <span class="label label-success rounded arrow-in">Head Office<span> @endif</td>
-                            <td>{{ \Carbon\Carbon::parse($business->created_at)->format('d-m-Y @ H:i:s') }}</td>
-                            <td>{{ $business->manager??'manager' }}</td>
+                            <td>{{ $business->location() }} @if($business->is_branch == 0) <BR><span class="label label-success rounded arrow-in">
+                                Head Office<span> @endif</td>
+                            <td>{{ \Carbon\Carbon::parse($business->created_at)->format('d-m-Y ') }}
+                            
+                            </td>
+                          
                             <td>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="blog-detail.html">Blog Detail</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="blog-grid.html">Blog Grid</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="blog-list.html">Blog List</a>
+                                    </li>
+                                </ul>
                                 <div class="btn-group">
                                     <button data-toggle="dropdown" class="btn btn-xs btn-secondary dropdown-toggle" aria-expanded="false">
                                         <span class="ace-icon fa fa-caret-down icon-only"></span>
