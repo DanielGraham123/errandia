@@ -15,6 +15,20 @@ class Product extends Model
 
     protected $table = 'items';
 
+    protected $fillable = [
+        'shop_id',
+        'description',
+        'featured_image',
+        'quantity',
+        'slug',
+        'name',
+        'is_service',
+        'search_index',
+        'status',
+        'unit_price',
+        'views'
+    ];
+
     public function category()
     {
         return $this->belongsTo(SubCategory::class, 'sub_category_id');

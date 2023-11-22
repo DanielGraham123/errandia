@@ -95,31 +95,34 @@
                                                         
                                                             <div class="slick-slide slick-active" tabindex="0" data-slick-index="1" aria-hidden="false">
                                                                 <div class="row m-0">
-                                                                    @for ($i=0; $i < 6; $i++)
-                                                                        <div class="col-12 col-lg-4 col-xxl-3 px-0">
-                                                                            <div class="product-box shadow">
-                                                                                <div class="product-image">
-                                                                                    <a href="{{ route('public.products.show', 'slug') }}" tabindex="0">
-                                                                                        <img src="{{ asset('assets/public/assets/images/vegetable/product/3.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="product-detail">
-                                                                                    <a href="{{ route('public.products.show', 'slug') }}" tabindex="0">
-                                                                                        <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">Peanut Butter Bite Premium Butter Cookies 600 g
-                                                                                        </h6>
-                                                                                    </a>
+                                                                    @foreach($products as $key => $product)
+                                                                        @if(!$product->is_service)
+                                                                            <div class="col-12 col-lg-4 col-xxl-3 px-0">
+                                                                                <div class="product-box shadow">
+                                                                                    <div class="product-image">
+                                                                                        <a href="{{ route('public.products.show', ['slug' => $product->slug]) }}" tabindex="0">
+                                                                                            <img src="{{ asset('assets/public/assets/images/vegetable/product/3.png') }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div class="product-detail">
+                                                                                        <a href="{{ route('public.products.show', ['slug' => $product->slug]) }}" tabindex="0">
+                                                                                            <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">
+                                                                                                {{$product->name}}
+                                                                                            </h6>
+                                                                                        </a>
 
-                                                                                    <h5 class="sold text-content">
-                                                                                        <span class="theme-color price">$26.69</span>
-                                                                                    </h5>
+                                                                                        <h5 class="sold text-content">
+                                                                                            <span class="theme-color price">${{$product->unit_price}}</span>
+                                                                                        </h5>
 
-                                                                                    <div class="add-to-cart-box">
-                                                                                        <a href="{{ route('public.products.show', 'slug') }}" class="button-secondary">see more</a>
+                                                                                        <div class="add-to-cart-box">
+                                                                                            <a href="{{ route('public.products.show', ['slug' => $product->slug]) }}" class="button-secondary">see more</a>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    @endfor
+                                                                        @endif
+                                                                    @endforeach
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -147,32 +150,35 @@
                                                         
                                                             <div class="slick-slide slick-active" tabindex="0" data-slick-index="1" aria-hidden="false">
                                                                 <div class="row m-0">
-                                                                    @for ($i=0; $i < 6; $i++)
-                                                                        <div class="col-12 col-lg-4 col-xxl-3 px-0">
-                                                                            <div class="product-box shadow">
-                                                                                <div class="product-image">
-                                                                                    <a href="product-left-thumbnail.html" tabindex="0">
-                                                                                        <img src="{{ asset('assets/public/assets/images/vegetable/product/3.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="product-detail">
-                                                                                    <a href="product-left-thumbnail.html" tabindex="0">
-                                                                                        <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">Peanut Butter Bite Premium Butter Cookies 600 g
-                                                                                        </h6>
-                                                                                    </a>
+                                                                    @foreach($products as $key => $product)
+                                                                        @if($product->is_service)
+                                                                            <div class="col-12 col-lg-4 col-xxl-3 px-0">
+                                                                                <div class="product-box shadow">
+                                                                                    <div class="product-image">
+                                                                                        <a href="product-left-thumbnail.html" tabindex="0">
+                                                                                            <img src="{{ asset('assets/public/assets/images/vegetable/product/3.png') }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div class="product-detail">
+                                                                                        <a href="product-left-thumbnail.html" tabindex="0">
+                                                                                            <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">
+                                                                                                {{$product->name}}
+                                                                                            </h6>
+                                                                                        </a>
 
-                                                                                    <h5 class="sold text-content">
-                                                                                        <span class="theme-color price">$26.69</span>
-                                                                                        <del>28.56</del>
-                                                                                    </h5>
+                                                                                        <h5 class="sold text-content">
+                                                                                            <span class="theme-color price">${{$product->unit_price}}</span>
+                                                                                            <del>28.56</del>
+                                                                                        </h5>
 
-                                                                                    <div class="add-to-cart-box">
-                                                                                        <a href="#" class="button-secondary">see more</a>
+                                                                                        <div class="add-to-cart-box">
+                                                                                            <a href="#" class="button-secondary">see more</a>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    @endfor
+                                                                        @endif
+                                                                    @endforeach
                                                                 </div>
                                                             </div>
                                                         </div>

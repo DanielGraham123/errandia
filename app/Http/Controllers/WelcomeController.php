@@ -7,6 +7,7 @@ use App\Models\Region;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
+use App\Services\GeographicalService\RegionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\Shop;
@@ -14,6 +15,13 @@ use \App\Models\Shop;
 
 class WelcomeController extends Controller
 {
+    private $regionService;
+
+    public function __construct(RegionService $regionService)
+    {
+        $this->regionService = $regionService;
+    }
+
     public function home()
     {
         return view("public.home");
@@ -21,17 +29,17 @@ class WelcomeController extends Controller
 
     public function businesses($region = null)
     {
-        
-        $data['businesses'] = Shop::all();
+        $data['businesses'] = Shop::paginate(10);
         return view("public.businesses", $data);
     }
 
     public function show_business($slug)
     {
         
-        $data['business'] = Shop::first();
+        $data['business'] = Shop::where('slug', $slug)->first();
         $data['branches'] = $data['business']->branches;
-        // dd($data);
+        $data['products'] = $data['business']->products;
+//         dd($data);
         return view("public.show_business", $data);
     }
 
@@ -73,7 +81,9 @@ class WelcomeController extends Controller
 
     public function errands(Request $request)
     {
-        return view('public.errands.index');
+        $data['regions'] = $this->regionService->getAllRegions();
+        $data['errands'] = Errand::orderBy('created_at', 'ASC')->paginate(20);
+        return view('public.errands.index')->with($data);
     }
 
     public function view_errand(Request $request)
@@ -87,5 +97,6 @@ class WelcomeController extends Controller
     public function show_product($slug){
         return view('public.products.show');
     }
+
 
 }
