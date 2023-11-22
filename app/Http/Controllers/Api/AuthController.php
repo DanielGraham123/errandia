@@ -27,17 +27,18 @@ class AuthController extends Controller
             ]], 401);
         }
 
-        $user = User::where(['phone' => $request->phone, 'password' => Hash::make($request->password)])->first();
-        if(!$user) {
+        $user = User::where('phone', $request->phone)->first();
+        if ($user && Hash::check($request->password, $user->password)) {
+            $token = $user->createToken('token')->accessToken;
+            return response()->json(['data' => [
+                'token' => $token,
+                'user' => new UserResource($user),
+            ]]);
+        } else {
             return response()->json(['data' => [
                 'message' => "Invalid credentials"
             ]], 401);
         }
-        $token = $user->createToken('token')->accessToken;
-        return response()->json(['data' => [
-            'token' => $token,
-            'user' => new UserResource($user),
-        ]]);
     }
     
     public function register(Request $request)
@@ -67,7 +68,7 @@ class AuthController extends Controller
             $user = DB::transaction(function () use ($request) {
                 $user = new User();
                 $user->name = $request->name;
-                $user->email = $request->email;
+                $user->email = $request->email ?? '';
                 $user->phone = $request->phone;
                 $user->password = Hash::make($request->password);
                 $user->address = $request->address ?? '';
