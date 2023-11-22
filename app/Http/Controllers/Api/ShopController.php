@@ -41,7 +41,8 @@ class ShopController extends Controller
     {
         $categories = SubCategory::query();
         $categories = $categories->when($request->name, function ($query, $name) {
-            $query->where('description', 'like', '%'.$name.'%');
+            $query->where('name', 'like', '%'.$name.'%')
+                ->orWhere('description', 'like', '%'.$name.'%');
         });
         $categories = $categories->orderBy('name', 'asc')->get();
         if(empty($categories))$categories = SubCategory::orderBy('name', 'asc')->get();
