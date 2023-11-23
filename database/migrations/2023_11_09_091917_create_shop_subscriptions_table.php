@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShopsSubscriptionsTable extends Migration
+class CreateShopSubscriptionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateShopsSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shops_subscriptions', function (Blueprint $table) {
+        Schema::create('shop_subscriptions', function (Blueprint $table) {
             $table->id();
             $table->integer('shop_id');
             $table->integer('subscription_id');

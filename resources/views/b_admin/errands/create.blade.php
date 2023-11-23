@@ -14,7 +14,7 @@
                     <span class="fa fa-arrow-right fa-2x text-primary mx-5 px-5 py-5"></span>
                     <span class="d-block"><span class="badge badge-light badge-lg d-block p-5 border">2</span>upload photos</span>
                 </div>
-                <span class="d-block mt-4" style="font-weight: 700;">What do you want to find?*</span>
+                <span class="d-block mt-4" style="font-weight: 700;">What do you want to find?  <span class="text-danger">Product name only (eg. charger, laptop, battery)*</span></span>
                 <input class="my-2 form-control rounded" name="title" type="text" required value="{{ old('title') }}" placeholder="search title">
                 
                 
@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-md-4 py-2">
                         <select name="region" class="form-control rounded" oninput="loadTowns(event)">
-                            <option>General</option>
+                            <option>All Regions</option>
                             @foreach ($regions as $reg)
                                 <option value="{{ $reg->id }}" {{ old('region') == $reg->id ? 'selected' : '' }}>{{ $reg->name }}</option>
                             @endforeach
@@ -30,7 +30,7 @@
                     </div>
                     <div class="col-md-4 py-2">
                         <select name="town" class="form-control rounded" id="town_selection" oninput="loadStreets(event)">
-                            <option></option>
+                            <option>All Towns</option>
                             @foreach ($towns as $tn)
                                 <option value="{{ $tn->id }}" {{ old('town') == $tn->id ? 'selected' : '' }}>{{ $tn->name }}</option>
                             @endforeach
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-4 py-2">
                         <select name="street" class="form-control rounded" id="street_selection">
-                            <option></option>
+                            <option>All Streets</option>
                             @foreach ($streets as $st)
                                 <option value="{{ $st->id }}" {{ old('street') == $st->id ? 'selected' : '' }}>{{ $st->name }}</option>
                             @endforeach

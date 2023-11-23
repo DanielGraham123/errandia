@@ -11,7 +11,7 @@
                 <div class="d-flex flex-wrap my-3 border-left border-right rounded">
                     @foreach ($categories as $cat)
                         <span class="d-inlineblock rounded border bg-light py-1 px-3 my-2 mx-2">
-                            <input type="checkbox" class="input mx-2" name="categories[]" value="{{ $cat->id }}">
+                            <input type="checkbox" class="input mx-2" name="categories[]" value="{{ $cat->id }}"  {{ in_array($cat, $proposed_categories) ? 'checked' : '' }}>
                             <span class="text-extra">{{ $cat->name }}</span>
                         </span>
                     @endforeach
@@ -35,7 +35,7 @@
                 <div class="my-3 border-left border-right rounded multipleImageUplaoder">
                 </div>
             </div>
-            <span class="d-block my-4"><button class="button-primary" type="submit">run</button></span>
+            <span class="d-block my-4"><button class="button-primary" type="submit">Post Errand</button></span>
         </form>
     </div>
 @endsection

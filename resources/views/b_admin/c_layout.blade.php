@@ -63,7 +63,6 @@
         -webkit-line-clamp: 3;
         overflow: hidden;
     }
-    
     </style>
 </head>
 

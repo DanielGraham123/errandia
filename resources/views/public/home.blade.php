@@ -228,7 +228,7 @@
                                         @for($i = 0; $i < 6; $i++)
                                             <div class="top-selling-contain wow fadeInUp" style="border:1px solid#eee;">
                                                 <a href="product-left-thumbnail.html" class="top-selling-image">
-                                                    <img src="{{ asset('assets/images/default1.jpg') }}"
+                                                    <img src="{{ asset('assets/images/default2.jpeg') }}"
                                                         class="img-fluid blur-up lazyload" alt="">
                                                 </a>
                                                 <div class="top-selling-detail">
@@ -236,9 +236,9 @@
                                                         <h5>Tuffets Whole Wheat Bread</h5>
                                                     </a>
                                                     <div class="product-rating">
-                                                        <p>Text</p>
+                                                        <p class="line-clamp-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Saepe veniam consectetur fugit ut recusandae error provident inventore molestias perspiciatis, voluptatibus excepturi voluptas et maiores delectus beatae, vero porro, fugiat ipsum?</p>
                                                     </div>
-                                                    <button class="btn btn-md"> Call this Customer
+                                                    <button class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color"> Call this Customer
                                                     &nbsp;<span class="add-icon bg-light-gray">
                                                             <i class="fa fa-phone"></i>
                                                         </span>

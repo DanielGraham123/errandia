@@ -177,16 +177,18 @@
                                 
                             </ul>
 
-                            <form method="POST" action="{{ route('logout') }}"></form>
-                            <button type="submit" class="user-box">
-                                <span class="header-icon" style="background:#4d9eba;border:1px solid#fff">
-                                    <i class="iconly-Logout icli"></i>
-                                </span>
-                                <div class="user-name">
-                                    <h6 class="text-content">Logout</h6>
-                                     
-                                </div>
-                            </button>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="user-box">
+                                    <span class="header-icon" style="background:#4d9eba;border:1px solid#fff">
+                                        <i class="iconly-Logout icli"></i>
+                                    </span>
+                                    <div class="user-name">
+                                        <h6 class="text-content">Logout</h6>
+                                         
+                                    </div>
+                                </button>
+                            </form>
 
                             
 
@@ -201,10 +203,14 @@
                                     <h4 class="mt-1">{{ auth()->user()->name ?? "Jennifer V. Watts" }}</h4>
                                 </div>
                             </a>
+                            
+                            
+                            
 
                             
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>

@@ -4,16 +4,19 @@
 
         <div class="clearfix">
             <div class="pull-right tableTools-container">
-                <div class="dt-buttons btn-overlap btn-group">
+                <div class="dt-buttons btn-overlap btn-group btn-bg">
                     @if(isset($shop))<a href="{{ route('business_admin.products.create', $shop->slug) }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-plus bigger-110 blue"></i> <span class="">Add</span></span></a>@endif
                     <a href="{{ Request::url() }}?action=all" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-search bigger-110 blue"></i> <span class="">All</span></span></a>
                     <a href="{{ Request::url() }}?action=published" class="dt-button buttons-copy buttons-html5 btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-copy bigger-110 pink"></i> <span class="">Published</span></span></a>
                     <a href="{{ Request::url() }}?action=draft" class="dt-button buttons-csv buttons-html5 btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-database bigger-110 orange"></i> <span class="">Draft</span></span></a>
-                    <a href="{{ Request::url() }}?action=trash" class="dt-button buttons-print btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-trash bigger-110 grey"></i> <span class="">Trash</span></span></a></div></div>
+                    <a href="{{ Request::url() }}?action=trash" class="dt-button buttons-print btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-trash bigger-110 grey"></i> <span class="">Trash</span></span></a>
+                </div>
+            </div>
         </div>
         <div class="table-header">
             Products @if(isset($shop)) For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i> @endif <span class="text-h6">({{ count($products) }})</span></span>
         </div>
+        {{-- @dd($products) --}}
         <div class="py-1">
 
             <table class="table">
@@ -28,13 +31,13 @@
                 <tbody>
                     @php $k = 1;
                     @endphp
-                    @foreach(count($products) > 0 ? $products : collect([null, null, null, null, null, null]) as $prod)
+                    @foreach($products as $prod)
                         <tr class="shadow-sm border-bottom bg-white">
                             <td>{{ $k++}}</td>
                             <td>
                                 <span class="">
-                                    <img style="height: 3rem; width: 3rem; border-radius: 0.5rem; border: 1px solid gray; margin: 0.4rem 0.7rem;" src="{{ asset('assets/admin/icons/icon-category-fashion.svg') }}">
-                                    <span style="color: var(--color-darkblue)">{{ $prod->name??"product name" }} <br> <i class="text-link">{{ $prod->category->name??"product sub-category" }}</i></span>
+                                    <img style="height: 3rem; width: 3rem; border-radius: 0.5rem; border: 1px solid gray; margin: 0.4rem 0.7rem;" src="{{ asset('uploads/item_images/'.$prod->featured_image) }}">
+                                    <span style="color: var(--color-darkblue)">{{ $prod->name??"product name" }}</span>
                                 </span>
                             </td>
                             <td> <span class="text-link d-block">{{ $prod->unit_price ?? 'unit price' }}</span></td>

@@ -1,259 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta charset="utf-8" />
-		<title>{{config('app.name')}}</title>
-
-		<meta name="description" content="User login page" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-		<link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}" />
-		<link rel="stylesheet" href="{{asset('assets/font-awesome/4.5.0/css/font-awesome.min.css')}}" />
-		<link rel="stylesheet" href="{{asset('assets/css/fonts.googleapis.com.css')}}" />
-		<link rel="stylesheet" href="{{asset('assets/css/ace.min.css')}}" />
-		<link rel="stylesheet" href="{{asset('assets/css/custom.css')}}" />
-		<!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-show-password/1.0.3/bootstrap-show-password.min.js"></script> -->
-
-		@php
-			$bg1 = 'blue';
-			$bg2 = 'red';
-			$bg3 = 'white';
-		@endphp
-
-		<style>
-			body{
-				background-image: url("{{asset('assets/images/background1.png')}}");
-				background-position: center;
-				background-size: cover;
-				background-repeat: no-repeat;
-				background-attachment: fixed;
-
-
-			}
-
-				/* Rectangle 23 */
-			#login-frame{
-				position: relative;
-				width: 350px;
-				height: 450px;
-				min-height: fit-content;
-				margin-inline: auto;
-				border-radius: 24px;
-			}
-				/* Rectangle 23 */
-			#login-frame .rect1{
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				min-height: fit-content;
-				background: #113d6b;
-				border-radius: 24px;
-				top: -9px;
-			}
-
-				/* Rectangle 22 */
-			#login-frame .rect2{
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				min-height: fit-content;
-				margin-inline: auto;
-				background: #091f36;
-				box-shadow: 0px 0px 34px rgba(0, 0, 0, 0.25);
-				border-radius: 24px;
-				left: 9px;
-			}
-				/* input bg */
-			#login-frame .main-rect{
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				min-height: fit-content !important;
-				background-color: white;
-				border-radius: 24px;
-			}
-
-			#login-frame .main-rect div{
-				background-color: white;
-			}
-
-
-
-
-		    a{
-		        text-decoration:none;
-		        font-weight:bold;
-		        font-size:16px;
-		        color:#fff;
-		    }
-		</style>
-	</head>
-
-	<body class="login-layout" id="frame">
-		<div class="main-container px-5" style="padding-inline: 2rem;">
-			<div class="py-5 mx-5 w-100 text-uppercase text-center" style="padding: 2rem; font-weight: bolder; vertical-align: middle;">
-				<h3> <span style="color: white; text-shadow: -1px -1px 0 #113d6b, 1px -1px 0 #113d6b, -1px 1px 0 #113d6b, 1px 1px 0 #113d6b; font-weight: bolder; font-size: xx-large;">Errandia Login</span></h3>
+@extends('public.layout')
+@section('section')
+	    <!-- Breadcrumb Section Start -->
+		<section class="breadscrumb-section pt-0">
+			<div class="container-fluid-lg">
+				<div class="row">
+					<div class="col-12">
+						<div class="breadscrumb-contain">
+							<h2 class="mb-2">Log In</h2>
+							<nav>
+								<ol class="breadcrumb mb-0">
+									<li class="breadcrumb-item">
+										<a href="index.html">
+											<i class="fa-solid fa-house"></i>
+										</a>
+									</li>
+									<li class="breadcrumb-item active">Log In to Explore Errandia</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="main-content">
-				<div class="w-100">
-						<div class="login-container" id="login-frame">
-
-							<div class="rect1"></div>
-
-				  			<div class="rect2"></div>
-							<div class="position-relative main-rect " >
-								<div id="login-box" class="login-box visible widget-box no-border">
-									<div class="widget-body">
-										<div class="widget-main">
-											<h4 class="bigger text-capitalize text-center" style="color: #113d6b; font-size: 29.44px;">
-											 	<b>{{__('text.log_in')}}</b>
-											</h4>
-
-											@if(Session::has('error'))
-												<div class="alert alert-danger"><em> {!! session('error') !!}</em>
-												</div>
-											@endif
-
-
-											@if(Session::has('e'))
-												<div class="alert alert-danger"><em> {!! session('e') !!}</em>
-												</div>
-											@endif
-
-											@if(Session::has('s'))
-												<div class="alert alert-success"><em> {!! session('s') !!}</em>
-												</div>
-											@endif
-											<div class="space-6"></div>
-
-											<form method="post" action="{{route('login.submit')}}">
-											@csrf
-												<fieldset style="color: black;">
-													<label class="block clearfix">
-														<span class="text-capitalize">{{__('text.word_username')}}</span>
-														<span class="block input-icon input-icon-right" style="background-color: white !important;">
-															<input type="text" required class="form-control" value="{{old("username")}}" name="username" style="border-radius: 0.5rem !important; background-color: white !important; color: black" />
-														</span>
-														@error('username')
-															<span class="invalid-feedback red" role="alert">
-																<strong>{{ $message }}</strong>
-															</span>
-														@enderror
-													</label>
-													<div class="space"></div>
-													<label class="block clearfix">
-														<span class="text-capitalize">{{__('text.word_password')}}</span>
-														<span class="block input-icon input-icon-right">
-															<input  type="password" id="password" name="password" data-toggle="password" required class="form-control" style="border-radius: 0.5rem !important; background-color: white !important; color: black"/>
-														</span>
-														@error('password')
-															<span class="invalid-feedback red" role="alert">
-																<strong>{{ $message }}</strong>
-															</span>
-														@enderror
-													</label>
-
-													<div class="space"></div>
-
-													<div class="clearfix">
-														<button type="submit" class="form-control btn-black btn-sm" style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white;">
-															{{-- <i class="ace-icon fa fa-key"></i> --}}
-															<span class="bigger-110">{{__('text.log_in')}}</span>
-														</button>
-													</div>
-
-													<div class="space-4"></div>
-												</fieldset>
-											</form>
-										</div><!-- /.widget-main -->
-
-										<div class="clearfix toolbar"  style=" border: 0px;  font-size: xsmall !important; width: 77% !important; margin-inline: auto; ">
-											<a  href="#" data-target="#forgot-box" class="text-center form-control btn-black btn-sm" style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; font-weight: normal !important;">
-												<span class="bigger-110">{{__('text._forgot_password')}}</span>
-											</a>
+		</section>
+		<!-- Breadcrumb Section End -->
+	
+		<!-- log in section start -->
+		<section class="log-in-section background-image-2 section-b-space">
+			<div class="container-fluid-lg w-100">
+				<div class="row">
+					<div class="col-xxl-6 col-xl-5 col-lg-6 d-lg-block d-none ms-auto">
+						<div class="image-contain">
+							<img src="{{ asset('assets/images/default1.jpg') }}" class="img-fluid" alt="">
+						</div>
+					</div>
+	
+					<div class="col-xxl-4 col-xl-5 col-lg-6 col-sm-8 mx-auto">
+						<div class="log-in-box">
+							<div class="log-in-title">
+								<h3>Welcome To Errandia</h3>
+								<h4>Stay at home & lets do the seach for you!</h4>
+							</div>
+	
+							<div class="input-box">
+								<form class="row g-4" method="POST">
+									@csrf
+									<div class="col-12">
+										<div class="form-floating theme-form-floating log-in-form">
+											<input type="email" class="form-control" name="username" id="email" placeholder="Email Address" required>
+											<label for="email">Email Address</label>
 										</div>
-
+									</div>
+	
+									<div class="col-12">
+										<div class="form-floating theme-form-floating log-in-form">
+											<input type="password" class="form-control" id="password" required name="password"   placeholder="Password">
+											<label for="password">Password</label>
 										</div>
-									</div><!-- /.widget-body -->
-								</div><!-- /.login-box -->
-
-								<div id="forgot-box" class="forgot-box widget-box no-border">
-									<div class="widget-body">
-										<div class="widget-main">
-											<h4 class="bigger text-capitalize" style="color: black; font-size: xlarge;">
-											 	<b>{{__('text.forgot_password')}}</b>
-											</h4>
-											<span style="font-size: small; margin-bottom: 1rem;">{{__('text.pass_reset_phrase')}}</span>
-
-											<form method="POST" action="{{ route('reset_password_without_token') }}" style="padding-block: 1rem !important;">
-												@csrf
-												<fieldset>
-													<label class="block clearfix">
-														<span class="text-capitalize">{{__('text.word_email')}}</span>
-														<span class="block input-icon input-icon-right">
-															<input type="email" required name="email" class="form-control"  style="border-radius: 0.5rem !important; background-color: white !important; color: black"/>
-														</span>
-													</label>
-
-
-													<div class="clearfix">
-														<button type="submit" class="form-control btn-black btn-sm"  style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; text-transform: capitalize; margin-block: 2rem;">
-															{{__('text.reset_password')}}
-														</button>
-													</div>
-												</fieldset>
-											</form>
-										</div><!-- /.widget-main -->
-
-										<div class="toolbar clearfix" style="border: 0px; padding-inline: 4rem;">
-											<a href="#" data-target="#login-box" class="form-control btn-black btn-sm text-center"  style="border-radius: 0.4rem; background-color: #091f36; border: 1px solid black; color: white; text-transform: capitalize; font-weight: normal !important;">
-												<i class="ace-icon fa fa-arrow-left"></i>
-												{{__('text.back_to_login')}}
-											</a>
+									</div>
+	
+									<div class="col-12">
+										<div class="forgot-box">
+											<div class="form-check ps-0 m-0 remember-box">
+												<input class="checkbox_animated check-box" type="checkbox"
+													id="flexCheckDefault">
+												<label class="form-check-label" for="flexCheckDefault">Remember me</label>
+											</div>
+											<a href="{{ route('reset_password_with_token') }}" class="forgot-password">Forgot Password?</a>
 										</div>
-									</div><!-- /.widget-body -->
-								</div><!-- /.forgot-box -->
-
+									</div>
+	
+									<div class="col-12">
+										<button class="btn btn-animation w-100 justify-content-center theme-bg-color" type="submit">Log
+											In</button>
+									</div>
+								</form>
+							</div>
+	
+							<div class="other-log-in">
+								<h6>or</h6>
+							</div>
+	
+							<div class="log-in-button">
+								<ul>
+									<li>
+										<a href="https://www.google.com/" class="btn google-button w-100">
+											<img src="{{ asset('assets/public/assets/images/inner-page/google.png') }}" class="blur-up lazyload"
+												alt=""> Log In with Google
+										</a>
+									</li>
+									<li>
+										<a href="https://www.facebook.com/" class="btn google-button w-100">
+											<img src="{{ asset('assets/public/assets/images/inner-page/facebook.png') }}" class="blur-up lazyload"
+												alt=""> Log In with Facebook
+										</a>
+									</li>
+								</ul>
+							</div>
+	
+							<div class="other-log-in">
+								<h6></h6>
+							</div>
+	
+							<div class="sign-up-box">
+								<h4>Don't have an account?</h4>
+								<a href="{{ route('register') }}">Sign Up</a>
 							</div>
 						</div>
-				</div><!-- /.row -->
-			</div><!-- /.main-content -->
-
-			<div style="display: flex; justify-content: center; padding-block: 3rem; text-align: center; text-transform: capitalize; color: black !important;">
-				<span>{{__('text.powered_by')}} <b> {{__('text.nishang_system')}} </b></span>
-			</div>
-		</div><!-- /.main-container -->
-
-
+					</div>
 				</div>
-		<script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
-		<script type="text/javascript">
-			if('ontouchstart' in document.documentElement) document.write("<script src='{{asset('assets/js/jquery.mobile.custom.min.js')}}'>"+"<"+"/script>");
-		</script>
-
-		<!-- inline scripts related to this page -->
-		<script type="text/javascript">
-			jQuery(function($) {
-			 $(document).on('click', '.toolbar a[data-target]', function(e) {
-				e.preventDefault();
-				var target = $(this).data('target');
-				$('.widget-box.visible').removeClass('visible');//hide others
-				$(target).addClass('visible');//show target
-			 });
-			});
-		</script>
-		<script type="text/javascript">
-
-$("#password").password('toggle');
-
-</script>
-
-	</body>
-</html>
+			</div>
+		</section>
+		<!-- log in section end -->
+	
+@endsection

@@ -398,9 +398,7 @@ Route::get('mode/{locale}', function ($batch) {
 })->name('mode');
 
 Route::any('{any?}', function(){
-    auth()->logout();
-    session()->flush();
-    return redirect(route('login'));
+    return view('404');
 });
 
 

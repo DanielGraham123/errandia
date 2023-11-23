@@ -23,6 +23,7 @@ class CreateItemsTable extends Migration
             $table->boolean('is_service')->default(false);
             $table->bigInteger('views')->nullable();
             $table->text('search_index')->nullable();
+            $table->text('tags')->nullable();
             $table->boolean('status')->default(0);
             $table->boolean('service')->default(false);
             $table->text('search_index');

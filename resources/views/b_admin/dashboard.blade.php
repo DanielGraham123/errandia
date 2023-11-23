@@ -41,7 +41,7 @@
                                 </div>
                                 <h5 class="card-title text-h6">Run Errand</h5>
                                 <p class="card-text text-body" style="font-weight: 500;">Create a shop and start selling online</p>
-                                <a class="button-secondary my-3 mx-auto" href="">Run an errand</a>
+                                <a class="button-secondary my-3 mx-auto" href="{{ route('business_admin.errands.create') }}">Run an errand</a>
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-3 p-2">
