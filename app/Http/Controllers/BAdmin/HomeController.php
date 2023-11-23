@@ -77,7 +77,7 @@ class HomeController extends Controller
             $path = public_path('uploads/logos/');
             $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
             $file->move($path, $fname);
-            $business->image_path = $path.$fname;
+            $business->image_path = $fname;
         }
         $business->save();
 
@@ -131,7 +131,7 @@ class HomeController extends Controller
             $path = public_path('uploads/logos/');
             $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
             $file->move($path, $fname);
-            $business->image_path = $path.$fname;
+            $business->image_path = $fname;
         }
         // dd($request->all());
         $business->save();
