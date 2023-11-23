@@ -44,38 +44,25 @@
                             </td>
                             <td>{{ $business->location() }} @if($business->is_branch == 0) <BR><span class="label label-success rounded arrow-in">
                                 Head Office<span> @endif</td>
-                            <td>{{ \Carbon\Carbon::parse($business->created_at)->format('d-m-Y ') }}
-                            
-                            </td>
+                            <td>{{ \Carbon\Carbon::parse($business->created_at)->format('d-m-Y ') }}</td>
                           
                             <td>
 
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="blog-detail.html">Blog Detail</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="blog-grid.html">Blog Grid</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="blog-list.html">Blog List</a>
-                                    </li>
-                                </ul>
-                                <div class="btn-group">
-                                    <button data-toggle="dropdown" class="btn btn-xs btn-secondary dropdown-toggle" aria-expanded="false">
-                                        <span class="ace-icon fa fa-caret-down icon-only"></span>
+                                <div class="dropdown">
+                                    <button data-bs-toggle="dropdown" class="btn btn-xs btn-secondary dropdown-toggle" aria-expanded="false">
+                                        <span class="ace-icon icon-only"></span>
                                     </button>
 
                                     <ul class="dropdown-menu dropdown-light">
-                                        <li class="list-item py-1 border-y"> <a href="{{ route('business_admin.businesses.show', $business->slug) }}" class="text-decoration-none text-secondary">view</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="{{ route('business_admin.businesses.edit', $business->slug) }}" class="text-decoration-none text-secondary">edit</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="{{ route('business_admin.products.index', $business->slug) }}" class="text-decoration-none text-secondary">products</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="{{ route('business_admin.services.index', $business->slug) }}" class="text-decoration-none text-secondary">services</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.businesses.show', $business->slug) }}" class="text-decoration-none text-secondary">view</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.businesses.edit', $business->slug) }}" class="text-decoration-none text-secondary">edit</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.products.index', $business->slug) }}" class="text-decoration-none text-secondary">products</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.services.index', $business->slug) }}" class="text-decoration-none text-secondary">services</a></li>
                                         @if ($business->parent_slug == null)
-                                            <li class="list-item py-1 border-y"> <a href="{{route('business_admin.businesses.branch.create', $business->slug)}}" class="text-decoration-none text-secondary">add branch</a></li>
+                                            <li class="dropdown-item py-1 border-y"> <a href="{{route('business_admin.businesses.branch.create', $business->slug)}}" class="text-decoration-none text-secondary">add branch</a></li>
                                         @endif
-                                        <li class="list-item py-1 border-y"> <a href="#" onclick="_prompt(`{{ route('business_admin.businesses.suspend', $business->slug) }}`, 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
-                                        <li class="list-item py-1 border-y"> <a href="#" onclick="_prompt(`{{ route('business_admin.businesses.delete', $business->slug) }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none text-secondary">Delete</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="#" onclick="_prompt(`{{ route('business_admin.businesses.suspend', $business->slug) }}`, 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="#" onclick="_prompt(`{{ route('business_admin.businesses.delete', $business->slug) }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none text-secondary">Delete</a></li>
                                     </ul>
                                 </div>
                              </td>

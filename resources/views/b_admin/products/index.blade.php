@@ -41,13 +41,17 @@
                             @if(!isset($shop)) <td> <span class="text-link d-block">{{ ($prod != null ? $prod->shop->name : 'Shop name') .' ('. ($prod != null ? $prod->shop->location() : 'Location') }})</span></td> @endif 
                             <td>
 
-                                
-                                <div class="dropdown-item">
-                                    <a href="{{ route('business_admin.enquiries.show', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-edit.svg') }}" style="height: 1.1rem;"> edit</a> <br>
-                                    <a href="{{ route('business_admin.enquiries.show', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-view.svg') }}" style="height: 1.1rem;"> view details</a> <br>
-                                    <a href="{{ route('business_admin.enquiries.mail', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-edit-photo.svg') }}" style="height: 1.1rem;"> edit photo</a> <br>
-                                    <a href="{{ route('business_admin.enquiries.mail', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-unpublish.svg') }}" style="height: 1.1rem;"> unpublish</a> <br>
-                                    <a href="#" onclick="_prompt(`{{ route('business_admin.enquiries.delete', $prod->slug??'slug') }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.1rem;"> Delete</a>
+                                <div class="dropdown">
+                                    <button data-bs-toggle="dropdown" class="btn btn-xs btn-secondary dropdown-toggle" aria-expanded="false">
+                                        <span class="ace-icon icon-only"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item"><a href="{{ route('business_admin.enquiries.show', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-edit.svg') }}" style="height: 1.1rem;"> edit</a></li>
+                                        <li class="dropdown-item"><a href="{{ route('business_admin.enquiries.show', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-view.svg') }}" style="height: 1.1rem;"> view details</a></li>
+                                        <li class="dropdown-item"><a href="{{ route('business_admin.enquiries.mail', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-edit-photo.svg') }}" style="height: 1.1rem;"> edit photo</a></li>
+                                        <li class="dropdown-item"><a href="{{ route('business_admin.enquiries.mail', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-unpublish.svg') }}" style="height: 1.1rem;"> unpublish</a></li>
+                                        <li class="dropdown-item"><a href="#" onclick="_prompt(`{{ route('business_admin.enquiries.delete', $prod->slug??'slug') }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.1rem;"> Delete</a></li>
+                                    </ul>
                                 </div>
                             </td>
                             <td>@if ($prod->status??null == 1)

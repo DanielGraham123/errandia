@@ -51,6 +51,46 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/responsive.dataTables.min.css">
 
+
+
+    {{-- Template dashboard specific styles --}}
+
+    <!-- Linear Icon css -->
+    <link rel="stylesheet" href="{{ asset('assets/backend/assets/css/linearicon.css') }}">
+
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/font-awesome.css') }}">
+
+    <!-- Themify icon css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/themify.css') }}">
+
+    <!--Dropzon css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/dropzone.css') }}">
+
+    <!-- Feather icon css-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/feather-icon.css') }}">
+
+    <!-- remixicon css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/remixicon.css') }}">
+
+    <!-- Select2 css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/select2.min.css') }}">
+
+    <!-- Plugins css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/scrollbar.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/chartist.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/date-picker.css') }}">
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/bootstrap.css') }}">
+
+    <!-- Bootstrap-tag input css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/vendors/bootstrap-tagsinput.css') }}">
+
+    <!-- App css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/backend/assets/css/style.css') }}">
+
     <style>
     .no-scrollbar::-webkit-scrollbar{
         display: none;
@@ -68,10 +108,89 @@
 
 
     @include('components.dash-header')
+
     
-    <!-- Main Content start -->
-    @yield('section')
-    <!-- Main Content end -->
+    <!-- Breadcrumb Section Start -->
+    <section class="breadscrumb-section pt-0">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadscrumb-contain">
+                        <h2>User Dashboard</h2>
+                        <nav>
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a href="index.html">
+                                        <i class="fa-solid fa-house"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">Welcome to Errand user </li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+    
+        <!-- User Dashboard Section Start -->
+        <section class="user-dashboard-section section-b-space">
+            <div class="container-fluid-lg">
+                <div class="row">
+                    <div class="col-xxl-3 col-lg-4">
+                        <div class="dashboard-left-sidebar">
+                            <div class="close-button d-flex d-lg-none">
+                                <button class="close-sidebar">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div class="profile-box">
+                                <div class="cover-image">
+                                    <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
+                                        alt="">
+                                </div>
+    
+                                <div class="profile-contain">
+                                    <div class="profile-image">
+                                        <div class="position-relative">
+                                            <img src="{{ asset('assets/public/assets/images/inner-page/user/1.jpg') }}"
+                                                class="blur-up lazyload update_img" alt="">
+                                            <div class="cover-icon">
+                                                <i class="fa-solid fa-pen">
+                                                    <input type="file" onchange="readURL(this,0)">
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="profile-name">
+                                        <h3>Vicki E. Pope</h3>
+                                        <h6 class="text-content">vicki.pope@gmail.com</h6>
+                                    </div>
+                                </div>
+                            </div>
+    
+                          Text Under Profile
+                        </div>
+                    </div>
+    
+    
+    
+                    <div class="col-xxl-9 col-lg-8">
+                        <!-- Main Content start -->
+                        @yield('section')
+                        <!-- Main Content end -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- User Dashboard Section End -->
+    
+
+
 
     @include('components.footer')
 
@@ -150,6 +269,60 @@
     <script src="{{ asset('assets/public/assets/js/sticky-cart-bottom.js') }}"></script>
     <script src="{{ asset('libs')}}/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('libs')}}/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
+
+
+
+
+
+    {{-- Template dahsboard specific scripts --}}
+    
+ 
+    <!-- latest js -->
+    <script src="{{ asset('assets/backend/assets/js/jquery-3.6.0.min.js') }}"></script>
+
+    <!-- Bootstrap js -->
+    <script src="{{ asset('assets/backend/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- feather icon js -->
+    <script src="{{ asset('assets/backend/assets/js/icons/feather-icon/feather.min.js') }}"></script>
+    <script src="{{ asset('assets/backend/assets/js/icons/feather-icon/feather-icon.js') }}"></script>
+
+    <!-- scrollbar simplebar js -->
+    <script src="{{ asset('assets/backend/assets/js/scrollbar/simplebar.js') }}"></script>
+    <script src="{{ asset('assets/backend/assets/js/scrollbar/custom.js') }}"></script>
+
+    <!-- Sidebar js -->
+    <script src="{{ asset('assets/backend/assets/js/config.js') }}"></script>
+
+    <!-- bootstrap tag-input js -->
+    <script src="{{ asset('assets/backend/assets/js/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ asset('assets/backend/assets/js/sidebar-menu.js') }}"></script>
+
+    <!-- customizer js -->
+    <script src="{{ asset('assets/backend/assets/js/customizer.js') }}"></script>
+
+    <!--Dropzon js -->
+    <script src="{{ asset('assets/backend/assets/js/dropzone/dropzone.js') }}"></script>
+    <script src="{{ asset('assets/backend/assets/js/dropzone/dropzone-script.js') }}"></script>
+
+    <!-- Plugins js -->
+    <script src="{{ asset('assets/backend/assets/js/notify/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('assets/backend/assets/js/notify/index.js') }}"></script>
+
+    <!-- ck editor js -->
+    <script src="{{ asset('assets/backend/assets/js/ckeditor.js') }}"></script>
+    <script src="{{ asset('assets/backend/assets/js/ckeditor-custom.js') }}"></script>
+
+    <!-- select2 js -->
+    <script src="{{ asset('assets/backend/assets/js/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/backend/assets/js/select2-custom.js') }}"></script>
+
+    <!-- sidebar effect -->
+    <script src="{{ asset('assets/backend/assets/js/sidebareffect.js') }}"></script>
+
+    <!-- Theme js -->
+    <script src="{{ asset('assets/backend/assets/js/script.js') }}"></script>
+
 
     @yield('script')
 

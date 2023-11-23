@@ -25,7 +25,7 @@
                                     <i class="iconly-Category icli"></i>
                                 </span>
                             </button>
-                            <a href="index.html" class="web-logo nav-logo">
+                            <a href="{{ route('business_admin.home') }}" class="web-logo nav-logo">
                                 <img src="{{ asset('assets/admin/logo/errandia-logo.png') }}" class="img-fluid blur-up lazyload" alt="Logo">
                             </a>
 
@@ -62,9 +62,8 @@
                                 <div class="offcanvas-body">
                                     <ul class="navbar-nav">
                                       
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="javascript:void(0)"
-                                                data-bs-toggle="dropdown">Businesses</a>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('business_admin.businesses.index') }}">Businesses</a>
                                         </li>
 
                                         
@@ -75,10 +74,10 @@
                                                 
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a class="dropdown-item" href="#">Products</a>
+                                                    <a class="dropdown-item" href="{{ route('business_admin.products.index') }}">Products</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="#">Services</a>
+                                                    <a class="dropdown-item" href="{{ route('business_admin.services.index') }}">Services</a>
                                                 </li>
 
                                                  
@@ -87,19 +86,19 @@
                                         </li>
 
                                         <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#"
+                                            <a class="nav-link dropdown-toggle" href="{{ route('business_admin.enquiries.index') }}"
                                                 data-bs-toggle="dropdown">Enquiries</a>
                                                 
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a class="dropdown-item" href="#">Errands recieved</a>
+                                                    <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}">Errands recieved</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="#">Errands Sent</a>
+                                                    <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}">Errands Sent</a>
                                                 </li>
 
                                                 <li>
-                                                    <a class="dropdown-item" href="#">Run Errand</a>
+                                                    <a class="dropdown-item" href="{{ route('business_admin.errands.create') }}">Run Errand</a>
                                                 </li>
                                                
                                             </ul>
@@ -113,10 +112,10 @@
                                                 
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a class="dropdown-item" href="#">Business reviews</a>
+                                                    <a class="dropdown-item" href="{{ route('business_admin.reviews.index') }}">Business reviews</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="#">Reviews made</a>
+                                                    <a class="dropdown-item" href="{{ route('business_admin.reviews.index') }}">Reviews made</a>
                                                 </li>
                                                
                                             </ul>
@@ -125,9 +124,8 @@
                                         
                                         
 
-                                        <li class="nav-item dropdown new-nav-item">
-                                            <a class="nav-link dropdown-toggle" href="javascript:void(0)"
-                                                data-bs-toggle="dropdown">Subscriptions</a>
+                                        <li class="nav-item new-nav-item">
+                                            <a class="nav-link" href="{{ route('business_admin.reports.subscription') }}">Subscriptions</a>
                                         </li>
 
                                         <li class="nav-item dropdown">
@@ -165,7 +163,7 @@
                                 </li>
 
 
-                                <a href="#" class="user-box">
+                                <a href="{{ route('public.home') }}" class="user-box">
                                     <span class="header-icon" style="background:#e0f6fe;border:1px solid#113d6b">
                                         <i class="iconly-Home icli"></i>
                                     </span>
@@ -179,8 +177,8 @@
                                 
                             </ul>
 
-                            
-                            <a href="logout" class="user-box">
+                            <form method="POST" action="{{ route('logout') }}"></form>
+                            <button type="submit" class="user-box">
                                 <span class="header-icon" style="background:#4d9eba;border:1px solid#fff">
                                     <i class="iconly-Logout icli"></i>
                                 </span>
@@ -188,19 +186,19 @@
                                     <h6 class="text-content">Logout</h6>
                                      
                                 </div>
-                            </a>
+                            </button>
 
                             
 
                             
 
-                            <a href="logout" class="user-box">
+                            <a href="#" class="user-box">
                                 <span class="header-icon">
                                     <i class="iconly-Profile icli"></i>
                                 </span>
                                 <div class="user-name">
                                     <h6 class="text-content">My Account</h6>
-                                    <h4 class="mt-1">Jennifer V. Wards</h4>
+                                    <h4 class="mt-1">{{ auth()->user()->name ?? "Jennifer V. Watts" }}</h4>
                                 </div>
                             </a>
 
@@ -225,21 +223,21 @@
             </li>
 
             <li class="mobile-category">
-                <a href="javascript:void(0)">
+                <a href="{{ route('business_admin.businesses.index') }}">
                     <i class="iconly-Category  icli js-link"></i>
                     <span>Businesses</span>
                 </a>
             </li>
 
             <li>
-                <a href="{{ route('public.search') }}" class="search-box">
+                <a href="{{ route('business_admin.products.index') }}" class="search-box">
                     <i class="iconly-Bag-2 icli js-link"></i>
                     <span>Products</span>
                 </a>
             </li>
 
             <li>
-                <a href="{{ route('public.errands.run') }}" class="search-box">
+                <a href="{{ route('business_admin.services.index') }}" class="search-box">
                     <i class="iconly-Swap icli js-link"></i>
                     <span>Services</span>
                 </a>
