@@ -49,7 +49,7 @@
     
     <!-- Plugin CSS file with desired skin css -->
     <link rel="stylesheet" href="{{ asset('assets/public/assets/css/vendors/ion.rangeSlider.min.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('assets/select2/css/select2.min.css') }}">
 
     <style>
     .no-scrollbar::-webkit-scrollbar{
@@ -151,6 +151,7 @@
 
     <!-- Sticky-bar js -->
     <script src="{{ asset('assets/public/assets/js/sticky-cart-bottom.js') }}"></script>
+    <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
 
     @yield('script')
 </body>

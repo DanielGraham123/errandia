@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-    'UNIT' => ['BACKGROUND','SECTION','SERIES','CLASS'],
     'PERMISSION_GROUPS' => [
         ['name'=>'errands'], 
         ['name'=>'businesses'], 
