@@ -14,7 +14,7 @@
                                             <div class="top-nav top-header">
                                                 <div class="container-fluid-lg">
                                                     <div class="container text-center">
-                                                        <h3 class="h3 mt-3 text-white">Search for Products and Services within Cameroon with Errandia</h3>
+                                                        <h3 class="h3 mt-3 text-white">Looking for a specific product? Errandia helps you find exactly what you need.</h3>
                                                         <span class="d-block h5 mb-3 text-white">And let the suppliers Contact you with Proposals</span>
                                                     </div>
                                                
@@ -148,12 +148,12 @@
                         <img src="../assets/images/fashion/banner/1.jpg" class="bg-img blur-up lazyload" alt="">
                         <div class="banner-details p-center-left p-4">
                             <div>
-                                <h2 class="text-kaushan fw-normal theme-color">Get Ready To</h2>
-                                <h3 class="mt-2 mb-3">TAKE ON THE DAY!</h3>
-                                <p class="text-content banner-text">In publishing and graphic design, Lorem
-                                    ipsum is a placeholder text commonly used to demonstrate.</p>
+                                <h2 class="text-kaushan fw-normal theme-color">Seat at Home</h2>
+                                <h3 class="mt-2 mb-3">& Relaxe!</h3>
+                                <p class="text-content banner-text">Having trouble searching for products or services? Errandia offers you a perfect platform
+                                     for efficiently running errands and finding what you need. Save time and stress with these helpful suggestions.</p>
                                 <button onclick="location.href = 'shop-left-sidebar.html';"
-                                    class="btn btn-animation btn-sm mend-auto">Shop Now <i
+                                    class="btn btn-animation btn-sm mend-auto">Search Now <i
                                         class="fa-solid fa-arrow-right icon"></i></button>
                             </div>
                         </div>
@@ -237,7 +237,7 @@
                                                     <div class="product-rating">
                                                         <p class="line-clamp-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Saepe veniam consectetur fugit ut recusandae error provident inventore molestias perspiciatis, voluptatibus excepturi voluptas et maiores delectus beatae, vero porro, fugiat ipsum?</p>
                                                     </div>
-                                                    <button class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color"> Call Customer
+                                                    <button class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color btn-sm"> Call Customer
                                                     &nbsp;<span class="add-icon bg-light-gray">
                                                             <i class="fa fa-phone"></i>
                                                         </span>

@@ -46,6 +46,8 @@
                                 Follow us on social media <br>
                                 <span class="fa fa-facebook fa-2x mt-2 mx-2 text-info"></span>
                                 <span class="fa fa-instagram fa-2x mt-2 mx-2 text-overline"></span>
+                                <span class=" fa-2x mt-2 mx-2 text-overline"><i class="fab fa-tiktok text-danger"></i></span>
+                                <span class=" fa-2x mt-2 mx-2 text-overline"><i class="fa-brands fa-twitter text-primary"></i></span>
                             </div>
 
                             <hr class="my-4">

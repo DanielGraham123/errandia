@@ -5,22 +5,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fastkart">
-    <meta name="keywords" content="Fastkart">
-    <meta name="author" content="Fastkart">
+    <meta name="description" content="Errandia">
+    <meta name="keywords" content="Searching for products and services can be time-consuming and overwhelming.
+     Errandia allows you to efficiently run errands and find everything you need with ease.">
+    <meta name="author" content="Errandia Developer Team ">
     <link rel="icon" href="{{ asset('assets/admin/logo/errandia-logo.png') }}" type="image/x-icon">
     <title>{{ env('APP_NAME') ?? 'Errandia' }}</title>
 
-    <!-- Google font -->
+    <!-- Google font 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+        rel="stylesheet"> 
     <link
         href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+        rel="stylesheet">-->
 
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
     <!-- bootstrap css -->

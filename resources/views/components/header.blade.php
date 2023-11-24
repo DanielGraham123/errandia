@@ -176,8 +176,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="onhover-div onhover-div-login">
-                                            <ul class="user-box-name">
+                                        <div class="onhover-div onhover-div-login lh-2">
+                                            <ul class="user-box-name ">
                                                 @if (auth()->check() || auth('admin')->check())
                                                     <li class="product-box-contain">
                                                         <i></i>
