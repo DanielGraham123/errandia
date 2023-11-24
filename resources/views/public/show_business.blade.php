@@ -54,7 +54,7 @@
                                 <a href="{{ route('public.business.show', 'slug') }}" class="my-2 d-flex">
                                     <span class="fa fa-angle-right fa-2x mr-3"></span>
                                     @if ($branch->image_path != null)
-                                        <img src="{{ asset('uploads/logos/').$branch->image_path }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
+                                        <img src="{{ asset('uploads/logos/'.$branch->image_path) }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
                                     @else
                                         <span class="fa fa-cog fa-2x text-h1 d-block text-center"></span>
                                     @endif
@@ -64,7 +64,7 @@
                                 <div class="my-2 d-flex">
                                     <span class="fa fa-caret-right fa-2x mr-3"></span>
                                     @if ($business->image_path != null)
-                                        <img src="{{ asset('assets/admin/images/reviews-detail-businessLogo.png')}}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
+                                        <img src="{{ asset('uploads/logos/'.$business->image_path) }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
                                     @else
                                         <span class="fa fa-cog fa-2x text-h1 d-block text-center"></span>
                                     @endif
