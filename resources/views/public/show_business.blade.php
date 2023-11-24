@@ -51,7 +51,7 @@
                             <hr class="my-4">
                             <span class="text-h6 mb-3">Visit Our Other Branches</span><br>
                             @forelse ($branches as $branch)
-                                <a href="{{ route('public.business.show', 'slug') }}" class="my-2 d-flex">
+                                <a href="{{ route('public.business.show', $branch->slug) }}" class="my-2 d-flex">
                                     <span class="fa fa-angle-right fa-2x mr-3"></span>
                                     @if ($branch->image_path != null)
                                         <img src="{{ asset('uploads/logos/'.$branch->image_path) }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
