@@ -8,7 +8,7 @@
                         <div class="card-body">
                             <span class="text-h6 d-block text-center mx-auto">{{ $business->name }}</span> <span class="fas fa-verified text-info fa-2x"></span><br>
                             @if ($business->image_path != null)
-                                <img src="{{ asset('assets/admin/images/reviews-detail-businessLogo.png')}}" class="img-responsive mx-auto my-3 d-block" style="width: 12rem; height: auto;">
+                                <img src="{{ asset('uploads/logos/'.$shop->image_path) }}" class="img-responsive mx-auto my-3 d-block" style="width: 12rem; height: auto;">
                             @else
                                 <span class="fa fa-cog fa-5x text-h1 d-block text-center"></span>
                             @endif
