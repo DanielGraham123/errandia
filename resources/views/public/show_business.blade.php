@@ -36,9 +36,9 @@
                                 <a class="button-primary " href=""><span class="fa fa-whatsapp"></span> Chat on Whatsapp</a>
                             </div>
                             <div class="my-2 d-flex justify-content-center">
-                                <a class="button-tertiary" href=""><span class="fa fa-phone"></span> Call 672387532</a>
+                                <a class="button-secondary " href=""><span class="fa fa-phone"></span> Call 672387532</a>
                             </div>
-                            <div class="my-2 d-flex justify-content-center">
+                            <div class="my-2 d-flex justify-content-center ">
                                 <a class="button-secondary " href=""> Follow this Business</a>
                             </div>
 

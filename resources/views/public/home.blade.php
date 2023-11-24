@@ -190,8 +190,7 @@
                                 <div>
                                     <h2 class="text-qwitcher">Stay at Home</h2>
                                     <h4>and let Errandia do the search</h4>
-                                    <button onclick="location.href = 'shop-left-sidebar.html';" class="btn btn-md">Shop
-                                        Now <i class="fa-solid fa-arrow-right icon"></i></button>
+                                    <button onclick="location.href = 'shop-left-sidebar.html';" class="btn btn-md">Register Today <i class="fa-solid fa-arrow-right icon"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -238,7 +237,7 @@
                                                     <div class="product-rating">
                                                         <p class="line-clamp-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Saepe veniam consectetur fugit ut recusandae error provident inventore molestias perspiciatis, voluptatibus excepturi voluptas et maiores delectus beatae, vero porro, fugiat ipsum?</p>
                                                     </div>
-                                                    <button class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color"> Call this Customer
+                                                    <button class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color"> Call Customer
                                                     &nbsp;<span class="add-icon bg-light-gray">
                                                             <i class="fa fa-phone"></i>
                                                         </span>
