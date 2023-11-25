@@ -54,6 +54,7 @@ class ProductController extends Controller
             $product->quantity = $request->quantity ?? 0;
             $product->service = $request->service;
             $product->search_index = $this->searchIndex($request);
+            $product->tags = $request->tags;
             $product->views = '';
 
             if ($request->file('featured_image')) {

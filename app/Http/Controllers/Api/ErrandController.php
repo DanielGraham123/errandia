@@ -156,6 +156,7 @@ class ErrandController extends Controller
                 $errand->description = $request->description;
                 $errand->slug = Str::slug($request->title). '-' . time();
                 $errand->sub_categories = trim($request->categories);
+                $errand->street_id = $request->street_id;
                 $errand->read_status = false;
                 $errand->save();
 
