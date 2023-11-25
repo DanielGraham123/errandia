@@ -23,6 +23,7 @@ class CreateItemQuotesTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('slug');
+            $table->bigInteger('street_id')->unsigned();
             $table->string('sub_categories');
             $table->boolean('read_status')->default(0);
             $table->softDeletes();
