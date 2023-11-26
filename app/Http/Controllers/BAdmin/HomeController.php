@@ -49,7 +49,6 @@ class HomeController extends Controller
         return view('b_admin.businesses.branches.create', $data);
     }
 
-    
     public function save_business(Request $request){
         
         $validity = Validator::make($request->all(), [
@@ -91,8 +90,7 @@ class HomeController extends Controller
 
         return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
     }
-
-    
+ 
     public function save_business_branch(Request $request, $slug){
         
         $validity = Validator::make($request->all(), [
@@ -147,7 +145,6 @@ class HomeController extends Controller
         return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
     }
 
-
     public function edit_business($slug){
         $data['business'] = Shop::whereSlug($slug)->first();
         if($data['business'] != null){
@@ -159,7 +156,6 @@ class HomeController extends Controller
             return view('admin.businesses.edit', $data);
         }
     }
-
 
     public function update_business(Request $request, $slug){
         
@@ -210,7 +206,6 @@ class HomeController extends Controller
         return view('b_admin.businesses.managers.create', $data);
     }
 
-
     public function save_manager(Request $request){
         // dd($request->all());
         $validity = Validator::make($request->all(), [
@@ -232,7 +227,6 @@ class HomeController extends Controller
         return redirect(route('business_admin.managers.index'))->with('success', 'Manager successfully created.');
     }
 
-
     public function business_branches($slug){
         $business = Shop::whereSlug($slug)->first();
         $data['business'] = $business;
@@ -240,15 +234,10 @@ class HomeController extends Controller
         return view('b_admin.businesses.branches.index', $data);
     }
 
-
-    
-
-
     public function enquiries(){
         $data['enquiries'] = [];
         return view('b_admin.enquiries.index', $data);
     }
-
 
     public function show_enquiry(Request $request, $slug){
         return view('b_admin.enquiries.create');
@@ -361,7 +350,6 @@ class HomeController extends Controller
 
         return view('b_admin.services.create_categ_images', $data);
     }
-
 
     
     public function update_save_service(Request $request, $slug)
