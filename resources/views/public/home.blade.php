@@ -145,7 +145,7 @@
             <div class="row g-md-4 g-3">
                 <div class="col-xxl-8 col-xl-12 col-md-7">
                     <div class="banner-contain hover-effect">
-                        <img src="../assets/images/fashion/banner/1.jpg" class="bg-img blur-up lazyload" alt="">
+                        <img src="{{ asset('assets/images/bg2.jpg') }}" class="bg-img blur-up lazyload" alt="">
                         <div class="banner-details p-center-left p-4">
                             <div>
                                 <h2 class="text-kaushan fw-normal theme-color">Seat at Home</h2>
@@ -162,12 +162,12 @@
 
                 <div class="col-xxl-4 col-xl-12 col-md-5">
                     <a href="shop-left-sidebar.html" class="banner-contain hover-effect h-100">
-                        <img src="../assets/images/fashion/banner/2.jpg" class="bg-img blur-up lazyload" alt="">
+                        <img src="{{ asset('assets/images/bg3.jpg') }}" class="bg-img blur-up lazyload" alt="">
                         <div class="banner-details p-center-left p-4 h-100">
                             <div>
-                                <h2 class="text-kaushan fw-normal text-danger">20% Off</h2>
-                                <h3 class="mt-2 mb-2 theme-color">SUMMRY</h3>
-                                <h3 class="fw-normal product-name text-title">Product</h3>
+                                <h2 class="text-kaushan fw-normal text-danger bold">Errandia </h2>
+                                <h3 class="mt-2 mb-2 theme-color">Gots our Back !</h3>
+                               
                             </div>
                         </div>
                     </a>

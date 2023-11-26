@@ -13,7 +13,10 @@
                             </div>
 
                             <div class="footer-logo-contain">
-                                <p>Stay at home and let errandia do the search for you</p>
+                                <p>
+                                    Searching for products and services online is now easier than ever. Use Errandia
+                                    to find the products and services you need, all from the comfort of your own home.
+                                    </p>
 
                                 <ul class="address">
                                     <li>
