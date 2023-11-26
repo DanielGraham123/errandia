@@ -8,7 +8,7 @@
                         <div class="card-body">
                             <span class="text-h6 d-block text-center mx-auto">{{ $business->name }}</span> <span class="fas fa-verified text-info fa-2x"></span><br>
                             @if ($business->image_path != null)
-                                <img src="{{ asset('assets/admin/images/reviews-detail-businessLogo.png')}}" class="img-responsive mx-auto my-3 d-block" style="width: 12rem; height: auto;">
+                                <img src="{{ asset('uploads/logos/'.$business->image_path) }}" class="img-responsive mx-auto my-3 d-block" style="width: 12rem; height: auto;">
                             @else
                                 <span class="fa fa-cog fa-5x text-h1 d-block text-center"></span>
                             @endif
@@ -36,9 +36,9 @@
                                 <a class="button-primary " href=""><span class="fa fa-whatsapp"></span> Chat on Whatsapp</a>
                             </div>
                             <div class="my-2 d-flex justify-content-center">
-                                <a class="button-tertiary" href=""><span class="fa fa-phone"></span> Call 672387532</a>
+                                <a class="button-secondary " href=""><span class="fa fa-phone"></span> Call 672387532</a>
                             </div>
-                            <div class="my-2 d-flex justify-content-center">
+                            <div class="my-2 d-flex justify-content-center ">
                                 <a class="button-secondary " href=""> Follow this Business</a>
                             </div>
 
@@ -46,15 +46,17 @@
                                 Follow us on social media <br>
                                 <span class="fa fa-facebook fa-2x mt-2 mx-2 text-info"></span>
                                 <span class="fa fa-instagram fa-2x mt-2 mx-2 text-overline"></span>
+                                <span class=" fa-2x mt-2 mx-2 text-overline"><i class="fab fa-tiktok text-danger"></i></span>
+                                <span class=" fa-2x mt-2 mx-2 text-overline"><i class="fa-brands fa-twitter text-primary"></i></span>
                             </div>
 
                             <hr class="my-4">
                             <span class="text-h6 mb-3">Visit Our Other Branches</span><br>
                             @forelse ($branches as $branch)
-                                <a href="{{ route('public.business.show', 'slug') }}" class="my-2 d-flex">
+                                <a href="{{ route('public.business.show', $branch->slug) }}" class="my-2 d-flex">
                                     <span class="fa fa-angle-right fa-2x mr-3"></span>
                                     @if ($branch->image_path != null)
-                                        <img src="{{ asset('uploads/logos').$branch->image_path }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
+                                        <img src="{{ asset('uploads/logos/'.$branch->image_path) }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
                                     @else
                                         <span class="fa fa-cog fa-2x text-h1 d-block text-center"></span>
                                     @endif
@@ -64,7 +66,7 @@
                                 <div class="my-2 d-flex">
                                     <span class="fa fa-caret-right fa-2x mr-3"></span>
                                     @if ($business->image_path != null)
-                                        <img src="{{ asset('assets/admin/images/reviews-detail-businessLogo.png')}}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
+                                        <img src="{{ asset('uploads/logos/'.$business->image_path) }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
                                     @else
                                         <span class="fa fa-cog fa-2x text-h1 d-block text-center"></span>
                                     @endif

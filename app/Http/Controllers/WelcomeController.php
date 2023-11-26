@@ -64,8 +64,24 @@ class WelcomeController extends Controller
 
     public function search(Request $request)
     {
+        $qstring = $request->searchString;
+        $data['search_string'] = $qstring;
+        $qstringTokens = explode(' ', $qstring);
+
+        $qResult = [];
+        $FullTextResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->inRandomOrder()->get();
+        $FullTextShopResults = \App\Models\Product::where('items.name', 'like', '%'.$request.'%')->join('shops', 'shops.id', '=', 'items.shop_id')->inRandomOrder()->select('shops.*')->get();
         
-        $data['results'] = Shop::first();
+        $qResultBuilder = \App\Models\Product::where('items.name', '!=', $qstring);
+        foreach ($qstringTokens as $key => $token) {
+            $qResultBuilder->orWhere('search_index', 'LIKE', '%'.$token.'%');
+        }
+        $qResult = $qResultBuilder->inRandomOrder()->get();
+        $qResultShops = $qResultBuilder->join('shops', 'shops.id', '=', 'items.shop_id')->get(['shops.*']);
+        
+
+        $data['products'] = array_merge($FullTextResults->toArray(), $qResult->toArray());
+        $data['shops'] =array_merge($FullTextShopResults->toArray(), $qResultShops->toArray());
         // dd($data);
         return view('public.search', $data);
     }

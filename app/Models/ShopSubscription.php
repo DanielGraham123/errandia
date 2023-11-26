@@ -9,6 +9,7 @@ class ShopSubscription extends Model
 {
     use HasFactory;
 
+    
     public function plan()
     {
         # code...

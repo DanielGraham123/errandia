@@ -46,6 +46,7 @@ class CustomLoginController extends Controller
 
     public function logout(Request $request){
         Auth::logout();
+        Auth::guard('admin')->logout();
         session()->flush();
         return redirect(route('login'));
     }

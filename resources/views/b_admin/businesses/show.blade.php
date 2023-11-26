@@ -48,6 +48,10 @@
 
 
     </div>
+
+    
+
+    
     <div class="mx-3 rounded py-4 px-2">
         <span class="text-uppercase h6 my-3 d-block">Business details</span>
         <div class="row my-3 border-bottom">

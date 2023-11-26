@@ -55,10 +55,10 @@
                 </div>
                 <div class="col-md-12 px-2 py-2">
                     <div class="input-group">
-                        <span class="input-group-addon fa fa-phone text-h6"></span>
-                        <select class="form-control w-25" name="phone_code">
+                        <span class="fa fa-phone text-h6"></span>
+                        <select class="input-group-addon" name="phone_code" style="max-width: 7rem !important;">
                             @foreach (config('country-phone-codes') as $phcode)
-                                <option value="+{{ $phcode['code'] }}" {{ old('phone_code') == $phcode ? 'selected' : '' }}>{{ $phcode['country'] }} (+{{ $phcode['code'] }})</option>
+                                <option value="+{{ $phcode['code'] }}" {{ old('phone_code') == $phcode ? 'selected' : '' }}>{{ $phcode['iso'] }} (+{{ $phcode['code'] }})</option>
                             @endforeach
                         </select>
                         <input class="form-control" name="phone" value="{{old('phone')}}" type="number" required />
@@ -67,9 +67,9 @@
                 <div class="col-md-12 px-2 py-2">
                     <div class="input-group">
                         <span class="input-group-addon fa fa-whatsapp text-h6"></span>
-                        <select class="form-control w-25" name="whatsapp_phone_code">
+                        <select class="form-control w-25" name="whatsapp_phone_code" style="max-width: 7rem !important;">
                             @foreach (config('country-phone-codes') as $phcode)
-                                <option value="+{{ $phcode['code'] }}" {{ old('whatsapp_phone_code') == $phcode ? 'selected' : '' }}>{{ $phcode['country'] }} (+{{ $phcode['code'] }})</option>
+                                <option value="+{{ $phcode['code'] }}" {{ old('whatsapp_phone_code') == $phcode ? 'selected' : '' }}>{{ $phcode['iso'] }} (+{{ $phcode['code'] }})</option>
                             @endforeach
                         </select>
                         <input class="form-control" name="whatsapp_phone" value="{{old('whatsapp_phone')}}" type="number" placeholder="Whatstapp phone number" />
