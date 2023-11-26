@@ -119,16 +119,17 @@
                                         <i class="fa-solid fa-angle-down"></i>
                                     </button>
                                 </div>
-
-                                <div class="search-box">
-                                    <div class="input-group">
-                                        <input type="search" class="form-control" placeholder="I'm searching for..."
-                                            aria-label="Recipient's username" aria-describedby="button-addon2">
-                                        <button class="btn" type="button" id="button-addon2" style="background:#113d6b">
-                                            <i data-feather="search"></i>
-                                        </button>
+                                <form method="get" action="{{ route('public.search') }}">
+                                    <div class="search-box">
+                                        <div class="input-group">
+                                            <input type="search" class="form-control" placeholder="I'm searching for..."
+                                                aria-label="Recipient's username" aria-describedby="button-addon2" name="searchString" required>
+                                            <button class="btn" type="submit" id="button-addon2" style="background:#113d6b" onclick="runSearch()">
+                                                <i data-feather="search"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
 
                             <div class="rightside-box">

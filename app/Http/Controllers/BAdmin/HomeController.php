@@ -241,9 +241,6 @@ class HomeController extends Controller
     }
 
 
-    
-
-
     public function enquiries(){
         $data['enquiries'] = [];
         return view('b_admin.enquiries.index', $data);
@@ -287,6 +284,7 @@ class HomeController extends Controller
 
                 // save product
                 $item = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 'service'=>false, 'tags' => $request->tags];
+                
                 if(($file = $request->file('image')) != null){
                     $path = public_path('uploads/item_images/');
                     $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
@@ -363,6 +361,13 @@ class HomeController extends Controller
                 $product = \App\Models\Product::whereSlug($request->item_slug)->first();
                 $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
                 if($product != null){
+                    $biz = $data['shop'];
+                    if($biz != null && $biz->contactInfo != null){
+                        $bizIndex = ($biz->contactInfo->street->town->region->country->name??null).'_'.($biz->contactInfo->street->town->region->name??null).'_'.($biz->contactInfo->street->town->name??null).'_'.($biz->contactInfo->street->name??null).'_'.($biz->name??null).'_'.implode('_', $biz->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $biz->subCategories->pluck('description')->toArray() ?? []);
+                        $prodIndex = $product->name.'_'.str_replace(',', '_', $product->tags).'_'.implode('_', $product->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $product->subCategories->pluck('description')->toArray() ?? []);
+                        $index = $bizIndex.'_'.$prodIndex;
+                        $update['search_index'] = $index;
+                    }
                     $product->update($update);
                 }
 
