@@ -32,7 +32,10 @@ class ErrandResource extends JsonResource
             'user' => new UserResource($user),
             'images' => $images,
             'created_at' => $this->created_at,
-            'when' => $this->created_at->diffForHumans()
+            'when' => $this->created_at->diffForHumans(),
+            'street' => $this->street ? $this->street->name : '',
+            'town' => $this->street ? $this->street->town->name : '',
+            'region' => $this->street ? $this->street->town->region->name: ''
         ];
     }
 }
