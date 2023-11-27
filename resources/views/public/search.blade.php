@@ -218,7 +218,7 @@
                     <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
                         @foreach ($shops as $key=>$shop)
                             <div>
-                                <div class="product-box-3 h-100 wow fadeInUp shadow" style="visibility: visible; animation-name: fadeInUp;">
+                                <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-footer">
                                         <div class="product-detail text-center">
                                             <a href="{{ route('public.business.show', 'slug') }}">
