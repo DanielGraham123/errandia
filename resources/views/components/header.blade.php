@@ -122,7 +122,7 @@
                                 <form method="get" action="{{ route('public.search') }}">
                                     <div class="search-box">
                                         <div class="input-group">
-                                            <input type="search" class="form-control" placeholder="I'm searching for..."
+                                            <input type="search" class="form-control" placeholder="I'm searching for..." value="{{ $search_string }}"
                                                 aria-label="Recipient's username" aria-describedby="button-addon2" name="searchString" required>
                                             <button class="btn" type="submit" id="button-addon2" style="background:#113d6b" onclick="runSearch()">
                                                 <i data-feather="search"></i>
