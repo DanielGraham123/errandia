@@ -64,8 +64,28 @@ class WelcomeController extends Controller
 
     public function search(Request $request)
     {
+        $qstring = $request->searchString;
+        $data['search_string'] = $qstring;
+        $qstringTokens = explode(' ', $qstring);
+
+        $qResult = [];
+        $FullTextResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->inRandomOrder()->get();
+        $FullTextShopResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->join('shops', 'shops.id', '=', 'items.shop_id')->inRandomOrder()->select('shops.*')->get();
+        $qResultBuilder = \App\Models\Product::where('shop_id', '!=', null);
+        foreach ($qstringTokens as $key => $token) {
+            $qResultBuilder->orWhere('search_index', 'LIKE', '%'.$token.'%');
+        }
+        $qShopResultBuilder = Shop::join('items', 'items.shop_id', '=', 'shops.id')
+            ->where('items.name', '!=', null);
+        foreach ($qstringTokens as $key => $token) {
+            $qShopResultBuilder->orWhere('items.search_index', 'LIKE', '%'.$token.'%');
+        }
+        $qResult = $qResultBuilder->inRandomOrder()->get();
+        $qResultShops = $qShopResultBuilder->get(['shops.*']);
         
-        $data['results'] = Shop::first();
+
+        $data['products'] = array_unique(array_merge($FullTextResults->all(), $qResult->all()));
+        $data['shops'] =array_unique(array_merge($FullTextShopResults->all(), $qResultShops->all()));
         // dd($data);
         return view('public.search', $data);
     }

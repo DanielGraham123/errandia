@@ -49,7 +49,6 @@ class HomeController extends Controller
         return view('b_admin.businesses.branches.create', $data);
     }
 
-    
     public function save_business(Request $request){
         
         $validity = Validator::make($request->all(), [
@@ -91,8 +90,7 @@ class HomeController extends Controller
 
         return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
     }
-
-    
+ 
     public function save_business_branch(Request $request, $slug){
         
         $validity = Validator::make($request->all(), [
@@ -147,7 +145,6 @@ class HomeController extends Controller
         return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
     }
 
-
     public function edit_business($slug){
         $data['business'] = Shop::whereSlug($slug)->first();
         if($data['business'] != null){
@@ -159,7 +156,6 @@ class HomeController extends Controller
             return view('admin.businesses.edit', $data);
         }
     }
-
 
     public function update_business(Request $request, $slug){
         
@@ -204,34 +200,6 @@ class HomeController extends Controller
         return view('b_admin.businesses.managers.index', $data);
     }
 
-    public function create_manager(Request $request){
-        $data['user'] = auth()->user();
-        $data['businesses'] = $data['user']->shops;
-        return view('b_admin.businesses.managers.create', $data);
-    }
-
-
-    public function save_manager(Request $request){
-        // dd($request->all());
-        $validity = Validator::make($request->all(), [
-            'name'=>'required', 'email'=>'email|required',
-            'confirm_password'=>'required|min:6', 'password'=>'required|same:confirm_password'
-        ]);
-
-        if($validity->fails()){
-            return back()->with('error', $validity->errors()->first())->withInput();
-        }
-
-        if(Manager::where(['email'=>$request->email])->count() > 0){
-            return back()->with('error', "A manager already exist with this email");
-        }
-        $data = ['name'=>$request->name, 'email'=>$request->email, 'password'=>Hash::make($request->password), 'user_id'=>auth()->id(), 'slug'=>'mana'.time().'ger'.random_int(1000000, 9999999)];
-        $instance = new Manager($data);
-        $instance->save();
-
-        return redirect(route('business_admin.managers.index'))->with('success', 'Manager successfully created.');
-    }
-
 
     public function business_branches($slug){
         $business = Shop::whereSlug($slug)->first();
@@ -240,15 +208,10 @@ class HomeController extends Controller
         return view('b_admin.businesses.branches.index', $data);
     }
 
-
-    
-
-
     public function enquiries(){
         $data['enquiries'] = [];
         return view('b_admin.enquiries.index', $data);
     }
-
 
     public function show_enquiry(Request $request, $slug){
         return view('b_admin.enquiries.create');
@@ -287,6 +250,7 @@ class HomeController extends Controller
 
                 // save product
                 $item = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 'service'=>false, 'tags' => $request->tags];
+                
                 if(($file = $request->file('image')) != null){
                     $path = public_path('uploads/item_images/');
                     $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
@@ -363,6 +327,13 @@ class HomeController extends Controller
                 $product = \App\Models\Product::whereSlug($request->item_slug)->first();
                 $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
                 if($product != null){
+                    $biz = $data['shop'];
+                    if($biz != null && $biz->contactInfo != null){
+                        $bizIndex = ($biz->contactInfo->street->town->region->country->name??null).'_'.($biz->contactInfo->street->town->region->name??null).'_'.($biz->contactInfo->street->town->name??null).'_'.($biz->contactInfo->street->name??null).'_'.($biz->name??null).'_'.implode('_', $biz->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $biz->subCategories->pluck('description')->toArray() ?? []);
+                        $prodIndex = $product->name.'_'.str_replace(',', '_', $product->tags).'_'.implode('_', $product->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $product->subCategories->pluck('description')->toArray() ?? []);
+                        $index = $bizIndex.'_'.$prodIndex;
+                        $update['search_index'] = $index;
+                    }
                     $product->update($update);
                 }
 
@@ -506,7 +477,6 @@ class HomeController extends Controller
         
         return redirect(route('business_admin.services.index', $data['shop']->slug));
     }
-
 
     
     public function update_save_service(Request $request, $slug)
