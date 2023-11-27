@@ -30,6 +30,7 @@ class CreateItemsTable extends Migration
             $table->text('views');
             $table->string('featured_image');
             $table->integer('quantity')->nullable();
+            $table->string('tags')->nullable();
             $table->timestamps();
         });
     }

@@ -50,6 +50,7 @@ class ProductResource extends JsonResource
             // 'is_viewed' => in_array(auth('api')->user()->id, $views),
             'views' => count($views), 
             'reviews' => $this->reviews()->count(),
+            'tags' => $this->tags ?? '',
             'images' => $images
         ];
     }
