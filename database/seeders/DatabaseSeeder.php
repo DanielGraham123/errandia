@@ -27,6 +27,6 @@ class DatabaseSeeder extends Seeder
 //        $this->call(UserRoleSeeder::class);
 //        $this->call(UserPermissionSeeder::class);
 //        $this->call(\Database\Seeders\ErrandSeeder::class);
-        $this->call(\Database\Seeders\ItemSeeder::class);
+        $this->call(\Database\Seeders\ErrandSeeder::class);
     }
 }

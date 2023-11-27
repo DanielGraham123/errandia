@@ -246,7 +246,7 @@
                     </div>
 
                     <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
-                        @for($i = 0; $i < 9; $i++)
+                        @foreach($errands as $errand)
                             <div>
                                 <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-header">
@@ -261,13 +261,14 @@
                                     <div class="product-footer">
                                         <div class="product-detail">
                                             <a href="product-left-thumbnail.html">
-                                                <h5 class="name">I need a Dell Laptop charger</h5>
+                                                <h5 class="name">{{$errand->title}}</h5>
                                             </a>
-                                            <p class="text-content mt-1 mb-2 line-clamp-3">Cheesy feet cheesy grin brie.
-                                                Mascarpone cheese and wine hard cheese the big cheese everyone loves smelly
-                                                cheese macaroni cheese croque monsieur.</p>
+                                            <p class="text-content mt-1 mb-2 line-clamp-3">
+                                                {{$errand->description}}
+                                            </p>
                                             
-                                            <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
+                                            <h6 class="unit"><span class="fa fa-location"></span>{{$errand->street->name}},
+                                                {{$errand->town->name}}, {{$errand->region->name}}</h6>
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
                                                 <button class="btn btn-add-cart">Call this Customer
@@ -291,7 +292,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
 
                 </div>

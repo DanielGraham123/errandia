@@ -24,7 +24,8 @@ class WelcomeController extends Controller
 
     public function home()
     {
-        return view("public.home");
+        $data['errands'] = Errand::orderBy('created_at', 'ASC')->take(12)->get();
+        return view("public.home", $data);
     }
 
     public function businesses($region = null)

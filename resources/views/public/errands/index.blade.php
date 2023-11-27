@@ -143,7 +143,8 @@
                                                 {{$value->description}}
                                             </p>
                                             
-                                            <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
+                                            <h6 class="unit"><span class="fa fa-location"></span>{{$value->street->name}},
+                                                {{$value->town->name}}, {{$value->region->name}}</h6>
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
                                                 <a href="{{ route('public.errands.view', 'slug') }}" class="btn btn-add-cart" >View

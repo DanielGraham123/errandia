@@ -36,4 +36,19 @@ class Errand extends Model
     {
         return $this->hasMany(ErrandImage::class, 'item_quote_id');
     }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function town()
+    {
+        return $this->belongsTo(Town::class);
+    }
+
+    public function street()
+    {
+        return $this->belongsTo(Street::class);
+    }
 }

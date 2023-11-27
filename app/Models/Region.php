@@ -12,4 +12,9 @@ class Region extends Model
     public function towns(){
         return $this->hasMany(Town::class);
     }
+
+    public function errands()
+    {
+        return $this->hasMany(Errand::class);
+    }
 }
