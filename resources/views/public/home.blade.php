@@ -166,7 +166,7 @@
                         <div class="banner-details p-center-left p-4 h-100">
                             <div>
                                 <h2 class="text-kaushan fw-normal text-danger bold">Errandia </h2>
-                                <h3 class="mt-2 mb-2 theme-color">Gots our Back !</h3>
+                                <h3 class="mt-2 mb-2 theme-color">Got your Back !</h3>
                                
                             </div>
                         </div>
