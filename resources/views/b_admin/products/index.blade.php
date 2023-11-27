@@ -47,15 +47,17 @@
                     <th>status</th>
                 </thead>
                 <tbody>
-                    @php $k = 1;
-                    @endphp
-                    @foreach(count($products) > 0 ? $products : collect([null, null, null, null, null, null]) as $prod)
+                    @foreach($products as $key => $prod)
                         <tr class="shadow-sm border-bottom bg-white">
-                            <td>{{ $k++}}</td>
+                            <td>{{ $key+1}}</td>
                             <td>
                                 <span class="">
-                                    <img style="height: 3rem; width: 3rem; border-radius: 0.5rem; border: 1px solid gray; margin: 0.4rem 0.7rem;" src="{{ asset('assets/admin/icons/icon-category-fashion.svg') }}">
-                                    <span style="color: var(--color-darkblue)">{{ $prod->name??"product name" }} <br> <i class="text-link">{{ $prod->category->name??"product sub-category" }}</i></span>
+                                    <img style="height: 3rem; width: 3rem; border-radius: 0.5rem; border: 1px solid gray; margin: 0.4rem 0.7rem;" src="{{ asset($prod->featured_image) }}">
+                                    <span style="color: var(--color-darkblue)">{{ $prod->name??"product name" }} <br>
+                                    @foreach($prod->subCategories as $subCategory)
+                                            <i class="text-link">{{ $subCategory->name }}, </i>
+                                    @endforeach
+                                    </span>
                                 </span>
                             </td>
                             <td> <span class="text-link d-block">{{ $prod->unit_price ?? 'unit price' }}</span></td>

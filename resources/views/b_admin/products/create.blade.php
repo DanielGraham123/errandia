@@ -23,7 +23,7 @@
                 <textarea class="form-control rounded" name="description" rows='4' required>{{ old('description', 'Description') }}</textarea>
                 <span class="d-block mt-4" style="font-weight: 700;">Product Tags</span>
                 <input class="form-control rounded" name="tags" value="{{ old('tags') }}" placeholder="tags" required>
-                <span class="d-block text-overline" style="font-weight: 700;">Enter terms related to your product</span>
+                <span class="d-block text-overline" style="font-weight: 700;">Enter tags related to your product</span>
                 <span class="d-block mt-4" style="font-weight: 700;">Upload Default image *</span>
                 <div class="d-flex flex-wrap justify-content-between" id="defaultImageContainer">
                     <div class="d-inlineblock">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <span class="d-block my-4"><button class="button-primary" type="submit">NEXT</button></span>
+            <span class="d-block my-4"><button class="button-primary submit-btn" type="submit">NEXT</button></span>
         </form>
     </div>
 @endsection

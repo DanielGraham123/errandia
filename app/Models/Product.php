@@ -26,7 +26,8 @@ class Product extends Model
         'search_index',
         'status',
         'unit_price',
-        'views'
+        'views',
+        'tags'
     ];
 
     public function category()

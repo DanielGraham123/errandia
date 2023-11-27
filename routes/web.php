@@ -214,8 +214,9 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('show/{product}', 'BAdmin\HomeController@show_product')->name('show');
         Route::get('create/{shop_slug}', 'BAdmin\HomeController@create_products')->name('create');
         Route::post('create/{shop_slug}', 'BAdmin\HomeController@save_products');
-        Route::post('create_update/{shop_slug}', 'BAdmin\HomeController@update_save_products')->name('create_update');
+        Route::post('create_update/{product}', 'BAdmin\HomeController@update_save_products')->name('create_update');
         Route::get('{shop_slug?}', 'BAdmin\HomeController@products')->name('index');
+        Route::post('save_images','BAdmin\HomeController@saveProductImages')->name('save_product_image');
     });
     Route::prefix('services')->name('services.')->group(function(){
         Route::get('show/{product}', 'BAdmin\HomeController@show_service')->name('show');

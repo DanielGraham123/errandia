@@ -24,15 +24,14 @@
   <component name="ChangeListManager">
     <list default="true" id="aa3f63f2-05a0-494f-9f41-a131b487b5b0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/WelcomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/WelcomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Errand.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Errand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Region.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Region.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Street.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Street.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Town.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Town.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/BAdmin/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/BAdmin/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/ProductImage.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ProductImage.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/ErrandSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/ErrandSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/public/errands/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/public/errands/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/public/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/public/home.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/create_categ_images.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/create_categ_images.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -319,7 +318,7 @@
       <workItem from="1700670745133" duration="897000" />
       <workItem from="1700810472239" duration="1018000" />
       <workItem from="1700846486929" duration="306000" />
-      <workItem from="1701088114561" duration="3602000" />
+      <workItem from="1701088114561" duration="20602000" />
     </task>
     <servers />
   </component>

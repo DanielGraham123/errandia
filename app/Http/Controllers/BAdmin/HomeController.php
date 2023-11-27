@@ -5,20 +5,25 @@ namespace App\Http\Controllers\BAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\ItemSubCategory;
 use App\Models\Manager;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Region;
 use App\Models\Shop;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
-    //
+    const PRODUCT_IMAGE_PATH = "uploads/products/";
     public function home(){
         // dd(1231231230);
         return view('b_admin.dashboard');
@@ -229,9 +234,6 @@ class HomeController extends Controller
     }
 
 
-    
-
-
     public function enquiries(){
         $data['enquiries'] = [];
         return view('b_admin.enquiries.index', $data);
@@ -263,19 +265,42 @@ class HomeController extends Controller
 
     public function save_products(Request $request, $slug){
 
-        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required', 'description'=>'required']);
-        if($validity->fails()){
-            return back()->withInput(request()->all())->with('error', $validity->errors()->first());
-        }
+        $valid_data =$request->validate([
+            'name'          =>'required',
+            'tags'          =>'required',
+            'image'         =>'required|image|mimes:jpeg,png,jpg|max:2048',
+            'description'   =>'required',
+            'price'         => 'required|numeric',
+        ]);
+        $shop               = Shop::whereSlug($slug)->first();
+        $imageName          = time() . '.' . $valid_data['image']->extension();
+
+        $createdProduct = Product::updateOrCreate([
+            'shop_id'           => $shop->id,
+            'slug'              => random_int(100, 500),
+        ],[
+            'description'       => $valid_data['description'],
+            'featured_image'    => self::PRODUCT_IMAGE_PATH.'/'.$valid_data['name'].'/images/'.$imageName,
+            'tags'              => $valid_data['tags'],
+            'name'              => $valid_data['name'],
+            'unit_price'        => $valid_data['price'],
+        ]);
+
         $data['categories'] = SubCategory::orderBy('name')->get();
-        $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['shop']       = $shop;
+        $data['product']    = $createdProduct;
+
+        $valid_data['image']->move(public_path(self::PRODUCT_IMAGE_PATH.'/'.$valid_data['name'].'/images/'), $imageName);
+        Session::put('product', $createdProduct);
 
         return view('b_admin.products.create_categ_images', $data);
     }
 
-    public function update_save_products(Request $request, $slug)
+    public function update_save_products(Request $request, $product)
     {
-        dd($request->all());
+        $savedProduct = Product::findOrFail($product);
+        $this->saveProductSubCategories($request->all()['categories'], $savedProduct);
+        return redirect()->route("business_admin.products.index", ['shop_slug' => $savedProduct->shop->slug])->with("success", "Product Added Successfully");
     }
 
     public function services(Request $request, $slug=null){
@@ -288,7 +313,6 @@ class HomeController extends Controller
         }
         return view('b_admin.services.index', $data);
     }
-
     
     public function create_service($slug){
         $user = auth()->user();
@@ -297,7 +321,6 @@ class HomeController extends Controller
         return view('b_admin.services.create', $data);
     }
 
-    
     public function save_service(Request $request, $slug){
 
         $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required', 'description'=>'required']);
@@ -309,14 +332,11 @@ class HomeController extends Controller
 
         return view('b_admin.services.create_categ_images', $data);
     }
-
-
     
     public function update_save_service(Request $request, $slug)
     {
         dd($request->all());
     }
-
 
     public function errands(Request $request){
         $data['errands'] = \App\Models\Errand::take(100)->get();
@@ -363,5 +383,30 @@ class HomeController extends Controller
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['streets'] = Street::orderBy('name')->get();
         return view('b_admin.errands.edit', $data);
+    }
+
+    private function saveProductSubCategories($subCategories, $product)
+    {
+        return $product->subCategories()->attach($subCategories);
+
+    }
+
+    public function saveProductImages(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        $image = time().'.'.$request['image']->extension;
+        $product_id = Session::get('product');
+        $product = Product::find($product_id);
+        ProductImage::create([
+            'item_id'       => $product->id,
+            'image'         =>  self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'.$image,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now()
+        ]);
+        $request['image']->move(public_path(self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'), $image);
+
+        return response()->json(["message" => "success"]);
     }
 }
