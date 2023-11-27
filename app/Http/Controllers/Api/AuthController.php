@@ -50,13 +50,13 @@ class AuthController extends Controller
             'password' => 'required|string|min:6'
         ]);
 
-        $validator->after(function ($validator) use ($request) {
-            if (empty($request->street_id)) {
-                $validator->errors()->add(
-                    'street_id', 'Please select a street'
-                );
-            }
-        });
+        // $validator->after(function ($validator) use ($request) {
+        //     if (empty($request->street_id)) {
+        //         $validator->errors()->add(
+        //             'street_id', 'Please select a street'
+        //         );
+        //     }
+        // });
 
         if($validator->fails()) {
             return response()->json(['data' => [
@@ -72,7 +72,9 @@ class AuthController extends Controller
                 $user->phone = $request->phone;
                 $user->password = Hash::make($request->password);
                 $user->address = $request->address ?? '';
-                $user->street_id = $request->street_id;
+                if ($request->street_id) {
+                    $user->street_id = $request->street_id;
+                }
                 if ($request->file('profile')) {
                     $user->photo = $request->file('profile')->store('users');
                 } 
