@@ -70,18 +70,22 @@ class WelcomeController extends Controller
 
         $qResult = [];
         $FullTextResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->inRandomOrder()->get();
-        $FullTextShopResults = \App\Models\Product::where('items.name', 'like', '%'.$request.'%')->join('shops', 'shops.id', '=', 'items.shop_id')->inRandomOrder()->select('shops.*')->get();
-        
-        $qResultBuilder = \App\Models\Product::where('items.name', '!=', $qstring);
+        $FullTextShopResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->join('shops', 'shops.id', '=', 'items.shop_id')->inRandomOrder()->select('shops.*')->get();
+        $qResultBuilder = \App\Models\Product::where('shop_id', '!=', null);
         foreach ($qstringTokens as $key => $token) {
             $qResultBuilder->orWhere('search_index', 'LIKE', '%'.$token.'%');
         }
+        $qShopResultBuilder = Shop::join('items', 'items.shop_id', '=', 'shops.id')
+            ->where('items.name', '!=', null);
+        foreach ($qstringTokens as $key => $token) {
+            $qShopResultBuilder->orWhere('items.search_index', 'LIKE', '%'.$token.'%');
+        }
         $qResult = $qResultBuilder->inRandomOrder()->get();
-        $qResultShops = $qResultBuilder->join('shops', 'shops.id', '=', 'items.shop_id')->get(['shops.*']);
+        $qResultShops = $qShopResultBuilder->get(['shops.*']);
         
 
-        $data['products'] = array_merge($FullTextResults->toArray(), $qResult->toArray());
-        $data['shops'] =array_merge($FullTextShopResults->toArray(), $qResultShops->toArray());
+        $data['products'] = array_unique(array_merge($FullTextResults->all(), $qResult->all()));
+        $data['shops'] =array_unique(array_merge($FullTextShopResults->all(), $qResultShops->all()));
         // dd($data);
         return view('public.search', $data);
     }
