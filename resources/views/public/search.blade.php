@@ -17,7 +17,7 @@
                     <form action="{{ route('public.search') }}" method="GET">
                         <div class="search-box">
                             <div class="input-group">
-                                <input type="search" value="{{ $search_string }}" name="searchString" class="form-control" placeholder="I am searching for ..." required aria-label="Example text with button addon">
+                                <input type="search" value="{{ $search_string ?? '' }}" name="searchString" class="form-control" placeholder="I am searching for ..." required aria-label="Example text with button addon">
                                 <button class="btn theme-bg-color text-white m-0" type="submit" id="button-addon1">Search</button>
                             </div>
                         </div>
