@@ -218,14 +218,14 @@
                     <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
                         @foreach ($shops as $key=>$shop)
                             <div>
-                                <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                <div class="product-box-3 h-100 wow fadeInUp " style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-footer">
                                         <div class="product-detail text-center">
                                             <a href="{{ route('public.business.show', 'slug') }}">
                                                 <h5 class="name py-2 bg-white">{{ $shop->name }}</h5>
                                             </a>
                                             <h6 class="unit"><span class="fa fa-location"></span>{{ $shop->contactInfo->location() }}</h6>
-                                            </h5>
+                                            
                                             <div class="add-to-cart-box bg-white shadow" >
                                                 <a  href="{{ route('public.business.show', 'slug') }}" class="btn btn-add-cart">Contact
                                                     <span class="add-icon bg-light-gray">
