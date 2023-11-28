@@ -77,6 +77,7 @@ class WelcomeController extends Controller
         //         $qry->orWhere('search_index', 'LIKE', '%'.$token.'%')->orWhere('tags', 'LIKE', '%'.$token.'%');
         //     }
         // });
+        
         $qShopResultBuilder = Shop::join('shop_categories', 'shop_categories.shop_id', '=', 'shops.id')
             ->join('sub_categories', 'sub_categories.id', '=', 'shop_categories.sub_category_id')
             ->where(function($qry)use($qstringTokens){
@@ -92,12 +93,11 @@ class WelcomeController extends Controller
                     }
             });
         // $qResult = $qResultBuilder->inRandomOrder()->get();
-        $qResultShops = $qShopResultBuilder->get(['shops.*']);
-        
+        $qResultShops = $qShopResultBuilder->whereNotIn('shops.id', $FullTextResults->pluck('shop_id')->toArray())->get(['shops.*']);
 
         // $data['products'] = array_unique(array_merge($FullTextResults->all(), $qResult->all()));
         $data['products'] = $FullTextResults->all();
-        $data['shops'] =array_unique(array_merge($FullTextShopResults->all(), $qResultShops->all()));
+        $data['shops'] = $qResultShops->all();
         $data['shops'] =Shop::all();
         // dd($data);
         return view('public.search', $data);
