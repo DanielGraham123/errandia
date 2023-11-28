@@ -24,8 +24,9 @@
   <component name="ChangeListManager">
     <list default="true" id="aa3f63f2-05a0-494f-9f41-a131b487b5b0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/BAdmin/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/BAdmin/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TestController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProductImageUploadController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProductImageUploadController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProductImageUploadController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Samsung 13 Pro/images/1701189227.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Samsung 13 Pro/images/1701189235.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/create_categ_images.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/create_categ_images.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>

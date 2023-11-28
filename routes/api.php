@@ -48,5 +48,6 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::get('/notifications', 'NotificationController@index');
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
-    Route::post('test_save_image/{id}', [ProductImageUploadController::class, 'test']);
+    Route::post('save_images/{id}', [ProductImageUploadController::class, 'uploadProductGallery']);
+    Route::delete('remove_image/{product_id}/', [ProductImageUploadController::class, 'removeProductImage']);
 });

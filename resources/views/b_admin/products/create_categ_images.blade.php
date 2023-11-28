@@ -20,7 +20,13 @@
                 <div class="my-3 border-left border-right rounded multipleImageUplaoder">
                 </div>
             </div>
-            <span class="d-block my-4"><button class="button-primary" type="submit">NEXT</button></span>
+            <div class="form-group">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                         role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                </div>
+            </div>
+            <span class="d-block my-4"><button class="button-primary" type="submit">Finish</button></span>
         </form>
     </div>
 @endsection
@@ -55,7 +61,7 @@
             })
         }
         let refresh = function(index){
-            let field = `<input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}')">`;
+            let field = `<input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}', this)">`;
             let container = $('.multipleImageUplaoder').get(index).children.item(1);
             $(container).append(field);
         }
@@ -69,9 +75,9 @@
             let file = document.getElementById(field_id);
             let url = URL.createObjectURL(file.files[0]);
             uploadImage(ele);
-            let image = `<div>
+            let image = `<div class="preview-image">
                     <img class="mx-2 my-2" style="width: 12rem; height: 12rem; border-radius: 0.6rem;" src="${url}">
-                    <span class="fa fa-close text-danger text-center d-block py-1 px-2 my-1 rounded bg-light border" onclick="dropImage(${get_id()})"></span>
+                    <span class="fa fa-close text-danger text-center d-block py-1 px-2 my-1 rounded bg-light border" onclick="dropImage(this, '${field_id}', '${ele}' )"></span>
                 </div>`;
             let container = $('.multipleImageUplaoder').get(index).children.item(0);
             $(container).append(image);
@@ -79,20 +85,55 @@
             refresh(index);
         }
 
-        let dropImage = function(_input_id){
-            $(document).remove('#'+_input_id);
+        let dropImage = function(image, data, ele){
+             var formData = new FormData();
+            formData.append('image', document.getElementById(data).files[0]);
+            let percentage = '0';
+            $.ajax({
+                type:'DELETE',
+                url: "/api/remove_image/"+test.id,
+                data: formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    percentage = '0';
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    percentage = percentComplete;
+                    $('.progress .progress-bar').css("width", percentage+'%', function() {
+                        return $(this).attr("aria-valuenow", percentage) + "%";
+                    })
+                },
+                success: (res) => {
+                    $('.preview-image').html('')
+                },
+                error: function(data){
+                }
+            });
+
         }
 
         function  uploadImage(obj){
             var formData = new FormData()
             formData.append('image',obj.files[0]);
+            let percentage = '0';
             $.ajax({
                 type:'POST',
-                url: "/api/test_save_image/"+test.id,
+                url: "/api/save_images/"+test.id,
                 data: formData,
                 cache:false,
                 contentType: false,
                 processData: false,
+                beforeSend: function () {
+                    percentage = '0';
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    percentage = percentComplete;
+                    $('.progress .progress-bar').css("width", percentage+'%', function() {
+                        return $(this).attr("aria-valuenow", percentage) + "%";
+                    })
+                },
                 success: (res) => {
                 },
                 error: function(data){
