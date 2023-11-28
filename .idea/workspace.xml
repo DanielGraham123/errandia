@@ -25,12 +25,54 @@
     <list default="true" id="aa3f63f2-05a0-494f-9f41-a131b487b5b0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/BAdmin/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/BAdmin/HomeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ProductImage.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ProductImage.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Controller.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701114209.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701114240.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701114340.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701114465.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701114503.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701114906.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701114940.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701115060.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701115092.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701115111.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701115135.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701115861.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701115901.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701115940.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701116042.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701116096.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701116126.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Amena Bernard/images/1701116266.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701104711.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701104877.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701104968.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701104999.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701105699.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701105763.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701105777.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701105793.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701105828.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701105848.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701105914.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106036.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106046.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106061.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106075.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106082.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106090.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106129.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106144.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106189.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106253.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106292.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106409.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106498.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106512.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106601.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/uploads/products/Wayne Horn/images/1701106751.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/create_categ_images.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/create_categ_images.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -204,19 +246,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app" />

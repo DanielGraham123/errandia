@@ -396,6 +396,7 @@ class HomeController extends Controller
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+//        dd($request->all());
         $image = time().'.'.$request['image']->extension;
         $product_id = Session::get('product');
         $product = Product::find($product_id);

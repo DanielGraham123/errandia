@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,4 +48,5 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::get('/notifications', 'NotificationController@index');
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
+
 });
