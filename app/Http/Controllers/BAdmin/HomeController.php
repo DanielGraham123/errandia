@@ -291,7 +291,7 @@ class HomeController extends Controller
         $data['product']    = $createdProduct;
 
         $valid_data['image']->move(public_path(self::PRODUCT_IMAGE_PATH.'/'.$valid_data['name'].'/images/'), $imageName);
-        Session::put('product', $createdProduct);
+
 
         return view('b_admin.products.create_categ_images', $data);
     }
@@ -391,23 +391,23 @@ class HomeController extends Controller
 
     }
 
-    public function saveProductImages(Request $request)
-    {
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-//        dd($request->all());
-        $image = time().'.'.$request['image']->extension;
-        $product_id = Session::get('product');
-        $product = Product::find($product_id);
-        ProductImage::create([
-            'item_id'       => $product->id,
-            'image'         =>  self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'.$image,
-            'created_at'    => Carbon::now(),
-            'updated_at'    => Carbon::now()
-        ]);
-        $request['image']->move(public_path(self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'), $image);
-
-        return response()->json(["message" => "success"]);
-    }
+//    public function saveProductImages(Request $request)
+//    {
+//        $request->validate([
+//            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+//        ]);
+////        dd($request->all());
+//        $image = time().'.'.$request['image']->extension;
+//        $product_id = Session::get('product');
+//        $product = Product::find($product_id);
+//        ProductImage::create([
+//            'item_id'       => $product->id,
+//            'image'         =>  self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'.$image,
+//            'created_at'    => Carbon::now(),
+//            'updated_at'    => Carbon::now()
+//        ]);
+//        $request['image']->move(public_path(self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'), $image);
+//
+//        return response()->json(["message" => "success"]);
+//    }
 }

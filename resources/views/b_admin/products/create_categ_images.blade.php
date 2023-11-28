@@ -4,7 +4,7 @@
         <div class="d-flex py-3 my-2 px-2">
             <span class="text-h4 d-block">Add New Product For {{ $shop->name }} <i class="text-link">({{ $shop->location() }})</i></span>
         </div>
-        <form method="POST" action="{{ route('business_admin.products.create_update', ['product' =>$product]) }}" enctype="multipart/form-data">
+        <form method="POST" id="form" action="{{ route('business_admin.products.create_update', ['product' => $product]) }}" enctype="multipart/form-data">
             @csrf
             <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
                 <span class="d-block mt-4" style="font-weight: 700;">Categories *</span>
@@ -39,12 +39,14 @@
         $(document).ready(function(){
             init();
         });
+        const test = {!! $product !!};
+
 
         let init = function(){
             $('.multipleImageUplaoder').each((index, elem)=>{
                 let ___trigger = `<div class="d-flex flex-wrap multipleImageContainer py-3"></div>
                     <div style="width: 0; height: 0; overflow: hidden;" class="imageFieldsContainer">
-                        <input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}')">
+                        <input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}', this)">
                     </div>
                     <div class="py-3 px-3">
                         <a title="add image" onclick="addImage(${index})"><span class="fa fa-plus fa-4x border rounded p-4 text-primary bg-light"></span></a>
@@ -63,28 +65,10 @@
             // let field = `<input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}')">`;
         }
 
-        let preview = function(field_id, index){
+        let preview = function(field_id, index, ele){
             let file = document.getElementById(field_id);
             let url = URL.createObjectURL(file.files[0]);
-            let formData = new FormData();
-            console.log(file.files[0])
-            formData.append("image", file.files[0]);
-            console.log(formData)
-            $.ajax({
-                type: 'post',
-                url: '/api/save_images',
-                data: formData,
-                header:{
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'content-type':'multipart-file'
-                },
-                processData: false,
-                cache:false,
-                contentType: false,
-                success:function (res){
-                    console.log(res)
-                }
-            })
+            uploadImage(ele);
             let image = `<div>
                     <img class="mx-2 my-2" style="width: 12rem; height: 12rem; border-radius: 0.6rem;" src="${url}">
                     <span class="fa fa-close text-danger text-center d-block py-1 px-2 my-1 rounded bg-light border" onclick="dropImage(${get_id()})"></span>
@@ -97,6 +81,23 @@
 
         let dropImage = function(_input_id){
             $(document).remove('#'+_input_id);
+        }
+
+        function  uploadImage(obj){
+            var formData = new FormData()
+            formData.append('image',obj.files[0]);
+            $.ajax({
+                type:'POST',
+                url: "/api/test_save_image/"+test.id,
+                data: formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success: (res) => {
+                },
+                error: function(data){
+                }
+            });
         }
 
 

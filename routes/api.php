@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\ProductImageUploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,5 +48,5 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::get('/notifications', 'NotificationController@index');
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
-
+    Route::post('test_save_image/{id}', [ProductImageUploadController::class, 'test']);
 });

@@ -8,15 +8,14 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class TestController extends Controller
+class ProductImageUploadController extends Controller
 {
     const PRODUCT_IMAGE_PATH = "uploads/products/";
 
-    public function test(Request $request)
+    public function test(Request $request, $id)
     {
-        $image = time().'.'.$request['image']->extension;
-        $product_id = Session::get('product');
-        $product = Product::find($product_id);
+        $image = time().'.'.$request['image']->extension();
+        $product = Product::find($id);
         ProductImage::create([
             'item_id'       => $product->id,
             'image'         =>  self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'.$image,
