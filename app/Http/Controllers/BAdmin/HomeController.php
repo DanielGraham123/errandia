@@ -455,12 +455,12 @@ class HomeController extends Controller
                 break;
 
             case '3':
-                $validity = Validator::make($request->all(), ['unit_price'=>'required', 'description'=>'required']);
+                $validity = Validator::make($request->all(), ['description'=>'required']);
                 if($validity->fails()){
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
                 $product = \App\Models\Product::whereSlug($request->item_slug)->first();
-                $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                $update = ['unit_price'=> $request->unit_price??'', 'description'=>$request->description, 'status'=>1];
                 if($product != null){
                     $product->update($update);
                 }

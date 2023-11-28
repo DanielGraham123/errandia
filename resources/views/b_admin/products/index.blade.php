@@ -19,7 +19,7 @@
         {{-- @dd($products) --}}
         <div class="py-1">
 
-            <table class="table">
+            <table class="table table-responsive">
                 <thead class="text-capitalize">
                     <th></th>
                     <th>product</th>

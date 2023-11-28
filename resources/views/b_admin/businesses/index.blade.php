@@ -15,7 +15,7 @@
         </div>
         <div class="py-1 px-2 d-flex">
 
-            <table class="table">
+            <table class="table table-responsive">
                 <thead class="text-capitalize">
                     <th></th>
                     <th>name</th>

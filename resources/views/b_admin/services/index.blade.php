@@ -14,15 +14,15 @@
             </div>
         </div>
         <div class="table-header">
-            Products @if(isset($shop)) For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i> @endif <span class="text-h6">({{ count($products) }})</span></span>
+            Services @if(isset($shop)) For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i> @endif <span class="text-h6">({{ count($products) }})</span></span>
         </div>
-        {{-- @dd($products) --}}
+        {{-- @dd($Services) --}}
         <div class="py-1">
 
-            <table class="table">
+            <table class="table table-responsive">
                 <thead class="text-capitalize">
                     <th></th>
-                    <th>product</th>
+                    <th>Service</th>
                     <th>price</th>
                     @if(!isset($shop)) <th>Branch</th> @endif
                     <th>action</th>
@@ -37,7 +37,7 @@
                             <td>
                                 <span class="">
                                     <img style="height: 3rem; width: 3rem; border-radius: 0.5rem; border: 1px solid gray; margin: 0.4rem 0.7rem;" src="{{ asset('uploads/item_images/'.$prod->featured_image) }}">
-                                    <span style="color: var(--color-darkblue)">{{ $prod->name??"product name" }}</span>
+                                    <span style="color: var(--color-darkblue)">{{ $prod->name??"Service name" }}</span>
                                 </span>
                             </td>
                             <td> <span class="text-link d-block">{{ $prod->unit_price ?? 'unit price' }}</span></td>

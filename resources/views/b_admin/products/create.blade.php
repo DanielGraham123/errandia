@@ -15,7 +15,7 @@
                     <input type="hidden" name="step" value="1">
                     <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
                         <span class="d-block mt-4" style="font-weight: 700;">Product Name *</span>
-                        <input class="my-2 form-control rounded" name="name" type="text" required value="{{ old('name') }}" placeholder="Product Name">
+                        <input  data-max-words="4" data-announce="true" class="my-2 form-control rounded" name="name" type="text" required value="{{ old('name') }}" placeholder="Product Name">
                         <span class="d-block mt-4" style="font-weight: 700;">Product Tags <span class="text-info">(related names separated by commas)</span></span>
                         <input class="form-control rounded" name="tags" value="{{ old('tags') }}" placeholder="tags" required>
                         <span class="d-block text-overline" style="font-weight: 700;">Enter terms related to your product</span>
@@ -79,7 +79,7 @@
                         <span class="d-block mt-4" style="font-weight: 700;">Categories *</span>
                         <div class="d-flex flex-wrap my-3 border-left border-right rounded">
                             @foreach (\App\Models\SubCategory::orderBy('name')->get() as $cat)
-                                <span class="d-inlineblock rounded border bg-light py-1 px-3 my-2 mx-2 {{ in_array($cat->id, $item->subCategories->pluck('id')->toArray()) ? 'bg-danger' : '' }}">
+                                <span class="d-inlineblock rounded border py-1 px-3 my-2 mx-2 {{ in_array($cat->id, $item->subCategories->pluck('id')->toArray()) ? 'border-danger bg-danger' : 'border-secondary bg-light' }}">
                                     <input type="checkbox" disabled class="input mx-2" name="categories[]" {{ in_array($cat->id, $item->subCategories->pluck('id')->toArray()) ? 'checked' : '' }} value="{{ $cat->id }}">
                                     <span class="text-extra">{{ $cat->name }}</span>
                                 </span>
