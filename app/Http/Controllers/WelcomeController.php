@@ -71,21 +71,34 @@ class WelcomeController extends Controller
         $qResult = [];
         $FullTextResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->inRandomOrder()->get();
         $FullTextShopResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->join('shops', 'shops.id', '=', 'items.shop_id')->inRandomOrder()->select('shops.*')->get();
-        $qResultBuilder = \App\Models\Product::where('shop_id', '!=', null);
-        foreach ($qstringTokens as $key => $token) {
-            $qResultBuilder->orWhere('search_index', 'LIKE', '%'.$token.'%');
-        }
-        $qShopResultBuilder = Shop::join('items', 'items.shop_id', '=', 'shops.id')
-            ->where('items.name', '!=', null);
-        foreach ($qstringTokens as $key => $token) {
-            $qShopResultBuilder->orWhere('items.search_index', 'LIKE', '%'.$token.'%');
-        }
-        $qResult = $qResultBuilder->inRandomOrder()->get();
+        // $qResultBuilder = \App\Models\Product::where('name', '!=', null)->where(function($qry)use($qstringTokens){
+        //     $qry->where('search_index', 'LIKE', '%'.$qstringTokens[0].'%');
+        //     foreach ($qstringTokens as $key => $token) {
+        //         $qry->orWhere('search_index', 'LIKE', '%'.$token.'%')->orWhere('tags', 'LIKE', '%'.$token.'%');
+        //     }
+        // });
+        $qShopResultBuilder = Shop::join('shop_categories', 'shop_categories.shop_id', '=', 'shops.id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'shop_categories.sub_category_id')
+            ->where(function($qry)use($qstringTokens){
+                $qry->where('sub_categories.description', 'LIKE', '%'.$qstringTokens[0].'%');
+                foreach ($qstringTokens as $key => $token) {
+                    $qry->orWhere('sub_categories.description', 'LIKE', '%'.$token.'%');
+                }
+            })->orWhere(function($qry)use($qstringTokens){
+                $qry->join('sub_categories', 'shops.category_id', '=', 'sub_categories.id')
+                    ->where('sub_categories.description', 'LIKE', '%'.$qstringTokens[0].'%');
+                    foreach ($qstringTokens as $key => $token) {
+                        $qry->orWhere('sub_categories.description', 'LIKE', '%'.$token.'%');
+                    }
+            });
+        // $qResult = $qResultBuilder->inRandomOrder()->get();
         $qResultShops = $qShopResultBuilder->get(['shops.*']);
         
 
-        $data['products'] = array_unique(array_merge($FullTextResults->all(), $qResult->all()));
+        // $data['products'] = array_unique(array_merge($FullTextResults->all(), $qResult->all()));
+        $data['products'] = $FullTextResults->all();
         $data['shops'] =array_unique(array_merge($FullTextShopResults->all(), $qResultShops->all()));
+        $data['shops'] =Shop::all();
         // dd($data);
         return view('public.search', $data);
     }
