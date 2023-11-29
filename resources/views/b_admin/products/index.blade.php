@@ -31,9 +31,9 @@
                 <tbody>
                     @php $k = 1;
                     @endphp
-                    @foreach($products as $prod)
+                    @foreach($products as $key => $prod)
                         <tr class="shadow-sm border-bottom bg-white">
-                            <td>{{ $k++}}</td>
+                            <td>{{ $key+1}}</td>
                             <td>
                                 <span class="">
                                     <img style="height: 3rem; width: 3rem; border-radius: 0.5rem; border: 1px solid gray; margin: 0.4rem 0.7rem;" src="{{ asset('uploads/item_images/'.$prod->featured_image) }}">

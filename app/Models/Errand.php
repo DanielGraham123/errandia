@@ -36,9 +36,4 @@ class Errand extends Model
     {
         return $this->hasMany(ErrandImage::class, 'item_quote_id');
     }
-
-    public function street()
-    {
-        return $this->belongsTo(Street::class, 'street_id');
-    }
 }

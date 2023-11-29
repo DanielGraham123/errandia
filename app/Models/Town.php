@@ -24,4 +24,9 @@ class Town extends Model
         return $this->hasMany(Street::class);
     }
 
+    public function errands()
+    {
+        return $this->hasMany(Errand::class);
+    }
+
 }
