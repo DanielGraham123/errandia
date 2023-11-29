@@ -79,7 +79,7 @@
                     <div class="slider-9">
                         @foreach (\App\Models\Category::all() as $k=>$cat)
                             <div>
-                                <a href="#" class="category-box category-dark wow fadeInUp">
+                                <a href="{{ route('public.category.show', $cat->slug) }}" class="category-box category-dark wow fadeInUp">
                                     <div>
                                         <img src="{{ asset('assets/admin/icons/'.$cat->image_path.'.svg') }}" class="blur-up lazyload" alt="">
                                         <h5>{{ $cat->name }}</h5>
@@ -106,7 +106,7 @@
                 <div class="col-xxl-12 ratio_110">
                     <div class="slider-6 img-slider">
                         
-                        @foreach (\App\Models\Shop::inRandomOrder()->get() as $k=>$shop)
+                        @foreach (\App\Models\Shop::inRandomOrder()->take(16)->get() as $k=>$shop)
                          
                         <div>
                             <div class="product-box-5 wow fadeInUp">
@@ -119,7 +119,7 @@
                                 </div>
 
                                 <div class="product-detail">
-                                    <a href="#">
+                                    <a href="{{ route('public.business.show', $shop->slug) }}">
                                         <h5 class="name">{{ $shop->name }}</h5>
                                     </a>
                                  

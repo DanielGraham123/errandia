@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Errand;
+use App\Models\Product;
 use App\Models\Region;
 use App\Models\Street;
 use App\Models\SubCategory;
@@ -29,8 +31,11 @@ class WelcomeController extends Controller
     public function show_business($slug)
     {
         
-        $data['business'] = Shop::first();
-        $data['branches'] = $data['business']->branches;
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['branches'] = Shop::Where('parent_slug', $slug)->get();
+        $data['products'] = $data['shop']->products;
+        $data['services'] = $data['shop']->services;
+        $data['related_shops'] = Shop::where('category_id', $data['shop']->category_id)->inRandomOrder()->get();
         // dd($data);
         return view("public.show_business", $data);
     }
@@ -108,6 +113,16 @@ class WelcomeController extends Controller
 
     public function show_product($slug){
         return view('public.products.show');
+    }
+
+    public function show_category($slug){
+        $category = Category::whereSlug($slug)->first();
+        $sub_categories = $category->sub_categories->sortBy('name');
+        $items = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->join('sub_categories', 'sub_categories.id', '=', 'item_categories.sub_category_id')->select('items.*')->distinct()->inRandomOrder()->get();
+        $data['products'] = $items->where('service', 0)->all();
+        $data['services'] = $items->where('service', 1)->all();
+        $data['shops'] = Shop::join('sub_categories', 'sub_categories.id', '=', 'shops.category_id')->inRandomOrder()->get('shops.*')->all();
+        return view('public.category', $data);
     }
 
 }
