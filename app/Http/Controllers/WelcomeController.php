@@ -30,14 +30,33 @@ class WelcomeController extends Controller
 
     public function show_business($slug)
     {
-        
         $data['shop'] = Shop::whereSlug($slug)->first();
         $data['branches'] = Shop::Where('parent_slug', $slug)->get();
-        $data['products'] = $data['shop']->products;
-        $data['services'] = $data['shop']->services;
-        $data['related_shops'] = Shop::where('category_id', $data['shop']->category_id)->inRandomOrder()->get();
+        $data['products'] = $data['shop']->products->take(8);
+        $data['services'] = $data['shop']->services->take(8);
+        $data['related_shops'] = Shop::where('category_id', $data['shop']->category_id)->where('slug', '!=', $slug)->inRandomOrder()->get();
         // dd($data);
         return view("public.show_business", $data);
+    }
+
+    public function show_business_items($slug, $type)
+    {
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['branches'] = Shop::Where('parent_slug', $slug)->get();
+        switch ($type) {
+            case '1':
+                # code...
+                $data['products'] = $data['shop']->products;
+                $data['services'] = $data['shop']->services->take(6);
+                break;
+            case '2':
+                # code...
+                $data['products'] = $data['shop']->products->take(6);
+                $data['services'] = $data['shop']->services;
+                break;
+        }
+        // dd($data);
+        return view("public.show_business_items", $data);
     }
 
     public function run_arrnd()
@@ -112,7 +131,8 @@ class WelcomeController extends Controller
     }
 
     public function show_product($slug){
-        return view('public.products.show');
+        $data['item'] = Product::whereSlug($slug)->first();
+        return view('public.products.show', $data);
     }
 
     public function show_category($slug){

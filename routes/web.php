@@ -36,6 +36,7 @@ Route::get('login', [CustomLoginController::class, 'showLoginForm'])->name('logi
 Route::get('register', [CustomLoginController::class, 'register'])->name('register');
 Route::post('register', [CustomLoginController::class, 'signup']);
 Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
+Route::get('logout', [CustomLoginController::class, 'logout'])->name('logout');
 
 Route::post('reset_password_with_token/password/reset', [CustomForgotPasswordController::class, 'validatePasswordRequest'])->name('reset_password_without_token');
 Route::get('reset_password_with_token/{token}/{email}', [CustomForgotPasswordController::class, 'resetForm'])->name('reset');
@@ -380,6 +381,7 @@ Route::name('public.')->group(function(){
     Route::get('', 'WelcomeController@home')->name('home');
     Route::get('businesses/{region_id?}', 'WelcomeController@businesses')->name('businesses');
     Route::get('business/{slug}', 'WelcomeController@show_business')->name('business.show');
+    Route::get('business/{slug}/items/{type}', 'WelcomeController@show_business_items')->name('business.show_items');
     Route::get('categories/{slug}', 'WelcomeController@show_category')->name('category.show');
     Route::get('errands', 'WelcomeController@errands')->name('errands');
     Route::get('errands/show/{slug}', 'WelcomeController@view_errand')->name('errands.view');

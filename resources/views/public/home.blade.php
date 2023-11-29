@@ -112,7 +112,7 @@
                             <div class="product-box-5 wow fadeInUp">
                                 <div class="product-image">
                                     <a href="{{ route('public.business.show', $shop->slug) }}">
-                                        <img src="{{ asset('uploads/logos/'.$shop->image_path) }}"
+                                        <img src="{{ $shop->image_path == null ? asset('assets/images/default1.jpg') : asset('uploads/logos/'.$shop->image_path) }}"
                                             class="img-fluid blur-up lazyload bg-img" alt="">
                                     </a>
 
@@ -121,8 +121,8 @@
                                 <div class="product-detail">
                                     <a href="{{ route('public.business.show', $shop->slug) }}">
                                         <h5 class="name">{{ $shop->name }}</h5>
+                                        <span class="text-overline text-center"><i class="fa fa-location"></i> {{ $shop->contactInfo->location() }}</span>
                                     </a>
-                                 
                                 </div>
                             </div>
                         </div>
