@@ -380,6 +380,7 @@ Route::name('public.')->group(function(){
     Route::get('', 'WelcomeController@home')->name('home');
     Route::get('businesses/{region_id?}', 'WelcomeController@businesses')->name('businesses');
     Route::get('business/{slug}', 'WelcomeController@show_business')->name('business.show');
+    Route::get('categories/{slug}', 'WelcomeController@show_category')->name('category.show');
     Route::get('errands', 'WelcomeController@errands')->name('errands');
     Route::get('errands/show/{slug}', 'WelcomeController@view_errand')->name('errands.view');
     Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run');

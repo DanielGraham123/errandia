@@ -6,30 +6,26 @@
                 <div class="col-xxl-3 col-lg-4">
                     <div class="card shadow bg-white px-2 py-3" style="border-radius: 1rem;">
                         <div class="card-body">
-                            <span class="text-h6 d-block text-center mx-auto">{{ $business->name }}</span> <span class="fas fa-verified text-info fa-2x"></span><br>
-                            @if ($business->image_path != null)
-                                <img src="{{ asset('uploads/logos/'.$business->image_path) }}" class="img-responsive mx-auto my-3 d-block" style="width: 12rem; height: auto;">
-                            @else
-                                <span class="fa fa-cog fa-5x text-h1 d-block text-center"></span>
-                            @endif
+                            <span class="text-h6 d-block text-center mx-auto">{{ $shop->name }}</span> <span class="fas fa-verified text-info fa-2x"></span><br>
+                            <img src="{{$shop->image_path != null ? asset('uploads/logos/'.$shop->image_path) : asset('assets/images/default1.jpg') }}" class="img-responsive mx-auto my-3 d-block" style="width: 12rem; height: auto;">
                             <div class="my-2 d-flex justify-content-center">
                                 <span class="mr-3">
-                                    <span class="fa fa-star {{ $business->rating??0 > 0  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
-                                    <span class="fa fa-star {{ $business->rating??0 > 1  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
-                                    <span class="fa fa-star {{ $business->rating??0 > 2  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
-                                    <span class="fa fa-star {{ $business->rating??0 > 3  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
-                                    <span class="fa fa-star {{ $business->rating??0 > 4  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
+                                    <span class="fa fa-star {{ $shop->rating??0 > 0  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
+                                    <span class="fa fa-star {{ $shop->rating??0 > 1  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
+                                    <span class="fa fa-star {{ $shop->rating??0 > 2  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
+                                    <span class="fa fa-star {{ $shop->rating??0 > 3  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
+                                    <span class="fa fa-star {{ $shop->rating??0 > 4  ? 'text-warning' : 'text-secondary' }} mx-1"></span>
                                 </span>
-                                <b class="">{{ $business->rating??0 }} Ratings</b>
+                                <b class="">{{ $shop->rating??0 }} Ratings</b>
                             </div>
                             
                             <div class="my-2 d-flex">
                                 <img class="mr-3" styl="height: 2rem; width: 2rem;" src="{{ asset('assets/badmin/icon-location.svg') }}">
-                                <b class="">{{ $business->location() }}</b>
+                                <b class="">{{ $shop->location() }}</b>
                             </div>
                             <div class="my-2 d-flex">
                                 <img class="mr-3" styl="height: 2rem; width: 2rem;" src="{{ asset('assets/badmin/icon-member.svg') }}">
-                                <b class="">Member since {{ \Carbon\Carbon::parse($business->created_at)->format('Y') }}</b>
+                                <b class="">Member since {{ \Carbon\Carbon::parse($shop->created_at)->format('M Y') }}</b>
                             </div>
 
                             <div class="my-2 d-flex justify-content-center">
@@ -50,29 +46,31 @@
                                 <span class=" fa-2x mt-2 mx-2 text-overline"><i class="fa-brands fa-twitter text-primary"></i></span>
                             </div>
 
-                            <hr class="my-4">
-                            <span class="text-h6 mb-3">Visit Our Other Branches</span><br>
-                            @forelse ($branches as $branch)
-                                <a href="{{ route('public.business.show', $branch->slug) }}" class="my-2 d-flex">
-                                    <span class="fa fa-angle-right fa-2x mr-3"></span>
-                                    @if ($branch->image_path != null)
-                                        <img src="{{ asset('uploads/logos/'.$branch->image_path) }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
-                                    @else
-                                        <span class="fa fa-cog fa-2x text-h1 d-block text-center"></span>
-                                    @endif
-                                    <b class="ml-3"> {{ $branch->location() }}</b>
-                                </a>
-                            @empty
-                                <div class="my-2 d-flex">
-                                    <span class="fa fa-caret-right fa-2x mr-3"></span>
-                                    @if ($business->image_path != null)
-                                        <img src="{{ asset('uploads/logos/'.$business->image_path) }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
-                                    @else
-                                        <span class="fa fa-cog fa-2x text-h1 d-block text-center"></span>
-                                    @endif
-                                    <b class="ml-3">Business Location</b>
-                                </div>
-                            @endforelse
+                            @if(count($branches) > 0)
+                                <hr class="my-4">
+                                <span class="text-h6 mb-3">Visit Our Other Branches</span><br>
+                                @forelse ($branches as $branch)
+                                    <a href="{{ route('public.business.show', $branch->slug) }}" class="my-2 d-flex">
+                                        <span class="fa fa-angle-right fa-2x mr-3"></span>
+                                        @if ($branch->image_path != null)
+                                            <img src="{{ asset('uploads/logos/'.$branch->image_path) }}" class="img-responsive mx-auto" style="width: 1.5rem; height: 1.5rem;">
+                                        @else
+                                            <span class="fa fa-cog fa-2x text-h1 d-block text-center"></span>
+                                        @endif
+                                        <b class="h6 d-block"> {{ $branch->location() }}</b>
+                                    </a>
+                                @empty
+                                    <div class="my-2 d-flex">
+                                        <span class="fa fa-caret-right fa-2x"></span>
+                                        @if ($shop->image_path != null)
+                                            <img src="{{ asset('uploads/logos/'.$shop->image_path) }}" class="img-responsive mx-2" style="width: 1.5rem; height: 1.5rem;">
+                                        @else
+                                            <span class="fa fa-cog fa-2x text-h1 d-block text-center mx-2"></span>
+                                        @endif
+                                        <b class="h6 d-block">No Branches</b>
+                                    </div>
+                                @endforelse
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -90,38 +88,38 @@
                                         <div class="title title-flex">
                                             <div class="section-b-space">
                                                 <div class="mb-5">
-                                                    <h3>Products (<a class="">See All</a>)</h3>
+                                                    <h3>Products</h3>
                                                 </div>
                                                 <div class="product-border border-row overflow-hidden">
                                                     <div class="product-box-slider no-arrow slick-initialized slick-slider"><button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: inline-block;">Previous</button>
                                                         
                                                             <div class="slick-slide slick-active" tabindex="0" data-slick-index="1" aria-hidden="false">
                                                                 <div class="row m-0">
-                                                                    @for ($i=0; $i < 6; $i++)
+                                                                    @foreach ($products as $key => $prod)
                                                                         <div class="col-12 col-lg-4 col-xxl-3 px-0">
                                                                             <div class="product-box shadow">
                                                                                 <div class="product-image">
-                                                                                    <a href="{{ route('public.products.show', 'slug') }}" tabindex="0">
-                                                                                        <img src="{{ asset('assets/public/assets/images/vegetable/product/3.png') }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                                                    <a href="{{ route('public.products.show', $prod->slug) }}" tabindex="0">
+                                                                                        <img src="{{ $prod->image_path == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$prod->image_path) }}" class="img-fluid blur-up lazyloaded" alt="">
                                                                                     </a>
                                                                                 </div>
                                                                                 <div class="product-detail">
-                                                                                    <a href="{{ route('public.products.show', 'slug') }}" tabindex="0">
-                                                                                        <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">Peanut Butter Bite Premium Butter Cookies 600 g
+                                                                                    <a href="{{ route('public.products.show', $prod->slug) }}" tabindex="0">
+                                                                                        <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">{{ $prod->name??'' }}
                                                                                         </h6>
                                                                                     </a>
 
                                                                                     <h5 class="sold text-content">
-                                                                                        <span class="theme-color price">$26.69</span>
+                                                                                        <span class="theme-color price">XAF {{ $prod->unit_price ?? "???" }}</span>
                                                                                     </h5>
 
                                                                                     <div class="add-to-cart-box">
-                                                                                        <a href="{{ route('public.products.show', 'slug') }}" class="button-secondary">see more</a>
+                                                                                        <a href="{{ route('public.products.show', $prod->slug) }}" class="button-secondary">see more</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    @endfor
+                                                                    @endforeach
                                                                 </div>
                                                             </div>
                                                         </div>
