@@ -342,7 +342,7 @@ class HomeController extends Controller
                     $product->update($update);
                 }
 
-                if (($files = $request->file($images)) != null) {
+                if (($files = $request->file('images')) != null) {
                     # code...
                     $item_images = [];
                     foreach ($files as $key => $file) {
