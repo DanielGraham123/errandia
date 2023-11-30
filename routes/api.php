@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ProductUploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,4 +48,6 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::get('/notifications', 'NotificationController@index');
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
+    Route::post('/products/{id}/images/upload', [ProductUploadController::class, 'uploadProductGallery']);
+    Route::delete('/product/{id}/images/delete', [ProductUploadController::class, 'removeProductImage']);
 });
