@@ -22,7 +22,7 @@
                         <span class="d-block mt-4" style="font-weight: 700;">Upload Default image *</span>
                         <div class="d-flex flex-wrap justify-content-between" id="defaultImageContainer">
                             <div class="d-inlineblock">
-                                <input type="file" accept="image/*" class="form-control rounded" name="image" onchange="defaultPreview(event)">
+                                <input type="file" accept="image/*" class="form-control rounded" name="image" required onchange="defaultPreview(event)">
                                 <span class="d-block text-overline" style="font-weight: 700;">This appear as the main image on the website</span>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                         <span class="d-block mt-4" style="font-weight: 700;">Description *</span>
                         <textarea class="form-control rounded" rows="3" name="description" value="" placeholder="description" required>{{ old('description') }}</textarea>
                     </div>
-                    <span class="d-block my-4"><button class="button-primary" type="submit">SAVE</button></span>
+                    <span class="d-block my-4"><button class="button-primary" type="submit">PUBLISH</button></span>
                     @break
                 @default
                     

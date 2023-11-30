@@ -156,7 +156,7 @@
                         <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
                             @forelse ($products??[] as $key=>$prod)
                                 <div>
-                                    <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                    <div class="product-box-3 h-100 wow fadeInUp shadow-md border" style="visibility: visible; animation-name: fadeInUp;">
                                         <div class="product-header">
                                             <div class="product-image">
                                                 <a href="{{ route('public.products.show', $prod->slug) }}">
@@ -196,7 +196,7 @@
                                     </div>
                                 </div>
                             @empty
-                                <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-5">
+                                <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
                                     <p>Sorry we could not find any product related to you search</p>
                                     <p class="text-h6">"{{ $search_string??'' }}"</p>
                                 </div></div>
@@ -241,7 +241,7 @@
                         <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
                             @foreach ($shops as $key=>$shop)
                                 <div>
-                                    <div class="product-box-3 h-100 wow fadeInUp " style="visibility: visible; animation-name: fadeInUp;">
+                                    <div class="product-box-3 h-100 wow fadeInUp shadow-md border" style="visibility: visible; animation-name: fadeInUp;">
                                         <div class="product-header">
                                             <div class="product-image">
                                                 <a href="{{ route('public.business.show', $shop->slug) }}">
