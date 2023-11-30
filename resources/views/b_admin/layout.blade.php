@@ -80,6 +80,11 @@
                 <div class="col-12">
                     <div class="breadscrumb-contain">
                         <h2>User Dashboard</h2>
+                        @if (auth()->user()->shops->count() == 0)
+                            <span class="mx-4">
+                                <a href="{{ route('business_admin.businesses.create') }}" class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color"><span class="text-white fa fa-plus mx-2"></span>Create business</a>
+                            </span>
+                        @endif
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
@@ -130,8 +135,8 @@
                                     </div>
     
                                     <div class="profile-name">
-                                        <h3>Vicki E. Pope</h3>
-                                        <h6 class="text-content">vicki.pope@gmail.com</h6>
+                                        <h3>{{ auth()->user()->name??'' }}</h3>
+                                        <h6 class="text-content">{{ auth()->user()->email??'' }}</h6>
                                     </div>
                                 </div>
                             </div>

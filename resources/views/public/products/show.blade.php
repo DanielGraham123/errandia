@@ -36,15 +36,15 @@
                                 <div class="row g-2">
                                     <div class="col-xxl-10 col-lg-12 col-md-10 order-xxl-2 order-lg-1 order-md-2">
                                         <div class="product-main-2 no-arrow">
-                                            @for($i = 1; $i < 6; $i++)
+                                            @foreach($item->images as $key=>$img)
                                                 <div>
                                                     <div class="slider-image">
-                                                        <img src="{{ asset('assets/images/'.$i.'.jpg') }}" id="img-1"
-                                                            data-zoom-image="{{ asset('assets/images/'.$i.'.jpg') }}"
+                                                        <img src="{{ asset('uploads/item_images/'.$img->image) }}" id="img-1"
+                                                            data-zoom-image="{{  asset('uploads/item_images/'.$img->image) }}"
                                                             class="img-fluid image_zoom_cls-0 blur-up lazyload" alt="">
                                                     </div>
                                                 </div>
-                                            @endfor
+                                            @endforeach
 
                                             
                                         </div>

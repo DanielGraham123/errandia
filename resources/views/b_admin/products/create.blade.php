@@ -87,9 +87,12 @@
                         </div>
                         <hr>
 
-                        <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
+                        {{-- <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
                         <div class="my-3 border-left border-right rounded multipleImageUplaoder">
-                        </div>
+                        </div> --}}
+                        <span class="d-block mt-4" style="font-weight: 700;">Product images</span>
+                        <input class="form-control rounded" type="file" multiple accept="image/*" name="images" value="{{ old('images') }}" placeholder="other images" oninput="imageChanged(event)">
+                        <div id="product_image_preview_box" class="d-flex"></div>
                         <span class="d-block mt-4" style="font-weight: 700;">Unit price *</span>
                         <input class="form-control rounded" name="unit_price" value="{{ old('unit_price') }}" placeholder="unit price" required>
                         <span class="d-block mt-4" style="font-weight: 700;">Description *</span>
@@ -164,6 +167,28 @@
 
         let dropImage = function(_input_id){
             $(document).remove('#'+_input_id);
+        }
+
+        let imageChanged = function(event){
+            
+            var _files = event.target.files;
+
+            if (parseInt(_files.length)>3){
+                alert("You can only upload a maximum of 3 files");
+                $(event.target).val(null);
+                return;
+            }
+            let html = ``;
+            // console.log(typeof _files);
+            for (const key in _files) {
+                if (Object.hasOwnProperty.call(_files, key)) {
+                    const element = _files[key];
+                    let _url = URL.createObjectURL(element);
+                    html += `<img src="${_url}" style="width: 5rem; height: 5rem; border: 1px solid black; border-radius: 0.4rem; margin: 0.3rem 0.2rem;">`;
+                }
+            }
+            $('#product_image_preview_box').html(html);
+            
         }
     </script>
 @endsection

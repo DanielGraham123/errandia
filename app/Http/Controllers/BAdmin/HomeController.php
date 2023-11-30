@@ -266,6 +266,11 @@ class HomeController extends Controller
                     $product_instance = new \App\Models\Product($item);
                     $product_instance->save();
                 }
+                if($product_instance->featured_image != null){
+                    if(\App\Models\ProductImage::where(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image])->count() == 0){
+                        \App\Models\ProductImage::insert(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image]);
+                    }
+                }
                 $data['item_id'] = $product_instance->id;
 
                 //Update product images and categories 
@@ -335,6 +340,19 @@ class HomeController extends Controller
                         $update['search_index'] = $index;
                     }
                     $product->update($update);
+                }
+
+                if (($files = $request->file($images)) != null) {
+                    # code...
+                    $item_images = [];
+                    foreach ($files as $key => $file) {
+                        # code...
+                        $path = public_path('uploads/item_images');
+                        $fname = 'img_'.time().random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+                        $file->move($path, $fname);
+                        $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
+                    }
+                    ProductImage::insert($item_images);
                 }
 
                 // save product images if need be
