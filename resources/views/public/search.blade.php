@@ -197,7 +197,7 @@
                                 </div>
                             @empty
                                 <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
-                                    <p>Sorry we could not find any product related to you search</p>
+                                    <p>Sorry we could not find any product related to your search</p>
                                     <p class="text-h6">"{{ $search_string??'' }}"</p>
                                 </div></div>
                             @endforelse
