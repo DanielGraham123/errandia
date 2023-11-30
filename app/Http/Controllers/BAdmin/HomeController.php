@@ -146,14 +146,14 @@ class HomeController extends Controller
     }
 
     public function edit_business($slug){
-        $data['business'] = Shop::whereSlug($slug)->first();
-        if($data['business'] != null){
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        if($data['shop'] != null){
             $data['title'] = "Edit Business";
             $data['categories'] = SubCategory::orderBy('name')->get();
             $data['regions'] = Region::orderBy('name')->get();
             $data['towns'] = Town::orderBy('name')->get();
             $data['streets'] = Street::orderBy('name')->get();
-            return view('admin.businesses.edit', $data);
+            return view('b_admin.businesses.edit', $data);
         }
     }
 
@@ -342,7 +342,8 @@ class HomeController extends Controller
                     $product->update($update);
                 }
 
-                if (($files = $request->file('images')) != null) {
+                // dd($request->all());
+                if (($files = $request->file('gallery')) != null) {
                     # code...
                     $item_images = [];
                     foreach ($files as $key => $file) {
@@ -484,6 +485,18 @@ class HomeController extends Controller
                 }
 
                 // save product images if need be
+                if (($files = $request->file('gallery')) != null) {
+                    # code...
+                    $item_images = [];
+                    foreach ($files as $key => $file) {
+                        # code...
+                        $path = public_path('uploads/item_images');
+                        $fname = 'img_'.time().random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+                        $file->move($path, $fname);
+                        $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
+                    }
+                    \App\Models\ProductImage::insert($item_images);
+                }
 
 
                 return redirect(route('business_admin.services.index', $data['shop']->slug));

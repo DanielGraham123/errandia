@@ -7,10 +7,13 @@
             <div class="text-h4 text-center text-uppercase my-3">Business details</div>
             <div class="row mx-5 my-2">
                 <div class="col-md-12 px-2 py-2">
-                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Business Name">
+                    <input type="text" name="name" class="form-control" value="{{ old('name' ?? $shop->name) }}" required placeholder="Business Name">
                 </div>
-                <div class="col-md-12 px-2 py-2">
+                <div class="col-md-7 px-2 py-2">
                     <input type="file" name="image" accept="image/*" class="form-control" value="{{ old('image') }}" placeholder="Logo">
+                </div>
+                <div class="col-md-5 px-2 py-2">
+                    <img src="{{ asset('uploads/logos/'.$shop->image_path) }}" style="height:7rem; width:7rem; border-radius:0.3rem;">
                 </div>
                 <div class="col-md-12 px-2 py-2">
                     <select name="category" class="form-control" placeholder="">

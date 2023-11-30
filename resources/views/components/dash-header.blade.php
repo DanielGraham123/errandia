@@ -10,6 +10,12 @@
     </div>
     <!-- Loader End -->
 
+    <div id="custom-loader" style="width: 100vw; height: 100vh; display:none;">
+        <div class="w-100 h-100 d-flex justify-content-center align-items-middle items-center">
+            <img src="{{ asset('assets/images/cog-loader.gif') }}" alt="" class="img-fluid">
+        </div>
+    </div>
+
     
   
     <!-- Header Start -->

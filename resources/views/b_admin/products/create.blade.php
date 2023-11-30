@@ -8,7 +8,7 @@
             Add New Product For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i>
         </div>
         
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" onsubmit="formReload()">
             @csrf
             @switch($_step)
                 @case(1)
@@ -87,11 +87,11 @@
                         </div>
                         <hr>
 
-                        {{-- <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
+                        <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
                         <div class="my-3 border-left border-right rounded multipleImageUplaoder">
-                        </div> --}}
-                        <span class="d-block mt-4" style="font-weight: 700;">Product images</span>
-                        <input class="form-control rounded" type="file" multiple accept="image/*" name="images" value="{{ old('images') }}" placeholder="other images" oninput="imageChanged(event)">
+                        </div>
+                        {{-- <span class="d-block mt-4" style="font-weight: 700;">Product images</span>
+                        <input class="form-control rounded" type="file" multiple accept="image/*" name="images" value="{{ old('images') }}" placeholder="other images" oninput="imageChanged(event)"> --}}
                         <div id="product_image_preview_box" class="d-flex"></div>
                         <span class="d-block mt-4" style="font-weight: 700;">Unit price *</span>
                         <input class="form-control rounded" name="unit_price" value="{{ old('unit_price') }}" placeholder="unit price" required>
@@ -155,9 +155,9 @@
         let preview = function(field_id, index){
             let file = document.getElementById(field_id).files[0];
             let url = URL.createObjectURL(file);
-            let image = `<div>
+            let image = `<div id="preview_${get_id()}">
                     <img class="mx-2 my-2" style="width: 12rem; height: 12rem; border-radius: 0.6rem;" src="${url}">
-                    <span class="fa fa-close text-danger text-center d-block py-1 px-2 my-1 rounded bg-light border" onclick="dropImage(${get_id()})"></span>
+                    <span class=" text-danger text-center d-block py-1 px-2 my-1 rounded bg-light border" onclick="dropImage('${get_id()}', event)">drop</span>
                 </div>`;
             let container = $('.multipleImageUplaoder').get(index).children.item(0);
             $(container).append(image);
@@ -166,7 +166,8 @@
         }
 
         let dropImage = function(_input_id){
-            $(document).remove('#'+_input_id);
+            $(document).remove('#'+_input_id); // drop image input file
+            $(document).remove('#preview_'+_input_id); // drop image preview
         }
 
         let imageChanged = function(event){

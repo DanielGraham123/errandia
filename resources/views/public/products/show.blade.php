@@ -681,13 +681,13 @@
                                     @foreach($item->shop->items()->take(10)->get() as $it)
                                         <li>
                                             <div class="offer-product">
-                                                <a href="product-left-thumbnail.html" class="offer-image">
+                                                <a href="{{ route('public.products.show', $item->slug) }}" class="offer-image">
                                                     <img src="{{ $it->featured_image ==  null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$it->featured_image) }}" class="img-fluid blur-up lazyload" alt="">
                                                 </a>
 
                                                 <div class="offer-detail">
                                                     <div>
-                                                        <a href="product-left-thumbnail.html">
+                                                        <a href="{{ route('public.products.show', $item->slug) }}">
                                                             <h6 class="name">{{ $it->name??'' }}</h6>
                                                         </a>
                                                         {{-- <span>450 G</span> --}}
@@ -735,18 +735,9 @@
                 <div class="col-12">
                     <div class="cart-content">
                         <div class="product-image">
-                            <img src="{{ asset('assets/images/1.jpg') }}" class="img-fluid blur-up lazyload"
-                                alt="">
-                            <div class="content">
-                                <h5>Creamy Chocolate Cake</h5>
-                                <h6>CFA32.96<del class="text-danger">$96.00</del><span>55% off</span></h6>
-                            </div>
                         </div>
-                        
                         <div class="add-btn">
-                            
-                            <a class="btn theme-bg-color text-white" href="cart.html"><i
-                                    class="fa fa-phone"></i> Call</a>
+                            <a class="btn theme-bg-color text-white" href="cart.html"><i class="fa fa-phone"></i> Call</a>
                         </div>
                     </div>
                 </div>

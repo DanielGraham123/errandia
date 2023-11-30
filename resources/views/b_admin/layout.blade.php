@@ -329,6 +329,10 @@
                 words >= maxWords && e.keyCode == 32 && (e.preventDefault() || alert('Word Limit Reached'))
             })
         })
+
+        window.onbeforeunload = function(){
+            alert('Redirecting');
+        }
     </script>
 </body>
 

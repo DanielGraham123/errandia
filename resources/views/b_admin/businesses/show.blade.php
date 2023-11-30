@@ -61,7 +61,7 @@
                                 <div class="totle-contain">
                                     <div class="totle-detail text-center">
                                         <h5>Errands</h5>
-                                        <h3>32158</h3>
+                                        <h3>10</h3>
                                     </div>
                                 </div>
                             </div>
@@ -79,9 +79,12 @@
                                 </h4>
                             </div>
                             <div class="dashboard-detail">
-                                <h6 class="text-content">MARK JECNO</h6>
-                                <h6 class="text-content">vicki.pope@gmail.com</h6>
-                                <a href="javascript:void(0)">Change Password</a>
+                                <h6 class="text-content"><span class="fa fa-location"></span> {{ $shop->contactInfo->location() }}</h6>
+                                <h6 class="text-content"><span class="fa fa-whatsapp"></span> {{ $shop->contactInfo->whatsapp??'------' }}</h6>
+                                <h6 class="text-content"><span class="fa fa-phone"></span> {{ $shop->contactInfo->phone??'------' }}</h6>
+                                <h6 class="text-content"><span class="fa fa-message"></span> {{ $shop->contactInfo->email??'------' }}</h6>
+                                <h6 class="text-content"><span class="fa fa-facebook"></span> {{ $shop->contactInfo->facebook??'------' }}</h6>
+                                <h6 class="text-content"><span class="fa fa-instagram"></span> {{ $shop->contactInfo->instagram??'------' }}</h6>
                             </div>
                         </div>
 
@@ -1471,52 +1474,7 @@
 </div>
 <div class="container">
     <div class="text-h5 my-3">{{ $shop->name??"Business Name Here" }}</div>
-    
-    <div class="d-flex justify-content-start flex-wrap">
 
-       <div class="dashboard-item card">
-           <span class="card-title">Products</span>
-           <div class="card-body">
-                <span class="qty text-extra">{{ $shop->products->count() }}</span>
-                <span><a href="{{ route('business_admin.products.index', $shop->slug) }}" class="act text-link">view <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
-
-       <div class="dashboard-item">
-            <span class="title">Services</span>
-            <div class="stats">
-                <span class="qty text-extra">{{ $shop->services->count() }}</span>
-                <span><a href="{{ route('business_admin.products.index', $shop->slug) }}?service=1" class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
-
-       <div class="dashboard-item">
-            <span class="title">Shop Views</span>
-            <div class="stats">
-                <span class="qty text-extra">{{ $shop->products()->sum('views') + $shop->services()->sum('views') }}</span>
-            </div>
-       </div>
-
-       <div class="dashboard-item">
-            <span class="title">Reviews</span>
-            <div class="stats">
-                <span class="qty text-extra">{{ $shop->reviews->count() }}</span>
-                <span><a class="act text-link">view <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
-
-       <div class="dashboard-item">
-            <span class="title">Errands</span>
-            <div class="stats">
-                <span class="qty text-extra">10</span>
-                <span><a class="act text-link">view <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
-
-
-    </div>
-
-    
 
     
     <div class="mx-3 rounded py-4 px-2">

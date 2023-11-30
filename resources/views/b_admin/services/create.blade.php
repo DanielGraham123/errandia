@@ -8,7 +8,7 @@
             Add New Service For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i>
         </div>
         
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" onsubmit="formReload()">
             @csrf
             @switch($_step)
                 @case(1)
