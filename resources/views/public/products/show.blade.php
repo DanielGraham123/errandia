@@ -681,13 +681,13 @@
                                     @foreach($item->shop->items()->take(10)->get() as $it)
                                         <li>
                                             <div class="offer-product">
-                                                <a href="{{ route('public.products.show', $item->slug) }}" class="offer-image">
+                                                <a href="{{ route('public.products.show', $it->slug) }}" class="offer-image">
                                                     <img src="{{ $it->featured_image ==  null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$it->featured_image) }}" class="img-fluid blur-up lazyload" alt="">
                                                 </a>
 
                                                 <div class="offer-detail">
                                                     <div>
-                                                        <a href="{{ route('public.products.show', $item->slug) }}">
+                                                        <a href="{{ route('public.products.show', $it->slug) }}">
                                                             <h6 class="name">{{ $it->name??'' }}</h6>
                                                         </a>
                                                         {{-- <span>450 G</span> --}}
@@ -729,15 +729,21 @@
 
     
     <!-- Sticky Cart Box Start -->
-    <div class="sticky-bottom-cart">
+    <div class="sticky-bottom-cart shadow-md">
         <div class="container-fluid-lg">
             <div class="row">
                 <div class="col-12">
                     <div class="cart-content">
                         <div class="product-image">
+                        <img src="{{ $item->featured_image != null ? asset('uploads/item_images/'.$item->featured_image) : asset('assets/images/default1.jpg') }}" class="img-fluid blur-up lazyload"
+                                alt="">
+                            <div class="content">
+                                <h5>{{ $item->name??'' }}</h5>
+                                <h6>CFA {{ $item->unit_price??'' }}</h6>
+                            </div>
                         </div>
                         <div class="add-btn">
-                            <a class="btn theme-bg-color text-white" href="cart.html"><i class="fa fa-phone"></i> Call</a>
+                            <a class="btn theme-bg-color text-white" href="tel:{{ $item->shop->contactInfo->phone??'' }}"><i class="fa fa-phone"></i> Call</a>
                         </div>
                     </div>
                 </div>

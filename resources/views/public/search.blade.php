@@ -159,7 +159,7 @@
                                     <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                                         <div class="product-header">
                                             <div class="product-image">
-                                                <a href="{{ route('public.business.show', 'slug') }}">
+                                                <a href="{{ route('public.products.show', $prod->slug) }}">
                                                     <img src="{{ $prod->featured_image != null ? asset('uploads/item_images/'.$prod->featured_image) : asset('assets/images/default1.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
                                                 </a>
                                             </div>
@@ -168,7 +168,7 @@
                                             <div class="product-detail text-center">
                                                 <div class="text-body">{{ $prod->name }}</div>
                                                 <h6 class="text-primary my-2" style="font-weight: 600;">XAF {{ $prod->unit_price??'NOT SET' }}</h6>
-                                                <a href="{{ route('public.business.show', 'slug') }}">
+                                                <a href="{{ route('public.business.show', $prod->shop->slug) }}">
                                                     <h5 class="name py-2 bg-white">{{ $prod->shop->name }}</h5>
                                                 </a>
                                                 <h6 class="unit"><span class="fa fa-location"></span>{{ $prod->shop->contactInfo->location() }}</h6>
