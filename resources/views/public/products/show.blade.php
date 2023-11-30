@@ -72,7 +72,7 @@
                                 <h6 class="offer-top">available</h6>
                                 <h2 class="name">{{ $item->name??'' }}</h2>
                                 <div class="price-rating">
-                                    <h3 class="theme-color price">CFA {{ $item->unit_price }} </h3>
+                                    <h3 class="theme-color price">CFA {{ number_format($item->unit_price??0) }} </h3>
                                     <div class="product-rating custom-rate">
                                         <ul class="rating">
                                             <li>
@@ -691,7 +691,7 @@
                                                             <h6 class="name">{{ $it->name??'' }}</h6>
                                                         </a>
                                                         {{-- <span>450 G</span> --}}
-                                                        <h6 class="price theme-color">XAF {{ $it->unit_price??'' }}</h6>
+                                                        <h6 class="price theme-color">XAF {{ number_format($it->unit_price??0) }}</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -739,7 +739,7 @@
                                 alt="">
                             <div class="content">
                                 <h5>{{ $item->name??'' }}</h5>
-                                <h6>CFA {{ $item->unit_price??'' }}</h6>
+                                <h6>CFA {{ number_format($item->unit_price??0) }}</h6>
                             </div>
                         </div>
                         <div class="add-btn">
