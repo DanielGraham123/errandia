@@ -352,7 +352,7 @@ class HomeController extends Controller
                         $file->move($path, $fname);
                         $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
                     }
-                    ProductImage::insert($item_images);
+                    \App\Models\ProductImage::insert($item_images);
                 }
 
                 // save product images if need be
