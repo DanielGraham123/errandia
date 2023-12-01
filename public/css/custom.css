@@ -60,7 +60,7 @@ a{
 .text-semi-extra{ color: var(--color-darkblue); font-size: 12px; font-weight: 600; }
 
 /* BUTTONS */
-.button-primary{ color: var(--color-lightcyan); background-color: var(--color-blue); border-radius: 5px; padding: 0.7em 2.4rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none; }
+.button-primary{ color: var(--color-lightcyan); background-color: var(--color-blue); border-radius: 5px; padding: 0.4em 1.7rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none; }
 .button-primary:disabled{ color: var(--color-darkgray); background-color: var(--color-gray);}
 .button-primary:active{ color: var(--color-lightcyan); background-color: var(--color-blue); }
 .button-primary:hover{ box-shadow: 1px 2px var(--color-cyan); }

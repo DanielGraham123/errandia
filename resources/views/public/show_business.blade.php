@@ -115,7 +115,7 @@
                                                                                     </h5>
 
                                                                                     <div class="add-to-cart-box">
-                                                                                        <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=`I saw {{ $prod->name }} on Errandia. Can we talk more?`" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
+                                                                                        <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=I saw {{ $prod->name }} on Errandia. Can we talk more?" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
                                                                                         <a href="tel:{{ $shop->contactInfo->phone??'' }}" class="button-secondary text-center"><span class="fa fa-phone mr-1"></span> Call</a>
                                                                                     </div>
                                                                                 </div>
@@ -171,7 +171,7 @@
                                                                                     </h5>
 
                                                                                     <div class="add-to-cart-box">
-                                                                                        <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=`I saw {{ $serv->name }} on Errandia. Can we talk more?`" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
+                                                                                        <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=I saw {{ $serv->name }} on Errandia. Can we talk more?" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
                                                                                         <a href="tel:{{ $shop->contactInfo->phone??'' }}" class="button-secondary text-center"><span class="fa fa-phone mr-1"></span> Call</a>
                                                                                     </div>
                                                                                 </div>

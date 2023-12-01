@@ -174,7 +174,7 @@
                                                 <h6 class="unit"><span class="fa fa-location"></span>{{ $prod->shop->contactInfo->location() }}</h6>
                                                 </h5>
                                                 <div class="add-to-cart-box bg-white shadow" >
-                                                    <a  href="{{ route('public.business.show', 'slug') }}" class="btn btn-add-cart">Contact
+                                                    <a  href="tel:{{ $prod->shop->contactInfo->phone }}" class="btn btn-add-cart">Contact
                                                         <span class="add-icon bg-light-gray">
                                                             <i class="fa fa-phone"></i>
                                                         </span>

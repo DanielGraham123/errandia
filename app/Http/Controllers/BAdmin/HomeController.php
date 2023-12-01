@@ -195,8 +195,11 @@ class HomeController extends Controller
         return view('b_admin.businesses.show', $data);
     }
 
-    public function managers(){
-        $data['managers'] = auth()->user()->managers;
+    public function managers($shop_slug){
+        $shop = Shop::whereSlug($shop_slug)->first();
+        $data['title'] = "Managers of ".$shop->name;
+        $data['shop'] = $shop;
+        $data['managers'] = $shop->managers;
         return view('b_admin.businesses.managers.index', $data);
     }
 
@@ -584,5 +587,22 @@ class HomeController extends Controller
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['streets'] = Street::orderBy('name')->get();
         return view('b_admin.errands.edit', $data);
+    }
+
+    public function create_manager($shop_slug)
+    {
+        # code...
+        $data['shop'] = Shop::whereSlug($shop_slug)->first();
+        $data['title'] = "Add Manager To ".$data['shop']->name??'';
+        return view('b_admin.businesses.managers.create', $data);
+    }
+
+    public function send_manager_request ($shop_slug, $user_id)
+    {
+        # code...
+        $shop_id = Shop::whereSlug($shop_slug)->first()->id;
+        $data = ['shop_id'=>$shop_id, 'user_id'=>$user_id, 'status'=>0];
+        \App\Models\ShopManager::updateOrInsert(['shop_id'=>$shop_id, 'user_id'=>$user_id], ['status'=>0]);
+        return redirect()->route('business_admin.managers.index', $shop_slug);
     }
 }

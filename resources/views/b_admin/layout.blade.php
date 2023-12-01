@@ -88,11 +88,11 @@
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a href="index.html">
+                                    <a href="{{ route('business_admin.home') }}">
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Welcome to Errand user </li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ $title??"" }} </li>
                             </ol>
                         </nav>
                     </div>

@@ -48,6 +48,7 @@ Route::get('widgets', function(){
 
 Route::get('', 'WelcomeController@home');
 Route::get('home', 'WelcomeController@home');
+Route::get('searchUser', 'WelcomeController@searchUser')->name('searchUser');
 
 
 Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function () {
@@ -188,10 +189,10 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
     });
 
-    Route::prefix('managers')->name('managers.')->group(function(){
+    Route::prefix('{shop_slug}/managers')->name('managers.')->group(function(){
         Route::get('', 'BAdmin\HomeController@managers')->name('index');
         Route::get('create', 'BAdmin\HomeController@create_manager')->name('create');
-        Route::post('create', 'BAdmin\HomeController@save_manager');
+        Route::get('send_request/{user_id}', 'BAdmin\HomeController@send_manager_request')->name('send_request');
         Route::get('{slug}/show', 'BAdmin\HomeController@show_business')->name('show');
         Route::get('{slug}/owner', 'BAdmin\HomeController@show_business_owner')->name('show_owner');
         Route::get('{slug}/edit', 'BAdmin\HomeController@edit_business')->name('edit');

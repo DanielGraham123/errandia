@@ -16,6 +16,13 @@ use \App\Models\Shop;
 
 class WelcomeController extends Controller
 {
+
+    public function searchUser(Request $request)
+    {
+        // return $request->par;
+        $users = \App\Models\User::where('name', 'LIKE', '%'.$request->par.'%')->orWhere('email', 'LIKE', '%'.$request->par.'%')->get(['*']);
+        return response()->json(['users'=>$users]);
+    }
     public function home()
     {
         return view("public.home");
