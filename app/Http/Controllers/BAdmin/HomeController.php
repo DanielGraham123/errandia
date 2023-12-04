@@ -153,14 +153,14 @@ class HomeController extends Controller
     }
 
     public function edit_business($slug){
-        $data['business'] = Shop::whereSlug($slug)->first();
-        if($data['business'] != null){
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        if($data['shop'] != null){
             $data['title'] = "Edit Business";
             $data['categories'] = SubCategory::orderBy('name')->get();
             $data['regions'] = Region::orderBy('name')->get();
             $data['towns'] = Town::orderBy('name')->get();
             $data['streets'] = Street::orderBy('name')->get();
-            return view('admin.businesses.edit', $data);
+            return view('b_admin.businesses.edit', $data);
         }
     }
 
@@ -202,8 +202,11 @@ class HomeController extends Controller
         return view('b_admin.businesses.show', $data);
     }
 
-    public function managers(){
-        $data['managers'] = auth()->user()->managers;
+    public function managers($shop_slug){
+        $shop = Shop::whereSlug($shop_slug)->first();
+        $data['title'] = "Managers of ".$shop->name;
+        $data['shop'] = $shop;
+        $data['managers'] = $shop->managers;
         return view('b_admin.businesses.managers.index', $data);
     }
 
@@ -257,6 +260,131 @@ class HomeController extends Controller
         $data['shop'] = Shop::whereSlug($slug)->first();
 
         return view('b_admin.products.create_categ_images', $data);
+        switch ($request->step??null) {
+            case '1':
+                $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required']);
+                if($validity->fails()){
+                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                }
+
+                $data['categories'] = SubCategory::orderBy('name')->get();
+
+                // save product
+                $item = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 'service'=>false, 'tags' => $request->tags];
+                
+                if(($file = $request->file('image')) != null){
+                    $path = public_path('uploads/item_images/');
+                    $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
+                    
+                    $file->move($path, $fname);
+                    // dd($fname);
+                    $fpathname = $fname;
+                    $item['featured_image'] = $fpathname;
+                }
+
+                $unique_check = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'service'=>false];
+                if(($product_instance = \App\Models\Product::where($unique_check)->first()) == null){
+                    $product_instance = new \App\Models\Product($item);
+                    $product_instance->save();
+                }
+                if($product_instance->featured_image != null){
+                    if(\App\Models\ProductImage::where(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image])->count() == 0){
+                        \App\Models\ProductImage::insert(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image]);
+                    }
+                }
+                $data['item_id'] = $product_instance->id;
+
+                //Update product images and categories 
+                $data['item'] = $product_instance;
+                $strx = $request->name.', '.$request->tags;
+
+                $categs = explode(', ', $strx);
+
+                $cats = collect();
+                foreach ($categs as $key => $tok) {
+                    # code...
+                    $cats->push(\App\Models\SubCategory::where('name', 'LIKE', '% '.$tok.' %')->orWhere('description', 'LIKE', '%'.$tok.'%')->get());
+                }
+                // dd($cats);
+                $guess = [];
+                foreach ($cats as $key => $col) {
+                    # code...
+                    foreach ($col as $key => $elm) {
+                        # code...
+                        $guess[] = $elm;
+                    }
+                }
+                
+                $data['proposed_categories'] = $guess;
+                $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
+                $data['step'] = 2;
+                return view('b_admin.products.create', $data);
+                break;
+            
+            case '2':
+                // dd($request->all());
+                $validity = Validator::make($request->all(), ['categories'=>'required']);
+                if($validity->fails()){
+                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                }
+                $product = \App\Models\Product::whereSlug($request->item_slug)->first();
+                if($product != null){
+                    $product_categories = [];
+                    foreach ($request->categories as $key => $cat) {
+                        # code...
+                        $product_categories[] = ['item_id'=>$product->id, 'sub_category_id'=>$cat];
+                    }
+                    \App\Models\ItemCategory::insert($product_categories);
+                    $data['item'] = $product;
+                    $data['step'] = 3;
+                    // dd($data);
+                    return view('b_admin.products.create', $data);
+
+                }else{
+                    return back()->withInput();
+                }
+                break;
+
+            case '3':
+                $validity = Validator::make($request->all(), ['unit_price'=>'required', 'description'=>'required']);
+                if($validity->fails()){
+                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                }
+                $product = \App\Models\Product::whereSlug($request->item_slug)->first();
+                $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                if($product != null){
+                    $biz = $data['shop'];
+                    if($biz != null && $biz->contactInfo != null){
+                        $bizIndex = ($biz->contactInfo->street->town->region->country->name??null).'_'.($biz->contactInfo->street->town->region->name??null).'_'.($biz->contactInfo->street->town->name??null).'_'.($biz->contactInfo->street->name??null).'_'.($biz->name??null).'_'.implode('_', $biz->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $biz->subCategories->pluck('description')->toArray() ?? []);
+                        $prodIndex = $product->name.'_'.str_replace(',', '_', $product->tags).'_'.implode('_', $product->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $product->subCategories->pluck('description')->toArray() ?? []);
+                        $index = $bizIndex.'_'.$prodIndex;
+                        $update['search_index'] = $index;
+                    }
+                    $product->update($update);
+                }
+
+                // dd($request->all());
+                if (($files = $request->file('gallery')) != null) {
+                    # code...
+                    $item_images = [];
+                    foreach ($files as $key => $file) {
+                        # code...
+                        $path = public_path('uploads/item_images');
+                        $fname = 'img_'.time().random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+                        $file->move($path, $fname);
+                        $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
+                    }
+                    \App\Models\ProductImage::insert($item_images);
+                }
+
+                // save product images if need be
+                break;
+            default:
+                # code...
+                break;
+        }
+        
+        return redirect(route('business_admin.products.index', $data['shop']->slug));
     }
 
     public function update_save_products(Request $request, $product)
@@ -368,17 +496,29 @@ class HomeController extends Controller
                 break;
 
             case '3':
-                $validity = Validator::make($request->all(), ['unit_price'=>'required', 'description'=>'required']);
+                $validity = Validator::make($request->all(), ['description'=>'required']);
                 if($validity->fails()){
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
                 $product = \App\Models\Product::whereSlug($request->item_slug)->first();
-                $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                $update = ['unit_price'=> $request->unit_price??'', 'description'=>$request->description, 'status'=>1];
                 if($product != null){
                     $product->update($update);
                 }
 
                 // save product images if need be
+                if (($files = $request->file('gallery')) != null) {
+                    # code...
+                    $item_images = [];
+                    foreach ($files as $key => $file) {
+                        # code...
+                        $path = public_path('uploads/item_images');
+                        $fname = 'img_'.time().random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+                        $file->move($path, $fname);
+                        $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
+                    }
+                    \App\Models\ProductImage::insert($item_images);
+                }
 
             }
         return view('b_admin.services.create_categ_images', $data);
@@ -483,29 +623,21 @@ class HomeController extends Controller
         return view('b_admin.errands.edit', $data);
     }
 
-    private function saveProductSubCategories($subCategories, $product)
-    {
-        return $product->subCategories()->attach($subCategories);
 
+    public function create_manager($shop_slug)
+    {
+        # code...
+        $data['shop'] = Shop::whereSlug($shop_slug)->first();
+        $data['title'] = "Add Manager To ".$data['shop']->name??'';
+        return view('b_admin.businesses.managers.create', $data);
     }
 
-//    public function saveProductImages(Request $request)
-//    {
-//        $request->validate([
-//            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-//        ]);
-////        dd($request->all());
-//        $image = time().'.'.$request['image']->extension;
-//        $product_id = Session::get('product');
-//        $product = Product::find($product_id);
-//        ProductImage::create([
-//            'item_id'       => $product->id,
-//            'image'         =>  self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'.$image,
-//            'created_at'    => Carbon::now(),
-//            'updated_at'    => Carbon::now()
-//        ]);
-//        $request['image']->move(public_path(self::PRODUCT_IMAGE_PATH.'/'.$product->name.'/images/'), $image);
-//
-//        return response()->json(["message" => "success"]);
-//    }
+    public function send_manager_request ($shop_slug, $user_id)
+    {
+        # code...
+        $shop_id = Shop::whereSlug($shop_slug)->first()->id;
+        $data = ['shop_id'=>$shop_id, 'user_id'=>$user_id, 'status'=>0];
+        \App\Models\ShopManager::updateOrInsert(['shop_id'=>$shop_id, 'user_id'=>$user_id], ['status'=>0]);
+        return redirect()->route('business_admin.managers.index', $shop_slug);
+    }
 }

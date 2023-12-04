@@ -29,10 +29,10 @@
                             </div>
 
                             <div class="my-2 d-flex justify-content-center">
-                                <a class="button-primary " href=""><span class="fa fa-whatsapp"></span> Chat on Whatsapp</a>
+                                <a class="button-primary" href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=`I saw your business; {{ $shop->name }} on Errandia. Can we talk more?`"><span class="fa fa-whatsapp"></span> Chat on Whatsapp</a>
                             </div>
                             <div class="my-2 d-flex justify-content-center">
-                                <a class="button-secondary " href=""><span class="fa fa-phone"></span> Call 672387532</a>
+                                <a class="button-secondary " href="tel:{{ $shop->contactInfo->phone ?? '' }}"><span class="fa fa-phone"></span> Call {{ $shop->contactInfo->phone ?? '???' }}</a>
                             </div>
                             <div class="my-2 d-flex justify-content-center ">
                                 <a class="button-secondary " href=""> Follow this Business</a>
@@ -40,10 +40,10 @@
 
                             <div class="my-2 text-body">
                                 Follow us on social media <br>
-                                <span class="fa fa-facebook fa-2x mt-2 mx-2 text-info"></span>
-                                <span class="fa fa-instagram fa-2x mt-2 mx-2 text-overline"></span>
-                                <span class=" fa-2x mt-2 mx-2 text-overline"><i class="fab fa-tiktok text-danger"></i></span>
-                                <span class=" fa-2x mt-2 mx-2 text-overline"><i class="fa-brands fa-twitter text-primary"></i></span>
+                                <a href="#"><span class="fa fa-facebook fa-2x mt-2 mx-2 text-info"></span></a>
+                                <a href="#"><span class="fa fa-instagram fa-2x mt-2 mx-2 text-overline"></span></a>
+                                <a href="#"><span class=" fa-2x mt-2 mx-2 text-overline"><i class="fab fa-tiktok text-danger"></i></span></a>
+                                <a href="#"><span class=" fa-2x mt-2 mx-2 text-overline"><i class="fa-brands fa-twitter text-primary"></i></span></a>
                             </div>
 
                             @if(count($branches) > 0)
@@ -86,43 +86,44 @@
                                     {{-- PRODUCTS START --}}
                                     <div class="col-12">
                                         <div class="title title-flex">
-                                            <div class="section-b-space">
-                                                <div class="mb-5">
+                                            <div class="section-b-space w-100">
+                                                <div class="mb-5 d-flex flex-wrap justify-content-between">
                                                     <h3>Products</h3>
+                                                    <a href="{{ route('public.business.show_items', ['slug'=>$shop->slug, 'type'=>1]) }}" class="button-secondary">See All</a>
                                                 </div>
                                                 <div class="product-border border-row overflow-hidden">
                                                     <div class="product-box-slider no-arrow slick-initialized slick-slider"><button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: inline-block;">Previous</button>
                                                         
-                                                            <div class="slick-slide slick-active" tabindex="0" data-slick-index="1" aria-hidden="false">
+                                                            <div class="slick-slide slick-active w-100" tabindex="0" data-slick-index="1" aria-hidden="false">
                                                                 <div class="row m-0">
-                                                                    @foreach($products as $key => $product)
-                                                                        @if(!$product->is_service)
-                                                                            <div class="col-12 col-lg-4 col-xxl-3 px-0">
-                                                                                <div class="product-box shadow">
-                                                                                    <div class="product-image">
-                                                                                        <a href="{{ route('public.products.show', ['slug' => $product->slug]) }}" tabindex="0">
-                                                                                            <img src="{{ asset('assets/public/assets/images/vegetable/product/3.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                                                                        </a>
-                                                                                    </div>
-                                                                                    <div class="product-detail">
-                                                                                        <a href="{{ route('public.products.show', ['slug' => $product->slug]) }}" tabindex="0">
-                                                                                            <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">
-                                                                                                {{$product->name}}
-                                                                                            </h6>
-                                                                                        </a>
 
-                                                                                        <h5 class="sold text-content">
-                                                                                            <span class="theme-color price">${{$product->unit_price}}</span>
-                                                                                        </h5>
+                                                                    @forelse ($products as $key => $prod)
+                                                                        <div class="col-12 col-lg-4 col-xxl-3 px-0">
+                                                                            <div class="product-box shadow">
+                                                                                <div class="product-image">
+                                                                                    <a href="{{ route('public.products.show', $prod->slug) }}" tabindex="0">
+                                                                                        <img src="{{ $prod->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$prod->featured_image) }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                                                    </a>
+                                                                                </div>
+                                                                                <div class="product-detail">
+                                                                                    <a href="{{ route('public.products.show', $prod->slug) }}" tabindex="0">
+                                                                                        <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">{{ $prod->name??'' }}
+                                                                                        </h6>
+                                                                                    </a>
+                                                                                      <h5 class="sold text-content">
+                                                                                          <span class="theme-color price">${{$product->unit_price}}</span>
+                                                                                      </h5>
 
-                                                                                        <div class="add-to-cart-box">
-                                                                                            <a href="{{ route('public.products.show', ['slug' => $product->slug]) }}" class="button-secondary">see more</a>
-                                                                                        </div>
+                                                                                    <div class="add-to-cart-box">
+                                                                                        <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=I saw {{ $prod->name }} on Errandia. Can we talk more?" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
+                                                                                        <a href="tel:{{ $shop->contactInfo->phone??'' }}" class="button-secondary text-center"><span class="fa fa-phone mr-1"></span> Call</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        @endif
-                                                                    @endforeach
+                                                                        </div>
+                                                                    @empty
+                                                                        <div class="text-center text-danger h6">No products for this shop</div>
+                                                                    @endforelse
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -141,45 +142,45 @@
                                     {{-- SERVICES START --}}
                                     <div class="col-12">
                                         <div class="title title-flex">
-                                            <div class="section-b-space">
-                                                <div class="mb-5">
-                                                    <h3>Services (<a class="">See All</a>)</h3>
+                                            <div class="section-b-space w-100">
+                                                <div class="mb-5 d-flex flex-wrap justify-content-between">
+                                                    <h3>Services</h3>
+                                                    <a href="{{ route('public.business.show_items', ['slug'=>$shop->slug, 'type'=>2]) }}" class="button-secondary">See All</a>
                                                 </div>
                                                 <div class="product-border border-row overflow-hidden">
                                                     <div class="product-box-slider no-arrow slick-initialized slick-slider"><button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: inline-block;">Previous</button>
                                                         
-                                                            <div class="slick-slide slick-active" tabindex="0" data-slick-index="1" aria-hidden="false">
+                                                            <div class="slick-slide slick-active w-100" tabindex="0" data-slick-index="1" aria-hidden="false">
                                                                 <div class="row m-0">
-                                                                    @foreach($products as $key => $product)
-                                                                        @if($product->is_service)
-                                                                            <div class="col-12 col-lg-4 col-xxl-3 px-0">
-                                                                                <div class="product-box shadow">
-                                                                                    <div class="product-image">
-                                                                                        <a href="product-left-thumbnail.html" tabindex="0">
-                                                                                            <img src="{{ asset('assets/public/assets/images/vegetable/product/3.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                                                                        </a>
-                                                                                    </div>
-                                                                                    <div class="product-detail">
-                                                                                        <a href="product-left-thumbnail.html" tabindex="0">
-                                                                                            <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">
-                                                                                                {{$product->name}}
-                                                                                            </h6>
-                                                                                        </a>
+                                                                
+                                                                    @forelse ($services as $key=>$serv)
+                                                                        <div class="col-12 col-lg-4 col-xxl-3 px-0">
+                                                                            <div class="product-box shadow">
+                                                                                <div class="product-image">
+                                                                                    <a href="{{ route('public.products.show', $serv->slug) }}" tabindex="0">
+                                                                                        <img src="{{ $serv->image_path == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$serv->image_path) }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                                                    </a>
+                                                                                </div>
+                                                                                <div class="product-detail">
+                                                                                    <a href="{{ route('public.products.show', $serv->slug) }}" tabindex="0">
+                                                                                        <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">{{ $serv->name ?? '' }}
+                                                                                        </h6>
+                                                                                    </a>
 
-                                                                                        <h5 class="sold text-content">
-                                                                                            <span class="theme-color price">${{$product->unit_price}}</span>
-                                                                                            <del>28.56</del>
-                                                                                        </h5>
+                                                                                    <h5 class="sold text-content">
+                                                                                        <span class="theme-color price">XAF {{ $serv->unit_price??'???' }}</span>
+                                                                                    </h5>
 
-                                                                                        <div class="add-to-cart-box">
-                                                                                            <a href="#" class="button-secondary">see more</a>
-                                                                                        </div>
+                                                                                    <div class="add-to-cart-box">
+                                                                                        <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=I saw {{ $serv->name }} on Errandia. Can we talk more?" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
+                                                                                        <a href="tel:{{ $shop->contactInfo->phone??'' }}" class="button-secondary text-center"><span class="fa fa-phone mr-1"></span> Call</a>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </div>
+                                                                        </div>
+                                                                    @empty
+                                                                        <div class="text-center text-danger h6">No services for this shop</div>
+                                                                    @endforelse                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -325,25 +326,25 @@
                                     </div>
                                     <div class="col-custome-12">
                                         <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
-                                            @for ($i=0; $i < 12; $i++)
+                                            @forelse ($branches as $key=>$branch)
                                                 <div>
                                                     <div class="product-box-3 h-100 wow fadeInUp shadow bg-white" style="visibility: visible; animation-name: fadeInUp;">
                                                         <div class="product-header">
                                                             <div class="product-image">
-                                                                <a href="{{ route('public.business.show', 'slug') }}">
-                                                                    <img src="{{ asset('assets/images/nishang.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                                <a href="{{ route('public.business.show', $branch->slug) }}">
+                                                                    <img src="{{ $branch->image_path == null ? asset('assets/images/default1.jpg') : asset('uploads/logos/'.$branch->image_path) }}" class="img-fluid blur-up lazyloaded" alt="">
                                                                 </a>
                                                             </div>
                                                         </div>
                                                         <div class="product-footer">
                                                             <div class="product-detail">
-                                                                <a href="{{ route('public.business.show', 'slug') }}">
-                                                                    <h5 class="name">Nishang System</h5>
+                                                                <a href="{{ route('public.business.show', $branch->slug) }}">
+                                                                    <h5 class="name">{{ $branch->name??'' }}</h5>
                                                                 </a>
-                                                                <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
+                                                                <h6 class="unit"><span class="fa fa-location"></span>{{ $branch->contactInfo->location() ?? '' }}</h6>
                                                                 </h5>
                                                                 <div class="add-to-cart-box bg-white shadow" >
-                                                                    <a  href="{{ route('public.business.show', 'slug') }}" class="btn btn-add-cart">Check this Business
+                                                                    <a  href="{{ route('public.business.show', $branch->slug) }}" class="btn btn-add-cart">Check this Business
                                                                         <span class="add-icon bg-light-gray">
                                                                             <i class="fa fa-business-time"></i>
                                                                         </span>
@@ -364,7 +365,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endfor
+                                            @empty
+                                                <div class="text-center text-danger h6">No branches for this shop</div>
+                                            @endforelse
 
                                         </div>
                                     </div>
@@ -389,25 +392,25 @@
             </div>
         </div>
         <div class="container mx-auto row g-sm-4 g-3 product-list-section row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-2">
-            @for ($i=0; $i < 12; $i++)
+            @forelse ($related_shops as $key=>$shop)
                 <div>
                     <div class="product-box-3 h-100 wow fadeInUp shadow bg-white" style="visibility: visible; animation-name: fadeInUp;">
                         <div class="product-header">
                             <div class="product-image">
-                                <a href="{{ route('public.business.show', 'slug') }}">
-                                    <img src="{{ asset('assets/images/nishang.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
+                                <a href="{{ route('public.business.show', $shop->slug) }}">
+                                    <img src="{{ $shop->image_path == null ? asset('assets/images/default1.jpg') : asset('uploads/logos/'.$shop->image_path) }}" class="img-fluid blur-up lazyloaded" alt="">
                                 </a>
                             </div>
                         </div>
                         <div class="product-footer">
                             <div class="product-detail">
-                                <a href="{{ route('public.business.show', 'slug') }}">
-                                    <h5 class="name">Nishang System</h5>
+                                <a href="{{ route('public.business.show', $shop->slug) }}">
+                                    <h5 class="name">{{ $shop->name??'' }}</h5>
                                 </a>
-                                <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
+                                <h6 class="unit"><span class="fa fa-location"></span>{{ $shop->contactInfo->location() }}</h6>
                                 </h5>
                                 <div class="add-to-cart-box bg-white shadow" >
-                                    <a  href="{{ route('public.business.show', 'slug') }}" class="btn btn-add-cart">Check this Business
+                                    <a  href="{{ route('public.business.show', $shop->slug) }}" class="btn btn-add-cart">Check this Business
                                         <span class="add-icon bg-light-gray">
                                             <i class="fa fa-business-time"></i>
                                         </span>
@@ -428,7 +431,9 @@
                         </div>
                     </div>
                 </div>
-            @endfor
+            @empty
+                <div class="text-center text-danger h6">No related businesses for this shop</div>
+            @endforelse
 
         </div>
     </section>

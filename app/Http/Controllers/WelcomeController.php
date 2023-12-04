@@ -24,6 +24,14 @@ class WelcomeController extends Controller
         $this->regionService = $regionService;
     }
 
+
+
+    public function searchUser(Request $request)
+    {
+        // return $request->par;
+        $users = \App\Models\User::where('name', 'LIKE', '%'.$request->par.'%')->orWhere('email', 'LIKE', '%'.$request->par.'%')->get(['*']);
+        return response()->json(['users'=>$users]);
+    }
     public function home()
     {
         $data['errands'] = Errand::orderBy('created_at', 'ASC')->take(12)->get();
@@ -38,11 +46,34 @@ class WelcomeController extends Controller
 
     public function show_business($slug)
     {
-        
-        $data['business'] = Shop::first();
-        $data['branches'] = $data['business']->branches;
+
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['branches'] = Shop::Where('parent_slug', $slug)->get();
+        $data['products'] = $data['shop']->products->take(8);
+        $data['services'] = $data['shop']->services->take(8);
+        $data['related_shops'] = Shop::where('category_id', $data['shop']->category_id)->where('slug', '!=', $slug)->inRandomOrder()->get();
         // dd($data);
         return view("public.show_business", $data);
+    }
+
+    public function show_business_items($slug, $type)
+    {
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['branches'] = Shop::Where('parent_slug', $slug)->get();
+        switch ($type) {
+            case '1':
+                # code...
+                $data['products'] = $data['shop']->products;
+                $data['services'] = $data['shop']->services->take(6);
+                break;
+            case '2':
+                # code...
+                $data['products'] = $data['shop']->products->take(6);
+                $data['services'] = $data['shop']->services;
+                break;
+        }
+        // dd($data);
+        return view("public.show_business_items", $data);
     }
 
     public function run_arrnd()
@@ -75,38 +106,30 @@ class WelcomeController extends Controller
     public function search(Request $request)
     {
         $qstring = $request->searchString;
-        if($qstring == null){
+
+        if($qstring == null || strlen($qstring) == 0){
             return view('public.search');
         }
         $data['search_string'] = $qstring;
         $qstringTokens = explode(' ', $qstring);
 
         $qResult = [];
-        $FullTextResults = Product::where('items.name', 'like', '%'.$qstring.'%')->inRandomOrder()->get();
-        $FullTextShopResults = Product::where('items.name', 'like', '%'.$qstring.'%')->join('shops', 'shops.id', '=', 'items.shop_id')->inRandomOrder()->select('shops.*')->get();
-        
-        
-        $qShopResultBuilder = Shop::join('shop_categories', 'shop_categories.shop_id', '=', 'shops.id')
-            ->join('sub_categories', 'sub_categories.id', '=', 'shop_categories.sub_category_id')
-            ->where(function($qry)use($qstringTokens){
-                $qry->where('sub_categories.description', 'LIKE', '%'.$qstringTokens[0].'%');
-                foreach ($qstringTokens as $key => $token) {
-                    $qry->orWhere('sub_categories.description', 'LIKE', '%'.$token.'%');
-                }
-            })->orWhere(function($qry)use($qstringTokens){
-                $qry->join('sub_categories', 'shops.category_id', '=', 'sub_categories.id')
-                    ->where('sub_categories.description', 'LIKE', '%'.$qstringTokens[0].'%');
-                    foreach ($qstringTokens as $key => $token) {
-                        $qry->orWhere('sub_categories.description', 'LIKE', '%'.$token.'%');
-                    }
-            });
-        // $qResult = $qResultBuilder->inRandomOrder()->get();
-        $qResultShops = $qShopResultBuilder->whereNotIn('shops.id', $FullTextResults->pluck('shop_id')->toArray())->get(['shops.*']);
 
-        // $data['products'] = array_unique(array_merge($FullTextResults->all(), $qResult->all()));
+        $FullTextResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->inRandomOrder()->get();
+        // $FullTextShopResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->join('shops', 'shops.id', '=', 'items.shop_id')->inRandomOrder()->select('shops.*')->get();
+        
+        // SEARCH FOR POSSIBLE BUSINESSES
+        $qResultBuilder = \App\Models\Shop::join('items', 'items.shop_id', '=', 'shops.id')->where(function($qry)use($qstringTokens){
+            $qry->where('search_index', 'LIKE', '%'.$qstringTokens[0].'%');
+            foreach ($qstringTokens as $key => $token) {
+                $qry->orWhere('search_index', 'LIKE', '%'.$token.'%')->orWhere('tags', 'LIKE', '%'.$token.'%');
+            }
+        });        
+   
+        $qResultShops = $qResultBuilder->whereNotIn('shops.id', $FullTextResults->pluck('shop_id')->toArray())->distinct()->get(['shops.*']);
+
         $data['products'] = $FullTextResults->all();
         $data['shops'] = $qResultShops->all();
-        $data['shops'] =Shop::all();
         // dd($data);
         return view('public.search', $data);
     }
@@ -128,7 +151,8 @@ class WelcomeController extends Controller
     }
 
     public function show_product($slug){
-        return view('public.products.show');
+        $data['item'] = Product::whereSlug($slug)->first();
+        return view('public.products.show', $data);
     }
 
 }
