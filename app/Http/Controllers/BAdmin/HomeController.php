@@ -5,6 +5,8 @@ namespace App\Http\Controllers\BAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Errand;
+use App\Models\ErrandImage;
 use App\Models\ItemSubCategory;
 use App\Models\Manager;
 use App\Models\Product;
@@ -403,21 +405,24 @@ class HomeController extends Controller
 
     public function save_errand(Request $request){
         // save and forward errand for image update
+        $request->validate(['title'=>'required']);
         $data['errand'] = $request->all();
-        $item = ['title'=>$request->title, 'region_id'=>$request->town, 'town_id'=>$request->town, 'street_id'=>$request->street, 'description'=>$request->description, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre'];
-        $unique_check = ['title'=>$request->title, 'region_id'=>$request->town, 'town_id'=>$request->town, 'street_id'=>$request->street, 'description'=>$request->description, 'user_id'=>auth()->id()];
-        if(($instance = \App\Models\Errand::where($unique_check)->first()) == null){
-            $instance = new \App\Models\Errand($item);
-            $instance->save();
-        }
+        $data['title'] = "Post Errand";
+        $item = ['title'=>$request->title, 'region_id'=>$request->town??null, 'town_id'=>$request->town??null, 'street_id'=>$request->street??null, 'description'=>$request->description, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre'];
+        // $unique_check = ['title'=>$request->title, 'region_id'=>$request->town, 'town_id'=>$request->town, 'street_id'=>$request->street, 'description'=>$request->description, 'user_id'=>auth()->id()];
+        // if(($instance = \App\Models\Errand::where($unique_check)->first()) == null){
+        // }
+        $instance = new \App\Models\Errand($item);
+        $instance->save();
 
+        $data['quote'] = $instance;
         // Propose categories
         $title = $request->title;
         $tokens = explode(',', $title);
 
         $props = [];
         foreach ($tokens as $key => $tok) {
-            $props[] = \App\Models\SubCategory::where('name', 'LIKE', '%'.$tok.'%')->orWhere('description', 'LIKE', '%'.$tok.'%')->get()->all();
+            $props[] = \App\Models\SubCategory::where('name', 'LIKE', '%'.$tok.'%')->get()->all();
         }
         $categs = [];
         foreach ($props as $key => $prop) {
@@ -426,14 +431,33 @@ class HomeController extends Controller
                 $categs[] = $prp;
             }
         }
-        $data['proposed_categories'] = $categs;
+        $data['proposed_categories'] = array_unique($categs);
         $data['categories'] = SubCategory::orderBy('name')->get();
         return view('b_admin.errands.create_categ_images', $data);
     }
 
     public function update_save_errand(Request $request){
         // save and forward errand for image update
-        return back()->with('success', 'Done');
+        $validator = Validator::make($request->all(), ['categories'=>'required|array', 'gallery'=>'required|array', 'visibility'=>'required', 'quote_slug'=>'required']);
+        if($validator->fails()){
+            return back()->with('error', $validator->errors()->first());
+        }
+        $update = ['sub_categories'=>implode(',', $request->categories), 'visibility'=>$request->visibility];
+        $quote = Errand::whereSlug($request->quote_slug)->first();
+        $quote->update($update);
+
+        if(($gallery = $request->file('gallery')) != null){
+            $quote_images = [];
+            foreach ($gallery as $key => $file) {
+                # code...
+                $path = public_path('uploads/quote_images');
+                $fname = 'qim_'.time().'_'.random_int(100000, 999999).'.'.$file->getClientOriginalExtension();
+                $file->move($path, $fname);
+                $quote_images[] = ['item_quote_id'=>$quote->id, 'image'=>$fname];
+            }
+            ErrandImage::insert($quote_images);
+        }
+        return redirect()->route('business_admin.errands.index');
     }
 
     public function show_errand ($slug){
