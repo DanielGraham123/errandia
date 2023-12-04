@@ -532,7 +532,41 @@ class HomeController extends Controller
     }
 
     public function errands(Request $request){
-        $data['errands'] = \App\Models\Errand::take(100)->get();
+        if($request->type == null){
+            $data['errands'] = \App\Models\Errand::where('user_id', auth()->id())->take(100)->get();
+            $data['title'] = "Posted Errands";
+        }else{
+            $shops = auth()->user()->shops;
+
+            // get categories of the current user's shops
+            $shop_categories = [];
+            foreach ($shops as $key => $shop) {
+                # code...
+                foreach ($shop->subCategories as $key => $subcat) {
+                    # code...
+                    $shop_categories[] = $subcat;
+                }
+            }
+            $shop_category_ids = collect($shop_categories)->pluck('id')->toArray();
+            $extra_ids = $shops->pluck('category_id')->toArray();
+            $shop_category_ids = array_merge($shop_categories, $extra_ids);
+
+            // get errands/quotes with matching categories
+            $errands = [];
+            foreach ($shop_category_ids as $key => $sci) {
+                # code...
+                $_errands = \App\Models\Errand::where('sub_categories', 'LIKE', '%'.$sci.'%')->where('read_status', 0)
+                    ->inRandomOrder()->take(50)->get();
+                foreach ($_errands as $key => $err) {
+                    # code...
+                    $errands[] = $err;
+                }
+            }
+            $data['errands'] = collect($errands)->shuffle()->take(100);
+            $data['title'] = "Recieved Errands";
+            // dd($shop_category_ids);
+            // dd($errands);
+        }
         return view('b_admin.errands.index', $data);
     }
 
@@ -558,11 +592,11 @@ class HomeController extends Controller
         $data['quote'] = $instance;
         // Propose categories
         $title = $request->title;
-        $tokens = explode(',', $title);
+        $tokens = explode(' ', $title);
 
         $props = [];
         foreach ($tokens as $key => $tok) {
-            $props[] = \App\Models\SubCategory::where('name', 'LIKE', '%'.$tok.'%')->get()->all();
+            $props[] = \App\Models\SubCategory::where('name', 'LIKE', '%'.$tok.'%')->orWhere('description', 'LIKE', '%'.$tok.'%')->get()->all();
         }
         $categs = [];
         foreach ($props as $key => $prop) {
@@ -572,6 +606,7 @@ class HomeController extends Controller
             }
         }
         $data['proposed_categories'] = array_unique($categs);
+        // dd($categs);
         $data['categories'] = SubCategory::orderBy('name')->get();
         return view('b_admin.errands.create_categ_images', $data);
     }
@@ -582,9 +617,11 @@ class HomeController extends Controller
         if($validator->fails()){
             return back()->with('error', $validator->errors()->first());
         }
-        $update = ['sub_categories'=>implode(',', $request->categories), 'visibility'=>$request->visibility];
         $quote = Errand::whereSlug($request->quote_slug)->first();
-        $quote->update($update);
+        $quote->sub_categories = implode(',', $request->categories);
+        $quote->visibility = $request->visibility;
+        $quote->status = 1;
+        $quote->save();
 
         if(($gallery = $request->file('gallery')) != null){
             $quote_images = [];

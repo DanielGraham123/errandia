@@ -155,4 +155,16 @@ class WelcomeController extends Controller
         return view('public.products.show', $data);
     }
 
+    public function sub_category_businesses ($slug)
+    {
+        # code...
+        $scat = \App\Models\SubCategory::whereSlug($slug)->first();
+        $__shops = \App\Models\Shop::join('shop_categories', 'shop_categories.shop_id', '=', 'shops.id')->join('sub_categories', 'sub_categories.id', '=', 'shop_categories.sub_category_id')->where('sub_categories.slug', $slug)->select(['shops.*'])->distinct()->get();
+        $__shops2 = \App\Models\Shop::join('sub_categories', 'sub_categories.id', '=', 'shops.category_id')->where('sub_categories.slug', $slug)->select(['shops.*'])->distinct()->get();
+        $data['title'] = "Businesses under ".$scat->name??'';
+        $data['businesses'] = collect(array_merge( $__shops->all(), $__shops2->all()));
+        // $data['businesses'] = \App\Models\Shop::paginate(50);
+        // dd($data);
+        return view('public.category.scat_businesses', $data);
+    }
 }

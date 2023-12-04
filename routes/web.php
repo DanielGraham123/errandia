@@ -385,6 +385,7 @@ Route::name('public.')->group(function(){
     Route::get('businesses/{region_id?}', 'WelcomeController@businesses')->name('businesses');
     Route::get('business/{slug}', 'WelcomeController@show_business')->name('business.show');
     Route::get('business/{slug}/items/{type}', 'WelcomeController@show_business_items')->name('business.show_items');
+    Route::get('sub_category/{slug}/businesses', 'WelcomeController@sub_category_businesses')->name('scategory.businesses');
     Route::get('categories/{slug}', 'WelcomeController@show_category')->name('category.show');
     Route::get('errands', 'WelcomeController@errands')->name('errands');
     Route::get('errands/show/{slug}', 'WelcomeController@view_errand')->name('errands.view');

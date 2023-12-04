@@ -438,8 +438,7 @@
                                                 {{$errand->description}}
                                             </p>
                                             
-                                            <h6 class="unit"><span class="fa fa-location"></span>{{$errand->street->name}},
-                                                {{$errand->town->name}}, {{$errand->region->name}}</h6>
+                                            <h6 class="unit"><span class="fa fa-location"></span>{{$errand->location()}}/h6>
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
                                                 <button class="btn btn-add-cart">Call this Customer

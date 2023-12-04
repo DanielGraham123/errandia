@@ -94,11 +94,11 @@
 
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="{{ route('business_admin.enquiries.index') }}"
-                                                    data-bs-toggle="dropdown">Enquiries</a>
+                                                    data-bs-toggle="dropdown">Errands</a>
                                                     
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}">Errands recieved</a>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}?type=recieved">Errands recieved</a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}">Errands Sent</a>
@@ -106,6 +106,21 @@
 
                                                     <li>
                                                         <a class="dropdown-item" href="{{ route('business_admin.errands.create') }}">Run Errand</a>
+                                                    </li>
+                                                
+                                                </ul>
+                                            </li>
+
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="{{ route('business_admin.enquiries.index') }}"
+                                                    data-bs-toggle="dropdown">Enquiries</a>
+                                                    
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}">Enquiries recieved</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}">Enquiries Sent</a>
                                                     </li>
                                                 
                                                 </ul>
@@ -137,7 +152,7 @@
 
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="#"
-                                                    data-bs-toggle="dropdown">Business Following</a>
+                                                    data-bs-toggle="dropdown">Following</a>
                                                     
                                                 <ul class="dropdown-menu">
                                                     <li>
@@ -242,7 +257,7 @@
 
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="{{ route('business_admin.enquiries.index') }}"
-                                                    data-bs-toggle="dropdown">Enquiries</a>
+                                                    data-bs-toggle="dropdown">Errands</a>
                                                     
                                                 <ul class="dropdown-menu">
                                                     <li>

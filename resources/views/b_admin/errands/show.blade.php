@@ -15,7 +15,7 @@
                     </div>
                     <div class="row my-3">
                         <span class="col-sm-3 text-extra text-capitalize">categories</span>
-                        <span class="col-sm-9 text-body-sm text-capitalize">{{ $errand->_categories()->first()->name??'' }}</span>
+                        <span class="col-sm-9 text-body-sm text-capitalize">{{ implode(', ', $errand->_categories()->pluck('name')->toArray()) }}</span>
                     </div>
                 </div>
             </div>
@@ -33,8 +33,8 @@
                     </div>
                     <div class="row my-3">
                         <span class="col-sm-3 text-extra text-capitalize">Email</span>
-                        <span class="col-sm-9 text-body-sm text-capitalize">{{ $errand->posted_by->email??'' }} 
-                            <a class="bg-light rounded px-2 py-1 text-body-sm"><span class=" fab fa-message mx-2"></span>Call</a> 
+                        <span class="col-sm-9 text-body-sm text-capitalize">
+                            <a class="bg-light rounded px-2 py-1 text-body-sm"><span class=" fa fa-message mx-2"></span>{{ $errand->posted_by->email??'emailaddress' }}</a> 
                         </span>
                     </div>
                     <div class="row my-3">
