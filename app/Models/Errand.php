@@ -10,7 +10,7 @@ class Errand extends Model
     use HasFactory;
 
     protected $table = 'item_quotes';
-    protected $fillable = ['title', 'description', 'user_id', 'slug', 'read_status', 'categories', 'region_id', 'town_id', 'street_id'];
+    protected $fillable = ['title', 'description', 'user_id', 'slug', 'read_status', 'categories', 'region_id', 'town_id', 'street_id', 'visibility'];
 
     public function posted_by()
     {
@@ -35,10 +35,5 @@ class Errand extends Model
     public function images()
     {
         return $this->hasMany(ErrandImage::class, 'item_quote_id');
-    }
-
-    public function street()
-    {
-        return $this->belongsTo(Street::class, 'street_id');
     }
 }

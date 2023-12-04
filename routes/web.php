@@ -166,8 +166,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
 Route::get('region/{id}/towns', [Controller::class, 'region_towns'])->name('region.towns');
 Route::get('town/{id}/streets', [Controller::class, 'town_streets'])->name('town.streets');
+//Route::get("test_save_images", [\App\Http\Controllers\BAdmin\HomeController::class, 'saveProductImages'])->name('save_product_image');
 
-
+//Route::get('save_images',[\App\Http\Controllers\BAdmin\HomeController::class, 'saveProductImages'])->name('save_product_image');
 Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')->group(function () {
 
     Route::get('', 'BAdmin\HomeController@home')->name('home');
@@ -220,8 +221,9 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('show/{product}', 'BAdmin\HomeController@show_product')->name('show');
         Route::get('create/{shop_slug}', 'BAdmin\HomeController@create_products')->name('create');
         Route::post('create/{shop_slug}', 'BAdmin\HomeController@save_products');
-        Route::post('create_update/{shop_slug}', 'BAdmin\HomeController@update_save_products')->name('create_update');
+        Route::post('create_update/{product}', 'BAdmin\HomeController@update_save_products')->name('create_update');
         Route::get('{shop_slug?}', 'BAdmin\HomeController@products')->name('index');
+
     });
     Route::prefix('services')->name('services.')->group(function(){
         Route::get('show/{product}', 'BAdmin\HomeController@show_service')->name('show');

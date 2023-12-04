@@ -6,6 +6,7 @@
         </div>
         <form method="POST" action="{{ route('business_admin.errands.create_update') }}" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="quote_slug" value="{{ $quote->slug }}">
             <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
                 <span class="d-block mt-4" style="font-weight: 700;">Categories *</span>
                 <div class="d-flex flex-wrap my-3 border-left border-right rounded">

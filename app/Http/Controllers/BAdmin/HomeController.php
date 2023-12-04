@@ -5,20 +5,27 @@ namespace App\Http\Controllers\BAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Errand;
+use App\Models\ErrandImage;
+use App\Models\ItemSubCategory;
 use App\Models\Manager;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Region;
 use App\Models\Shop;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
-    //
+    const PRODUCT_IMAGE_PATH = "uploads/products/";
     public function home(){
         // dd(1231231230);
         return view('b_admin.dashboard');
@@ -211,6 +218,10 @@ class HomeController extends Controller
         return view('b_admin.businesses.branches.index', $data);
     }
 
+
+    
+
+
     public function enquiries(){
         $data['enquiries'] = [];
         return view('b_admin.enquiries.index', $data);
@@ -241,7 +252,14 @@ class HomeController extends Controller
 
     public function save_products(Request $request, $slug){
 
+        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required', 'description'=>'required']);
+        if($validity->fails()){
+            return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+        }
+        $data['categories'] = SubCategory::orderBy('name')->get();
         $data['shop'] = Shop::whereSlug($slug)->first();
+
+        return view('b_admin.products.create_categ_images', $data);
         switch ($request->step??null) {
             case '1':
                 $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required']);
@@ -369,9 +387,11 @@ class HomeController extends Controller
         return redirect(route('business_admin.products.index', $data['shop']->slug));
     }
 
-    public function update_save_products(Request $request, $slug)
+    public function update_save_products(Request $request, $product)
     {
-        dd($request->all());
+        $savedProduct = Product::findOrFail($product);
+        $this->saveProductSubCategories($request->all()['categories'], $savedProduct);
+        return redirect()->route("business_admin.products.index", ['shop_slug' => $savedProduct->shop->slug])->with("success", "Product Added Successfully");
     }
 
     public function services(Request $request, $slug=null){
@@ -384,7 +404,6 @@ class HomeController extends Controller
         }
         return view('b_admin.services.index', $data);
     }
-
     
     public function create_service($slug){
         $user = auth()->user();
@@ -501,23 +520,16 @@ class HomeController extends Controller
                     \App\Models\ProductImage::insert($item_images);
                 }
 
-
-                return redirect(route('business_admin.services.index', $data['shop']->slug));
-                break;
-            default:
-                # code...
-                break;
-        }
-        
-        return redirect(route('business_admin.services.index', $data['shop']->slug));
+            }
+        return view('b_admin.services.create_categ_images', $data);
     }
+
 
     
     public function update_save_service(Request $request, $slug)
     {
         dd($request->all());
     }
-
 
     public function errands(Request $request){
         $data['errands'] = \App\Models\Errand::take(100)->get();
@@ -533,21 +545,24 @@ class HomeController extends Controller
 
     public function save_errand(Request $request){
         // save and forward errand for image update
+        $request->validate(['title'=>'required']);
         $data['errand'] = $request->all();
-        $item = ['title'=>$request->title, 'region_id'=>$request->town, 'town_id'=>$request->town, 'street_id'=>$request->street, 'description'=>$request->description, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre'];
-        $unique_check = ['title'=>$request->title, 'region_id'=>$request->town, 'town_id'=>$request->town, 'street_id'=>$request->street, 'description'=>$request->description, 'user_id'=>auth()->id()];
-        if(($instance = \App\Models\Errand::where($unique_check)->first()) == null){
-            $instance = new \App\Models\Errand($item);
-            $instance->save();
-        }
+        $data['title'] = "Post Errand";
+        $item = ['title'=>$request->title, 'region_id'=>$request->town??null, 'town_id'=>$request->town??null, 'street_id'=>$request->street??null, 'description'=>$request->description, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre'];
+        // $unique_check = ['title'=>$request->title, 'region_id'=>$request->town, 'town_id'=>$request->town, 'street_id'=>$request->street, 'description'=>$request->description, 'user_id'=>auth()->id()];
+        // if(($instance = \App\Models\Errand::where($unique_check)->first()) == null){
+        // }
+        $instance = new \App\Models\Errand($item);
+        $instance->save();
 
+        $data['quote'] = $instance;
         // Propose categories
         $title = $request->title;
         $tokens = explode(',', $title);
 
         $props = [];
         foreach ($tokens as $key => $tok) {
-            $props[] = \App\Models\SubCategory::where('name', 'LIKE', '%'.$tok.'%')->orWhere('description', 'LIKE', '%'.$tok.'%')->get()->all();
+            $props[] = \App\Models\SubCategory::where('name', 'LIKE', '%'.$tok.'%')->get()->all();
         }
         $categs = [];
         foreach ($props as $key => $prop) {
@@ -556,14 +571,33 @@ class HomeController extends Controller
                 $categs[] = $prp;
             }
         }
-        $data['proposed_categories'] = $categs;
+        $data['proposed_categories'] = array_unique($categs);
         $data['categories'] = SubCategory::orderBy('name')->get();
         return view('b_admin.errands.create_categ_images', $data);
     }
 
     public function update_save_errand(Request $request){
         // save and forward errand for image update
-        return back()->with('success', 'Done');
+        $validator = Validator::make($request->all(), ['categories'=>'required|array', 'gallery'=>'required|array', 'visibility'=>'required', 'quote_slug'=>'required']);
+        if($validator->fails()){
+            return back()->with('error', $validator->errors()->first());
+        }
+        $update = ['sub_categories'=>implode(',', $request->categories), 'visibility'=>$request->visibility];
+        $quote = Errand::whereSlug($request->quote_slug)->first();
+        $quote->update($update);
+
+        if(($gallery = $request->file('gallery')) != null){
+            $quote_images = [];
+            foreach ($gallery as $key => $file) {
+                # code...
+                $path = public_path('uploads/quote_images');
+                $fname = 'qim_'.time().'_'.random_int(100000, 999999).'.'.$file->getClientOriginalExtension();
+                $file->move($path, $fname);
+                $quote_images[] = ['item_quote_id'=>$quote->id, 'image'=>$fname];
+            }
+            ErrandImage::insert($quote_images);
+        }
+        return redirect()->route('business_admin.errands.index');
     }
 
     public function show_errand ($slug){
@@ -588,6 +622,7 @@ class HomeController extends Controller
         $data['streets'] = Street::orderBy('name')->get();
         return view('b_admin.errands.edit', $data);
     }
+
 
     public function create_manager($shop_slug)
     {

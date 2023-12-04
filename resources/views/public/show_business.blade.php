@@ -96,6 +96,7 @@
                                                         
                                                             <div class="slick-slide slick-active w-100" tabindex="0" data-slick-index="1" aria-hidden="false">
                                                                 <div class="row m-0">
+
                                                                     @forelse ($products as $key => $prod)
                                                                         <div class="col-12 col-lg-4 col-xxl-3 px-0">
                                                                             <div class="product-box shadow">
@@ -109,10 +110,9 @@
                                                                                         <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">{{ $prod->name??'' }}
                                                                                         </h6>
                                                                                     </a>
-
-                                                                                    <h5 class="sold text-content">
-                                                                                        <span class="theme-color price">XAF {{ $prod->unit_price ?? "???" }}</span>
-                                                                                    </h5>
+                                                                                      <h5 class="sold text-content">
+                                                                                          <span class="theme-color price">${{$product->unit_price}}</span>
+                                                                                      </h5>
 
                                                                                     <div class="add-to-cart-box">
                                                                                         <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=I saw {{ $prod->name }} on Errandia. Can we talk more?" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
@@ -152,6 +152,7 @@
                                                         
                                                             <div class="slick-slide slick-active w-100" tabindex="0" data-slick-index="1" aria-hidden="false">
                                                                 <div class="row m-0">
+                                                                
                                                                     @forelse ($services as $key=>$serv)
                                                                         <div class="col-12 col-lg-4 col-xxl-3 px-0">
                                                                             <div class="product-box shadow">
@@ -179,8 +180,7 @@
                                                                         </div>
                                                                     @empty
                                                                         <div class="text-center text-danger h6">No services for this shop</div>
-                                                                    @endforelse
-                                                                </div>
+                                                                    @endforelse                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

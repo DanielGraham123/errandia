@@ -9,6 +9,7 @@ use App\Models\Region;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
+use App\Services\GeographicalService\RegionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\Shop;
@@ -16,6 +17,14 @@ use \App\Models\Shop;
 
 class WelcomeController extends Controller
 {
+    private $regionService;
+
+    public function __construct(RegionService $regionService)
+    {
+        $this->regionService = $regionService;
+    }
+
+
 
     public function searchUser(Request $request)
     {
@@ -25,18 +34,19 @@ class WelcomeController extends Controller
     }
     public function home()
     {
-        return view("public.home");
+        $data['errands'] = Errand::orderBy('created_at', 'ASC')->take(12)->get();
+        return view("public.home", $data);
     }
 
     public function businesses($region = null)
     {
-        
-        $data['businesses'] = Shop::all();
+        $data['businesses'] = Shop::paginate(10);
         return view("public.businesses", $data);
     }
 
     public function show_business($slug)
     {
+
         $data['shop'] = Shop::whereSlug($slug)->first();
         $data['branches'] = Shop::Where('parent_slug', $slug)->get();
         $data['products'] = $data['shop']->products->take(8);
@@ -96,6 +106,7 @@ class WelcomeController extends Controller
     public function search(Request $request)
     {
         $qstring = $request->searchString;
+
         if($qstring == null || strlen($qstring) == 0){
             return view('public.search');
         }
@@ -103,6 +114,7 @@ class WelcomeController extends Controller
         $qstringTokens = explode(' ', $qstring);
 
         $qResult = [];
+
         $FullTextResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->inRandomOrder()->get();
         // $FullTextShopResults = \App\Models\Product::where('items.name', 'like', '%'.$qstring.'%')->join('shops', 'shops.id', '=', 'items.shop_id')->inRandomOrder()->select('shops.*')->get();
         
@@ -112,8 +124,7 @@ class WelcomeController extends Controller
             foreach ($qstringTokens as $key => $token) {
                 $qry->orWhere('search_index', 'LIKE', '%'.$token.'%')->orWhere('tags', 'LIKE', '%'.$token.'%');
             }
-        });
-        
+        });        
    
         $qResultShops = $qResultBuilder->whereNotIn('shops.id', $FullTextResults->pluck('shop_id')->toArray())->distinct()->get(['shops.*']);
 
@@ -126,7 +137,9 @@ class WelcomeController extends Controller
 
     public function errands(Request $request)
     {
-        return view('public.errands.index');
+        $data['regions'] = $this->regionService->getAllRegions();
+        $data['errands'] = Errand::orderBy('created_at', 'ASC')->paginate(20);
+        return view('public.errands.index')->with($data);
     }
 
     public function view_errand(Request $request)
@@ -140,16 +153,6 @@ class WelcomeController extends Controller
     public function show_product($slug){
         $data['item'] = Product::whereSlug($slug)->first();
         return view('public.products.show', $data);
-    }
-
-    public function show_category($slug){
-        $category = Category::whereSlug($slug)->first();
-        $sub_categories = $category->sub_categories->sortBy('name');
-        $items = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->join('sub_categories', 'sub_categories.id', '=', 'item_categories.sub_category_id')->select('items.*')->distinct()->inRandomOrder()->get();
-        $data['products'] = $items->where('service', 0)->all();
-        $data['services'] = $items->where('service', 1)->all();
-        $data['shops'] = Shop::join('sub_categories', 'sub_categories.id', '=', 'shops.category_id')->inRandomOrder()->get('shops.*')->all();
-        return view('public.category', $data);
     }
 
 }
