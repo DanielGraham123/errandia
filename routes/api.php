@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api'], function() {
-    Route::post('/login', 'AuthController@login');
+    Route::post('/phone/login', 'AuthController@phoneLogin');
+    Route::post('/email/login', 'AuthController@emailLogin');
+    Route::post('/phone/verify', 'AuthController@verifyPhone');
     Route::post('/register', 'AuthController@register');
 
     Route::get('/countries', 'LocationController@countries');
