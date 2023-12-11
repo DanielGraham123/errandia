@@ -69,6 +69,18 @@
 <body class="bg-effect">
 
 @include('components.header')
+
+
+    {{-- Error Alerts --}}
+    @if (session()->has('success'))
+        <div class="alert alert-success">{{ session()->get('success') }}</div>
+    @elseif(session()->has('message'))
+        <div class="alert alert-primary">{{ session()->get('message') }}</div>
+    @elseif(session()->has('error'))
+        <div class="alert alert-danger">{{ session()->get('error') }}</div>
+    @endif
+    {{-- End Error Alerts --}}
+
     
     <!-- Main Content start -->
     @yield('section')
@@ -155,6 +167,30 @@
     <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
 
     @yield('script')
+
+    <script>
+
+        // Get all inputs that have a word limit
+        document.querySelectorAll('input[data-max-words]').forEach(input => {
+            // Remember the word limit for the current input
+            let maxWords = parseInt(input.getAttribute('data-max-words') || 0)
+            // Add an eventlistener to test for key inputs
+            input.addEventListener('keydown', e => {
+                let target = e.currentTarget
+                // Split the text in the input and get the current number of words
+                let words = target.value.split(/\s+/).length
+                // If the word count is > than the max amount and a space is pressed
+                // Don't allow for the space to be inserted
+                if (!target.getAttribute('data-announce'))
+                // Note: this is a shorthand if statement
+                // If the first two tests fail allow the key to be inserted
+                // Otherwise we prevent the default from happening
+                words >= maxWords && e.keyCode == 32 && e.preventDefault()
+                else
+                words >= maxWords && e.keyCode == 32 && (e.preventDefault() || alert('Word Limit Reached'))
+            })
+        })
+    </script>
 </body>
 
 </html>

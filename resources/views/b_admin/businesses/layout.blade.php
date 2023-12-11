@@ -128,7 +128,7 @@
 
 </head>
 <body class="no-skin">
-    <div class="pre-loader">
+    <!-- <div class="pre-loader">
         <div class="sk-fading-circle">
             <div class="sk-circle1 sk-circle"></div>
             <div class="sk-circle2 sk-circle"></div>
@@ -143,7 +143,7 @@
             <div class="sk-circle11 sk-circle"></div>
             <div class="sk-circle12 sk-circle"></div>
         </div>
-    </div>
+    </div> -->
 
     <div id="navbar" class="navbar navbar-default  ace-save-state py-0" style="background: {{$bg2}};">
         <div class="navbar-container w-100 ace-save-state py-0 my-0 d-flex d-md-block" id="navbar-container">
@@ -1011,6 +1011,8 @@
         });
     
     });
+
+    
 </script>
 </body>
 </html>

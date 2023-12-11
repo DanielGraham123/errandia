@@ -44,6 +44,10 @@ class Shop extends Model
         }return '';
     }
 
+    public function items(){
+        return $this->hasMany(Product::class, 'shop_id')->inRandomOrder();
+    }
+
     public function products(){
         return $this->hasMany(Product::class, 'shop_id')->where('service', 0);
     }

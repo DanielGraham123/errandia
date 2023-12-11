@@ -1,19 +1,19 @@
 @extends('b_admin.layout')
 @section('section')
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" onsubmit="formReload()">
     @csrf
     <div>
         <div class="py-4 my-5 px-3 shadow" style="border-radius: 0.8rem;">
             <div class="text-h4 text-center text-uppercase my-3">Business details</div>
             <div class="row mx-5 my-2">
                 <div class="col-md-12 px-2 py-2">
-                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Business Name">
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Business Name" required>
                 </div>
                 <div class="col-md-12 px-2 py-2">
-                    <input type="file" name="image" accept="image/*" class="form-control" value="{{ old('image') }}" placeholder="Logo">
+                    <input type="file" name="image" accept="image/*" class="form-control" value="{{ old('image') }}" placeholder="Logo" required>
                 </div>
                 <div class="col-md-12 px-2 py-2">
-                    <select name="category" class="form-control" placeholder="">
+                    <select name="category" class="form-control" placeholder="" required>
                         <option>Business categories</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}" {{ old('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
@@ -43,7 +43,7 @@
                     </select>
                 </div>
                 <div class="col-md-4 py-2 px-2">
-                    <select name="street" class="form-control" id="street_selection">
+                    <select name="street" class="form-control" id="street_selection" required>
                         <option>Street</option>
                         @foreach ($streets as $st)
                             <option value="{{ $st->id }}" {{ old('street') == $st->id ? 'selected' : '' }}>{{ $st->name }}</option>
@@ -51,12 +51,14 @@
                     </select>
                 </div>
                 <div class="col-md-12 px-2 py-2">
-                    <input type="text" name="address" class="form-control" value="{{ old('website') }}" placeholder="Business address">
+                    <input type="text" name="address" class="form-control" value="{{ old('website') }}" placeholder="Business address" address>
                 </div>
                 <div class="col-md-12 px-2 py-2">
                     <div class="input-group">
-                        <span class="fa fa-phone text-h6"></span>
-                        <select class="input-group-addon" name="phone_code" style="max-width: 7rem !important;">
+                        <div class="input-group-addon">
+                            <span class=" fa fa-phone text-h6"></span>
+                        </div>
+                        <select class="input-group-addon" name="phone_code" style="max-width: 7rem !important;" required>
                             @foreach (config('country-phone-codes') as $phcode)
                                 <option value="+{{ $phcode['code'] }}" {{ old('phone_code') == $phcode ? 'selected' : '' }}>{{ $phcode['iso'] }} (+{{ $phcode['code'] }})</option>
                             @endforeach
