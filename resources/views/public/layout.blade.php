@@ -69,6 +69,18 @@
 <body class="bg-effect">
 
 @include('components.header')
+
+
+    {{-- Error Alerts --}}
+    @if (session()->has('success'))
+        <div class="alert alert-success">{{ session()->get('success') }}</div>
+    @elseif(session()->has('message'))
+        <div class="alert alert-primary">{{ session()->get('message') }}</div>
+    @elseif(session()->has('error'))
+        <div class="alert alert-danger">{{ session()->get('error') }}</div>
+    @endif
+    {{-- End Error Alerts --}}
+
     
     <!-- Main Content start -->
     @yield('section')

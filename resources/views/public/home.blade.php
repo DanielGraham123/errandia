@@ -121,16 +121,13 @@
                                 <div class="product-detail">
                                     <a href="{{ route('public.business.show', $shop->slug) }}">
                                         <h5 class="name">{{ $shop->name }}</h5>
-                                        <span class="text-overline text-center"><i class="fa fa-location"></i> {{ $shop->contactInfo->location() }}</span>
+                                        <span class="text-overline text-center"><i class="fa fa-location"></i> {{ $shop->contactInfo != null ? $shop->contactInfo->location() : '' }}</span>
                                     </a>
                                 </div>
                             </div>
                         </div>
                         @endforeach
-                       
-
-
-                        
+                            
                     </div>
                 </div>
             </div>
@@ -437,8 +434,9 @@
                                             <p class="text-content mt-1 mb-2 line-clamp-3">
                                                 {{$errand->description}}
                                             </p>
-                                            
-                                            <h6 class="unit"><span class="fa fa-location"></span>{{$errand->location()}}/h6>
+
+                                            <h6 class="unit"><span class="fa fa-location"></span>{{$errand->location()}}</h6>
+
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
                                                 <button class="btn btn-add-cart">Call this Customer

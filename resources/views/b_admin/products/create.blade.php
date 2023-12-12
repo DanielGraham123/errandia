@@ -87,9 +87,9 @@
                         </div>
                         <hr>
 
-                        <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
+                        {{-- <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
                         <div class="my-3 border-left border-right rounded multipleImageUplaoder">
-                        </div>
+                        </div> --}}
                         {{-- <span class="d-block mt-4" style="font-weight: 700;">Product images</span>
                         <input class="form-control rounded" type="file" multiple accept="image/*" name="images" value="{{ old('images') }}" placeholder="other images" oninput="imageChanged(event)"> --}}
                         <div id="product_image_preview_box" class="d-flex"></div>

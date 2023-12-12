@@ -18,6 +18,7 @@ use App\Models\SubCategory;
 use App\Models\Town;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -66,7 +67,8 @@ class HomeController extends Controller
         ]);
 
         if($validity->fails()){
-            return back()->with('error', $validity->errors()->first())->withInput();
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
         }
 
         $business = new \App\Models\Shop();
@@ -75,7 +77,8 @@ class HomeController extends Controller
         $shop_data = ['name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
                     'status'=>false, ];
         if(Shop::where(['name'=>$request->name])->count() > 0){
-            return redirect(route('business_admin.businesses.index'))->with('error', 'Business with same name already exist');
+            session()->flash('error', 'Business with same name already exist');
+            return back()->withInput();
         }
         // SAVE BUSINESS DATA
         $business->fill($shop_data);
@@ -110,12 +113,14 @@ class HomeController extends Controller
         ]);
 
         if($validity->fails()){
-            return back()->with('error', $validity->errors()->first())->withInput();
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
         }
         
         $parent = Shop::whereSlug($slug)->first();
         if(($parent->street_id == $request->street) && ($parent->address == $request->address)){
-            return back()->with('error', 'You already have a branch of this business in the specified location with the same address.');
+            session()->flash('error', 'You already have a branch of this business in the specified location with the same address.');
+            return back()->withInput();
         }
         $business = new \App\Models\Shop();
         $data = [
@@ -169,13 +174,14 @@ class HomeController extends Controller
         $validity = Validator::make($request->all(), [
             'name'=>'required', 'category'=>'required', 'region'=>'required', 
             'town'=>'required', 'street'=>'required', 'website'=>'url',
-            'business_type'=>'required', 'verification_status'=>'required', 'phone'=>'required|integer',
+            'is_branch'=>'required', 'phone'=>'required|integer',
             //  'phone_code'=>'required_with:phone', 
-            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
+             'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
         ]);
 
         if($validity->fails()){
-            return back()->with('error', $validity->errors()->first());
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
         }
 
         $business = \App\Models\Shop::whereSlug($slug)->first();
@@ -183,18 +189,28 @@ class HomeController extends Controller
         if($business != null){
             $data = [
                 'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
-                'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
-                'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'type'=>$request->business_type, 'status'=>$request->verification_status, 
+                'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
+                'whatsapp_phone'=>$request->whatsapp_phone, 'email'=>$request->email, 'is_branch'=>$request->is_branch, 
             ];
+            $shop_data = ['name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
+                    'status'=>false, ];
             if(Shop::where(['name'=>$request->name])->where('slug', '!=', $slug)->count() > 0){
-                return redirect(route('admin.businesses.index'))->with('error', 'Business with same name already exist');
+                session()->flash('error', 'Business with same name already exist');
+                return redirect(route('business_admin.businesses.index'))->withInput();
             }
-            $business->fill($data);
+            $business->update($shop_data);
+
+            // SET CONTACT INFO
+            $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+            \App\Models\ShopContactInfo::updateOrInsert(['shop_id'=>$business->id], $contact_data);
             
-            $business->save();
-            return redirect(route('admin.businesses.index'))->with('success', 'Business successfully created');
+            // SET DEFAULT BUSINESS MANAGER
+            $manager_data = ['shop_id'=>$business->id, 'user_id'=>auth()->id(), 'is_owner'=>true, 'status'=>true];
+            \App\Models\ShopManager::updateOrInsert(['shop_id'=>$business->id, 'user_id'=>auth()->id()], $manager_data);
+            
+            return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
         }
-        return redirect(route('admin.businesses.index'))->with('error', 'Business not found');
+        return redirect(route('business_admin.businesses.index'))->with('error', 'Business not found');
     }
 
     public function show_business ($slug){
@@ -252,14 +268,15 @@ class HomeController extends Controller
 
     public function save_products(Request $request, $slug){
 
-        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required', 'description'=>'required']);
+        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required']);
         if($validity->fails()){
-            return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
         }
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['shop'] = Shop::whereSlug($slug)->first();
 
-        return view('b_admin.products.create_categ_images', $data);
+        // return view('b_admin.products.create_categ_images', $data);
         switch ($request->step??null) {
             case '1':
                 $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required']);
@@ -325,9 +342,10 @@ class HomeController extends Controller
                 // dd($request->all());
                 $validity = Validator::make($request->all(), ['categories'=>'required']);
                 if($validity->fails()){
-                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                    session()->flash('error', $validity->errors()->first());
+                    return back()->withInput();
                 }
-                $product = \App\Models\Product::whereSlug($request->item_slug)->first();
+                $product = Product::whereSlug($request->item_slug)->first();
                 if($product != null){
                     $product_categories = [];
                     foreach ($request->categories as $key => $cat) {
@@ -385,6 +403,314 @@ class HomeController extends Controller
         }
         
         return redirect(route('business_admin.products.index', $data['shop']->slug));
+    }
+
+    public function edit_products($slug){
+        $user = auth()->user();
+        $data['product'] = Product::whereSlug($slug)->first();
+        $data['title'] = "Product Update";
+        return view('b_admin.products.edit', $data);
+    }
+
+    public function edit_service($slug){
+        $user = auth()->user();
+        $data['product'] = Product::whereSlug($slug)->first();
+        $data['title'] = "Service Update";
+        return view('b_admin.services.edit', $data);
+    }
+
+    public function update_products(Request $request, $slug){
+
+        try {
+            //code...
+            $product = Product::whereSlug($slug)->first();
+            $data['categories'] = SubCategory::orderBy('name')->get();
+            $data['product'] = $product;
+    
+            // return view('b_admin.products.create_categ_images', $data);
+            switch ($request->step??null) {
+                case '1':
+                    $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required']);
+                    if($validity->fails()){
+                        return back()->withInput( array_merge(request()->all(), ['error'=> $validity->errors()->first()]));
+                    }
+                    DB::beginTransaction();
+                    
+                    $data['categories'] = SubCategory::orderBy('name')->get();
+                    
+                    // save product
+                    $item = ['name'=>$request->name, 'tags' => $request->tags];
+                    
+                    if(($file = $request->file('image')) != null){
+                        $path = public_path('uploads/item_images/');
+                        $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
+                        
+                        $file->move($path, $fname);
+                        // dd($fname);
+                        $fpathname = $fname;
+                        $item['featured_image'] = $fpathname;
+                    }
+                    // dd($request->all());
+    
+                    $unique_check = ['name'=>$request->name, 'shop_id'=>$product->shop_id, 'service'=>false];
+                    if((Product::where($unique_check)->where('slug', '!=', $slug)->first()) == null){
+                        $product->update($item);
+                    }
+                    if(in_array('featured_image', $item)){
+                        if(ProductImage::where(['item_id'=>$product->id, 'image'=>$item['featured_image']])->count() == 0){
+                            ProductImage::insert(['item_id'=>$product->id, 'image'=>$item['featured_image']]);
+                        }
+                    }
+                    $data['item_id'] = $product->id;
+    
+                    //Update product images and categories 
+                    $data['item'] = $product;
+                    $strx = $request->name.', '.$request->tags;
+    
+                    $categs = explode(', ', $strx);
+    
+                    $cats = collect();
+                    foreach ($categs as $key => $tok) {
+                        # code...
+                        $cats->push(\App\Models\SubCategory::where('name', 'LIKE', '% '.$tok.' %')->orWhere('description', 'LIKE', '%'.$tok.'%')->get());
+                    }
+                    // dd($cats);
+                    $guess = [];
+                    foreach ($cats as $key => $col) {
+                        # code...
+                        foreach ($col as $key => $elm) {
+                            # code...
+                            $guess[] = $elm;
+                        }
+                    }
+                    
+                    $data['proposed_categories'] = $guess;
+                    $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
+                    $data['step'] = 2;
+                    DB::commit();
+                    return view('b_admin.products.edit', $data);
+                    break;
+                
+                case '2':
+                    // dd($request->all());
+                    $validity = Validator::make($request->all(), ['categories'=>'required']);
+                    if($validity->fails()){
+                        session()->flash('error', $validity->errors()->first());
+                        return back()->withInput();
+                    }
+
+                    if($product != null){
+                        DB::beginTransaction();
+                        $product_categories = [];
+                        foreach ($request->categories as $key => $cat) {
+                            # code...
+                            $product_categories[] = ['item_id'=>$product->id, 'sub_category_id'=>$cat];
+                        }
+                        \App\Models\ItemCategory::where('item_id', $product->id)->each(function($row){$row->delete();});
+                        \App\Models\ItemCategory::insert($product_categories);
+                        $data['item'] = $product;
+                        $data['step'] = 3;
+                        DB::commit();
+                        // dd($data);
+                        return view('b_admin.products.edit', $data);
+    
+                    }else{
+                        return back()->withInput();
+                    }
+                    break;
+    
+                case '3':
+                    $validity = Validator::make($request->all(), ['unit_price'=>'required', 'description'=>'required']);
+                    if($validity->fails()){
+                        return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                    }
+                    DB::beginTransaction();
+                    $product = \App\Models\Product::whereSlug($request->item_slug)->first();
+                    $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                    if($product != null){
+                        $biz = $product->shop;
+                        if($biz != null && $biz->contactInfo != null){
+                            $bizIndex = ($biz->contactInfo->street->town->region->country->name??null).'_'.($biz->contactInfo->street->town->region->name??null).'_'.($biz->contactInfo->street->town->name??null).'_'.($biz->contactInfo->street->name??null).'_'.($biz->name??null).'_'.implode('_', $biz->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $biz->subCategories->pluck('description')->toArray() ?? []);
+                            $prodIndex = $product->name.'_'.str_replace(',', '_', $product->tags).'_'.implode('_', $product->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $product->subCategories->pluck('description')->toArray() ?? []);
+                            $index = $bizIndex.'_'.$prodIndex;
+                            $update['search_index'] = $index;
+                        }
+                        $product->update($update);
+                    }
+    
+                    // dd($request->all());
+                    if (($files = $request->file('gallery')) != null) {
+                        # code...
+                        $item_images = [];
+                        foreach ($files as $key => $file) {
+                            # code...
+                            $path = public_path('uploads/item_images');
+                            $fname = 'img_'.time().random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+                            $file->move($path, $fname);
+                            $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
+                        }
+                        \App\Models\ProductImage::insert($item_images);
+                    }
+                    DB::commit();
+                    // save product images if need be
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            
+            return redirect(route('business_admin.products.index', $product->shop->slug));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', "File____{$th->getFile()}____Line____{$th->getLine()}_____Message____{$th->getMessage()}");
+        }
+    }
+
+    public function update_service(Request $request, $slug){
+
+        try {
+            //code...
+            $product = Product::whereSlug($slug)->first();
+            $data['categories'] = SubCategory::orderBy('name')->get();
+            $data['product'] = $product;
+    
+            // return view('b_admin.products.create_categ_images', $data);
+            switch ($request->step??null) {
+                case '1':
+                    $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required']);
+                    if($validity->fails()){
+                        return back()->withInput( array_merge(request()->all(), ['error'=> $validity->errors()->first()]));
+                    }
+                    DB::beginTransaction();
+                    
+                    $data['categories'] = SubCategory::orderBy('name')->get();
+                    
+                    // save product
+                    $item = ['name'=>$request->name, 'tags' => $request->tags];
+                    
+                    if(($file = $request->file('image')) != null){
+                        $path = public_path('uploads/item_images/');
+                        $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
+                        
+                        $file->move($path, $fname);
+                        // dd($fname);
+                        $fpathname = $fname;
+                        $item['featured_image'] = $fpathname;
+                    }
+                    // dd($request->all());
+    
+                    $unique_check = ['name'=>$request->name, 'shop_id'=>$product->shop_id, 'service'=>true];
+                    if((Product::where($unique_check)->where('slug', '!=', $slug)->first()) == null){
+                        $product->update($item);
+                    }
+                    if(in_array('featured_image', $item)){
+                        if(ProductImage::where(['item_id'=>$product->id, 'image'=>$item['featured_image']])->count() == 0){
+                            ProductImage::insert(['item_id'=>$product->id, 'image'=>$item['featured_image']]);
+                        }
+                    }
+                    $data['item_id'] = $product->id;
+    
+                    //Update product images and categories 
+                    $data['item'] = $product;
+                    $strx = $request->name.', '.$request->tags;
+    
+                    $categs = explode(', ', $strx);
+    
+                    $cats = collect();
+                    foreach ($categs as $key => $tok) {
+                        # code...
+                        $cats->push(\App\Models\SubCategory::where('name', 'LIKE', '% '.$tok.' %')->orWhere('description', 'LIKE', '%'.$tok.'%')->get());
+                    }
+                    // dd($cats);
+                    $guess = [];
+                    foreach ($cats as $key => $col) {
+                        # code...
+                        foreach ($col as $key => $elm) {
+                            # code...
+                            $guess[] = $elm;
+                        }
+                    }
+                    
+                    $data['proposed_categories'] = $guess;
+                    $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
+                    $data['step'] = 2;
+                    DB::commit();
+                    return view('b_admin.products.edit', $data);
+                    break;
+                
+                case '2':
+                    // dd($request->all());
+                    $validity = Validator::make($request->all(), ['categories'=>'required']);
+                    if($validity->fails()){
+                        session()->flash('error', $validity->errors()->first());
+                        return back()->withInput();
+                    }
+
+                    if($product != null){
+                        DB::beginTransaction();
+                        $product_categories = [];
+                        foreach ($request->categories as $key => $cat) {
+                            # code...
+                            $product_categories[] = ['item_id'=>$product->id, 'sub_category_id'=>$cat];
+                        }
+                        \App\Models\ItemCategory::where('item_id', $product->id)->each(function($row){$row->delete();});
+                        \App\Models\ItemCategory::insert($product_categories);
+                        $data['item'] = $product;
+                        $data['step'] = 3;
+                        DB::commit();
+                        // dd($data);
+                        return view('b_admin.products.edit', $data);
+    
+                    }else{
+                        return back()->withInput();
+                    }
+                    break;
+    
+                case '3':
+                    $validity = Validator::make($request->all(), ['unit_price'=>'required', 'description'=>'required']);
+                    if($validity->fails()){
+                        return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                    }
+                    DB::beginTransaction();
+                    $product = \App\Models\Product::whereSlug($request->item_slug)->first();
+                    $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                    if($product != null){
+                        $biz = $product->shop;
+                        if($biz != null && $biz->contactInfo != null){
+                            $bizIndex = ($biz->contactInfo->street->town->region->country->name??null).'_'.($biz->contactInfo->street->town->region->name??null).'_'.($biz->contactInfo->street->town->name??null).'_'.($biz->contactInfo->street->name??null).'_'.($biz->name??null).'_'.implode('_', $biz->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $biz->subCategories->pluck('description')->toArray() ?? []);
+                            $prodIndex = $product->name.'_'.str_replace(',', '_', $product->tags).'_'.implode('_', $product->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $product->subCategories->pluck('description')->toArray() ?? []);
+                            $index = $bizIndex.'_'.$prodIndex;
+                            $update['search_index'] = $index;
+                        }
+                        $product->update($update);
+                    }
+    
+                    // dd($request->all());
+                    if (($files = $request->file('gallery')) != null) {
+                        # code...
+                        $item_images = [];
+                        foreach ($files as $key => $file) {
+                            # code...
+                            $path = public_path('uploads/item_images');
+                            $fname = 'img_'.time().random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+                            $file->move($path, $fname);
+                            $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
+                        }
+                        \App\Models\ProductImage::insert($item_images);
+                    }
+                    DB::commit();
+                    // save product images if need be
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+            
+            return redirect(route('business_admin.products.index', $product->shop->slug));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', "File____{$th->getFile()}____Line____{$th->getLine()}_____Message____{$th->getMessage()}");
+        }
     }
 
     public function update_save_products(Request $request, $product)
@@ -521,7 +847,7 @@ class HomeController extends Controller
                 }
 
             }
-        return view('b_admin.services.create_categ_images', $data);
+        return redirect()->route('business_admin.services.index', $slug);
     }
 
 
@@ -615,7 +941,8 @@ class HomeController extends Controller
         // save and forward errand for image update
         $validator = Validator::make($request->all(), ['categories'=>'required|array', 'gallery'=>'required|array', 'visibility'=>'required', 'quote_slug'=>'required']);
         if($validator->fails()){
-            return back()->with('error', $validator->errors()->first());
+            session()->flash('error', $validator->errors()->first());
+            return back()->withInput();
         }
         $quote = Errand::whereSlug($request->quote_slug)->first();
         $quote->sub_categories = implode(',', $request->categories);
@@ -676,5 +1003,66 @@ class HomeController extends Controller
         $data = ['shop_id'=>$shop_id, 'user_id'=>$user_id, 'status'=>0];
         \App\Models\ShopManager::updateOrInsert(['shop_id'=>$shop_id, 'user_id'=>$user_id], ['status'=>0]);
         return redirect()->route('business_admin.managers.index', $shop_slug);
+    }
+
+    public function product_photos($product_slug)
+    {
+        # code...
+        $product = Product::whereSlug($product_slug)->first();
+        $data['product'] = $product;
+        $data['title'] = $product->service != 1 ? "Manage Product Images For {$product->name}" : "Manage Service Images For {$product->name}";
+        return view('b_admin.products.images', $data);
+    }
+
+    public function update_product_photos(Request $request, $product_slug)
+    {
+        # code...
+        // dd($request->all());
+        $validity = Validator::make($request->all(), ['images'=>'array', 'saved'=>'array']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+        
+        $product = Product::whereSlug($product_slug)->first();
+        $dropped_images = $product->images()->whereNotIn('id', $request->saved??[])->get();
+        if($dropped_images != null){
+            foreach ($dropped_images as $key => $image) {
+                unlink(public_path('uploads/item_images/').$image->image);
+                $image->delete();
+            }
+        }
+        if(($new_images = $request->file('images')) != null){
+            $prod_images = [];
+            foreach ($new_images as $key => $img) {
+                $fname = "prod{$product->id}_".time()."_".random_int(1000000, 9999999).'.'.$img->getClientOriginalExtension();
+                $img->move(public_path('uploads/item_images/'), $fname);
+                $prod_images[] = ['item_id'=>$product->id, 'image'=>$fname];
+            }
+            ProductImage::insert($prod_images);
+        }
+        return redirect()->route('business_admin.products.show', $product_slug)->with('success', 'Operation complete');
+    }
+
+    public function show_product($product_slug)
+    {
+        $product = Product::whereSlug($product_slug)->first();
+        $data['title'] = $product->service != 1 ? "Product Details" : "Service Details";
+        $data['item'] = $product;
+        return view('b_admin.products.show', $data);
+    }
+
+    public function unpublish_products(Request $request, $product_slug)
+    {
+        $product = Product::whereSlug($product_slug)->first();
+        if($product != null){
+            if($request->has('pb') and $request->pb == 1)
+                $product->update(['status'=>0]);
+            else
+                $product->update(['status'=>1]);
+
+        }
+        return $product->service != 1 ?
+            redirect()->route('business_admin.products.index', $product->shop->slug)->with('success', "Operation complete") :
+            redirect()->route('business_admin.services.index', $product->shop->slug)->with('success', "Operation complete") ;
     }
 }
