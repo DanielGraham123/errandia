@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Errand;
 use App\Models\ErrandImage;
+use App\Models\ItemCategory;
 use App\Models\ItemSubCategory;
 use App\Models\Manager;
 use App\Models\Product;
@@ -268,18 +269,13 @@ class HomeController extends Controller
 
     public function save_products(Request $request, $slug){
 
-        $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required']);
-        if($validity->fails()){
-            session()->flash('error', $validity->errors()->first());
-            return back()->withInput();
-        }
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['shop'] = Shop::whereSlug($slug)->first();
 
         // return view('b_admin.products.create_categ_images', $data);
         switch ($request->step??null) {
             case '1':
-                $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required']);
+                $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required', 'image'=>'required|file']);
                 if($validity->fails()){
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
@@ -300,13 +296,13 @@ class HomeController extends Controller
                 }
 
                 $unique_check = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'service'=>false];
-                if(($product_instance = \App\Models\Product::where($unique_check)->first()) == null){
-                    $product_instance = new \App\Models\Product($item);
+                if(($product_instance = Product::where($unique_check)->first()) == null){
+                    $product_instance = new Product($item);
                     $product_instance->save();
                 }
                 if($product_instance->featured_image != null){
-                    if(\App\Models\ProductImage::where(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image])->count() == 0){
-                        \App\Models\ProductImage::insert(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image]);
+                    if(ProductImage::where(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image])->count() == 0){
+                        ProductImage::insert(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image]);
                     }
                 }
                 $data['item_id'] = $product_instance->id;
@@ -320,7 +316,7 @@ class HomeController extends Controller
                 $cats = collect();
                 foreach ($categs as $key => $tok) {
                     # code...
-                    $cats->push(\App\Models\SubCategory::where('name', 'LIKE', '% '.$tok.' %')->orWhere('description', 'LIKE', '%'.$tok.'%')->get());
+                    $cats->push(SubCategory::where('name', 'LIKE', '% '.$tok.' %')->orWhere('description', 'LIKE', '%'.$tok.'%')->get());
                 }
                 // dd($cats);
                 $guess = [];
@@ -333,7 +329,7 @@ class HomeController extends Controller
                 }
                 
                 $data['proposed_categories'] = $guess;
-                $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
+                $data['categories'] = SubCategory::orderBy('name')->get();
                 $data['step'] = 2;
                 return view('b_admin.products.create', $data);
                 break;
@@ -352,7 +348,7 @@ class HomeController extends Controller
                         # code...
                         $product_categories[] = ['item_id'=>$product->id, 'sub_category_id'=>$cat];
                     }
-                    \App\Models\ItemCategory::insert($product_categories);
+                    ItemCategory::insert($product_categories);
                     $data['item'] = $product;
                     $data['step'] = 3;
                     // dd($data);
@@ -368,7 +364,7 @@ class HomeController extends Controller
                 if($validity->fails()){
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
-                $product = \App\Models\Product::whereSlug($request->item_slug)->first();
+                $product = Product::whereSlug($request->item_slug)->first();
                 $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
                 if($product != null){
                     $biz = $data['shop'];
@@ -392,7 +388,7 @@ class HomeController extends Controller
                         $file->move($path, $fname);
                         $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
                     }
-                    \App\Models\ProductImage::insert($item_images);
+                    ProductImage::insert($item_images);
                 }
 
                 // save product images if need be
@@ -826,7 +822,7 @@ class HomeController extends Controller
                 if($validity->fails()){
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
-                $product = \App\Models\Product::whereSlug($request->item_slug)->first();
+                $product = Product::whereSlug($request->item_slug)->first();
                 $update = ['unit_price'=> $request->unit_price??'', 'description'=>$request->description, 'status'=>1];
                 if($product != null){
                     $product->update($update);
