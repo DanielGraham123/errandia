@@ -121,16 +121,13 @@
                                 <div class="product-detail">
                                     <a href="{{ route('public.business.show', $shop->slug) }}">
                                         <h5 class="name">{{ $shop->name }}</h5>
-                                        <span class="text-overline text-center"><i class="fa fa-location"></i> {{ $shop->contactInfo->location() }}</span>
+                                        <span class="text-overline text-center"><i class="fa fa-location"></i> {{ $shop->contactInfo != null ? $shop->contactInfo->location() : '' }}</span>
                                     </a>
                                 </div>
                             </div>
                         </div>
                         @endforeach
-                       
-
-
-                        
+                            
                     </div>
                 </div>
             </div>
