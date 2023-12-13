@@ -42,7 +42,6 @@
     <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script> --}}
 
 
-    <script type="text/javascript" src="{{asset('tinymce/tinymce.min.js')}}"></script>
 
     @php
         $bg1 = 'white';
@@ -648,8 +647,8 @@
 <script src="{{ asset('assets/js/bootstrap-tag.min.js') }}"></script>
 
 
-{{-- <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script> --}}
-<script src="{{asset('assetsassets/js/jquery-3.6.0.min.js')}}"></script>
+<script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
+{{-- <script src="{{asset('assetsassets/js/jquery-3.6.0.min.js')}}"></script> --}}
 <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 <script src="{{ asset('assets/vendor/toastr/toastr.min.js') }}"></script>
 <script src="{{asset('assets/js/ace.min.js')}}"></script>
