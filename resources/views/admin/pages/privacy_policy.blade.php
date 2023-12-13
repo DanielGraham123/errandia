@@ -12,7 +12,7 @@
                     </div>
                     <div class="py-2">
                         <label>Content</label>
-                        <textarea class="form-control" name="content" id="text-editor1" placeholder="Enter policy content"></textarea>
+                        <textarea class="form-control" name="content" id="basic-example" placeholder="Enter policy content"></textarea>
                     </div>
                     <div class="pt-4 d-flex justify-content-end ">
                         <input type="submit" class="btn btn-xs btn-primary" value="save">
@@ -46,6 +46,23 @@
 @endsection
 @section('script')
     <script>
-        let editor1 = new RichTextEditor('#text-editor1');
+        
+        tinymce.init({
+        selector: 'textarea#basic-example',
+        height: 500,
+        menubar: false,
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount'
+        ],
+        toolbar: 'undo redo | formatselect | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+        });
+
+
     </script>
 @endsection
