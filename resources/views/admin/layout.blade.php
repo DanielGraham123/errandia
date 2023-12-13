@@ -36,6 +36,14 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/responsive.dataTables.min.css">
     <link href="{{ asset('tel_input_build/css/intlTelInput.css') }}" rel="stylesheet">
 
+
+    {{-- <link rel="stylesheet" href="{{asset('richtexteditor/rte_theme_default.css')}}" />
+    <script type="text/javascript" src="{{asset('/richtexteditor/rte.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script> --}}
+
+
+    <script type="text/javascript" src="{{asset('tinymce/tinymce.min.js')}}"></script>
+
     @php
         $bg1 = 'white';
         $bg2 = '#113d6b';
@@ -525,6 +533,13 @@
                             </a>
                             <b class="arrow"></b>
                         </li>
+                        <li>
+                            <a href="{{ route('admin.pages.privacy') }}" class="text-capitalize">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Privacy Policies
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
 
                         <li>
                             <a href="{{ route('admin.pages.team_members') }}" class="text-capitalize">
@@ -633,7 +648,8 @@
 <script src="{{ asset('assets/js/bootstrap-tag.min.js') }}"></script>
 
 
-<script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script>
+{{-- <script src="{{asset('assets/js/jquery-2.1.4.min.js')}}"></script> --}}
+<script src="{{asset('assetsassets/js/jquery-3.6.0.min.js')}}"></script>
 <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 <script src="{{ asset('assets/vendor/toastr/toastr.min.js') }}"></script>
 <script src="{{asset('assets/js/ace.min.js')}}"></script>
@@ -701,9 +717,18 @@
             info:     true,
             searching: true,
             lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
-        }
-        );
+        });
 
+
+
+        $('form').each((index, element)=>{
+            $(element).on('submit', (event)=>{
+                // $(element).
+                // event.preventDefault();
+                let submit_btn = $(element).find("button, input[type='submit']").first();
+                $(submit_btn).prop('disabled', 'true');
+            })
+        });
     });
 
     function delete_alert(event, data) {

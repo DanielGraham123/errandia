@@ -68,7 +68,7 @@
 
 <body class="bg-effect">
 
-@include('components.header')
+    @include('components.header')
 
 
     {{-- Error Alerts --}}
@@ -188,6 +188,15 @@
                 words >= maxWords && e.keyCode == 32 && e.preventDefault()
                 else
                 words >= maxWords && e.keyCode == 32 && (e.preventDefault() || alert('Word Limit Reached'))
+            })
+        })
+
+
+
+        $('form').each((index, element)=>{
+            $(element).on('submit', (event)=>{
+                let submit_btn = $(element).find("button, input[type='submit']").first();
+                $(submit_btn).prop('disabled', 'true');
             })
         })
     </script>
