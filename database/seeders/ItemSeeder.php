@@ -30,7 +30,7 @@ class ItemSeeder extends Seeder
                 'quantity' => $generator->randomElement([20, 40, 50, 69, 70, 100]),
                 'slug' => $generator->randomNumber(),
                 'name' => $generator->name,
-                'is_service' => $generator->randomElement([true, false]),
+                'service' => $generator->randomElement([true, false]),
                 'search_index' => '',
                 'status' => $generator->randomElement([true, false]),
                 'unit_price' => $generator->randomElement([1500, 4000, 5000, 2000, 6000, 10000]),

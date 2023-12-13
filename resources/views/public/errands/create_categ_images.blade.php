@@ -4,13 +4,17 @@
         <div class="d-flex py-3 my-2 px-2">
             <span class="text-h4 d-block">Run an Errand</span>
         </div>
-        <form method="POST" action="{{ route('business_admin.errands.create_update') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('public.errands.run.update', ['errand' => $errand]) }}" enctype="multipart/form-data">
             @csrf
             <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
                 <span class="d-block mt-4" style="font-weight: 700;">Categories *</span>
-
                 <div class="d-flex flex-wrap my-3 border-left border-right rounded">
-                    <input class="form-control rounded" placeholder="categories">
+                    @foreach ($categories as $cat)
+                        <span class="d-inlineblock rounded border bg-light py-1 px-3 my-2 mx-2">
+                                    <input type="checkbox" class="input mx-2" name="categories[]"  value="{{ $cat->id }}">
+                                    <span class="text-extra">{{ $cat->name }}</span>
+                                </span>
+                    @endforeach
                 </div>
                 <span class="d-block mt-4" style="font-weight: 700;">Would you make your errands visible to the public?</span>
                 <div class="d-flex flex-wrap my-3 border-left border-right rounded">

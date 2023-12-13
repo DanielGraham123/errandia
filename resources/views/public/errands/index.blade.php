@@ -127,7 +127,7 @@
                                 <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-header">
                                         <div class="product-image">
-                                            <a href="product-left-thumbnail.html">
+                                            <a>
                                                 <img src="{{ asset('assets/public/assets/images/charger.png') }}" class="img-fluid blur-up lazyloaded" alt="">
                                             </a>
 
@@ -136,18 +136,17 @@
                                     </div>
                                     <div class="product-footer">
                                         <div class="product-detail">
-                                            <a href="product-left-thumbnail.html">
+                                            <a>
                                                 <h5 class="name">{{$value->title}}</h5>
                                             </a>
                                             <p class="text-content mt-1 mb-2 line-clamp-3">
                                                 {{$value->description}}
                                             </p>
                                             
-                                            <h6 class="unit"><span class="fa fa-location"></span>{{$value->street->name}},
-                                                {{$value->town->name}}, {{$value->region->name}}</h6>
+                                            <h6 class="unit"><span class="fa fa-location"></span>{{$value->location()}}</h6>
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
-                                                <a href="{{ route('public.errands.view', 'slug') }}" class="btn btn-add-cart" >View
+                                                <a href="{{ route('public.errands.view', ['slug' => $value->slug]) }}" class="btn btn-add-cart" >View
                                                     <span class="add-icon bg-light-gray">
                                                         <i class="fa fa-eye"></i>
                                                     </span>

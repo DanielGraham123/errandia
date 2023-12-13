@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="breadscrumb-contain">
-                        <h2>Region Name</h2>
+                        <h2>{{$region->name??''}}</h2>
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
@@ -134,7 +134,7 @@
                                             <a href="{{ route('public.business.show', ['slug' => $business->slug]) }}">
                                                 <h5 class="name">{{$business->name}}</h5>
                                             </a>
-                                            <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
+                                            <h6 class="unit"><span class="fa fa-location"></span>{{$business->contactInfo->location()}}</h6>
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
                                                 <a  href="{{ route('public.business.show', ['slug' => $business->slug]) }}" class="btn btn-add-cart">Check this Business
@@ -162,25 +162,31 @@
 
                     </div>
 
-                    <nav class="custome-pagination">
+                    @if($businesses->total() > 0)
+                        <nav class="custome-pagination">
                         <ul class="pagination justify-content-center">
                             <li class="{{$businesses->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
-                                <a class="page-link"  tabindex="-1" aria-disabled="true" href="{{route('public.businesses', ['page' => $businesses->currentPage() - 1])}}">
+                                <a class="page-link"  tabindex="-1" aria-disabled="true" href="{{route('public.businesses', ['page' => $businesses->currentPage() - 1, 'region_id'=> $region->id ?? ''])}}">
                                     <i class="fa-solid fa-angles-left"></i>
                                 </a>
                             </li>
                             @for($i = 1; $i <= $businesses->lastPage(); $i++)
                             <li class="{{$businesses->currentPage() == $i ? 'page-item active':'page-item'}}">
-                                <a class="page-link" href="{{route('public.businesses', ['page' => $i])}}">{{$i}}</a>
+                                <a class="page-link" href="{{route('public.businesses', ['page' => $i, 'region_id'=> $region->id ?? ''])}}">{{$i}}</a>
                             </li>
                             @endfor
                             <li class="{{$businesses->currentPage() == $businesses->lastPage() ? 'page-item disabled': 'page-item'}}">
-                                <a class="page-link" href="{{route('public.businesses', ['page' => $businesses->currentPage() + 1])}}">
+                                <a class="page-link" href="{{route('public.businesses', ['page' => $businesses->currentPage() + 1, 'region_id'=> $region->id ?? ''])}}">
                                     <i class="fa-solid fa-angles-right"></i>
                                 </a>
                             </li>
                         </ul>
                     </nav>
+                    @else
+                        <div class="card mt-5 w-100 "><div class="card-body text-center">
+                                <p class="text-h6">Sorry we could not find any shop available in {{$region->name ?? ''}} Region</p>
+                             </div></div>
+                    @endif
                 </div>
             </div>
         </div>

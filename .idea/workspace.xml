@@ -23,11 +23,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa3f63f2-05a0-494f-9f41-a131b487b5b0" name="Default Changelist" comment="">
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/index.blade.php" afterDir="false" />
+=======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProductImageUploadController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProductImageUploadController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/uploads/products/Samsung 13 Pro/images/1701189227.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/uploads/products/Samsung 13 Pro/images/1701189235.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/b_admin/products/create_categ_images.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/b_admin/products/create_categ_images.blade.php" afterDir="false" />
+>>>>>>> 5a3b292016e4383624978528fd336f7981233e39
       <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,6 +55,9 @@
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
+<<<<<<< HEAD
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4" />
+=======
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/spatie/laravel-permission" />
@@ -196,11 +206,19 @@
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
+>>>>>>> 5a3b292016e4383624978528fd336f7981233e39
   <component name="ProjectId" id="1pOysqdDguBApIs3483Ti1jr5mM" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
+=======
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -214,6 +232,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+>>>>>>> 5a3b292016e4383624978528fd336f7981233e39
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/database/seeders" />
@@ -342,14 +361,33 @@
         </entry>
       </map>
     </option>
+<<<<<<< HEAD
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="858" y="221" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1635488371119">
+      <screen x="0" y="25" width="1440" height="875" />
+    </state>
+    <state x="858" y="221" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.25.1440.875@0.25.1440.875" timestamp="1635488371119" />
+    <state x="182" y="188" width="597" height="548" key="find.popup" timestamp="1635500810919">
+      <screen x="0" y="25" width="1440" height="875" />
+    </state>
+    <state x="182" y="188" width="597" height="548" key="find.popup/0.25.1440.875@0.25.1440.875" timestamp="1635500810919" />
+=======
+>>>>>>> 5a3b292016e4383624978528fd336f7981233e39
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
+<<<<<<< HEAD
+          <url>file://$PROJECT_DIR$/resources/views/b_admin/products/index.blade.php</url>
+          <line>39</line>
+          <option name="timeStamp" value="3" />
+=======
           <url>file://$PROJECT_DIR$/resources/views/public/errands/index.blade.php</url>
           <line>58</line>
           <option name="timeStamp" value="2" />
+>>>>>>> 5a3b292016e4383624978528fd336f7981233e39
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

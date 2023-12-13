@@ -4,12 +4,7 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Auth\CustomForgotPasswordController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\documentation\BaseController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\NotificationsController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -403,7 +398,7 @@ Route::name('public.')->group(function(){
     Route::get('sub_category/{slug}/businesses', 'WelcomeController@sub_category_businesses')->name('scategory.businesses');
     Route::get('categories/{slug}', 'WelcomeController@show_category')->name('category.show');
     Route::get('errands', 'WelcomeController@errands')->name('errands');
-    Route::get('errands/show/{slug}', 'WelcomeController@view_errand')->name('errands.view');
+    Route::get('errands/show', 'WelcomeController@view_errand')->name('errands.view');
     Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run');
     Route::post('errands/run', 'WelcomeController@run_arrnd_save');
     Route::post('errands/run/update', 'WelcomeController@run_arrnd_update')->name('errands.run.update');
