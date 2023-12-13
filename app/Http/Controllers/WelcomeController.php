@@ -34,7 +34,14 @@ class WelcomeController extends Controller
     }
     public function home()
     {
-        $data['errands'] = Errand::orderBy('created_at', 'ASC')->take(12)->get();
+        $data['errands'] = Errand::orderBy('created_at', 'ASC')->take(6)->get();
+        $data['services'] = Product::join('item_enquiries', ['items.id' => 'item_enquiries.item_id'])
+                            ->where('items.service', true)
+                            ->orderBy('item_enquiries.created_at', 'ASC')->take(6)->get();
+        $data['products'] = Product::join('item_enquiries', ['items.id' => 'item_enquiries.item_id'])
+            ->where('items.service', false)
+            ->orderBy('item_enquiries.created_at', 'ASC')->take(6)->get();
+//        dd($data['services']);
         return view("public.home", $data);
     }
 
