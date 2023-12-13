@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Errand;
+use App\Models\ErrandImage;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Region;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
 use App\Services\GeographicalService\RegionService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +21,7 @@ use \App\Models\Shop;
 
 class WelcomeController extends Controller
 {
+    const ERRAND_IMAGE_PATH = "uploads/quote_images";
     private $regionService;
 
     public function __construct(RegionService $regionService)
@@ -94,25 +98,57 @@ class WelcomeController extends Controller
         $data['regions'] = Region::orderBy('name')->get();
         $data['towns'] = Town::orderBy('name')->get();
         $data['streets'] = Street::orderBy('name')->get();
-        // dd($data);
+
         return view('public.errands.create', $data);
     }
 
     public function run_arrnd_save(Request $request)
     {
-        
+        $savedErrand = Errand::create([
+            'title' => $request['title'],
+            'description' => $request['description'],
+            'region_id' => $request['region'],
+            'town_id'   => $request['town'],
+            'street_id' => $request['street'] == "Street"? '':$request['street']
+        ]);
         $data['categories'] = SubCategory::orderBy('name')->get();
-        // dd($data);
+        $data['errand'] = $savedErrand;
         return view('public.errands.create_categ_images', $data);
     }
 
+    private function generateErrandSubCategoryList($subCategories) {
+        $subCategoryList = "";
+        foreach ($subCategories as $category){
+            $subCategoryList .= $category. "-";
+        }
+        return $subCategoryList;
+    }
+
+    private function uploadErrandGallery(Request $request, $errand)
+    {
+         foreach($request['gallery'] as $image)
+         {
+             $imageName = time().'.'.$image->getClientOriginalName();
+             $image->move(public_path(self::ERRAND_IMAGE_PATH.'/'.$errand->title.'/images/'), $imageName);
+
+             ErrandImage::create([
+                 'item_quote_id' => $errand->id,
+                 'image'         => self::ERRAND_IMAGE_PATH.'/'.$errand->title.'/images/'.$imageName,
+                 'created_at'    => Carbon::now(),
+                 'updated_at'    => Carbon::now()
+             ]);
+         }
+    }
     public function run_arrnd_update(Request $request)
     {
-        
-        $data['business'] = Shop::first();
-        $data['branches'] = $data['business']->branches;
-        // dd($data);
-        return view('public.errands.create_categ_images', $data);
+        $errand = Errand::find($request['errand']);
+        $errand->update([
+            'sub_categories' => $this->generateErrandSubCategoryList($request['categories']),
+            'slug'           => 'bDC'.time().'swI'.mt_rand(100000, 999999).'fgUfre'
+        ]);
+        $this->uploadErrandGallery($request, $errand);
+
+        return redirect()->route('public.errands');
     }
 
     public function search(Request $request)
@@ -150,16 +186,23 @@ class WelcomeController extends Controller
     public function errands(Request $request)
     {
         $data['regions'] = $this->regionService->getAllRegions();
-        $data['errands'] = Errand::orderBy('created_at', 'ASC')->paginate(20);
+        $data['errands'] = Errand::orderBy('created_at', 'DESC')->paginate(20);
         return view('public.errands.index')->with($data);
     }
 
     public function view_errand(Request $request)
     {
-        $data['errand'] = Errand::first();
+        $errand = Errand::where('slug', $request['slug'])->first();
+//        dd($errand->getSubcategories());
+        $data['errand'] = $errand;
         if(auth()->user() != null)
             return view('public.errands.show', $data);
         return view('public.errands.preview', $data);
+    }
+
+    private function getErrandSubcategories($categories)
+    {
+        dd($categories->explode("-"));
     }
 
     public function show_product($slug){
