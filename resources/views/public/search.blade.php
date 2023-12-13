@@ -108,9 +108,25 @@
                                         </ul>
                                     </div>
                                 </div>
-                                
-                                <h3 class="text-h6 px-5">{{ count($products ?? []) }} item(s) found.</h3>
 
+                                <ul class="nav nav-tabs tab-style-color-2 tab-style-color" id="myTab">
+                                    <li class="nav-item">
+                                        <button class="nav-link btn active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button">All</button>
+                                    </li>
+                
+                                    <li class="nav-item">
+                                        <button class="nav-link btn" id="cooking-tab" data-bs-toggle="tab" data-bs-target="#cooking" type="button"> Products</button>
+                                    </li>
+                
+                                    <li class="nav-item">
+                                        <button class="nav-link btn" id="fruits-tab" data-bs-toggle="tab" data-bs-target="#fruits" type="button">Services</button>
+                                    </li>
+                
+                                    <li class="nav-item">
+                                        <button class="nav-link btn" id="beverage-tab" data-bs-toggle="tab" data-bs-target="#beverage" type="button">Businesses</button>
+                                    </li>
+                                </ul>    
+                            
                                 <div class="grid-option d-none d-md-block">
                                     <ul>
                                         <li class="three-grid active">
@@ -132,30 +148,33 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="container-fluid bg-light py-2 text-end my-2">
+                                <h3 class="text-h6 px-5">{{ count($products ?? []) }} item(s) found.</h3>
+                            </div>
                         </div>
 
                         <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
-                            @foreach ($products??[] as $key=>$prod)
+                            @forelse ($products??[] as $key=>$prod)
                                 <div>
-                                    <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                    <div class="product-box-3 h-100 wow fadeInUp shadow-md border" style="visibility: visible; animation-name: fadeInUp;">
                                         <div class="product-header">
                                             <div class="product-image">
-                                                <a href="{{ route('public.business.show', 'slug') }}">
-                                                    <img src="{{ $prod->image_path != null ? asset('uploads/item_images/'.$prod->image_path) : asset('assets/images/default1.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                <a href="{{ route('public.products.show', $prod->slug) }}">
+                                                    <img src="{{ $prod->featured_image != null ? asset('uploads/item_images/'.$prod->featured_image) : asset('assets/images/default1.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
                                                 </a>
                                             </div>
                                         </div>
                                         <div class="product-footer">
                                             <div class="product-detail text-center">
                                                 <div class="text-body">{{ $prod->name }}</div>
-                                                <h6 class="text-primary my-2" style="font-weight: 600;">XAF {{ $prod->price??'NOT SET' }}</h6>
-                                                <a href="{{ route('public.business.show', 'slug') }}">
+                                                <h6 class="text-primary my-2" style="font-weight: 600;">XAF {{ $prod->unit_price??'NOT SET' }}</h6>
+                                                <a href="{{ route('public.business.show', $prod->shop->slug) }}">
                                                     <h5 class="name py-2 bg-white">{{ $prod->shop->name }}</h5>
                                                 </a>
                                                 <h6 class="unit"><span class="fa fa-location"></span>{{ $prod->shop->contactInfo->location() }}</h6>
                                                 </h5>
                                                 <div class="add-to-cart-box bg-white shadow" >
-                                                    <a  href="{{ route('public.business.show', 'slug') }}" class="btn btn-add-cart">Contact
+                                                    <a  href="tel:{{ $prod->shop->contactInfo->phone }}" class="btn btn-add-cart">Contact
                                                         <span class="add-icon bg-light-gray">
                                                             <i class="fa fa-phone"></i>
                                                         </span>
@@ -176,7 +195,12 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                    <p>Sorry we could not find any product related to your search</p>
+                                    <p class="text-h6">"{{ $search_string??'' }}"</p>
+                                </div></div>
+                            @endforelse
                         </div>
 
                         <nav class="custome-pagination">
@@ -217,10 +241,17 @@
                         <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
                             @foreach ($shops as $key=>$shop)
                                 <div>
-                                    <div class="product-box-3 h-100 wow fadeInUp " style="visibility: visible; animation-name: fadeInUp;">
+                                    <div class="product-box-3 h-100 wow fadeInUp shadow-md border" style="visibility: visible; animation-name: fadeInUp;">
+                                        <div class="product-header">
+                                            <div class="product-image">
+                                                <a href="{{ route('public.business.show', $shop->slug) }}">
+                                                    <img src="{{ $shop->image_path != null ? asset('uploads/logos/'.$shop->image_path) : asset('assets/images/default1.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                </a>
+                                            </div>
+                                        </div>
                                         <div class="product-footer">
                                             <div class="product-detail text-center">
-                                                <a href="{{ route('public.business.show', 'slug') }}">
+                                                <a href="{{ route('public.business.show', $shop->slug) }}">
                                                     <h5 class="name py-2 bg-white">{{ $shop->name }}</h5>
                                                 </a>
                                                 <h6 class="unit"><span class="fa fa-location"></span>{{ $shop->contactInfo->location() }}</h6>

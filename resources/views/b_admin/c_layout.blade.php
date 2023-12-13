@@ -51,6 +51,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/responsive.dataTables.min.css">
 
+    {{-- Image uploader JQuery plugin styles --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/image-uploader/image-uploader.min.css')}}">
 
 
     <style>
@@ -86,7 +88,7 @@
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Welcome to Errand user </li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ $title??"" }} </li>
                             </ol>
                         </nav>
                     </div>
@@ -97,61 +99,68 @@
     <!-- Breadcrumb Section End -->
 
 
+    {{-- Error Alerts --}}
+    @if (session()->has('success'))
+        <div class="alert alert-success">{{ session()->get('success') }}</div>
+    @elseif(session()->has('message'))
+        <div class="alert alert-primary">{{ session()->get('message') }}</div>
+    @elseif(session()->has('error'))
+        <div class="alert alert-danger">{{ session()->get('error') }}</div>
+    @endif
+    {{-- End Error Alerts --}}
     
-        <!-- User Dashboard Section Start -->
-        <section class="user-dashboard-section section-b-space">
-            <div class="container-fluid-lg">
-                <div class="row">
-                    <div class="col-xxl-3 col-lg-4">
-                        <div class="dashboard-left-sidebar">
-                            <div class="close-button d-flex d-lg-none">
-                                <button class="close-sidebar">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
+    <!-- User Dashboard Section Start -->
+    <section class="user-dashboard-section section-b-space">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-xxl-3 col-lg-4">
+                    <div class="dashboard-left-sidebar">
+                        <div class="close-button d-flex d-lg-none">
+                            <button class="close-sidebar">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="profile-box">
+                            <div class="cover-image">
+                                <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
+                                    alt="">
                             </div>
-                            <div class="profile-box">
-                                <div class="cover-image">
-                                    <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
-                                        alt="">
-                                </div>
-    
-                                <div class="profile-contain">
-                                    <div class="profile-image">
-                                        <div class="position-relative">
-                                            <img src="{{ asset('assets/public/assets/images/inner-page/user/1.jpg') }}"
-                                                class="blur-up lazyload update_img" alt="">
-                                            <div class="cover-icon">
-                                                <i class="fa-solid fa-pen">
-                                                    <input type="file" onchange="readURL(this,0)">
-                                                </i>
-                                            </div>
+
+                            <div class="profile-contain">
+                                <div class="profile-image">
+                                    <div class="position-relative">
+                                        <img src="{{ asset('assets/public/assets/images/inner-page/user/1.jpg') }}"
+                                            class="blur-up lazyload update_img" alt="">
+                                        <div class="cover-icon">
+                                            <i class="fa-solid fa-pen">
+                                                <input type="file" onchange="readURL(this,0)">
+                                            </i>
                                         </div>
                                     </div>
-    
-                                    <div class="profile-name">
-                                        <h3>Vicki E. Pope</h3>
-                                        <h6 class="text-content">vicki.pope@gmail.com</h6>
-                                    </div>
+                                </div>
+
+                                <div class="profile-name">
+                                    <h3>Vicki E. Pope</h3>
+                                    <h6 class="text-content">vicki.pope@gmail.com</h6>
                                 </div>
                             </div>
-    
-                          Text Under Profile
                         </div>
-                    </div>
-    
-    
-    
-                    <div class="col-xxl-9 col-lg-8">
-                        <!-- Main Content start -->
-                        @yield('section')
-                        <!-- Main Content end -->
+
+                        Text Under Profile
                     </div>
                 </div>
-            </div>
-        </section>
-        <!-- User Dashboard Section End -->
-    
 
+
+
+                <div class="col-xxl-9 col-lg-8">
+                    <!-- Main Content start -->
+                    @yield('section')
+                    <!-- Main Content end -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- User Dashboard Section End -->
 
 
     @include('components.footer')
@@ -232,7 +241,8 @@
     <script src="{{ asset('libs')}}/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('libs')}}/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
 
-
+    {{-- Image uploader script --}}
+    <script src="{{ asset('assets/image-uploader/image-uploader.min.js')}}"></script>
 
 
     @yield('script')

@@ -242,7 +242,7 @@
                                                     <ul>
                                                         @foreach ($category->sub_categories as $subcat)
                                                             <li>
-                                                                <a href="#">{{ $subcat->name }}</a>
+                                                                <a href="{{ route('public.scategory.businesses', $subcat->slug) }}">{{ $subcat->name }}</a>
                                                             </li>
                                                         @endforeach
                                                     </ul>

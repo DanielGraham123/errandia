@@ -119,25 +119,25 @@
                     </div>
 
                     <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
-                        @for ($i=0; $i < 12; $i++)
+                        @foreach($businesses->items() as $key => $business)
                             <div>
-                                <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                <div class="product-box-3 h-100 wow fadeInUp shadow-md border" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-header">
                                         <div class="product-image">
-                                            <a href="{{ route('public.business.show', 'slug') }}">
+                                            <a href="{{ route('public.business.show', ['slug' => $business->slug]) }}">
                                                 <img src="{{ asset('assets/images/nishang.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="product-footer">
                                         <div class="product-detail">
-                                            <a href="{{ route('public.business.show', 'slug') }}">
-                                                <h5 class="name">Nishang System</h5>
+                                            <a href="{{ route('public.business.show', ['slug' => $business->slug]) }}">
+                                                <h5 class="name">{{$business->name}}</h5>
                                             </a>
                                             <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
-                                                <a  href="{{ route('public.business.show', 'slug') }}" class="btn btn-add-cart">Check this Business
+                                                <a  href="{{ route('public.business.show', ['slug' => $business->slug]) }}" class="btn btn-add-cart">Check this Business
                                                     <span class="add-icon bg-light-gray">
                                                         <i class="fa fa-business-time"></i>
                                                     </span>
@@ -158,28 +158,24 @@
                                     </div>
                                 </div>
                             </div>
-                        @endfor
+                        @endforeach
 
                     </div>
 
                     <nav class="custome-pagination">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-disabled="true">
+                            <li class="{{$businesses->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                                <a class="page-link"  tabindex="-1" aria-disabled="true" href="{{route('public.businesses', ['page' => $businesses->currentPage() - 1])}}">
                                     <i class="fa-solid fa-angles-left"></i>
                                 </a>
                             </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="javascript:void(0)">1</a>
+                            @for($i = 1; $i <= $businesses->lastPage(); $i++)
+                            <li class="{{$businesses->currentPage() == $i ? 'page-item active':'page-item'}}">
+                                <a class="page-link" href="{{route('public.businesses', ['page' => $i])}}">{{$i}}</a>
                             </li>
-                            <li class="page-item" aria-current="page">
-                                <a class="page-link" href="javascript:void(0)">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">
+                            @endfor
+                            <li class="{{$businesses->currentPage() == $businesses->lastPage() ? 'page-item disabled': 'page-item'}}">
+                                <a class="page-link" href="{{route('public.businesses', ['page' => $businesses->currentPage() + 1])}}">
                                     <i class="fa-solid fa-angles-right"></i>
                                 </a>
                             </li>

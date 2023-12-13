@@ -84,113 +84,120 @@
 
 
                                     {{-- PRODUCTS START --}}
-                                    <div class="col-12">
-                                        <div class="title title-flex">
-                                            <div class="section-b-space w-100">
+                                    <section class="breadscrumb-section pt-0 mb-5 pb-3">
+                                        <div class="container-fluid">
+                                            <div class="row">
                                                 <div class="mb-5 d-flex flex-wrap justify-content-between">
                                                     <h3>Products</h3>
                                                     <a href="{{ route('public.business.show_items', ['slug'=>$shop->slug, 'type'=>1]) }}" class="button-secondary">See All</a>
                                                 </div>
-                                                <div class="product-border border-row overflow-hidden">
-                                                    <div class="product-box-slider no-arrow slick-initialized slick-slider"><button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: inline-block;">Previous</button>
-                                                        
-                                                            <div class="slick-slide slick-active w-100" tabindex="0" data-slick-index="1" aria-hidden="false">
-                                                                <div class="row m-0">
-                                                                    @forelse ($products as $key => $prod)
-                                                                        <div class="col-12 col-lg-4 col-xxl-3 px-0">
-                                                                            <div class="product-box shadow">
-                                                                                <div class="product-image">
-                                                                                    <a href="{{ route('public.products.show', $prod->slug) }}" tabindex="0">
-                                                                                        <img src="{{ $prod->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$prod->featured_image) }}" class="img-fluid blur-up lazyloaded" alt="">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="product-detail">
-                                                                                    <a href="{{ route('public.products.show', $prod->slug) }}" tabindex="0">
-                                                                                        <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">{{ $prod->name??'' }}
-                                                                                        </h6>
-                                                                                    </a>
-
-                                                                                    <h5 class="sold text-content">
-                                                                                        <span class="theme-color price">XAF {{ $prod->unit_price ?? "???" }}</span>
-                                                                                    </h5>
-
-                                                                                    <div class="add-to-cart-box">
-                                                                                        <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=`I saw {{ $prod->name }} on Errandia. Can we talk more?`" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
-                                                                                        <a href="tel:{{ $shop->contactInfo->phone??'' }}" class="button-secondary text-center"><span class="fa fa-phone mr-1"></span> Call</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    @empty
-                                                                        <div class="text-center text-danger h6">No products for this shop</div>
-                                                                    @endforelse
+                                            </div>
+                                        </div>
+                                        <div class="container mx-auto row g-sm-4 g-3 product-list-section row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-2">
+                                            @forelse ($products as $key => $prod)
+                                                <div>
+                                                    <div class="product-box-3 h-100 wow fadeInUp shadow bg-white" style="visibility: visible; animation-name: fadeInUp;">
+                                                        <div class="product-header">
+                                                            <div class="product-image">
+                                                                <a href="{{ route('public.products.show', $prod->slug) }}">
+                                                                    <img src="{{ $prod->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$prod->featured_image) }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-footer">
+                                                            <div class="product-detail">
+                                                                <a href="{{ route('public.products.show', $prod->slug) }}">
+                                                                    <h5 class="name">{{ $prod->name??'' }}</h5>
+                                                                </a>
+                                                                <h6 class="unit"><span class="fa fa-location"></span>{{ $shop->contactInfo->location() }}</h6>
+                                                                </h5>
+                                                                <h5 class="sold text-content">
+                                                                    <span class="theme-color price">${{$prod->unit_price}}</span>
+                                                                </h5>
+                                                                <div class="add-to-cart-box bg-success shadow" >
+                                                                    <a  href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=I saw {{ $prod->name }} on Errandia. Can we talk more?" class="btn btn-add-cart">Chat on Whatsapp
+                                                                        <span class="add-icon bg-light-gray">
+                                                                            <i class="fa fa-whatsapp"></i>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="add-to-cart-box bg-light shadow" >
+                                                                    <a  href="tel:{{ $shop->contactInfo->phone??'' }}" class="btn btn-add-cart">Call
+                                                                        <span class="add-icon bg-light-gray">
+                                                                            <i class="fa fa-phone"></i>
+                                                                        </span>
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: inline-block;">Next</button>
                                                 </div>
-                                            </div>
+                                            @empty
+                                                <div class="text-center text-danger h6">No related businesses for this shop</div>
+                                            @endforelse
+                                
                                         </div>
-                                        </div>
-
-                                        
-                                        <button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: inline-block;">Next</button></div>
-                                    </div>
+                                    </section>
+                                    
                                     {{-- PRODUCTS END --}}
 
                                     {{-- SERVICES START --}}
-                                    <div class="col-12">
-                                        <div class="title title-flex">
-                                            <div class="section-b-space w-100">
+
+                                    <section class="breadscrumb-section pt-0 mb-5 pb-3">
+                                        <div class="container-fluid">
+                                            <div class="row">
                                                 <div class="mb-5 d-flex flex-wrap justify-content-between">
                                                     <h3>Services</h3>
                                                     <a href="{{ route('public.business.show_items', ['slug'=>$shop->slug, 'type'=>2]) }}" class="button-secondary">See All</a>
                                                 </div>
-                                                <div class="product-border border-row overflow-hidden">
-                                                    <div class="product-box-slider no-arrow slick-initialized slick-slider"><button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: inline-block;">Previous</button>
-                                                        
-                                                            <div class="slick-slide slick-active w-100" tabindex="0" data-slick-index="1" aria-hidden="false">
-                                                                <div class="row m-0">
-                                                                    @forelse ($services as $key=>$serv)
-                                                                        <div class="col-12 col-lg-4 col-xxl-3 px-0">
-                                                                            <div class="product-box shadow">
-                                                                                <div class="product-image">
-                                                                                    <a href="{{ route('public.products.show', $serv->slug) }}" tabindex="0">
-                                                                                        <img src="{{ $serv->image_path == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$serv->image_path) }}" class="img-fluid blur-up lazyloaded" alt="">
-                                                                                    </a>
-                                                                                </div>
-                                                                                <div class="product-detail">
-                                                                                    <a href="{{ route('public.products.show', $serv->slug) }}" tabindex="0">
-                                                                                        <h6 class="name" style="min-height: 0px; max-height: none; height: 44px;">{{ $serv->name ?? '' }}
-                                                                                        </h6>
-                                                                                    </a>
-
-                                                                                    <h5 class="sold text-content">
-                                                                                        <span class="theme-color price">XAF {{ $serv->unit_price??'???' }}</span>
-                                                                                    </h5>
-
-                                                                                    <div class="add-to-cart-box">
-                                                                                        <a href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=`I saw {{ $serv->name }} on Errandia. Can we talk more?`" class="button-success text-white"><span class="fa fa-whatsapp mr-1"></span>Chat on Whatsapp</a>
-                                                                                        <a href="tel:{{ $shop->contactInfo->phone??'' }}" class="button-secondary text-center"><span class="fa fa-phone mr-1"></span> Call</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    @empty
-                                                                        <div class="text-center text-danger h6">No services for this shop</div>
-                                                                    @endforelse
+                                            </div>
+                                        </div>
+                                        <div class="container mx-auto row g-sm-4 g-3 product-list-section row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-2">
+                                            @forelse ($services as $key => $prod)
+                                                <div>
+                                                    <div class="product-box-3 h-100 wow fadeInUp shadow bg-white" style="visibility: visible; animation-name: fadeInUp;">
+                                                        <div class="product-header">
+                                                            <div class="product-image">
+                                                                <a href="{{ route('public.products.show', $prod->slug) }}">
+                                                                    <img src="{{ $prod->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$prod->featured_image) }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-footer">
+                                                            <div class="product-detail">
+                                                                <a href="{{ route('public.products.show', $prod->slug) }}">
+                                                                    <h5 class="name">{{ $prod->name??'' }}</h5>
+                                                                </a>
+                                                                <h6 class="unit"><span class="fa fa-location"></span>{{ $shop->contactInfo->location() }}</h6>
+                                                                </h5>
+                                                                <h5 class="sold text-content">
+                                                                    <span class="theme-color price">${{$prod->unit_price}}</span>
+                                                                </h5>
+                                                                <div class="add-to-cart-box bg-success shadow" >
+                                                                    <a  href="https://wa.me/{{ $shop->contactInfo->whatsapp??'' }}?text=I saw {{ $prod->name }} on Errandia. Can we talk more?" class="btn btn-add-cart">Chat on Whatsapp
+                                                                        <span class="add-icon bg-light-gray">
+                                                                            <i class="fa fa-whatsapp"></i>
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="add-to-cart-box bg-light shadow" >
+                                                                    <a  href="tel:{{ $shop->contactInfo->phone??'' }}" class="btn btn-add-cart">Call
+                                                                        <span class="add-icon bg-light-gray">
+                                                                            <i class="fa fa-phone"></i>
+                                                                        </span>
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: inline-block;">Next</button>
                                                 </div>
-                                            </div>
+                                            @empty
+                                                <div class="text-center text-danger h6">No related businesses for this shop</div>
+                                            @endforelse
+                                
                                         </div>
-                                        </div>
-                                        <button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: inline-block;">Next</button></div>
-                                    </div>
+                                    </section>
+                                    
                                     {{-- SERVICES END --}}
 
                                     {{-- Tabbed content Start --}}

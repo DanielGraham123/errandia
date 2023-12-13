@@ -36,15 +36,15 @@
                                 <div class="row g-2">
                                     <div class="col-xxl-10 col-lg-12 col-md-10 order-xxl-2 order-lg-1 order-md-2">
                                         <div class="product-main-2 no-arrow">
-                                            @for($i = 1; $i < 6; $i++)
+                                            @foreach($item->images as $key=>$img)
                                                 <div>
                                                     <div class="slider-image">
-                                                        <img src="{{ asset('assets/images/'.$i.'.jpg') }}" id="img-1"
-                                                            data-zoom-image="{{ asset('assets/images/'.$i.'.jpg') }}"
+                                                        <img src="{{ asset('uploads/item_images/'.$img->image) }}" id="img-1"
+                                                            data-zoom-image="{{  asset('uploads/item_images/'.$img->image) }}"
                                                             class="img-fluid image_zoom_cls-0 blur-up lazyload" alt="">
                                                     </div>
                                                 </div>
-                                            @endfor
+                                            @endforeach
 
                                             
                                         </div>
@@ -72,7 +72,7 @@
                                 <h6 class="offer-top">available</h6>
                                 <h2 class="name">{{ $item->name??'' }}</h2>
                                 <div class="price-rating">
-                                    <h3 class="theme-color price">CFA {{ $item->unit_price }} </h3>
+                                    <h3 class="theme-color price">CFA {{ number_format($item->unit_price??0) }} </h3>
                                     <div class="product-rating custom-rate">
                                         <ul class="rating">
                                             <li>
@@ -681,17 +681,17 @@
                                     @foreach($item->shop->items()->take(10)->get() as $it)
                                         <li>
                                             <div class="offer-product">
-                                                <a href="product-left-thumbnail.html" class="offer-image">
+                                                <a href="{{ route('public.products.show', $it->slug) }}" class="offer-image">
                                                     <img src="{{ $it->featured_image ==  null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$it->featured_image) }}" class="img-fluid blur-up lazyload" alt="">
                                                 </a>
 
                                                 <div class="offer-detail">
                                                     <div>
-                                                        <a href="product-left-thumbnail.html">
+                                                        <a href="{{ route('public.products.show', $it->slug) }}">
                                                             <h6 class="name">{{ $it->name??'' }}</h6>
                                                         </a>
                                                         {{-- <span>450 G</span> --}}
-                                                        <h6 class="price theme-color">XAF {{ $it->unit_price??'' }}</h6>
+                                                        <h6 class="price theme-color">XAF {{ number_format($it->unit_price??0) }}</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -729,24 +729,21 @@
 
     
     <!-- Sticky Cart Box Start -->
-    <div class="sticky-bottom-cart">
+    <div class="sticky-bottom-cart shadow-md">
         <div class="container-fluid-lg">
             <div class="row">
                 <div class="col-12">
                     <div class="cart-content">
                         <div class="product-image">
-                            <img src="{{ asset('assets/images/1.jpg') }}" class="img-fluid blur-up lazyload"
+                        <img src="{{ $item->featured_image != null ? asset('uploads/item_images/'.$item->featured_image) : asset('assets/images/default1.jpg') }}" class="img-fluid blur-up lazyload"
                                 alt="">
                             <div class="content">
-                                <h5>Creamy Chocolate Cake</h5>
-                                <h6>CFA32.96<del class="text-danger">$96.00</del><span>55% off</span></h6>
+                                <h5>{{ $item->name??'' }}</h5>
+                                <h6>CFA {{ number_format($item->unit_price??0) }}</h6>
                             </div>
                         </div>
-                        
                         <div class="add-btn">
-                            
-                            <a class="btn theme-bg-color text-white" href="cart.html"><i
-                                    class="fa fa-phone"></i> Call</a>
+                            <a class="btn theme-bg-color text-white" href="tel:{{ $item->shop->contactInfo->phone??'' }}"><i class="fa fa-phone"></i> Call</a>
                         </div>
                     </div>
                 </div>

@@ -53,10 +53,11 @@
                                     </button>
 
                                     <ul class="dropdown-menu dropdown-light">
-                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.businesses.show', $business->slug) }}" class="text-decoration-none text-secondary">view</a></li>
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.businesses.edit', $business->slug) }}" class="text-decoration-none text-secondary">edit</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.businesses.show', $business->slug) }}" class="text-decoration-none text-secondary">view</a></li>
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.products.index', $business->slug) }}" class="text-decoration-none text-secondary">products</a></li>
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.services.index', $business->slug) }}" class="text-decoration-none text-secondary">services</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.managers.index', $business->slug) }}" class="text-decoration-none text-secondary">managers</a></li>
                                         @if ($business->parent_slug == null)
                                             <li class="dropdown-item py-1 border-y"> <a href="{{route('business_admin.businesses.branch.create', $business->slug)}}" class="text-decoration-none text-secondary">add branch</a></li>
                                         @endif

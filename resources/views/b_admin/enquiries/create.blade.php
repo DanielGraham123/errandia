@@ -45,7 +45,7 @@
                 <span class="py-2 px-5"><a class="text-link" href="#">Supplier's Reviews (8)</a></span>
             </div>
             <span class="d-block text-h6">Make an Enquiry</span>
-            <form class="post" enctype="multipart/form-data">
+            <form class="post" enctype="multipart/form-data" onsubmit="formReload()">
                 @csrf
                 <span class="d-block text-body">If you have a picture to upload to give a better description of your enquiry, kindly attach them below</span>
                 <input class="form-control rounded" type="file" name="image">

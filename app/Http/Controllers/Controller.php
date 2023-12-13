@@ -87,7 +87,7 @@ class Controller extends BaseController
     public function region_towns($region_id){
         $region = \App\Models\Region::find($region_id);
         if($region != null){
-            $towns = $region->towns;
+            $towns = $region->towns()->orderBy('name')->get();
             return response()->json(['data'=>$towns->toArray()]);
         }
     }
@@ -95,9 +95,11 @@ class Controller extends BaseController
     public function town_streets($town_id){
         $town = \App\Models\Town::find($town_id);
         if($town != null){
-            $streets = $town->streets;
+            $streets = $town->streets()->orderBy('name')->get();
             return response()->json(['data'=>$streets->toArray()]);
         }
     }
+
+
 
 }

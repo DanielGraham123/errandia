@@ -8,21 +8,21 @@
             Add New Product For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i>
         </div>
         
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" onsubmit="formReload()">
             @csrf
             @switch($_step)
                 @case(1)
                     <input type="hidden" name="step" value="1">
                     <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
                         <span class="d-block mt-4" style="font-weight: 700;">Product Name *</span>
-                        <input  data-max-words="4" data-announce="true" class="my-2 form-control rounded" name="name" type="text" required value="{{ old('name') }}" placeholder="Product Name">
+                        <input  data-max-words="6" data-announce="true" class="my-2 form-control rounded" name="name" type="text" required value="{{ old('name') }}" placeholder="Product Name">
                         <span class="d-block mt-4" style="font-weight: 700;">Product Tags <span class="text-info">(related names separated by commas)</span></span>
                         <input class="form-control rounded" name="tags" value="{{ old('tags') }}" placeholder="tags" required>
                         <span class="d-block text-overline" style="font-weight: 700;">Enter terms related to your product</span>
                         <span class="d-block mt-4" style="font-weight: 700;">Upload Default image *</span>
                         <div class="d-flex flex-wrap justify-content-between" id="defaultImageContainer">
                             <div class="d-inlineblock">
-                                <input type="file" accept="image/*" class="form-control rounded" name="image" onchange="defaultPreview(event)">
+                                <input type="file" accept="image/*" class="form-control rounded" name="image" required onchange="defaultPreview(event)">
                                 <span class="d-block text-overline" style="font-weight: 700;">This appear as the main image on the website</span>
                             </div>
                         </div>
@@ -87,19 +87,49 @@
                         </div>
                         <hr>
 
-                        <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
+                        {{-- <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
                         <div class="my-3 border-left border-right rounded multipleImageUplaoder">
-                        </div>
+                        </div> --}}
+                        {{-- <span class="d-block mt-4" style="font-weight: 700;">Product images</span>
+                        <input class="form-control rounded" type="file" multiple accept="image/*" name="images" value="{{ old('images') }}" placeholder="other images" oninput="imageChanged(event)"> --}}
+                        <div id="product_image_preview_box" class="d-flex"></div>
                         <span class="d-block mt-4" style="font-weight: 700;">Unit price *</span>
                         <input class="form-control rounded" name="unit_price" value="{{ old('unit_price') }}" placeholder="unit price" required>
                         <span class="d-block mt-4" style="font-weight: 700;">Description *</span>
                         <textarea class="form-control rounded" rows="3" name="description" value="" placeholder="description" required>{{ old('description') }}</textarea>
                     </div>
-                    <span class="d-block my-4"><button class="button-primary" type="submit">SAVE</button></span>
+                    <span class="d-block my-4"><button class="button-primary" type="submit">PUBLISH</button></span>
                     @break
                 @default
                     
             @endswitch
+            {{-- <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
+                <span class="d-block mt-4" style="font-weight: 700;">Product Name *</span>
+                <input class="my-2 form-control rounded" name="name" type="text" required value="{{ old('name') }}" placeholder="Product Name">
+                <span class="d-block mt-4" style="font-weight: 700;">Unit Price *</span>
+                <div class="input-group border rounded">
+                    <select class="form-control w-25 rounded-left border-0" name="currency">
+                        <option></option>
+                        @foreach ($currencies as $cur)
+                            <option value="{{ $cur->name }}" {{ $cur->name == 'XAF' ? 'selected' : '' }}>{{ $cur->name }}</option>
+                        @endforeach
+                    </select>
+                    <input class="form-control border-0 rounded-right" name="price" value="{{ old('price') }}" placeholder="price">
+                </div>
+                <span class="d-block mt-4" style="font-weight: 700;">Description</span>
+                <textarea class="form-control rounded" name="description" rows='4' required>{{ old('description', 'Description') }}</textarea>
+                <span class="d-block mt-4" style="font-weight: 700;">Product Tags</span>
+                <input class="form-control rounded" name="tags" value="{{ old('tags') }}" placeholder="tags" required>
+                <span class="d-block text-overline" style="font-weight: 700;">Enter tags related to your product</span>
+                <span class="d-block mt-4" style="font-weight: 700;">Upload Default image *</span>
+                <div class="d-flex flex-wrap justify-content-between" id="defaultImageContainer">
+                    <div class="d-inlineblock">
+                        <input type="file" accept="image/*" class="form-control rounded" name="image" onchange="defaultPreview(event)" required>
+                        <span class="d-block text-overline" style="font-weight: 700;">This appear as the main image on the website</span>
+                    </div>
+                </div>
+            </div>
+            <span class="d-block my-4"><button class="button-primary submit-btn" type="submit">NEXT</button></span> --}}
         </form>
     </div>
 
@@ -155,10 +185,9 @@
         let preview = function(field_id, index, ele){
             let file = document.getElementById(field_id).files[0];
             let url = URL.createObjectURL(file);
-            uploadImage(ele);
-            let image = `<div>
+            let image = `<div id="preview_${get_id()}">
                     <img class="mx-2 my-2" style="width: 12rem; height: 12rem; border-radius: 0.6rem;" src="${url}">
-                    <span class="fa fa-close text-danger text-center d-block py-1 px-2 my-1 rounded bg-light border" onclick="dropImage(${get_id()})"></span>
+                    <span class=" text-danger text-center d-block py-1 px-2 my-1 rounded bg-light border" onclick="dropImage('${get_id()}', event)">drop</span>
                 </div>`;
             let container = $('.multipleImageUplaoder').get(index).children.item(0);
             $(container).append(image);
@@ -167,7 +196,30 @@
         }
 
         let dropImage = function(_input_id){
-            $(document).remove('#'+_input_id);
+            $(document).remove('#'+_input_id); // drop image input file
+            $(document).remove('#preview_'+_input_id); // drop image preview
+        }
+
+        let imageChanged = function(event){
+            
+            var _files = event.target.files;
+
+            if (parseInt(_files.length)>3){
+                alert("You can only upload a maximum of 3 files");
+                $(event.target).val(null);
+                return;
+            }
+            let html = ``;
+            // console.log(typeof _files);
+            for (const key in _files) {
+                if (Object.hasOwnProperty.call(_files, key)) {
+                    const element = _files[key];
+                    let _url = URL.createObjectURL(element);
+                    html += `<img src="${_url}" style="width: 5rem; height: 5rem; border: 1px solid black; border-radius: 0.4rem; margin: 0.3rem 0.2rem;">`;
+                }
+            }
+            $('#product_image_preview_box').html(html);
+            
         }
 
 

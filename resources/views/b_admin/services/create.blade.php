@@ -8,14 +8,14 @@
             Add New Service For {{ $shop->name }} <i class="text-body">({{ $shop->location() }})</i>
         </div>
         
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" onsubmit="formReload()">
             @csrf
             @switch($_step)
                 @case(1)
                     <input type="hidden" name="step" value="1">
                     <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
                         <span class="d-block mt-4" style="font-weight: 700;">Service Name *</span>
-                        <input class="my-2 form-control rounded" data-max-words="4" data-announce="true" name="name" type="text" required value="{{ old('name') }}" placeholder="Service Name">
+                        <input class="my-2 form-control rounded" data-max-words="6" data-announce="true" name="name" type="text" required value="{{ old('name') }}" placeholder="Service Name">
                         <span class="d-block mt-4" style="font-weight: 700;">Service Tags <span class="text-info">(related names separated by commas)</span></span>
                         <input class="form-control rounded" name="tags" value="{{ old('tags') }}" placeholder="tags" required>
                         <span class="d-block text-overline" style="font-weight: 700;">Enter terms related to your service</span>
@@ -87,15 +87,15 @@
                         </div>
                         <hr>
 
-                        <span class="d-block mt-4" style="font-weight: 700;">Service image gallery*</span>
+                        {{-- <span class="d-block mt-4" style="font-weight: 700;">Service image gallery*</span>
                         <div class="my-3 border-left border-right rounded multipleImageUplaoder">
-                        </div>
+                        </div> --}}
                         <span class="d-block mt-4" style="font-weight: 700;">Unit price</span>
                         <input class="form-control rounded" name="unit_price" value="{{ old('unit_price') }}" placeholder="unit price">
                         <span class="d-block mt-4" style="font-weight: 700;">Description *</span>
                         <textarea class="form-control rounded" rows="3" name="description" value="" placeholder="description" required>{{ old('description') }}</textarea>
                     </div>
-                    <span class="d-block my-4"><button class="button-primary" type="submit">SAVE</button></span>
+                    <span class="d-block my-4"><button class="button-primary" type="submit">PUBLISH</button></span>
                     @break
                 @default
                     

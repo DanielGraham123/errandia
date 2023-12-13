@@ -32,22 +32,24 @@
                         <div class="shop-left-sidebar">
                             <div class="location-list nav-link">
                                 <div class="search-input my-3">
-                                    <select class="form-control">
+                                    <select class="form-control" oninput="loadTowns(event)">
                                         <option>Region</option>
+                                        @foreach($regions as $key => $region)
+                                            <option value="{{$region->id}}">
+                                                <a href="{{ route('public.errands', ['region' =>$region->name]) }}">{{$region->name}}</a>
+                                            </option>
+                                        @endforeach
                                     </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
                                 </div>
                                 <div class="search-input my-3">
-                                    <select class="form-control">
+                                    <select class="form-control" oninput="loadStreets(event)" id="town_selection">
                                         <option>Town</option>
                                     </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
                                 </div>
                                 <div class="search-input my-3">
                                     <select class="form-control">
                                         <option>Street</option>
                                     </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
                                 </div>
                             </div>
                         </div>
@@ -120,7 +122,7 @@
                     </div>
 
                     <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
-                        @for ($i=0; $i < 12; $i++)
+                        @foreach($errands->items() as $key => $value)
                             <div>
                                 <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-header">
@@ -135,13 +137,14 @@
                                     <div class="product-footer">
                                         <div class="product-detail">
                                             <a href="product-left-thumbnail.html">
-                                                <h5 class="name">I need a Dell Laptop charger</h5>
+                                                <h5 class="name">{{$value->title}}</h5>
                                             </a>
-                                            <p class="text-content mt-1 mb-2 line-clamp-3">Cheesy feet cheesy grin brie.
-                                                Mascarpone cheese and wine hard cheese the big cheese everyone loves smelly
-                                                cheese macaroni cheese croque monsieur.</p>
+                                            <p class="text-content mt-1 mb-2 line-clamp-3">
+                                                {{$value->description}}
+                                            </p>
                                             
-                                            <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
+                                            <h6 class="unit"><span class="fa fa-location"></span>{{$value->street->name}},
+                                                {{$value->town->name}}, {{$value->region->name}}</h6>
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
                                                 <a href="{{ route('public.errands.view', 'slug') }}" class="btn btn-add-cart" >View
@@ -165,35 +168,75 @@
                                     </div>
                                 </div>
                             </div>
-                        @endfor
+                        @endforeach
 
                     </div>
 
                     <nav class="custome-pagination">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-disabled="true">
+                            <li class="{{$errands->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                                <a class="page-link"  tabindex="-1" aria-disabled="true" href="{{route('public.errands', ['page'=>$errands->currentPage()-1])}}">
                                     <i class="fa-solid fa-angles-left"></i>
                                 </a>
                             </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="javascript:void(0)">1</a>
-                            </li>
-                            <li class="page-item" aria-current="page">
-                                <a class="page-link" href="javascript:void(0)">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">
+                            @for($i = 1; $i <= $errands->lastPage(); $i++)
+                                <li class="{{$errands->currentPage() == $i ? 'page-item active': 'page-item'}}" >
+                                    <a class="page-link" href="{{route('public.errands', ['page'=>$i])}}">{{$i}}</a>
+                                </li>
+                            @endfor
+                            <li class="{{$errands->currentPage() == $errands->lastPage() ? 'page-item disabled': 'page-item'}}" >
+                                <a class="page-link" href="{{route('public.errands', ['page'=>$errands->currentPage()+1])}}">
                                     <i class="fa-solid fa-angles-right"></i>
                                 </a>
                             </li>
                         </ul>
                     </nav>
+
                 </div>
             </div>
         </div>
     </section>
+
 @endsection
+@section('script')
+    <script>
+        let loadTowns = function (evt) {
+            let regionId = evt.target.value;
+            if(regionId != null) {
+                let route = "{{ route('region.towns', '__ID__') }}".replace('__ID__', regionId);
+                $.ajax({
+                    method: 'get', url: route, success: function(response){
+                        if(response.data != null){
+                            let html = `<option>Town</option>`;
+                            response.data.forEach(element=>{
+                                html += `<option value="${element.id}">${element.name}</option>`;
+                            })
+                            $('#town_selection').html(html);
+                        }
+                    }
+                })
+            }
+        }
+
+        let loadStreets = function(event){
+            let town = event.target.value;
+            if(town != null){
+                let route = "{{ route('town.streets', '__ID__') }}".replace('__ID__', town);
+                $.ajax({
+                    method: 'get', url: route, success: function(response){
+                        if(response.data != null){
+                            let html = `<option>Street</option>`;
+                            response.data.forEach(element=>{
+                                html += `<option value="${element.id}">${element.name}</option>`;
+                            })
+                            $('#street_selection').html(html);
+                        }
+                    }
+                })
+            }
+        }
+
+
+    </script>
+@endsection
+

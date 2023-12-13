@@ -80,14 +80,19 @@
                 <div class="col-12">
                     <div class="breadscrumb-contain">
                         <h2>User Dashboard</h2>
+                        @if (auth()->user()->shops->count() == 0)
+                            <span class="mx-4">
+                                <a href="{{ route('business_admin.businesses.create') }}" class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color"><span class="text-white fa fa-plus mx-2"></span>Create business</a>
+                            </span>
+                        @endif
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a href="index.html">
+                                    <a href="{{ route('business_admin.home') }}">
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Welcome to Errand user </li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ $title??"" }} </li>
                             </ol>
                         </nav>
                     </div>
@@ -97,61 +102,71 @@
     </section>
     <!-- Breadcrumb Section End -->
 
+    
+    {{-- Error Alerts --}}
+    @if (session()->has('success'))
+        <div class="alert alert-success">{{ session()->get('success') }}</div>
+    @elseif(session()->has('message'))
+        <div class="alert alert-primary">{{ session()->get('message') }}</div>
+    @elseif(session()->has('error'))
+        <div class="alert alert-danger">{{ session()->get('error') }}</div>
+    @endif
+    {{-- End Error Alerts --}}
 
     
-        <!-- User Dashboard Section Start -->
-        <section class="user-dashboard-section section-b-space">
-            <div class="container-fluid-lg">
-                <div class="row">
-                    <div class="col-xxl-3 col-lg-4">
-                        <div class="dashboard-left-sidebar">
-                            <div class="close-button d-flex d-lg-none">
-                                <button class="close-sidebar">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
+    <!-- User Dashboard Section Start -->
+    <section class="user-dashboard-section section-b-space">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-xxl-3 col-lg-4">
+                    <div class="dashboard-left-sidebar">
+                        <div class="close-button d-flex d-lg-none">
+                            <button class="close-sidebar">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="profile-box">
+                            <div class="cover-image">
+                                <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
+                                    alt="">
                             </div>
-                            <div class="profile-box">
-                                <div class="cover-image">
-                                    <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
-                                        alt="">
-                                </div>
-    
-                                <div class="profile-contain">
-                                    <div class="profile-image">
-                                        <div class="position-relative">
-                                            <img src="{{ asset('assets/public/assets/images/inner-page/user/1.jpg') }}"
-                                                class="blur-up lazyload update_img" alt="">
-                                            <div class="cover-icon">
-                                                <i class="fa-solid fa-pen">
-                                                    <input type="file" onchange="readURL(this,0)">
-                                                </i>
-                                            </div>
+
+                            <div class="profile-contain">
+                                <div class="profile-image">
+                                    <div class="position-relative">
+                                        <img src="{{ asset('assets/public/assets/images/inner-page/user/1.jpg') }}"
+                                            class="blur-up lazyload update_img" alt="">
+                                        <div class="cover-icon">
+                                            <i class="fa-solid fa-pen">
+                                                <input type="file" onchange="readURL(this,0)">
+                                            </i>
                                         </div>
                                     </div>
-    
-                                    <div class="profile-name">
-                                        <h3>Vicki E. Pope</h3>
-                                        <h6 class="text-content">vicki.pope@gmail.com</h6>
-                                    </div>
+                                </div>
+
+                                <div class="profile-name">
+                                    <h3>{{ auth()->user()->name??'' }}</h3>
+                                    <h6 class="text-content">{{ auth()->user()->email??'' }}</h6>
                                 </div>
                             </div>
-    
-                          Text Under Profile
                         </div>
-                    </div>
-    
-    
-    
-                    <div class="col-xxl-9 col-lg-8">
-                        <!-- Main Content start -->
-                        @yield('section')
-                        <!-- Main Content end -->
+
+                        Text Under Profile
                     </div>
                 </div>
+
+
+
+                <div class="col-xxl-9 col-lg-8">
+                    <!-- Main Content start -->
+                    @yield('section')
+                    <!-- Main Content end -->
+                </div>
             </div>
-        </section>
-        <!-- User Dashboard Section End -->
-    
+        </div>
+    </section>
+    <!-- User Dashboard Section End -->
+
 
 
 
@@ -324,6 +339,10 @@
                 words >= maxWords && e.keyCode == 32 && (e.preventDefault() || alert('Word Limit Reached'))
             })
         })
+
+        window.onbeforeunload = function(){
+            alert('Redirecting');
+        }
     </script>
 </body>
 

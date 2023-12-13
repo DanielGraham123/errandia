@@ -382,3 +382,10 @@
     <!-- Bg overlay Start -->
     <div class="bg-overlay"></div>
     <!-- Bg overlay End -->
+    <script>
+        let formReload = function(){
+            alert(123);
+            let loader = $('#custom-loader');
+            $('body').html(loader);
+        }
+    </script>

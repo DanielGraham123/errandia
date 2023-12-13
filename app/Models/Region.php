@@ -17,4 +17,9 @@ class Region extends Model
     {
         return $this->belongsTo(Country::class);
     }
+
+    public function errands()
+    {
+        return $this->hasMany(Errand::class);
+    }
 }

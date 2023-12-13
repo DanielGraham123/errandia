@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ApiController;
+<<<<<<< HEAD
 use App\Http\Controllers\ProductUploadController;
+=======
+use App\Http\Controllers\ProductImageUploadController;
+>>>>>>> 5a3b292016e4383624978528fd336f7981233e39
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +26,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api'], function() {
-    Route::post('/login', 'AuthController@login');
+    Route::post('/phone/login', 'AuthController@phoneLogin');
+    Route::post('/email/login', 'AuthController@emailLogin');
+    Route::post('/phone/verify', 'AuthController@verifyPhone');
     Route::post('/register', 'AuthController@register');
 
     Route::get('/countries', 'LocationController@countries');
@@ -48,6 +55,11 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::get('/notifications', 'NotificationController@index');
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
+<<<<<<< HEAD
     Route::post('/products/{id}/images/upload', [ProductUploadController::class, 'uploadProductGallery']);
     Route::delete('/product/{id}/images/delete', [ProductUploadController::class, 'removeProductImage']);
+=======
+    Route::post('save_images/{id}', [ProductImageUploadController::class, 'uploadProductGallery']);
+    Route::delete('remove_image/{product_id}/', [ProductImageUploadController::class, 'removeProductImage']);
+>>>>>>> 5a3b292016e4383624978528fd336f7981233e39
 });

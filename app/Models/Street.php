@@ -18,4 +18,8 @@ class Street extends Model
         return $this->belongsTo(Town::class);
     }
 
+    public function errands()
+    {
+        return $this->hasMany(Errand::class);
+    }
 }
