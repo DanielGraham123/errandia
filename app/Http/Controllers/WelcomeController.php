@@ -11,6 +11,7 @@ use App\Models\SubCategory;
 use App\Models\Town;
 use App\Services\GeographicalService\RegionService;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\Shop;
 
@@ -41,13 +42,17 @@ class WelcomeController extends Controller
         $data['products'] = Product::join('item_enquiries', ['items.id' => 'item_enquiries.item_id'])
             ->where('items.service', false)
             ->orderBy('item_enquiries.created_at', 'ASC')->take(6)->get();
-//        dd($data['services']);
         return view("public.home", $data);
     }
 
-    public function businesses($region = null)
+    public function businesses($region_id = null)
     {
-        $data['businesses'] = Shop::paginate(10);
+        $data['region'] = Region::find($region_id);
+        $data['businesses'] = Shop::join('shop_contact_info', ['shops.id' => 'shop_contact_info.shop_id'])
+                    ->join('streets', ['shop_contact_info.street_id' => 'streets.id'])
+                    ->join('towns', ['towns.id' => 'streets.town_id'])
+                    ->join('regions', ['regions.id' => 'towns.region_id'])
+                    ->where('regions.id', $region_id)->select('shops.*')->paginate(20);
         return view("public.businesses", $data);
     }
 

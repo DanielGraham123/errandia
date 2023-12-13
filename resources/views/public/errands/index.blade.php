@@ -52,6 +52,11 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="search-input mx-3">
+                                <button class="button-primary p-2 text-white w-100"><i class="fa fa-search"></i>
+                                    Filter
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
