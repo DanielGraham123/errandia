@@ -137,6 +137,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
     Route::prefix('pages')->name('pages.')->group(function(){
         Route::get('', [AdminHomeController::class, 'all_pages'])->name('index');
+        Route::get('privacy', [AdminHomeController::class, 'privacy_policy'])->name('privacy');
+        Route::post('privacy', [AdminHomeController::class, 'save_privacy_policy']);
         Route::get('team_members', [AdminHomeController::class, 'page_team_members'])->name('team_members');
     });
 

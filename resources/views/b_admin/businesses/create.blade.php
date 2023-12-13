@@ -94,7 +94,7 @@
         </div>
         
         <div class="py-2">
-            <button href="#" class="button-primary btn-lg">Add Business</button>
+            <button type="submit" class="button-primary btn-lg">Add Business</button>
         </div>
     </div>
 </form>

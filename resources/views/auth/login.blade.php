@@ -46,7 +46,7 @@
 									@csrf
 									<div class="col-12">
 										<div class="form-floating theme-form-floating log-in-form">
-											<input type="email" class="form-control" name="username" id="email" placeholder="Email Address" required>
+											<input type="text" class="form-control" name="username" id="email" placeholder="Email Address" required>
 											<label for="email">Email Address</label>
 										</div>
 									</div>
