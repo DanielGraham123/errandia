@@ -32,8 +32,8 @@
                         <span class="text-extra">Yes, but publish as Anonymous</span>
                     </span>
                 </div>
-                <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
-                <div class="my-3 border-left border-right rounded multipleImageUplaoder">
+                <span class="d-block mt-4" style="font-weight: 700;">Product image gallery* (not more than 3 images)</span>
+                <div class="my-3 border-left border-right rounded input-images">
                 </div>
             </div>
             <span class="d-block my-4"><button class="button-primary" type="submit">Post Errand</button></span>
@@ -42,6 +42,9 @@
 @endsection
 @section('script')
     <script>
+        $('.input-images').imageUploader();
+    </script>
+    {{-- <script>
 
         let _id = ((Math.random()*100000000)+Date.now()+crypto.randomUUID()).replace('.', '');
         let set_id = function(){
@@ -87,5 +90,5 @@
             set_id();
             refresh(index);
         }
-    </script>
+    </script> --}}
 @endsection

@@ -211,7 +211,7 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('edit/{slug}', 'BAdmin\HomeController@edit_errand')->name('edit');
         Route::post('edit/{slug}', 'BAdmin\HomeController@update_errand');
         Route::get('show/{slug}', 'BAdmin\HomeController@show_errand')->name('show');
-        Route::get('set_found/{slug}', 'BAdmin\HomeController@show_errand')->name('set_found');
+        Route::get('set_found/{slug}', 'BAdmin\HomeController@set_errand_found')->name('set_found');
         Route::get('create', 'BAdmin\HomeController@create_errand')->name('create');
         Route::post('create', 'BAdmin\HomeController@save_errand');
         Route::post('create_update', 'BAdmin\HomeController@update_save_errand')->name('create_update');

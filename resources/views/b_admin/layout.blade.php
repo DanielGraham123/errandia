@@ -51,6 +51,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/responsive.dataTables.min.css">
 
+    {{-- Image uploader JQuery plugin styles --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/image-uploader/image-uploader.min.css')}}">
+
 
 
     <style>
@@ -113,6 +116,7 @@
     @endif
     {{-- End Error Alerts --}}
 
+    <div id="modal-box"></div>
     
     <!-- User Dashboard Section Start -->
     <section class="user-dashboard-section section-b-space">
@@ -250,6 +254,11 @@
 
 
 
+    {{-- Image uploader script --}}
+    <script src="{{ asset('assets/image-uploader/image-uploader.min.js')}}"></script>
+
+
+
 
     @yield('script')
 
@@ -353,6 +362,37 @@
 
         window.onbeforeunload = function(){
             alert('Redirecting');
+        }
+
+
+
+
+        let _prompt = function(url = null, question = null){
+            // 
+            let markup = `<div id="confirm-modal" class="modal fade">
+                    <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                            <div class="modal-header flex-column">
+                                <div class="icon-box">
+                                    <i class="" style="font-size: 12rem; font-weight: light;">&times;</i>
+                                </div>						
+                                <h4 class="modal-title w-100">Are you sure?</h4>	
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>${question}</p>
+                            </div>
+                            <div class="modal-footer bg-white justify-content-center">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <form action="${url}">
+                                    <button type="submit" class="btn btn-danger" onclick="redirect()">Continue</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            $('#modal-box').html(markup);
+            $('#confirm-modal').modal('show');
         }
     </script>
 </body>

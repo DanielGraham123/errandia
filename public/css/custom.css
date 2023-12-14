@@ -216,6 +216,22 @@ input{
 	border-radius: 0.2rem !important;
 }
 
+.bdge{
+	border: 1px solid gray;
+	padding: 4px 0.4rem;
+	border-radius: 0.2rem;
+	font-size: small;
+	font-weight: 600;
+}
 
+.bdge-success{
+	background-color: var(--color-lightblue);
+	color: white;
+}
+
+.bdge-danger{
+	background-color: var(--color-lightred);
+	color: white;
+}
 
 /* MULTIPLE IMAGE UPLOAD STYLES */

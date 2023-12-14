@@ -15,7 +15,7 @@ class Errand extends Model
     public function posted_by()
     {
         # code...
-        return $this->belongsTo(User::class, 'user-id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function location(){
