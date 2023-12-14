@@ -26,7 +26,8 @@
                                 <span class="d-block text-overline" style="font-weight: 700;">This appear as the main image on the website</span>
                             </div>
                             <span class="image-box">
-                                <img style="width: 12rem; height: 12rem; border-radius: 0.6rem;" src="{{ asset('uploads/item_images/'.$product->featured_image) }}">
+                                <img style="width: 12rem; 
+                                height: 12rem; border-radius: 0.6rem;" src="{{ asset('uploads/item_images/'.$product->featured_image) }}">
                             </span>
                         </div>
                     </div>

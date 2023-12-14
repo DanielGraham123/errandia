@@ -405,6 +405,7 @@ Route::name('public.')->group(function(){
     Route::get('search', 'WelcomeController@search')->name('search');
     Route::get('products', 'WelcomeController@products')->name('products.index');
     Route::get('products/show/{slug}', 'WelcomeController@show_product')->name('products.show');
+    Route::get('policies/{slug}', [Controller::class, 'privacy_policy'])->name('privacy_policy');
 });
 
 

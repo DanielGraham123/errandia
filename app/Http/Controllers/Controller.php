@@ -100,6 +100,10 @@ class Controller extends BaseController
         }
     }
 
-
+    public function privacy_policy($slug){
+        $data['title'] = "Software Policies";
+        $data['policy'] = \App\Models\PrivacyPolicy::whereSlug($slug)->first();
+        return view('public.policies', $data);
+    }
 
 }

@@ -83,13 +83,14 @@
                                         <label for="password">Repeat Password</label>
                                     </div>
                                 </div>
+
                                 <div class="col-12">
                                     <div class="forgot-box">
                                         <div class="form-check ps-0 m-0 remember-box">
                                             <input class="checkbox_animated check-box" type="checkbox" required
                                                 id="flexCheckDefault">
                                             <label class="form-check-label" for="flexCheckDefault">I agree with
-                                                <span>Terms</span> and <span>Privacy</span></label>
+                                                <a href="{{ route('public.privacy_policy', 'terms-condition') }}">Terms</a> and <a href="{{ route('public.privacy_policy', 'privacy-policy') }}">Privacy</a></label>
                                         </div>
                                     </div>
                                 </div>
