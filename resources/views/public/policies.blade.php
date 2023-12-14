@@ -9,21 +9,15 @@
                 </div>
             </div> --}}
 
-            <div class="">
-                <div class="">
-                    <div class="" id="accordionExample">
-                            <div class="">
-                                <h2 class="accordion-header">
-                                    <h2 class="heading text-secondary" >
-                                        {{ $policy->title ?? "Policy Item" }}
-                                    </h2>
-                                </h2>
-                                <div class="" style="">
-                                    <div class="">
-                                        {!! $policy->content !!} </p>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="px-sm-5 px-lg-0">
+                <h2 class="accordion-header">
+                    <h2 class="heading text-secondary" >
+                        {{ $policy->title ?? "Policy Item" }}
+                    </h2>
+                </h2>
+                <div class="" style="">
+                    <div class="">
+                        {!! $policy->content !!} </p>
                     </div>
                 </div>
             </div>

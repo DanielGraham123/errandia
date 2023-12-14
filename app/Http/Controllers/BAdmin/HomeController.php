@@ -935,7 +935,7 @@ class HomeController extends Controller
 
     public function update_save_errand(Request $request){
         // save and forward errand for image update
-        $validator = Validator::make($request->all(), ['categories'=>'required|array', 'gallery'=>'required|array', 'visibility'=>'required', 'quote_slug'=>'required']);
+        $validator = Validator::make($request->all(), ['categories'=>'required|array', 'images'=>'required|array', 'visibility'=>'required', 'quote_slug'=>'required']);
         if($validator->fails()){
             session()->flash('error', $validator->errors()->first());
             return back()->withInput();
@@ -946,16 +946,20 @@ class HomeController extends Controller
         $quote->status = 1;
         $quote->save();
 
-        if(($gallery = $request->file('gallery')) != null){
+        if(($gallery = $request->file('images')) != null){
             $quote_images = [];
+            $count = 0;
             foreach ($gallery as $key => $file) {
                 # code...
+                if ($count >= 3) {break;}
                 $path = public_path('uploads/quote_images');
                 $fname = 'qim_'.time().'_'.random_int(100000, 999999).'.'.$file->getClientOriginalExtension();
                 $file->move($path, $fname);
                 $quote_images[] = ['item_quote_id'=>$quote->id, 'image'=>$fname];
+                $count++;
             }
             ErrandImage::insert($quote_images);
+            $quote->update(['status'=>1]);
         }
         return redirect()->route('business_admin.errands.index');
     }
@@ -1061,4 +1065,49 @@ class HomeController extends Controller
             redirect()->route('business_admin.products.index', $product->shop->slug)->with('success', "Operation complete") :
             redirect()->route('business_admin.services.index', $product->shop->slug)->with('success', "Operation complete") ;
     }
+
+    
+
+    public function delete_business($slug)
+    {
+        $shop = shop::whereSlug($slug)->first();
+        if($shop != null){
+            if($shop->user_id == auth()->id()){
+                $shop->delete();
+                return back()->with('success', "Operation complete");
+            }
+            else
+                return back()->with('error', "Permission Denied");
+        }
+    }
+    
+
+    public function suspend_business($slug)
+    {
+        $shop = shop::whereSlug($slug)->first();
+        if($shop != null){
+            if($shop->user_id == auth()->id()){
+                $shop->update(['status'=>!$shop->status]);
+                return back()->with('success', "Operation complete");
+            }
+            else
+                return back()->with('error', "Permission Denied");
+        }
+    }
+    
+
+    public function set_errand_found($slug)
+    {
+        $errand = Errand::whereSlug($slug)->first();
+        if($errand != null){
+            if($errand->user_id == auth()->id()){
+                $shop->update(['status'=>!$shop->status]);
+                return back()->with('success', "Operation complete");
+            }
+            else
+                return back()->with('error', "Permission Denied");
+        }
+    }
+
+    
 }
