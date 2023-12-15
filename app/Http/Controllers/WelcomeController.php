@@ -40,11 +40,11 @@ class WelcomeController extends Controller
     public function home()
     {
         $data['errands'] = Errand::orderBy('created_at', 'ASC')->take(6)->get();
-        $data['services'] = Product::join('item_enquiries', ['items.id' => 'item_enquiries.item_id'])
-                            ->where('items.service', true)
+        $data['services'] = Product::where('items.service', true)
+                            ->where('items.views', '>=', 4)
                             ->orderBy('item_enquiries.created_at', 'ASC')->take(6)->get();
-        $data['products'] = Product::join('item_enquiries', ['items.id' => 'item_enquiries.item_id'])
-            ->where('items.service', false)
+        $data['products'] = Product::where('items.service', false)
+            ->where('items.views', '>=', 4)
             ->orderBy('item_enquiries.created_at', 'ASC')->take(6)->get();
         return view("public.home", $data);
     }
