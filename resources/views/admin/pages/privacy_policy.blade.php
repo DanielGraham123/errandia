@@ -32,13 +32,13 @@
                     @php
                         $k = 1;
                     @endphp
-                    @foreach (\App\Models\PrivacyPolicy::orderBy('title')->get() as $polc)
-                        <tr>
-                            <td>{{ $k++ }}</td>
-                            <td>{{ $polc->title }}</td>
-                            <td>{!! $polc->content !!}</td>
-                        </tr>
-                    @endforeach
+{{--                    @foreach (\App\Models\PrivacyPolicy::orderBy('title')->get() as $polc)--}}
+{{--                        <tr>--}}
+{{--                            <td>{{ $k++ }}</td>--}}
+{{--                            <td>{{ $polc->title }}</td>--}}
+{{--                            <td>{!! $polc->content !!}</td>--}}
+{{--                        </tr>--}}
+{{--                    @endforeach--}}
                 </tbody>
             </table>
         </div>
