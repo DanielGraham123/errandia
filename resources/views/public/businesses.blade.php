@@ -30,24 +30,31 @@
                     <div class="left-box wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                         <div class="shop-left-sidebar">
                             <div class="location-list nav-link">
-                                <div class="search-input my-3">
-                                    <select class="form-control">
-                                        <option>Region</option>
-                                    </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
-                                </div>
-                                <div class="search-input my-3">
-                                    <select class="form-control">
-                                        <option>Town</option>
-                                    </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
-                                </div>
-                                <div class="search-input my-3">
-                                    <select class="form-control">
-                                        <option>Street</option>
-                                    </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
-                                </div>
+                                <form method="GET" action="{{ route('public.businesses', ['region_id' => ""]) }}">
+                                    <div class="search-input my-3">
+                                        <select class="form-control" oninput="loadTowns(event)" name="region_id">
+                                            <option>Region</option>
+                                            @foreach($regions as $key => $region)
+                                                <option value="{{$region->id}}" >
+                                                    <a href="{{ route('public.errands', ['region' =>$region->name]) }}">{{$region->name}}</a>
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="search-input my-3">
+                                        <select class="form-control" oninput="loadStreets(event)" id="town_selection" name="town_id">
+                                            <option>Town</option>
+                                        </select>
+                                    </div>
+                                    <div class="search-input my-3">
+                                        <select class="form-control" name="street_id">
+                                            <option>Street</option>
+                                        </select>
+                                    </div>
+                                    <button class="button-primary w-100" type="submit">
+                                        Apply filter
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -193,5 +200,43 @@
     </section>
 @endsection
 @section('script')
+    <script>
+        let loadTowns = function (evt) {
+            let regionId = evt.target.value;
+            if (regionId != null) {
+                let route = "{{ route('region.towns', '__ID__') }}".replace('__ID__', regionId);
+                $.ajax({
+                    method: 'get', url: route, success: function (response) {
+                        if (response.data != null) {
+                            let html = `<option>Town</option>`;
+                            response.data.forEach(element => {
+                                html += `<option value="${element.id}">${element.name}</option>`;
+                            })
+                            $('#town_selection').html(html);
+                        }
+                    }
+                })
+            }
+        }
 
+        let loadStreets = function (event) {
+            let town = event.target.value;
+            if (town != null) {
+                let route = "{{ route('town.streets', '__ID__') }}".replace('__ID__', town);
+                $.ajax({
+                    method: 'get', url: route, success: function (response) {
+                        if (response.data != null) {
+                            let html = `<option>Street</option>`;
+                            response.data.forEach(element => {
+                                html += `<option value="${element.id}">${element.name}</option>`;
+                            })
+                            $('#street_selection').html(html);
+                        }
+                    }
+                })
+            }
+        }
+
+
+    </script>
 @endsection

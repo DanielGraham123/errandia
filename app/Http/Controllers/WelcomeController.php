@@ -40,23 +40,40 @@ class WelcomeController extends Controller
     public function home()
     {
         $data['errands'] = Errand::orderBy('created_at', 'ASC')->take(6)->get();
-        $data['services'] = Product::join('item_enquiries', ['items.id' => 'item_enquiries.item_id'])
-                            ->where('items.service', true)
-                            ->orderBy('item_enquiries.created_at', 'ASC')->take(6)->get();
-        $data['products'] = Product::join('item_enquiries', ['items.id' => 'item_enquiries.item_id'])
-            ->where('items.service', false)
-            ->orderBy('item_enquiries.created_at', 'ASC')->take(6)->get();
+        $data['services'] = Product::where('items.service', true)
+                            ->where('items.views', '>=', 4)
+                            ->orderBy('items.created_at', 'ASC')->take(6)->get();
+        $data['products'] = Product::where('items.service', false)
+            ->where('items.views', '>=', 4)
+            ->orderBy('items.created_at', 'ASC')->take(6)->get();
         return view("public.home", $data);
     }
 
     public function businesses($region_id = null)
     {
+        $data['regions'] = $this->regionService->getAllRegions();
         $data['region'] = Region::find($region_id);
-        $data['businesses'] = Shop::join('shop_contact_info', ['shops.id' => 'shop_contact_info.shop_id'])
+
+        $region_id = isset($request['region_id']) ? $request['region_id'] : $region_id;
+        $town_id   = isset($request['town_id']) ? $request['town_id'] : null;
+        $street_id = isset($request['street_id']) ? $request['street_id'] : null;
+        $businesses = Shop::join('shop_contact_info', ['shops.id' => 'shop_contact_info.shop_id'])
                     ->join('streets', ['shop_contact_info.street_id' => 'streets.id'])
                     ->join('towns', ['towns.id' => 'streets.town_id'])
-                    ->join('regions', ['regions.id' => 'towns.region_id'])
-                    ->where('regions.id', $region_id)->select('shops.*')->paginate(20);
+                    ->join('regions', ['regions.id' => 'towns.region_id']);
+        if(is_null($region_id)){
+            $data['businesses'] = $businesses->select('shops.*')->paginate(20);
+        }else {
+            $businesses = $businesses->where('regions.id', $region_id);
+            if(!is_null($town_id) && $town_id != "Town"){
+                $businesses = $businesses->Where('towns.id', $town_id);
+            }
+            if(!is_null($street_id) && $street_id !="Street") {
+                $businesses = $businesses->Where('streets.id', $street_id);
+            }
+            $data['businesses'] = $businesses->select('shops.*')->orderBy('shops.created_at', 'DESC')->paginate(20);
+        }
+
         return view("public.businesses", $data);
     }
 
@@ -185,10 +202,24 @@ class WelcomeController extends Controller
 
     public function errands(Request $request)
     {
+        $region_id = isset($request['region_id']) ? $request['region_id'] : null;
+        $town_id   = isset($request['town_id']) ? $request['town_id'] : null;
+        $street_id = isset($request['street_id']) ? $request['street_id'] : null;
         $data['regions'] = $this->regionService->getAllRegions();
-        $data['errands'] = Errand::orderBy('created_at', 'DESC')->where('read_status', 0)->where('status', 1)->where(function($query){
-            auth()->check() ? $query->where('user_id', '!=', auth()->id()) : null;
-        })->paginate(20);
+        if(is_null($region_id)){
+            $data['errands'] = Errand::orderBy('created_at', 'DESC')->where('read_status', 0)->where('status', 1)->where(function($query){
+                  auth()->check() ? $query->where('user_id', '!=', auth()->id()) : null; })->paginate(20);
+        }else {
+            $errands = Errand::where('region_id', $region_id)->where('read_status', 0)->where('status', 1)->where(function($query){
+                    auth()->check() ? $query->where('user_id', '!=', auth()->id()) : null; });
+            if(!is_null($town_id) && $town_id != "Town"){
+                $errands = $errands->Where('town_id', $town_id);
+            }
+            if(!is_null($street_id) && $street_id !="Street") {
+                $errands = $errands->Where('street_id', $street_id);
+            }
+            $data['errands'] = $errands->orderBy('created_at', 'DESC')->paginate(20);
+        }
         return view('public.errands.index')->with($data);
     }
 

@@ -56,11 +56,11 @@
 
                         <div class="footer-contain">
                             <ul>
-                                @foreach ($policies as $policy)
-                                    <li>
-                                        <a href="{{ route('public.privacy_policy', $policy->slug) }}" class="text-content">{{ $policy->title }}</a>
-                                    </li>
-                                @endforeach
+{{--                                @foreach ($policies as $policy)--}}
+{{--                                    <li>--}}
+{{--                                        <a href="{{ route('public.privacy_policy', $policy->slug) }}" class="text-content">{{ $policy->title }}</a>--}}
+{{--                                    </li>--}}
+{{--                                @endforeach--}}
                             </ul>
                         </div>
                     </div>

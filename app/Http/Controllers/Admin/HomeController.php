@@ -498,13 +498,13 @@ class HomeController  extends Controller
             return back()->withInput();
         }
 
-        $data = ['title'=>$request->title, 'content'=>$request->content];
-        if(PrivacyPolicy::where(['title'=>$request->title])->count() > 0){
-            session()->flash('error', "A privacy policy record with the same tiitle already exist");
-            return back()->withInput();
-        }
-
-        (new PrivacyPolicy($data))->save();
+//        $data = ['title'=>$request->title, 'content'=>$request->content];
+//        if(PrivacyPolicy::where(['title'=>$request->title])->count() > 0){
+//            session()->flash('error', "A privacy policy record with the same tiitle already exist");
+//            return back()->withInput();
+//        }
+//
+//        (new PrivacyPolicy($data))->save();
         return back()->with('success', "Operation complete");
     }
 }
