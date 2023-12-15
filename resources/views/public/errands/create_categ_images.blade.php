@@ -32,7 +32,7 @@
                     </span>
                 </div>
                 <span class="d-block mt-4" style="font-weight: 700;">Product image gallery*</span>
-                <div class="my-3 border-left border-right rounded multipleImageUplaoder">
+                <div class="my-3 border-left border-right rounded input-images">
                 </div>
             </div>
             <span class="d-block my-4"><button class="button-primary" type="submit">run</button></span>
@@ -40,7 +40,10 @@
     </div>
 @endsection
 @section('script')
-    <script>
+<script>
+    $('.input-images').imageUploader();
+</script>
+    {{-- <script>
 
         let _id = ((Math.random()*100000000)+Date.now()+crypto.randomUUID()).replace('.', '');
         let set_id = function(){
@@ -86,5 +89,5 @@
             set_id();
             refresh(index);
         }
-    </script>
+    </script> --}}
 @endsection

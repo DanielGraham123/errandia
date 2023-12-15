@@ -104,13 +104,13 @@ class WelcomeController extends Controller
 
     public function run_arrnd_save(Request $request)
     {
-        $savedErrand = Errand::create([
+        ($savedErrand = (new Errand([
             'title' => $request['title'],
             'description' => $request['description'],
             'region_id' => $request['region'],
             'town_id'   => $request['town'],
             'street_id' => $request['street'] == "Street"? '':$request['street']
-        ]);
+        ])))->save();
         $data['categories'] = SubCategory::orderBy('name')->get();
         $data['errand'] = $savedErrand;
         return view('public.errands.create_categ_images', $data);
@@ -126,7 +126,7 @@ class WelcomeController extends Controller
 
     private function uploadErrandGallery(Request $request, $errand)
     {
-         foreach($request['gallery'] as $image)
+         foreach($request['images'] as $image)
          {
              $imageName = time().'.'.$image->getClientOriginalName();
              $image->move(public_path(self::ERRAND_IMAGE_PATH.'/'.$errand->title.'/images/'), $imageName);
@@ -186,13 +186,15 @@ class WelcomeController extends Controller
     public function errands(Request $request)
     {
         $data['regions'] = $this->regionService->getAllRegions();
-        $data['errands'] = Errand::orderBy('created_at', 'DESC')->paginate(20);
+        $data['errands'] = Errand::orderBy('created_at', 'DESC')->where('read_status', 0)->where('status', 1)->where(function($query){
+            auth()->check() ? $query->where('user_id', '!=', auth()->id()) : null;
+        })->paginate(20);
         return view('public.errands.index')->with($data);
     }
 
     public function view_errand(Request $request)
     {
-        $errand = Errand::where('slug', $request['slug'])->first();
+        $errand = Errand::whereSlug($request->slug)->first();
 //        dd($errand->getSubcategories());
         $data['errand'] = $errand;
         if(auth()->user() != null)
@@ -221,5 +223,41 @@ class WelcomeController extends Controller
         // $data['businesses'] = \App\Models\Shop::paginate(50);
         // dd($data);
         return view('public.category.scat_businesses', $data);
+    }
+
+    public function review_product($slug)
+    {
+        $item = Product::whereSlug($slug)->first();
+        if($item !=  null){
+            $data['title'] = "Product Review";
+            $data['item'] = $item;
+            return view('public.products.review', $data);
+        }
+    }
+
+    public function save_product_review(Request $request, $slug)
+    {
+        $prod = Product::whereSlug($slug)->first();
+        $user = auth()->user();
+
+        $request->validate(['rating'=>'required', 'images'=>'array', 'review'=>'required']);
+        $data = ['buyer_id'=>$user->id, 'item_id'=>$prod->id, 'rating'=>$request->rating, 'review'=>$request->review];
+        if(\App\Models\Review::where($data)->count() > 0){
+            session()->flash('error', 'You have already reviewed this product.');
+            return back()->withInput();
+        }
+        ($review = (new \App\Models\Review($data)))->save();
+
+        if(($images = $request->file('images')) != null){
+            $rev_imgs = [];
+            foreach ($images as $key => $image) {
+                $path = public_path('uploads/review_images');
+                $fname = 'review_'.time().'_'.random_int(100000, 999999).'.'.$image->getClientOriginalExtension();
+                $image->move($path, $fname);
+                $rev_imgs[] = ['review_id'=>$review_id, 'image'=>$fname];
+            }
+            \App\Models\ReviewImage::insert($rev_imgs);
+        }
+        return redirect()->route('public.products.show', $slug);
     }
 }

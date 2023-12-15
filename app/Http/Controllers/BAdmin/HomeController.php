@@ -854,8 +854,9 @@ class HomeController extends Controller
     }
 
     public function errands(Request $request){
-        if($request->type == null){
-            $data['errands'] = \App\Models\Errand::where('user_id', auth()->id())->take(100)->get();
+        $data['action'] = $request->action??null;
+        if($request->action == 'posted'){
+            $data['errands'] = \App\Models\Errand::where('user_id', auth()->id())->orderBy('id', 'DESC')->take(100)->get();
             $data['title'] = "Posted Errands";
         }else{
             $shops = auth()->user()->shops;
@@ -877,8 +878,8 @@ class HomeController extends Controller
             $errands = [];
             foreach ($shop_category_ids as $key => $sci) {
                 # code...
-                $_errands = \App\Models\Errand::where('sub_categories', 'LIKE', '%'.$sci.'%')->where('read_status', 0)
-                    ->inRandomOrder()->take(50)->get();
+                $_errands = \App\Models\Errand::where('sub_categories', 'LIKE', '%'.$sci.'%')->where('read_status', 0)->where('status', 1)->where('user_id', '!=', auth()->id())
+                    ->orderBy('id', 'DESC')->take(50)->get();
                 foreach ($_errands as $key => $err) {
                     # code...
                     $errands[] = $err;
@@ -904,7 +905,7 @@ class HomeController extends Controller
         $request->validate(['title'=>'required']);
         $data['errand'] = $request->all();
         $data['title'] = "Post Errand";
-        $item = ['title'=>$request->title, 'region_id'=>$request->town??null, 'town_id'=>$request->town??null, 'street_id'=>$request->street??null, 'description'=>$request->description, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre'];
+        $item = ['title'=>$request->title, 'region_id'=>$request->region??null, 'town_id'=>$request->town??null, 'street_id'=>$request->street??null, 'description'=>$request->description, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre'];
         // $unique_check = ['title'=>$request->title, 'region_id'=>$request->town, 'town_id'=>$request->town, 'street_id'=>$request->street, 'description'=>$request->description, 'user_id'=>auth()->id()];
         // if(($instance = \App\Models\Errand::where($unique_check)->first()) == null){
         // }
@@ -935,11 +936,8 @@ class HomeController extends Controller
 
     public function update_save_errand(Request $request){
         // save and forward errand for image update
-        $validator = Validator::make($request->all(), ['categories'=>'required|array', 'images'=>'required|array', 'visibility'=>'required', 'quote_slug'=>'required']);
-        if($validator->fails()){
-            session()->flash('error', $validator->errors()->first());
-            return back()->withInput();
-        }
+        $request->validate(['categories'=>'required|array', 'visibility'=>'required', 'quote_slug'=>'required']);
+        
         $quote = Errand::whereSlug($request->quote_slug)->first();
         $quote->sub_categories = implode(',', $request->categories);
         $quote->visibility = $request->visibility;
@@ -1109,5 +1107,24 @@ class HomeController extends Controller
         }
     }
 
+
+    public function refresh_errand($slug)
+    {
+        $errand = Errand::whereSlug($slug)->first();
+        if($errand->read_status == 1){
+            $errand->update(['read_status'=>0]);
+        }
+        return back()->with('success', 'Operation complete');
+    }
+
+
+    public function delete_errand($slug)
+    {
+        $errand = Errand::whereSlug($slug)->first();
+        if(!$errand == null){
+            $errand->delete();
+            return redirect()->route('business_admin.errands.index', ['action'=>'posted'])->with('success', 'Operation complete');
+        }
+    }
     
 }
