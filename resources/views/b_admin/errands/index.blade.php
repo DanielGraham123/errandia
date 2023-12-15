@@ -6,21 +6,21 @@
             <span><span class="text-h4 d-block text-capitalize">{{ $title??'' }} <span class="text-h6">({{ count($errands) }})</span></span> <span class="d-block text-extra">Manage all errands you have posted on Errandia</span></span>
             <span class="d-inlineblock">
                 <div class="navbar">
-                    <ul class="nav navbar-nav d-flex nav-right" id="myTab">
+                    <ul class="nav d-flex" id="myTab">
                         <li class="nav-item">
-                            <a href="{{ route('business_admin.errands.create') }}" aria-expanded="false">
+                            <a class="nav-link button-secondary" href="{{ route('business_admin.errands.create') }}" aria-expanded="false">
                                 Run an errand
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ Request::url() }}?action=posted" aria-expanded="false">
+                            <a class="nav-link  button-secondary" href="{{ Request::url() }}?action=posted" aria-expanded="false">
                                 Posted
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ Request::url() }}?action=recieved" aria-expanded="false">
+                            <a class="nav-link  button-secondary" href="{{ Request::url() }}?action=recieved" aria-expanded="false">
                                 Recieved
                             </a>
                         </li>
@@ -38,20 +38,19 @@
                     <th>search location</th>
                     {{-- @if(!isset($shop)) <th>Branch</th> @endif --}}
                     <th>action</th>
-                    <th>status</th>
+                    @if($action == 'posted')<th>status</th>@endif
                 </thead>
                 <tbody>
-                    @php $k = 1;
-                    @endphp
-                    @foreach(count($errands) > 0 ? $errands : collect([null, null, null, null, null, null]) as $err)
+                    @php $k = 1; @endphp
+                    @foreach($errands as $err)
                         <tr class="border-bottom bg-white">
                             <td>{{ $k++}}</td>
                             <td>
                                 <span class="">
-                                    <span class="  d-block">{{ $err->title }}</span>
+                                    <a href="{{ route('business_admin.errands.show', $err->slug) }}"><span class="  d-block">{{ $err->title }}</span></a>
                                 </span>
                             </td>
-                            <td> <span class=" d-block">{{ ($err != null ? ($err->location()??'Location') : 'search location') }}</span></td>
+                            <td><a href="{{ route('business_admin.errands.show', $err->slug) }}"> <span class=" d-block">{{ ($err != null ? ($err->location()??'Location') : 'search location') }}</span></a></td>
                             {{-- @if(!isset($shop)) <td> <span class="text-link d-block">{{ ($err != null ? ($err->shop->name??'Shop') : 'Shop name') .' ('. ($err != null ? ($err->shop->location()??'Location') : 'Location') }})</span></td> @endif  --}}
                             <td>
                                 <div class="dropdown">
@@ -65,11 +64,13 @@
                                     </ul>
                                 </div>
                             </td>
-                            <td>@if ($err->status??null == 1)
-                                <span class="text-quote"><img class="mr-2" style="height: 1.2rem; width: 1.2rem; " src="{{ asset('assets/badmin/icon-check-circle.svg') }}"> Published</span>
-                            @else
-                                <span class="text-quote"><img class="mr-2" style="height: 1.2rem; width: 1.2rem; " src="{{ asset('assets/badmin/icon-cancelled.svg') }}"> Unpublished</span>
-                            @endif</td>
+                            @if($action == 'published')
+                                <td>@if ($err->status??null == 1)
+                                    <span class="text-quote"><img class="mr-2" style="height: 1.2rem; width: 1.2rem; " src="{{ asset('assets/badmin/icon-check-circle.svg') }}"> Published</span>
+                                @else
+                                    <span class="text-quote"><img class="mr-2" style="height: 1.2rem; width: 1.2rem; " src="{{ asset('assets/badmin/icon-cancelled.svg') }}"> Unpublished</span>
+                                @endif</td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

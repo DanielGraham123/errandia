@@ -212,6 +212,7 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::post('edit/{slug}', 'BAdmin\HomeController@update_errand');
         Route::get('show/{slug}', 'BAdmin\HomeController@show_errand')->name('show');
         Route::get('set_found/{slug}', 'BAdmin\HomeController@set_errand_found')->name('set_found');
+        Route::get('refresh/{slug}', 'BAdmin\HomeController@refresh_errand')->name('refresh');
         Route::get('create', 'BAdmin\HomeController@create_errand')->name('create');
         Route::post('create', 'BAdmin\HomeController@save_errand');
         Route::post('create_update', 'BAdmin\HomeController@update_save_errand')->name('create_update');
@@ -399,12 +400,14 @@ Route::name('public.')->group(function(){
     Route::get('categories/{slug}', 'WelcomeController@show_category')->name('category.show');
     Route::get('errands', 'WelcomeController@errands')->name('errands');
     Route::get('errands/show', 'WelcomeController@view_errand')->name('errands.view');
-    Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run');
+    Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run')->middleware('isBusinessAdmin');
     Route::post('errands/run', 'WelcomeController@run_arrnd_save');
     Route::post('errands/run/update', 'WelcomeController@run_arrnd_update')->name('errands.run.update');
     Route::get('search', 'WelcomeController@search')->name('search');
     Route::get('products', 'WelcomeController@products')->name('products.index');
     Route::get('products/show/{slug}', 'WelcomeController@show_product')->name('products.show');
+    Route::get('products/review/{slug}', 'WelcomeController@review_product')->name('products.review')->middleware('isBusinessAdmin');
+    Route::post('products/review/{slug}', 'WelcomeController@save_product_review')->middleware('isBusinessAdmin');
     Route::get('policies/{slug}', [Controller::class, 'privacy_policy'])->name('privacy_policy');
 });
 
