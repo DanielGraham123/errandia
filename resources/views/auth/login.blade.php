@@ -38,7 +38,7 @@
 						<div class="log-in-box">
 							<div class="log-in-title">
 								<h3>Welcome To Errandia</h3>
-								<h4>Stay at home & lets do the seach for you!</h4>
+								<h4>Stay at home & let's do the seach for you!</h4>
 							</div>
 	
 							<div class="input-box">
@@ -46,15 +46,25 @@
 									@csrf
 									<div class="col-12">
 										<div class="form-floating theme-form-floating log-in-form">
-											<input type="text" class="form-control" name="username" id="email" placeholder="Email Address" required>
+											<input type="text" class="form-control" name="username" id="email" placeholder="Email Address">
 											<label for="email">Email Address</label>
+											@if($errors->has('email'))
+												@foreach($errors->get('email') as $error)
+													<small style="color: red"><i class="fa fa-circle fa-xs"></i>&nbsp;{{ $error }}</small>
+												@endforeach
+											@endif
 										</div>
 									</div>
 	
 									<div class="col-12">
 										<div class="form-floating theme-form-floating log-in-form">
-											<input type="password" class="form-control" id="password" required name="password"   placeholder="Password">
+											<input type="password" class="form-control" id="password" name="password"   placeholder="Password">
 											<label for="password">Password</label>
+											@if($errors->has('password'))
+												@foreach($errors->get('password') as $error)
+													<small style="color: red"><i class="fa fa-circle fa-xs"></i>&nbsp;{{ $error }}</small>
+												@endforeach
+											@endif
 										</div>
 									</div>
 	
