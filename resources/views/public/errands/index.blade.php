@@ -133,8 +133,8 @@
                                             <a>
                                                 <h5 class="name">{{$value->title}}</h5>
                                             </a>
-                                            <p class="text-content mt-1 mb-2 line-clamp-3">
-                                                {{Str::limit($value->description, 16)}}...
+                                            <p class="text-content mt-1 mb-2 line-clamp-3 description">
+                                                {{$value->description}}
                                             </p>
 
                                             <h6 class="unit"><span class="fa fa-location"></span>{{$value->location()}}

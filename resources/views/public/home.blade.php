@@ -232,8 +232,8 @@
                                                         <h5>{{$errand->title}}</h5>
                                                     </a>
                                                     <div class="product-rating">
-                                                        <p class="line-clamp-3">
-                                                            {{\Illuminate\Support\Str::limit($errand->description, 25)}}...                                                        </p>
+                                                        <p class="line-clamp-3 description">
+                                                            {{$errand->description}}                                                        </p>
                                                     </div>
                                                     <button class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color btn-sm"> Call Customer
                                                     &nbsp;<span class="add-icon bg-light-gray">
