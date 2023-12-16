@@ -74,29 +74,10 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li>
-                                            <a class="dropdown-item" id="pop" href="javascript:void(0)">Popularity</a>
+                                            <a class="dropdown-item" id="aToz" href="{{route('public.businesses', ['orderBy' => "DESC"])}}">A - Z Order</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="low" href="javascript:void(0)">Low - High
-                                                Price</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="high" href="javascript:void(0)">High - Low
-                                                Price</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="rating" href="javascript:void(0)">Average
-                                                Rating</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="aToz" href="javascript:void(0)">A - Z Order</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="zToa" href="javascript:void(0)">Z - A Order</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="off" href="javascript:void(0)">% Off - Hight To
-                                                Low</a>
+                                            <a class="dropdown-item" id="zToa" href="{{route('public.businesses', ['orderBy' => "ASC"])}}">Z - A Order</a>
                                         </li>
                                     </ul>
                                 </div>
