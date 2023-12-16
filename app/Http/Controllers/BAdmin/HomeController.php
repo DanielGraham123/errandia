@@ -1099,7 +1099,7 @@ class HomeController extends Controller
         $errand = Errand::whereSlug($slug)->first();
         if($errand != null){
             if($errand->user_id == auth()->id()){
-                $shop->update(['status'=>!$shop->status]);
+                $shop->update(['status'=>abs(1-$shop->status)]);
                 return back()->with('success', "Operation complete");
             }
             else
