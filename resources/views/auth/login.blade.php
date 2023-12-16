@@ -47,7 +47,7 @@
 									<div class="col-12">
 										<div class="form-floating theme-form-floating log-in-form">
 											<input type="text" class="form-control" name="username" id="email" placeholder="Email Address">
-											<label for="email">Email Address</label>
+											<label for="email">Email Address/Username</label>
 											@if($errors->has('email'))
 												@foreach($errors->get('email') as $error)
 													<small style="color: red"><i class="fa fa-circle fa-xs"></i>&nbsp;{{ $error }}</small>
