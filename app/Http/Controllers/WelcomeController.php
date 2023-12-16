@@ -39,7 +39,7 @@ class WelcomeController extends Controller
     }
     public function home()
     {
-        $data['errands'] = Errand::orderBy('created_at', 'ASC')->take(6)->get();
+        $data['errands'] = Errand::orderBy('id', 'DESC')->take(6)->get();
         $data['services'] = Product::where('items.service', true)
                             ->orderBy('items.views', 'DESC')->take(6)->get();
         $data['products'] = Product::where('items.service', false)
