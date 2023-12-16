@@ -223,8 +223,6 @@ class WelcomeController extends Controller
             if(!is_null($street_id) && $street_id !="Street") {
                 $errands = $errands->Where('street_id', $street_id);
             }
-        }else{
-            $errands = Errand::orderBy('created_at', 'DESC');
         }
         if(!is_null($orderBy)){
             $errands = Errand::orderBy('title', $orderBy);
@@ -295,7 +293,7 @@ class WelcomeController extends Controller
                 $path = public_path('uploads/review_images');
                 $fname = 'review_'.time().'_'.random_int(100000, 999999).'.'.$image->getClientOriginalExtension();
                 $image->move($path, $fname);
-                $rev_imgs[] = ['review_id'=>$review_id, 'image'=>$fname];
+                $rev_imgs[] = ['review_id'=>$review->id, 'image'=>$fname];
             }
             \App\Models\ReviewImage::insert($rev_imgs);
         }
