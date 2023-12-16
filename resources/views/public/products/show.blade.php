@@ -392,59 +392,24 @@
                                                     </div>
 
                                                     <div class="col-xl-6">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="review-title">
-                                                                    <h4 class="fw-500">Add a review</h4>
-                                                                </div>
-                                                                <form action="" method="post">
-                                                                    <input type="hidden" name="name" value="{{ auth()->id() }}">
-                                                                    <div class="row g-4">
-                                                                        
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <input type="file" accept="image/*" multiple class="form-control" id="limitedImages"
-                                                                                    placeholder="upload review images" name="images" oninput="reviewImageChanged(event)">
-                                                                                <label for="review1">Item image(s)</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating d-flex" id="review_preview_box">
-                                                                                
-                                                                            </div>
-                                                                        </div>
-                
-                                                                        <div class="col-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <textarea class="form-control"
-                                                                                    placeholder="Leave a comment here"
-                                                                                    id="floatingTextarea2" name="description"
-                                                                                    style="height: 150px"></textarea>
-                                                                                <label for="floatingTextarea2">Write Your
-                                                                                    Comment</label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="d-flex justify-content-end py-2">
-                                                                        <button type="submit" class="button-secondary">Submit</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
+                                                        <div class="d-flex justify-content-center py-5 px-3 my-2">
+                                                            <a href="{{ route('public.products.review', $item->slug) }}" class="button-secondary">Write a Review</a>
                                                         </div>
                                                     </div>
 
                                                     <div class="col-12">
                                                         <div class="review-title">
-                                                            <h4 class="fw-500">Customer questions & answers</h4>
+                                                            <h4 class="fw-500">Customer Reviews</h4>
                                                         </div>
 
                                                         <div class="review-people">
                                                             <ul class="review-list">
-                                                                <li>
+                                                                @forelse ($item->reviews as $review)
+                                                                    <li>
                                                                     <div class="people-box">
                                                                         <div>
                                                                             <div class="people-image">
-                                                                                <img src="../assets/images/review/1.jpg"
+                                                                                <img src="{{ $item->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$item->featured_image??'') }}"
                                                                                     class="img-fluid blur-up lazyload"
                                                                                     alt="">
                                                                             </div>
@@ -452,159 +417,35 @@
 
                                                                         <div class="people-comment">
                                                                             <a class="name"
-                                                                                href="javascript:void(0)">Tracey</a>
+                                                                                href="javascript:void(0)">{{ $review->user->name??'' }} <span class="text-content pl-4 h6">{{ $review->created_at->format('D-M-Y@H:i') }}</span></a> 
                                                                             <div class="date-time">
-                                                                                <h6 class="text-content">14 Jan, 2022 at
-                                                                                    12.58 AM</h6>
+                                                                                <p>{{ $review->review??'' }}</p>
 
                                                                                 <div class="product-rating">
                                                                                     <ul class="rating">
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
+                                                                                        @for($i = 1; $i < 6; $i++)
+                                                                                            <li>
+                                                                                                <i data-feather="star"class="{{ $review->rating >= $i ? 'fill' : ''  }}"></i>
+                                                                                            </li>
+                                                                                        @endfor
                                                                                     </ul>
                                                                                 </div>
                                                                             </div>
+                                                                            
 
-                                                                            <div class="reply">
-                                                                                <p>Icing cookie carrot cake chocolate cake
-                                                                                    sugar plum jelly-o danish. Dragée dragée
-                                                                                    shortbread tootsie roll croissant muffin
-                                                                                    cake I love gummi bears. Candy canes ice
-                                                                                    cream caramels tiramisu marshmallow cake
-                                                                                    shortbread candy canes cookie.<a
-                                                                                        href="javascript:void(0)">Reply</a>
-                                                                                </p>
+                                                                            <div class="d-flex flex-wrap g-2">
+                                                                                @foreach ($review->images as $image)
+                                                                                    <img src="{{ asset('uploads/review_images/'.$image->image??'') }}" alt="" srcset="" class="img img-rounded" style="height:5rem; width:5rem;">
+                                                                                @endforeach
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </li>
+                                                                @empty
+                                                                    
+                                                                @endforelse
+                                                                
 
-                                                                <li>
-                                                                    <div class="people-box">
-                                                                        <div>
-                                                                            <div class="people-image">
-                                                                                <img src="../assets/images/review/2.jpg"
-                                                                                    class="img-fluid blur-up lazyload"
-                                                                                    alt="">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="people-comment">
-                                                                            <a class="name"
-                                                                                href="javascript:void(0)">Olivia</a>
-                                                                            <div class="date-time">
-                                                                                <h6 class="text-content">01 May, 2022 at
-                                                                                    08.31 AM</h6>
-                                                                                <div class="product-rating">
-                                                                                    <ul class="rating">
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="reply">
-                                                                                <p>Tootsie roll cake danish halvah powder
-                                                                                    Tootsie roll candy marshmallow cookie
-                                                                                    brownie apple pie pudding brownie
-                                                                                    chocolate bar. Jujubes gummi bears I
-                                                                                    love powder danish oat cake tart
-                                                                                    croissant.<a
-                                                                                        href="javascript:void(0)">Reply</a>
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="people-box">
-                                                                        <div>
-                                                                            <div class="people-image">
-                                                                                <img src="../assets/images/review/3.jpg"
-                                                                                    class="img-fluid blur-up lazyload"
-                                                                                    alt="">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="people-comment">
-                                                                            <a class="name"
-                                                                                href="javascript:void(0)">Gabrielle</a>
-                                                                            <div class="date-time">
-                                                                                <h6 class="text-content">21 May, 2022 at
-                                                                                    05.52 PM</h6>
-
-                                                                                <div class="product-rating">
-                                                                                    <ul class="rating">
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="reply">
-                                                                                <p>Biscuit chupa chups gummies powder I love
-                                                                                    sweet pudding jelly beans. Lemon drops
-                                                                                    marzipan apple pie gingerbread macaroon
-                                                                                    croissant cotton candy pastry wafer.
-                                                                                    Carrot cake halvah I love tart caramels
-                                                                                    pudding icing chocolate gummi bears.
-                                                                                    Gummi bears danish cotton candy muffin
-                                                                                    marzipan caramels awesome feel. <a
-                                                                                        href="javascript:void(0)">Reply</a>
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
                                                             </ul>
                                                         </div>
                                                     </div>
