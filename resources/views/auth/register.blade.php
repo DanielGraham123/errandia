@@ -90,6 +90,10 @@
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
                                         <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="{{ old('password') }}">
+                                        <span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 330px">
+											<i class="fa fa-eye-slash" id="hidePassword" style="cursor: pointer"></i>
+											<i class="fa fa-eye" id="showPassword" style="cursor: pointer;display: none"></i>
+										   </span>
                                         <label for="password">Password</label>
                                         @if($errors->has('password'))
                                             @foreach($errors->get('password') as $error)
@@ -130,7 +134,11 @@
 
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
-                                        <input type="password" class="form-control" id="password" name="password_confirmation"   placeholder="Confirm Password">
+                                        <input type="password" class="form-control" id="confirm_password" name="password_confirmation"   placeholder="Confirm Password">
+                                        <span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 330px">
+											<i class="fa fa-eye-slash" id="hideConfirmPassword" style="cursor: pointer"></i>
+											<i class="fa fa-eye" id="showConfirmPassword" style="cursor: pointer;display: none"></i>
+										   </span>
                                         <label for="password">Confirm Password</label>
                                     </div>
                                 </div>
@@ -195,8 +203,28 @@
 @endsection
 @section('script')
     <script>
-        let validatePassword = function (event) {
-            console.log(event.target.value)
-        }
+        $(document).ready(function (e){
+            $("#hidePassword").on("click", function (e){
+                $("#hidePassword").css({"display": "none"})
+                $("#showPassword").css({"display": "block"})
+                $("#password").attr("type", "text")
+            })
+            $("#showPassword").on("click", function (e){
+                $("#hidePassword").css({"display": "block"})
+                $("#showPassword").css({"display": "none"})
+                $("#password").attr("type", "password")
+            })
+
+            $("#hideConfirmPassword").on("click", function (e){
+                $("#hideConfirmPassword").css({"display": "none"})
+                $("#showConfirmPassword").css({"display": "block"})
+                $("#confirm_password").attr("type", "text")
+            })
+            $("#showConfirmPassword").on("click", function (e){
+                $("#hideConfirmPassword").css({"display": "block"})
+                $("#showConfirmPassword").css({"display": "none"})
+                $("#confirm_password").attr("type", "password")
+            })
+        })
     </script>
 @endsection
