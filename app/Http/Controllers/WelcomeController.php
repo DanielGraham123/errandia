@@ -261,6 +261,8 @@ class WelcomeController extends Controller
 
         $reported = \App\Models\ReviewReport::pluck('review_id')->toArray();
         $data['reviews'] = $item->reviews()->whereNotIn('id', $reported)->get();
+
+        $data['shop_reviews'] = $item->shop->items()->join('reviews', 'reviews.item_id', '=', 'items.id')->count();
         // dd($data);
         return view('public.products.show', $data);
     }

@@ -91,7 +91,7 @@
                                                 <i data-feather="star"></i>
                                             </li>
                                         </ul>
-                                        <span class="review">23 Customer Review</span>
+                                        <span class="review">{{ $item->reviews->count() }} Customer Review</span>
                                     </div>
                                 </div>
 
@@ -99,49 +99,7 @@
                                     <p class="line-clamp-3">{{$item->description ?? ''}}
                                     </p>
                                 </div>
-{{-- 
 
-                                <div class="time deal-timer product-deal-timer mx-md-0 mx-auto" id="clockdiv-1"
-                                    data-hours="1" data-minutes="2" data-seconds="3">
-                                    <div class="product-title">
-                                        <h4>Hurry up! Sales Ends In</h4>
-                                    </div>
-                                    <ul>
-                                        <li>
-                                            <div class="counter d-block">
-                                                <div class="days d-block">
-                                                    <h5></h5>
-                                                </div>
-                                                <h6>Days</h6>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="counter d-block">
-                                                <div class="hours d-block">
-                                                    <h5></h5>
-                                                </div>
-                                                <h6>Hours</h6>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="counter d-block">
-                                                <div class="minutes d-block">
-                                                    <h5></h5>
-                                                </div>
-                                                <h6>Min</h6>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="counter d-block">
-                                                <div class="seconds d-block">
-                                                    <h5></h5>
-                                                </div>
-                                                <h6>Sec</h6>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
- --}}
 
 
                                 <div class="note-box product-packege">
@@ -495,7 +453,7 @@
                                                 <i data-feather="star"></i>
                                             </li>
                                         </ul>
-                                        <span>(36 Reviews)</span>
+                                        <span>({{ $shop_reviews }} Reviews)</span>
                                     </div>
 
                                 </div>
