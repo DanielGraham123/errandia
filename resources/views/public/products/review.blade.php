@@ -60,7 +60,7 @@
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a href="index.html">
+                                    <a href="{{ route('public.home') }}">
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
@@ -106,7 +106,7 @@
                                                 <i data-feather="star"></i>
                                             </li>
                                         </ul>
-                                        <span class="review">23 Customer Review</span>
+                                        <span class="review">{{ $item->reviews->count() }} Customer Review</span>
                                     </div>
                                 </div>
 
@@ -137,18 +137,17 @@
                                             <div class="row g-4">
                                                 
                                                 <div class="col-md-12">
+                                                    <label for="floatingTextarea2">Rating</label>
                                                     <div class="form-floating theme-form-floating">
                                                         <div class="rating">
-                                                            <div class="rating">
-                                                                <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-                                                                <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-                                                                <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                                                                <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                                                                <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                                                            <div class="rating"  >
+                                                                <input type="radio" name="rating" value="5" id="5"><label style="font-size: 2rem !important;" for="5">☆</label>
+                                                                <input type="radio" name="rating" value="4" id="4"><label style="font-size: 2rem !important;" for="4">☆</label>
+                                                                <input type="radio" name="rating" value="3" id="3"><label style="font-size: 2rem !important;" for="3">☆</label>
+                                                                <input type="radio" name="rating" value="2" id="2"><label style="font-size: 2rem !important;" for="2">☆</label>
+                                                                <input type="radio" name="rating" value="1" id="1"><label style="font-size: 2rem !important;" for="1">☆</label>
                                                             </div>
                                                         </div>
-                                                        <label for="floatingTextarea2">Rating</label>
-                                                            
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
@@ -205,7 +204,7 @@
                                                 <i data-feather="star"></i>
                                             </li>
                                         </ul>
-                                        <span>(36 Reviews)</span>
+                                        <span>({{ $shop_reviews }} Reviews)</span>
                                     </div>
 
                                 </div>

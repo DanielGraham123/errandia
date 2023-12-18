@@ -80,7 +80,7 @@
 													id="flexCheckDefault">
 												<label class="form-check-label" for="flexCheckDefault">Remember me</label>
 											</div>
-											<a href="{{ route('reset_password_with_token') }}" class="forgot-password">Forgot Password?</a>
+											<a href="{{ route('reset_password') }}" class="forgot-password">Forgot Password?</a>
 										</div>
 									</div>
 	

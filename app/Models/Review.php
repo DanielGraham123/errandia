@@ -27,4 +27,9 @@ class Review extends Model
     {
         return $this->hasMany(ReviewImage::class, 'review_id');
     }
+
+    public function reports()
+    {
+        return $this->hasMany(ReviewReport::class, 'review_id');
+    }
 }
