@@ -96,11 +96,11 @@ return redirect()->route('login')->with('s','Password Changed Successfully');
 
 }
 
-    public function resetForm($token, $email){
+    public function resetForm(Request $request){
         //dd($email);
-        $data['token'] = $token;
-        $data['email'] = $email;
-        return view('auth.passwords.reset')->with($data);
+        $data['token'] = $request->token;
+        $data['email'] = $request->email;
+        return view('auth.forgot_password')->with($data);
     }
 
 

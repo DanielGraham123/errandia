@@ -167,11 +167,11 @@
                                     </li>
 
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="info-tab" data-bs-toggle="tab"
-                                            data-bs-target="#info" type="button" role="tab" aria-controls="info"
-                                            aria-selected="false">Business Profile</button>
+                                        <button class="nav-link" id="review-tab" data-bs-toggle="tab"
+                                            data-bs-target="#review" type="button" role="tab" aria-controls="review"
+                                            aria-selected="false">Reviews</button>
                                     </li>
-
+                                    
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="care-tab" data-bs-toggle="tab"
                                             data-bs-target="#care" type="button" role="tab" aria-controls="care"
@@ -179,10 +179,12 @@
                                     </li>
 
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="review-tab" data-bs-toggle="tab"
-                                            data-bs-target="#review" type="button" role="tab" aria-controls="review"
-                                            aria-selected="false">Review</button>
+                                        <button class="nav-link" id="info-tab" data-bs-toggle="tab"
+                                            data-bs-target="#info" type="button" role="tab" aria-controls="info"
+                                            aria-selected="false">Profile</button>
                                     </li>
+
+
                                 </ul>
 
                                 <div class="tab-content custom-tab" id="myTabContent">
@@ -227,7 +229,7 @@
                                                     <div class="d-flex justify-content-center flex-wrap py-4">
                                                         @if (auth()->user() == null)
                                                             <a class="button-primary mb-5" href="{{ route('login') }}">Login to make enquiry</a><br>
-                                                            <span class="text-extra">Don't have an account? <a href="{{ route('register') }}" class="button-secondary">create and account</a></span>
+                                                            <span class="text-extra text-center">Don't have an account? <a href="{{ route('register') }}" class="button-secondary d-flex my-2">create and account</a></span>
                                                         @else
                                                             <h5 class="text-h6">Make an enquiry</h5>
                                                         @endif
@@ -291,133 +293,138 @@
 
                                     <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                                         <div class="review-box">
-                                            @if (auth()->check())
-                                                <div class="row g-4">
-                                                    <div class="col-xl-6">
-                                                        <div class="review-title">
-                                                            <h4 class="fw-500">Customer reviews</h4>
-                                                        </div>
-
-                                                        <div class="d-flex">
-                                                            <div class="product-rating">
-                                                                <ul class="rating">
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star"></i>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <h6 class="ms-3">4.2 Out Of 5</h6>
-                                                        </div>
-
-                                                        <div class="rating-box">
-                                                            <ul>
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>5 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 68%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                68%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>4 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 67%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                67%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>3 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 42%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                42%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>2 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 30%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                30%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>1 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 24%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                24%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                            <div class="row g-4">
+                                                <div class="col-xl-6">
+                                                    <div class="review-title">
+                                                        <h4 class="fw-500">Customer reviews</h4>
                                                     </div>
 
-                                                    <div class="col-xl-6">
+                                                    <div class="d-flex">
+                                                        <div class="product-rating">
+                                                            <ul class="rating">
+                                                                @for($i = 1; $i <= 5; $i++)
+                                                                    <li>
+                                                                        <i data-feather="star" class="{{ $average_rating >= $i ? 'fill' : '' }}"></i>
+                                                                    </li>
+                                                                @endfor
+                                                                
+                                                            </ul>
+                                                        </div>
+                                                        <h6 class="ms-3">{{ $average_rating }} Out Of 5</h6>
+                                                    </div>
+
+                                                    <div class="rating-box">
+                                                        <ul>
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>5 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating5 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating5 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>4 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating4 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating4 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>3 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating3 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating3 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>2 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating2 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating2 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>1 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating1 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating1 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-xl-6 py-4">
+                                                    @if (auth()->check())
                                                         <div class="d-flex justify-content-center py-5 px-3 my-2">
                                                             <a href="{{ route('public.products.review', $item->slug) }}" class="button-secondary">Write a Review</a>
                                                         </div>
+                                                    @else
+                                                        <div class="text-center">
+                                                            <div class="d-flex justify-content-center">
+                                                                <a class="button-primary mb-5" href="{{ route('login') }}">Login to make review</a><br>
+                                                            </div>
+                                                            <span class="text-extra text-center">Don't have an account? <a href="{{ route('register') }}" class="button-secondary d-flex my-2">create and account</a></span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="review-title">
+                                                        <h4 class="fw-500">Customer Reviews</h4>
                                                     </div>
 
-                                                    <div class="col-12">
-                                                        <div class="review-title">
-                                                            <h4 class="fw-500">Customer Reviews</h4>
-                                                        </div>
-
-                                                        <div class="review-people">
-                                                            <ul class="review-list">
-                                                                @forelse ($item->reviews as $review)
-                                                                    <li>
+                                                    <div class="review-people">
+                                                        <ul class="review-list">
+                                                            @forelse ($reviews as $review)
+                                                                <li>
                                                                     <div class="people-box">
                                                                         <div>
                                                                             <div class="people-image">
                                                                                 <img src="{{ $item->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$item->featured_image??'') }}"
-                                                                                    class="img-fluid blur-up lazyload"
-                                                                                    alt="">
+                                                                                    class="img-fluid blur-up lazyload" alt="">
                                                                             </div>
                                                                         </div>
 
                                                                         <div class="people-comment">
-                                                                            <a class="name"
-                                                                                href="javascript:void(0)">{{ $review->user->name??'' }} <span class="text-content pl-4 h6">{{ $review->created_at->format('D-M-Y@H:i') }}</span></a> 
+                                                                            <div class="pull-right d-flex justify-content-between">
+                                                                                <a class="name" href="javascript:void(0)">{{ substr($review->user->name??'', 1, 3) }}*** <span class="text-content pl-4 h6">{{ $review->created_at->diffForHumans() }}</span></a> 
+                                                                                @if($review->user->id == auth()->id())
+                                                                                    <a href="{{ route('public.delete_review', $review->id) }}" class="text-danger pull-right"><span class="fa fa-trash"></span> Delete</a>
+                                                                                @endif
+                                                                                @if($review->product->shop->user_id == auth()->id())
+                                                                                    <button class="text-danger border-0" data-bs-toggle="modal" data-review_id ="{{ $review->id }}" data-review_text="{{ $review->review }}" onclick="reportReview(event)" data-bs-target="#add-address"><i class="me-2 fa fa-flag"></i> report</button>
+                                                                                @endif
+                                                                            </div>
                                                                             <div class="date-time">
                                                                                 <p>{{ $review->review??'' }}</p>
 
@@ -435,27 +442,22 @@
 
                                                                             <div class="d-flex flex-wrap g-2">
                                                                                 @foreach ($review->images as $image)
-                                                                                    <img src="{{ asset('uploads/review_images/'.$image->image??'') }}" alt="" srcset="" class="img img-rounded" style="height:5rem; width:5rem;">
+                                                                                    <img src="{{ asset('uploads/review_images/'.$image->image??'') }}" alt="" srcset="" class="img img-thumbnail m-1" style="height:5rem; width:5rem;">
                                                                                 @endforeach
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </li>
-                                                                @empty
-                                                                    
-                                                                @endforelse
+                                                            @empty
                                                                 
+                                                            @endforelse
+                                                            
 
-                                                            </ul>
-                                                        </div>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                            @else
-                                            <div class="">
-                                                <a class="button-primary mb-5 d-block" href="{{ route('login') }}">Login to make review</a><br>
-                                                <span class="text-extra">Don't have an account? <a href="{{ route('register') }}" class="button-secondary">create and account</a></span>
                                             </div>
-                                            @endif
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -473,7 +475,7 @@
                                 </div>
 
                                 <div class="vendor-name">
-                                    <h5 class="fw-500">{{ $item->shop->name??'' }}</h5>
+                                    <h5 class="fw-500">{{ ($item->shop->name??'') }}</h5>
 
                                     <div class="product-rating mt-1">
                                         <ul class="rating">
@@ -594,6 +596,48 @@
     <!-- Sticky Cart Box End -->
 
 
+
+    <!-- Add address modal box start -->
+    <div class="modal fade theme-modal" id="add-address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Report a Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="report_review_form">
+                        @csrf
+                        <div class="form-floating mb-4 theme-form-floating">
+                            <div class="form-control" id="report_review_form_text"></div>
+                            <label for="fname">review</label>
+                        </div>
+                        <div class="form-floating mb-4 theme-form-floating">
+                            <textarea type="text" rows="5" class="form-control" name="reason" placeholder="Enter report reason"></textarea>
+                            <label for="fname">Reason</label>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal">Save
+                                changes</button>
+                        </div>
+                        </div>
+
+                    </form>
+
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Close</button>
+                    
+            </div>
+        </div>
+    </div>
+    <!-- Add address modal box end -->
+
+
 @endsection
 @section('script')
     <script>
@@ -638,6 +682,13 @@
             }
             $('#review_preview_box').html(html);
             
+        }
+
+        reportReview = function(event){
+            let action = "{{ route('public.report_review', '__REV_ID_') }}".replace('__REV_ID_', $(event.target).data('review_id'));
+            // alert(action);
+            $('#report_review_form').attr('action', action);
+            $('#report_review_form_text').text($(event.target).data('review_text'));
         }
     </script>
 @endsection

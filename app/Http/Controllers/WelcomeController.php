@@ -247,7 +247,21 @@ class WelcomeController extends Controller
     }
 
     public function show_product($slug){
-        $data['item'] = Product::whereSlug($slug)->first();
+        $item = Product::whereSlug($slug)->first();
+        $data['item'] = $item;
+        $reviews = $item->reviews();
+        $reviews_sum = $item->reviews()->sum('rating');
+        $reviews_count = $reviews->count() == 0 ? 1 : $reviews->count();
+        $data['average_rating'] = round($reviews->sum('rating')/$reviews_count);
+        $data['rating5'] = round(($item->reviews()->where('rating', 5)->sum('rating')/$reviews_sum)*100);
+        $data['rating4'] = round(($item->reviews()->where('rating', 4)->sum('rating')/$reviews_sum)*100);
+        $data['rating3'] = round(($item->reviews()->where('rating', 3)->sum('rating')/$reviews_sum)*100);
+        $data['rating2'] = round(($item->reviews()->where('rating', 2)->sum('rating')/$reviews_sum)*100);
+        $data['rating1'] = round(($item->reviews()->where('rating', 1)->sum('rating')/$reviews_sum)*100);
+
+        $reported = \App\Models\ReviewReport::pluck('review_id')->toArray();
+        $data['reviews'] = $item->reviews()->whereNotIn('id', $reported)->get();
+        // dd($data);
         return view('public.products.show', $data);
     }
 
@@ -270,6 +284,7 @@ class WelcomeController extends Controller
         if($item !=  null){
             $data['title'] = "Product Review";
             $data['item'] = $item;
+            $data['shop_reviews'] = $item->shop->items()->join('reviews', 'reviews.item_id', '=', 'items.id')->count();
             return view('public.products.review', $data);
         }
     }
@@ -280,11 +295,17 @@ class WelcomeController extends Controller
         $user = auth()->user();
 
         $request->validate(['rating'=>'required', 'images'=>'array', 'review'=>'required']);
-        $data = ['buyer_id'=>$user->id, 'item_id'=>$prod->id, 'rating'=>$request->rating, 'review'=>$request->review];
-        if(\App\Models\Review::where($data)->count() > 0){
+        $data = ['buyer_id'=>$user->id, 'item_id'=>$prod->id, 'rating'=>$request->rating, 'review'=>nl2br($request->review)];
+
+        if($user->id == $prod->shop->user_id){
+            session()->flash('error', 'You are not allowed to review your products.');
+            return back()->withInput();
+        }
+        if(\App\Models\Review::where(['buyer_id'=>$user->id, 'item_id'=>$prod->id])->count() > 0){
             session()->flash('error', 'You have already reviewed this product.');
             return back()->withInput();
         }
+        
         ($review = (new \App\Models\Review($data)))->save();
 
         if(($images = $request->file('images')) != null){
@@ -298,5 +319,50 @@ class WelcomeController extends Controller
             \App\Models\ReviewImage::insert($rev_imgs);
         }
         return redirect()->route('public.products.show', $slug);
+    }
+
+
+
+    public function report_review_save(Request $request, $id)
+    {
+        # code...
+        $validity = \Illuminate\Support\Facades\Validator::make($request->all(), ['reason'=>'required']);
+        if($validity->fails()){
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
+        }
+        $review = \App\Models\Review::find($id);
+        $report = new \App\Models\ReviewReport(['review_id'=>$id, 'reason'=>nl2br($request->reason)]);
+        $report->save();
+
+        return redirect()->route('public.products.show', $review->product->slug);
+    }
+
+    public function delete_review($id)
+    {
+        # code...
+        try {
+            //code...
+            $review = \App\Models\Review::find($id);
+            if($review != null){
+                if($review->user->id == auth()->id()){
+                    foreach ($review->images as $key => $image) {
+                        try {
+                            //code...
+                            unlink(public_path('uploads/review_images/').$image->image);
+                        } catch (\Throwable $th) {
+                            continue;
+                        }
+                    }
+                    $review->delete();
+                }else{
+                    return back()->with('error', "Your are not allowed to delete this review.");
+                }
+            }
+            return back()->with('success', "Operation completed");
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->with('error', $th->getMessage());
+        }
     }
 }

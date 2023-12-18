@@ -37,6 +37,9 @@ Route::post('reset_password_with_token/password/reset', [CustomForgotPasswordCon
 Route::get('reset_password_with_token/{token}/{email}', [CustomForgotPasswordController::class, 'resetForm'])->name('reset');
 Route::post('reset_password_with_token', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password_with_token');
 
+Route::get('reset_password', [CustomForgotPasswordController::class, 'resetForm'])->name('reset_password');
+Route::post('reset_password', [CustomForgotPasswordController::class, 'validatePasswordRequest']);
+
 Route::get('widgets', function(){
     return view('widgets');
 });
@@ -408,6 +411,9 @@ Route::name('public.')->group(function(){
     Route::get('products/show/{slug}', 'WelcomeController@show_product')->name('products.show');
     Route::get('products/review/{slug}', 'WelcomeController@review_product')->name('products.review')->middleware('isBusinessAdmin');
     Route::post('products/review/{slug}', 'WelcomeController@save_product_review')->middleware('isBusinessAdmin');
+    Route::get('review/{id}/report', 'WelcomeController@report_review')->name('report_review');
+    Route::post('review/{id}/report', 'WelcomeController@report_review_save');
+    Route::get('review/{id}/delete', 'WelcomeController@delete_review')->name('delete_review');
     Route::get('policies/{slug}', [Controller::class, 'privacy_policy'])->name('privacy_policy');
 });
 
