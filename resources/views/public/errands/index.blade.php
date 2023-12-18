@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="breadscrumb-contain">
-                        <h2>Region Name</h2>
+                        <h2>{{$region->name ?? ''}}</h2>
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
@@ -15,7 +15,7 @@
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Businesses</li>
+                                <li class="breadcrumb-item active" aria-current="page">Errands</li>
                             </ol>
                         </nav>
                     </div>
@@ -77,29 +77,10 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li>
-                                            <a class="dropdown-item" id="pop" href="javascript:void(0)">Popularity</a>
+                                            <a class="dropdown-item" id="aToz" href="{{route('public.errands', ['orderBy' => "DESC"])}}">A - Z Order</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="low" href="javascript:void(0)">Low - High
-                                                Price</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="high" href="javascript:void(0)">High - Low
-                                                Price</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="rating" href="javascript:void(0)">Average
-                                                Rating</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="aToz" href="javascript:void(0)">A - Z Order</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="zToa" href="javascript:void(0)">Z - A Order</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="off" href="javascript:void(0)">% Off - Hight To
-                                                Low</a>
+                                            <a class="dropdown-item" id="zToa" href="{{route('public.errands', ['orderBy' => "ASC"])}}">Z - A Order</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -152,8 +133,8 @@
                                             <a>
                                                 <h5 class="name">{{$value->title}}</h5>
                                             </a>
-                                            <p class="text-content mt-1 mb-2 line-clamp-3">
-                                                {{Str::limit($value->description, 16)}}...
+                                            <p class="text-content mt-1 mb-2 line-clamp-3 description">
+                                                {{$value->description}}
                                             </p>
 
                                             <h6 class="unit"><span class="fa fa-location"></span>{{$value->location()}}
