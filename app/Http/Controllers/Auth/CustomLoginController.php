@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Guardian;
 use App\Models\User;
-// use Auth;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use \Cookie;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
@@ -88,7 +84,7 @@ class CustomLoginController extends Controller
     public function handleGoogleCallback(Request $request)
     {
         $user = Socialite::driver('google')->user();
-        $existUser = User::where('google_id', $user->getId());
+        $existUser = User::where('google_id', $user->getId())->first();
         if($existUser){
             Auth::login($existUser);
             return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.$existUser->name);
@@ -101,7 +97,6 @@ class CustomLoginController extends Controller
                 'email_verified_at' => Carbon::now(),
                 'password' => Hash::make($user->getName())
             ]);
-
             Auth::login($newUser);
 
             return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.$newUser->name);
