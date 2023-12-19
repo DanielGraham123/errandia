@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Guardian;
 use App\Models\User;
 // use Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -95,7 +96,9 @@ class CustomLoginController extends Controller
             $newUser = User::create([
                 'name'      => $user->getName(),
                 'email'     => $user->getEmail(),
-                'google_id' => $user->getId()
+                'google_id' => $user->getId(),
+                'active'    => true,
+                'email_verified_at' => Carbon::now()
             ]);
 
             Auth::login($newUser);
