@@ -9,6 +9,9 @@ class ShopSubscription extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['shop_id', 'subscription_id', 'subscription_date', 'expiration_date', 'status'];
+
+    protected $dates = ['subscription_date', 'expiration_date'];
     
     public function plan()
     {
