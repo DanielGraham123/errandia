@@ -98,7 +98,8 @@ class CustomLoginController extends Controller
                 'email'     => $user->getEmail(),
                 'google_id' => $user->getId(),
                 'active'    => true,
-                'email_verified_at' => Carbon::now()
+                'email_verified_at' => Carbon::now(),
+                'password' => Hash::make($user->getName())
             ]);
 
             Auth::login($newUser);
