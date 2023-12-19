@@ -64,7 +64,7 @@ class HomeController extends Controller
             'name'=>'required', 'category'=>'required', 'region'=>'required', 
             'town'=>'required', 'street'=>'required', 'website'=>'url|nullable',
             'phone'=>'required|integer', 'phone_code'=>'required_with:phone', 
-            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
+            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 'whatsapp_phone'=>'integer|nullable', 'email'=>'email',
         ]);
 
         if($validity->fails()){
@@ -177,7 +177,7 @@ class HomeController extends Controller
             'town'=>'required', 'street'=>'required', 'website'=>'url',
             'is_branch'=>'required', 'phone'=>'required|integer',
             //  'phone_code'=>'required_with:phone', 
-             'whatsapp_phone'=>'integer|nullable', 'email'=>'email|required',
+             'whatsapp_phone'=>'integer|nullable', 'email'=>'email',
         ]);
 
         if($validity->fails()){
@@ -250,12 +250,30 @@ class HomeController extends Controller
 
     public function products(Request $request){
         $user = auth()->user();
+        $action = $request->action;
+        $data['shop'] = $request->shop_slug == null? null : Shop::whereSlug($request->shop_slug)->first();
+        $products = $request->shop_slug != null ? Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('service', 0) : $products = $data['shop']->products();
 
-        if($request->shop_slug == null)
-            $data['products'] = Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->get();
-        else {
-            $data['shop'] = Shop::whereSlug($request->shop_slug)->first();
-            $data['products'] = $data['shop']->products??[];
+        switch ($action) {
+            case 'all':
+                $data['products'] = $products->get();
+                break;
+            
+            case 'published':
+                $data['products'] = $products->where('status', 1)->get();
+                break;
+            
+            case 'draft':
+                $data['products'] = $products->where('status', 0)->get();
+                break;
+            
+            case 'trash':
+                $data['products'] = $products->whereNotNull('deleted_at')->get();
+                break;
+            
+            default:
+                $data['products'] = $products->get();
+                break;
         }
         return view('b_admin.products.index', $data);
     }
@@ -399,6 +417,125 @@ class HomeController extends Controller
         }
         
         return redirect(route('business_admin.products.index', $data['shop']->slug));
+    }
+
+    public function save_service(Request $request, $slug){
+
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        switch ($request->step??null) {
+            case '1':
+                
+                $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required']);
+                if($validity->fails()){
+                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                }
+
+                $data['categories'] = SubCategory::orderBy('name')->get();
+
+                // save product
+                $item = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 'service'=>true, 'tags' => $request->tags];
+                if(($file = $request->file('image')) != null){
+                    $path = public_path('uploads/item_images/');
+                    $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
+                    
+                    $file->move($path, $fname);
+                    // dd($fname);
+                    $fpathname = $fname;
+                    $item['featured_image'] = $fpathname;
+                }
+
+                $unique_check = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'service'=>true];
+                if(($product_instance = \App\Models\Product::where($unique_check)->first()) == null){
+                    $product_instance = new \App\Models\Product($item);
+                    $product_instance->save();
+                }
+                $data['item_id'] = $product_instance->id;
+
+                //Update product images and categories 
+                $data['item'] = $product_instance;
+                $strx = $request->name.', '.$request->tags;
+
+                $categs = explode(', ', $strx);
+
+                $cats = collect();
+                foreach ($categs as $key => $tok) {
+                    # code...
+                    $cats->push(\App\Models\SubCategory::where('name', 'LIKE', '% '.$tok.' %')->orWhere('description', 'LIKE', '%'.$tok.'%')->get());
+                }
+                // dd($cats);
+                $guess = [];
+                foreach ($cats as $key => $col) {
+                    # code...
+                    foreach ($col as $key => $elm) {
+                        # code...
+                        $guess[] = $elm;
+                    }
+                }
+                
+                $data['proposed_categories'] = $guess;
+                $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
+                $data['step'] = 2;
+                return view('b_admin.services.create', $data);
+                break;
+            
+            case '2':
+                // dd($request->all());
+                $validity = Validator::make($request->all(), ['categories'=>'required']);
+                if($validity->fails()){
+                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                }
+                $product = \App\Models\Product::whereSlug($request->item_slug)->first();
+                if($product != null){
+                    $product_categories = [];
+                    foreach ($request->categories as $key => $cat) {
+                        # code...
+                        $product_categories[] = ['item_id'=>$product->id, 'sub_category_id'=>$cat];
+                    }
+                    \App\Models\ItemCategory::insert($product_categories);
+                    $data['item'] = $product;
+                    $data['step'] = 3;
+                    // dd($data);
+                    return view('b_admin.services.create', $data);
+
+                }else{
+                    return back()->withInput();
+                }
+                break;
+
+            case '3':
+                $validity = Validator::make($request->all(), ['description'=>'required']);
+                if($validity->fails()){
+                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
+                }
+                $product = Product::whereSlug($request->item_slug)->first();
+                $update = ['unit_price'=> $request->unit_price??'', 'description'=>$request->description, 'status'=>1];
+                if($product != null){
+                    $biz = $data['shop'];
+                    if($biz != null && $biz->contactInfo != null){
+                        $bizIndex = ($biz->contactInfo->street->town->region->country->name??null).'_'.($biz->contactInfo->street->town->region->name??null).'_'.($biz->contactInfo->street->town->name??null).'_'.($biz->contactInfo->street->name??null).'_'.($biz->name??null).'_'.implode('_', $biz->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $biz->subCategories->pluck('description')->toArray() ?? []);
+                        $prodIndex = $product->name.'_'.str_replace(',', '_', $product->tags).'_'.implode('_', $product->subCategories->pluck('name')->toArray() ?? []).'_'.implode('_', $product->subCategories->pluck('description')->toArray() ?? []);
+                        $index = $bizIndex.'_'.$prodIndex;
+                        $update['search_index'] = $index;
+                    }
+                    $product->update($update);
+                }
+
+                // save product images if need be
+                if (($files = $request->file('gallery')) != null) {
+                    # code...
+                    $item_images = [];
+                    foreach ($files as $key => $file) {
+                        # code...
+                        $path = public_path('uploads/item_images');
+                        $fname = 'img_'.time().random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+                        $file->move($path, $fname);
+                        $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
+                    }
+                    \App\Models\ProductImage::insert($item_images);
+                }
+
+            }
+        return redirect()->route('business_admin.services.index', $slug);
     }
 
     public function edit_products($slug){
@@ -718,11 +855,30 @@ class HomeController extends Controller
 
     public function services(Request $request, $slug=null){
         $user = auth()->user();
-        if($request->shop_slug == null)
-            $data['products'] = Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('service', 1)->get();
-        else {
-            $data['shop'] = Shop::whereSlug($request->shop_slug)->first();
-            $data['products'] = $data['shop']->services;
+        $action = $request->action;
+        $data['shop'] = $request->shop_slug == null? null : Shop::whereSlug($request->shop_slug)->first();
+        $products = $request->shop_slug != null ? Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('service', 1) : $products = $data['shop']->services();
+
+        switch ($action) {
+            case 'all':
+                $data['products'] = $products->get();
+                break;
+            
+            case 'published':
+                $data['products'] = $products->where('status', 1)->get();
+                break;
+            
+            case 'draft':
+                $data['products'] = $products->where('status', 0)->get();
+                break;
+            
+            case 'trash':
+                $data['products'] = $products->whereNotNull('deleted_at')->get();
+                break;
+            
+            default:
+                $data['products'] = $products->get();
+                break;
         }
         return view('b_admin.services.index', $data);
     }
@@ -734,117 +890,6 @@ class HomeController extends Controller
         return view('b_admin.services.create', $data);
     }
 
-    public function save_service(Request $request, $slug){
-
-        $data['shop'] = Shop::whereSlug($slug)->first();
-        switch ($request->step??null) {
-            case '1':
-                
-                $validity = Validator::make($request->all(), ['name'=>'required', 'tags'=>'required']);
-                if($validity->fails()){
-                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
-                }
-
-                $data['categories'] = SubCategory::orderBy('name')->get();
-
-                // save product
-                $item = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 'service'=>true, 'tags' => $request->tags];
-                if(($file = $request->file('image')) != null){
-                    $path = public_path('uploads/item_images/');
-                    $fname = 'prod_'.time().'_'.random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
-                    
-                    $file->move($path, $fname);
-                    // dd($fname);
-                    $fpathname = $fname;
-                    $item['featured_image'] = $fpathname;
-                }
-
-                $unique_check = ['name'=>$request->name, 'shop_id'=>$data['shop']->id, 'service'=>true];
-                if(($product_instance = \App\Models\Product::where($unique_check)->first()) == null){
-                    $product_instance = new \App\Models\Product($item);
-                    $product_instance->save();
-                }
-                $data['item_id'] = $product_instance->id;
-
-                //Update product images and categories 
-                $data['item'] = $product_instance;
-                $strx = $request->name.', '.$request->tags;
-
-                $categs = explode(', ', $strx);
-
-                $cats = collect();
-                foreach ($categs as $key => $tok) {
-                    # code...
-                    $cats->push(\App\Models\SubCategory::where('name', 'LIKE', '% '.$tok.' %')->orWhere('description', 'LIKE', '%'.$tok.'%')->get());
-                }
-                // dd($cats);
-                $guess = [];
-                foreach ($cats as $key => $col) {
-                    # code...
-                    foreach ($col as $key => $elm) {
-                        # code...
-                        $guess[] = $elm;
-                    }
-                }
-                
-                $data['proposed_categories'] = $guess;
-                $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
-                $data['step'] = 2;
-                return view('b_admin.services.create', $data);
-                break;
-            
-            case '2':
-                // dd($request->all());
-                $validity = Validator::make($request->all(), ['categories'=>'required']);
-                if($validity->fails()){
-                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
-                }
-                $product = \App\Models\Product::whereSlug($request->item_slug)->first();
-                if($product != null){
-                    $product_categories = [];
-                    foreach ($request->categories as $key => $cat) {
-                        # code...
-                        $product_categories[] = ['item_id'=>$product->id, 'sub_category_id'=>$cat];
-                    }
-                    \App\Models\ItemCategory::insert($product_categories);
-                    $data['item'] = $product;
-                    $data['step'] = 3;
-                    // dd($data);
-                    return view('b_admin.services.create', $data);
-
-                }else{
-                    return back()->withInput();
-                }
-                break;
-
-            case '3':
-                $validity = Validator::make($request->all(), ['description'=>'required']);
-                if($validity->fails()){
-                    return back()->withInput(request()->all())->with('error', $validity->errors()->first());
-                }
-                $product = Product::whereSlug($request->item_slug)->first();
-                $update = ['unit_price'=> $request->unit_price??'', 'description'=>$request->description, 'status'=>1];
-                if($product != null){
-                    $product->update($update);
-                }
-
-                // save product images if need be
-                if (($files = $request->file('gallery')) != null) {
-                    # code...
-                    $item_images = [];
-                    foreach ($files as $key => $file) {
-                        # code...
-                        $path = public_path('uploads/item_images');
-                        $fname = 'img_'.time().random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
-                        $file->move($path, $fname);
-                        $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
-                    }
-                    \App\Models\ProductImage::insert($item_images);
-                }
-
-            }
-        return redirect()->route('business_admin.services.index', $slug);
-    }
 
 
     
@@ -1041,12 +1086,27 @@ class HomeController extends Controller
         return redirect()->route('business_admin.products.show', $product_slug)->with('success', 'Operation complete');
     }
 
-    public function show_product($product_slug)
+    public function show_product($slug)
     {
-        $product = Product::whereSlug($product_slug)->first();
-        $data['title'] = $product->service != 1 ? "Product Details" : "Service Details";
-        $data['item'] = $product;
-        return view('b_admin.products.show', $data);
+        $item = Product::whereSlug($slug)->first();
+        $data['item'] = $item;
+        $reviews = $item->reviews();
+        $_reviews_sum = $item->reviews()->sum('rating');
+        $reviews_sum = $_reviews_sum == 0 ? 1 : $_reviews_sum;
+        $reviews_count = $reviews->count() == 0 ? 1 : $reviews->count();
+        $data['average_rating'] = round($reviews->sum('rating')/$reviews_count);
+        $data['rating5'] = round(($item->reviews()->where('rating', 5)->sum('rating')/$reviews_sum)*100);
+        $data['rating4'] = round(($item->reviews()->where('rating', 4)->sum('rating')/$reviews_sum)*100);
+        $data['rating3'] = round(($item->reviews()->where('rating', 3)->sum('rating')/$reviews_sum)*100);
+        $data['rating2'] = round(($item->reviews()->where('rating', 2)->sum('rating')/$reviews_sum)*100);
+        $data['rating1'] = round(($item->reviews()->where('rating', 1)->sum('rating')/$reviews_sum)*100);
+
+        $reported = \App\Models\ReviewReport::pluck('review_id')->toArray();
+        $data['reviews'] = $item->reviews()->whereNotIn('id', $reported)->get();
+
+        $data['shop_reviews'] = $item->shop->items()->join('reviews', 'reviews.item_id', '=', 'items.id')->count();
+        // dd($data);
+        return view('public.products.show', $data);
     }
 
     public function unpublish_products(Request $request, $product_slug)

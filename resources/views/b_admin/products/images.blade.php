@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end py-3">
-                <button class="btn btn-xs btn-primary" type="submit">@lang('text.word_update')</button>
+                <button class="button-primary" type="submit">@lang('text.word_update')</button>
             </div>
         </form>
     </div>
