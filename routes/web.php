@@ -41,6 +41,11 @@ Route::middleware('guest')->group(function() {
     Route::post('reset_password', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password');
 });
 
+Route::middleware("guest")->group(function() {
+    Route::get("/auth/redirect", [CustomLoginController::class, 'googleSignRedirect'])->name("google_redirect_link");
+    Route::get("/auth/google/callback", [CustomLoginController::class, 'handleGoogleCallback'])->name('handle_google_callback');
+});
+
 Route::get('widgets', function(){
     return view('widgets');
 });

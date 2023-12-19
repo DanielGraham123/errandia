@@ -98,7 +98,7 @@
 							<div class="log-in-button">
 								<ul>
 									<li>
-										<a href="https://www.google.com/" class="btn google-button w-100">
+										<a href="{{route('google_redirect_link')}}" class="btn google-button w-100">
 											<img src="{{ asset('assets/public/assets/images/inner-page/google.png') }}" class="blur-up lazyload"
 												alt=""> Log In with Google
 										</a>

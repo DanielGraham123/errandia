@@ -13,6 +13,7 @@ use \Cookie;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
 
 class CustomLoginController extends Controller
 {
@@ -75,5 +76,31 @@ class CustomLoginController extends Controller
             return redirect(route('business_admin.home'));
         }
         return redirect(route('login'))->with('success', 'Your account successfully created.');
+    }
+
+    public function googleSignRedirect(Request $request)
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+
+    public function handleGoogleCallback(Request $request)
+    {
+        $user = Socialite::driver('google')->user();
+        $existUser = User::where('google_id', $user->getId());
+        if($existUser){
+            Auth::login($existUser);
+            return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.$existUser->name);
+        }else {
+            $newUser = User::create([
+                'name'      => $user->getName(),
+                'email'     => $user->getEmail(),
+                'google_id' => $user->getId()
+            ]);
+
+            Auth::login($newUser);
+
+            return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.$newUser->name);
+        }
     }
 }
