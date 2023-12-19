@@ -268,7 +268,14 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
     });
     Route::prefix('reports')->name('reports.')->group(function(){
         Route::get('sms', 'BAdmin\HomeController@sms_reports')->name('sms');
-        Route::get('subscriptions', 'BAdmin\HomeController@subscription_report')->name('subscription');
+        Route::get('subscriptions', 'BAdmin\HomeController@subscriptions')->name('subscription');
+    });
+    Route::prefix('subscriptions')->name('subscriptions.')->group(function(){
+        Route::get('create', 'BAdmin\HomeController@create_subscription')->name('create');
+        Route::post('create', 'BAdmin\HomeController@save_subscription');
+        Route::post('renew/{id}', 'BAdmin\HomeController@renew_subscription')->name('renew');
+        Route::get('cancel/{id}', 'BAdmin\HomeController@renew_subscription')->name('cancel');
+        Route::get('subscriptions', 'BAdmin\HomeController@subscriptions')->name('subscription');
     });
     Route::prefix('settings')->name('settings.')->group(function(){
         Route::get('profile', 'BAdmin\HomeController@my_profile')->name('profile');

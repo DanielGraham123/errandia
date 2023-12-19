@@ -241,14 +241,27 @@ class HomeController  extends Controller
         return view('admin.subscriptions.create', $data);
     }
 
-    public function save_subscription_plan (Request $reuest)
+    public function save_subscription_plan (Request $request)
     {
         # code...
-        dd($request->all());
+        // dd($request->all());
 
-        $validity = Validator::make($request->all(), ['']);
-        $data['title'] = "Add New Subscription Plan";
-        return view('admin.subscriptions.create', $data);
+        $validity = Validator::make($request->all(), ['name'=>'required', 'amount'=>'required|numeric', 'duration'=>'required']);
+        if($validity->fails()){
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
+        }
+
+        $data = ['name'=>$request->name, 'amount'=>$request->amount, 'duration'=>$request->duration, 'currency'=>$request->currency??'XAF', 'description'=>$request->description??''];
+        if(Subscription::where(['name'=>$request->name, 'amount'=>$request->amoun, 'duration'=>$request->duration])->count() > 0){
+            session()->flash('error', 'Plan already exist');
+            return back()->withInput();
+        }
+
+        $instance = new Subscription($data);
+        $instance->save();
+
+        return redirect()->route('admin.plans.index');
     }
 
     
