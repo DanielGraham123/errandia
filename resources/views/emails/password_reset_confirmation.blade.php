@@ -108,7 +108,7 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                     <td align="center" valign="top" style="padding: 36px 24px;">
-                        <a target="_blank" style="display: inline-block;">
+                        <a target="_blank" style="display: inline-block; height: 50%;width: 50%">
                             <img class="image_fluid" src="{{url('public/assets/images/errandiabg.jpg')}}">
                         </a>
                     </td>
@@ -134,7 +134,7 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                     <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
-                        <h1 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -1px; line-height: 48px;">Password Reset Confirmation</h1>
+                        <h3 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -1px; line-height: 48px;">Password Reset Confirmation</h3>
                     </td>
                 </tr>
             </table>
