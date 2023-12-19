@@ -124,6 +124,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::prefix('plans')->name('plans.')->group(function(){
         Route::get('', [AdminHomeController::class, 'subscription_plans'])->name('index');
         Route::get('create', [AdminHomeController::class, 'create_subscription_plan'])->name('create');
+        Route::post('create', [AdminHomeController::class, 'save_subscription_plan']);
     });
     Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
         Route::get('', [AdminHomeController::class, 'sms_bundles'])->name('index');
@@ -141,7 +142,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
     Route::prefix('pages')->name('pages.')->group(function(){
         Route::get('', [AdminHomeController::class, 'all_pages'])->name('index');
-        Route::get('privacy', [AdminHomeController::class, 'privacy_policy'])->name('privacy');
+        Route::get('privacy', [AdminHomeController::class, 'show_privacy_policy'])->name('privacy');
         Route::post('privacy', [AdminHomeController::class, 'save_privacy_policy']);
         Route::get('team_members', [AdminHomeController::class, 'page_team_members'])->name('team_members');
     });

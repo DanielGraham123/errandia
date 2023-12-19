@@ -241,6 +241,18 @@ class HomeController  extends Controller
         return view('admin.subscriptions.create', $data);
     }
 
+    public function save_subscription_plan (Request $reuest)
+    {
+        # code...
+        dd($request->all());
+
+        $validity = Validator::make($request->all(), ['']);
+        $data['title'] = "Add New Subscription Plan";
+        return view('admin.subscriptions.create', $data);
+    }
+
+    
+
     public function subscription_report (Request $reuest)
     {
         # code...
@@ -481,7 +493,7 @@ class HomeController  extends Controller
     }
 
 
-    public function privacy_policy()
+    public function show_privacy_policy()
     {
         # code...
         $data['title'] = "Privacy Policies";

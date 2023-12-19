@@ -69,6 +69,14 @@
 
                         <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="right-box-contain">
+                                @if($item->shop->user_id == auth()->id())
+                                    <div class="d-flex justify-content-end pt-2">
+                                        <a href="{{ route('business_admin.products.photos', $item->slug) }}" class="nav-link button-tertiary"><span class="fa fa-file"></span> Images</a>
+                                        <a href="{{ route('business_admin.products.edit', $item->slug) }}" class="nav-link button-tertiary"><span class="fa fa-edit"></span> Edit</a>
+                                        <a href="{{ route('business_admin.products.unpublish', $item->slug) }}" class="nav-link button-tertiary"><span class="fa fa-pencil"></span> Unpublish</a>
+                                        <a href="{{ route('business_admin.products.delete', $item->slug) }}" class="nav-link button-danger"><span class="fa fa-trash"></span> Delete</a>
+                                    </div>
+                                @endif
                                 <h6 class="offer-top">available</h6>
                                 <h2 class="name">{{ $item->name??'' }}</h2>
                                 <div class="price-rating">
@@ -94,7 +102,6 @@
                                         <span class="review">{{ $item->reviews->count() }} Customer Review</span>
                                     </div>
                                 </div>
-
                                 <div class="procuct-contain">
                                     <p class="line-clamp-3">{{$item->description ?? ''}}
                                     </p>
@@ -111,12 +118,14 @@
                                         class="btn btn-md bg-dark cart-button text-white w-100"><i class="fa fa-phone mr-2 d-inlineblock"></i> &nbsp; Call</button>
                                 </div>
 
+
                                
                             </div>
                         </div>
 
                         <div class="col-12">
                             <div class="product-section-box">
+                                
                                 <ul class="nav nav-tabs custom-nav" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
@@ -130,17 +139,18 @@
                                             aria-selected="false">Reviews</button>
                                     </li>
                                     
-                                    <li class="nav-item" role="presentation">
+                                    {{-- <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="care-tab" data-bs-toggle="tab"
                                             data-bs-target="#care" type="button" role="tab" aria-controls="care"
                                             aria-selected="false">Enquiry</button>
-                                    </li>
+                                    </li> --}}
 
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="info-tab" data-bs-toggle="tab"
                                             data-bs-target="#info" type="button" role="tab" aria-controls="info"
                                             aria-selected="false">Profile</button>
                                     </li>
+
 
 
                                 </ul>
@@ -180,7 +190,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane fade" id="care" role="tabpanel" aria-labelledby="care-tab">
+                                    {{-- <div class="tab-pane fade" id="care" role="tabpanel" aria-labelledby="care-tab">
                                         <div class="information-box">
                                             <div class="row g-4">
                                                 <div class="col-xl-5 ">
@@ -247,7 +257,7 @@
                                             </div>
 
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                                         <div class="review-box">
@@ -342,17 +352,19 @@
                                                 </div>
                                                 
                                                 <div class="col-xl-6 py-4">
-                                                    @if (auth()->check())
-                                                        <div class="d-flex justify-content-center py-5 px-3 my-2">
-                                                            <a href="{{ route('public.products.review', $item->slug) }}" class="button-secondary">Write a Review</a>
-                                                        </div>
-                                                    @else
-                                                        <div class="text-center">
-                                                            <div class="d-flex justify-content-center">
-                                                                <a class="button-primary mb-5" href="{{ route('login') }}">Login to make review</a><br>
+                                                    @if($item->shop->user_id != auth()->id())
+                                                        @if (auth()->check())
+                                                            <div class="d-flex justify-content-center py-5 px-3 my-2">
+                                                                <a href="{{ route('public.products.review', $item->slug) }}" class="button-secondary">Write a Review</a>
                                                             </div>
-                                                            <span class="text-extra text-center">Don't have an account? <a href="{{ route('register') }}" class="button-secondary d-flex my-2">create and account</a></span>
-                                                        </div>
+                                                        @else
+                                                            <div class="text-center">
+                                                                <div class="d-flex justify-content-center">
+                                                                    <a class="button-primary mb-5" href="{{ route('login') }}">Login to make review</a><br>
+                                                                </div>
+                                                                <span class="text-extra text-center">Don't have an account? <a href="{{ route('register') }}" class="button-secondary d-flex my-2">create and account</a></span>
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                 </div>
 
@@ -384,7 +396,7 @@
                                                                                 @endif
                                                                             </div>
                                                                             <div class="date-time">
-                                                                                <p>{{ $review->review??'' }}</p>
+                                                                                <p>{!! $review->review??'' !!}</p>
 
                                                                                 <div class="product-rating">
                                                                                     <ul class="rating">
@@ -482,7 +494,7 @@
                                     @foreach($item->shop->items()->take(10)->get() as $it)
                                         <li>
                                             <div class="offer-product">
-                                                <a href="{{ route('public.products.show', $it->slug) }}" class="offer-image">
+                                                <a href="{{ route('business_admin.products.show', $it->slug) }}" class="offer-image">
                                                     <img src="{{ $it->featured_image ==  null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$it->featured_image) }}" class="img-fluid blur-up lazyload" alt="">
                                                 </a>
 
@@ -569,7 +581,7 @@
                     <form method="post" id="report_review_form">
                         @csrf
                         <div class="form-floating mb-4 theme-form-floating">
-                            <div class="form-control" id="report_review_form_text"></div>
+                            <div class="quote" id="report_review_form_text"></div>
                             <label for="fname">review</label>
                         </div>
                         <div class="form-floating mb-4 theme-form-floating">

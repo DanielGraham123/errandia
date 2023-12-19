@@ -250,7 +250,8 @@ class WelcomeController extends Controller
         $item = Product::whereSlug($slug)->first();
         $data['item'] = $item;
         $reviews = $item->reviews();
-        $reviews_sum = $item->reviews()->sum('rating');
+        $_reviews_sum = $item->reviews()->sum('rating');
+        $reviews_sum = $_reviews_sum == 0 ? 1 : $_reviews_sum;
         $reviews_count = $reviews->count() == 0 ? 1 : $reviews->count();
         $data['average_rating'] = round($reviews->sum('rating')/$reviews_count);
         $data['rating5'] = round(($item->reviews()->where('rating', 5)->sum('rating')/$reviews_sum)*100);
