@@ -151,6 +151,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/theseer/tokenizer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/carbonphp/carbon-doctrine-types" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/stella-maris/clock" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/socialite" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/league/oauth1-client" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

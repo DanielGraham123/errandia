@@ -80,7 +80,7 @@
 													id="flexCheckDefault">
 												<label class="form-check-label" for="flexCheckDefault">Remember me</label>
 											</div>
-											<a href="{{ route('reset_password') }}" class="forgot-password">Forgot Password?</a>
+											<a href="{{ route('forgot_password') }}" class="forgot-password">Forgot Password?</a>
 										</div>
 									</div>
 	
@@ -98,7 +98,7 @@
 							<div class="log-in-button">
 								<ul>
 									<li>
-										<a href="https://www.google.com/" class="btn google-button w-100">
+										<a href="{{route('google_redirect_link')}}" class="btn google-button w-100">
 											<img src="{{ asset('assets/public/assets/images/inner-page/google.png') }}" class="blur-up lazyload"
 												alt=""> Log In with Google
 										</a>
