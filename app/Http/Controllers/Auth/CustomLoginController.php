@@ -77,13 +77,13 @@ class CustomLoginController extends Controller
 
     public function googleSignRedirect(Request $request)
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
 
     public function handleGoogleCallback(Request $request)
     {
-        $user = Socialite::driver('google')->user();
+        $user = Socialite::driver('google')->stateless()->user();
         $existUser = User::where('google_id', $user->getId())->first();
         if($existUser){
             Auth::login($existUser);
