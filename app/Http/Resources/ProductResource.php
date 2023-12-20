@@ -30,7 +30,7 @@ class ProductResource extends JsonResource
             'shop' => [
                 'id' => $shop_info->id,
                 'name' => $shop_info->name,
-                'street' => $shop_info->street->name,
+                'street' => $shop_info->street ? $shop_info->street->name : '',
                 'phone' => $shop_info->phone ?? '',
                 'whatsapp' => $shop_info->whatsapp ?? '',
                 'address' => $shop_info->address ?? '',

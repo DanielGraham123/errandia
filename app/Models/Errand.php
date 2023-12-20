@@ -32,6 +32,12 @@ class Errand extends Model
         return SubCategory::whereIn('id', $cats)->get();
     }
 
+    public function subCategories(){
+        $cats = explode($this->sub_categories, ',');
+        $sub_categories = SubCategory::whereIn('id', $cats)->pluck('name')->all();
+        return empty($sub_categories) ? '' : implode(', ', $sub_categories);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
