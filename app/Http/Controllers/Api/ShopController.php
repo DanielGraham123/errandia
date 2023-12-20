@@ -53,7 +53,7 @@ class ShopController extends Controller
     public function store(Request $request)
     {
         try {
-            DB::transaction(function () use ($request) {
+            $created = DB::transaction(function () use ($request) {
                 $user = auth('api')->user();
                 $shop = new Shop();
                 $shop->name = $request->name;
@@ -86,10 +86,12 @@ class ShopController extends Controller
 
                 $categories = explode(",",trim($request->categories));
                 if (count($categories) > 0) $shop->subCategories()->sync($categories);
+                return $shop;
             });
 
            return response()->json(['data' => [
-            'message' => 'Shop created'
+                'message' => 'Shop created',
+                'shop' => new ShopResource($created)
            ]]);
         } catch(\Exception $e) {
             return response()->json(['data' => [
