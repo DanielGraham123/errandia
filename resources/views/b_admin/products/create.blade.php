@@ -25,6 +25,7 @@
                                 <input type="file" accept="image/*" class="form-control rounded" name="image" required onchange="defaultPreview(event)">
                                 <span class="d-block text-overline" style="font-weight: 700;">This appear as the main image on the website</span>
                             </div>
+                            <span></span>
                         </div>
                     </div>
                     <span class="d-block my-4"><button class="button-primary" type="submit">NEXT</button></span>
@@ -142,7 +143,7 @@
             let files = event.target.files[0];
             let url = URL.createObjectURL(files);
             let prevw = `<img style="width: 12rem; height: 12rem; border-radius: 0.6rem;" src="${url}">`;
-            $('#defaultImageContainer').append(prevw);
+            $('#defaultImageContainer > span').html(prevw);
         }
 
 

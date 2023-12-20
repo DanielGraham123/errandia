@@ -76,7 +76,7 @@ class HomeController extends Controller
 
 
         $shop_data = ['name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
-                    'status'=>false, ];
+                    'status'=>1 ];
         if(Shop::where(['name'=>$request->name])->count() > 0){
             session()->flash('error', 'Business with same name already exist');
             return back()->withInput();
@@ -252,7 +252,7 @@ class HomeController extends Controller
         $user = auth()->user();
         $action = $request->action;
         $data['shop'] = $request->shop_slug == null? null : Shop::whereSlug($request->shop_slug)->first();
-        $products = $request->shop_slug != null ? Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('service', 0) : $products = $data['shop']->products();
+        $products = $data['shop'] == null ? Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('service', 0) : $products = $data['shop']->products();
 
         switch ($action) {
             case 'all':
@@ -857,7 +857,7 @@ class HomeController extends Controller
         $user = auth()->user();
         $action = $request->action;
         $data['shop'] = $request->shop_slug == null? null : Shop::whereSlug($request->shop_slug)->first();
-        $products = $request->shop_slug != null ? Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('service', 1) : $products = $data['shop']->services();
+        $products = $data['shop'] == null ? Product::whereIn('shop_id', $user->shops()->pluck('id')->toArray())->where('service', 1) : $products = $data['shop']->services();
 
         switch ($action) {
             case 'all':

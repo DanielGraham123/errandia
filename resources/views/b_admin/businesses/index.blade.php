@@ -58,9 +58,6 @@
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.products.index', $business->slug) }}" class="text-decoration-none text-secondary">products</a></li>
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.services.index', $business->slug) }}" class="text-decoration-none text-secondary">services</a></li>
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.managers.index', $business->slug) }}" class="text-decoration-none text-secondary">managers</a></li>
-                                        @if ($business->parent_slug == null)
-                                            <li class="dropdown-item py-1 border-y"> <a href="{{route('business_admin.businesses.branch.create', $business->slug)}}" class="text-decoration-none text-secondary">add branch</a></li>
-                                        @endif
                                         @if ($business->status == 1)
                                             <li class="dropdown-item py-1 border-y"> <a onclick="_prompt(`{{ route('business_admin.businesses.suspend', $business->slug) }}`, 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
                                         @else

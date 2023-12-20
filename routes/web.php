@@ -65,9 +65,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('{slug}/delete', [AdminHomeController::class, 'delete_business'])->name('delete');
         Route::get('{slug}/suspend', [AdminHomeController::class, 'suspend_business'])->name('suspend');
         Route::get('{slug}/verify', [AdminHomeController::class, 'verify_business'])->name('verify');
-        Route::get('{slug}/branches', [AdminHomeController::class, 'business_branches'])->name('branch.index');
-        Route::get('{slug}/create_branch', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
-        Route::post('{slug}/create_branch', [AdminHomeController::class, 'save_business_branch']);
+        // Route::get('{slug}/branches', [AdminHomeController::class, 'business_branches'])->name('branch.index');
+        // Route::get('{slug}/create_branch', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
+        // Route::post('{slug}/create_branch', [AdminHomeController::class, 'save_business_branch']);
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
@@ -189,9 +189,9 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('{slug}/delete', 'BAdmin\HomeController@delete_business')->name('delete');
         Route::get('{slug}/suspend', 'BAdmin\HomeController@suspend_business')->name('suspend');
         Route::get('{slug}/verify', 'BAdmin\HomeController@verify_business')->name('verify');
-        Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
-        Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
-        Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
+        // Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
+        // Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
+        // Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
     });
 
     Route::prefix('{shop_slug}/managers')->name('managers.')->group(function(){
@@ -205,9 +205,9 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('{slug}/delete', 'BAdmin\HomeController@delete_business')->name('delete');
         Route::get('{slug}/suspend', 'BAdmin\HomeController@suspend_business')->name('suspend');
         Route::get('{slug}/verify', 'BAdmin\HomeController@verify_business')->name('verify');
-        Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
-        Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
-        Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
+        // Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
+        // Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
+        // Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
@@ -329,9 +329,9 @@ Route::prefix('manager')->name('manager.')->middleware('isManager')->group(funct
         Route::get('{slug}/delete', 'Manager\HomeController@delete_business')->name('delete');
         Route::get('{slug}/suspend', 'Manager\HomeController@suspend_business')->name('suspend');
         Route::get('{slug}/verify', 'Manager\HomeController@verify_business')->name('verify');
-        Route::get('{slug}/branches', 'Manager\HomeController@business_branches')->name('branch.index');
-        Route::get('{slug}/create_branch', 'Manager\HomeController@create_business_branch')->name('branch.create');
-        Route::post('{slug}/create_branch', 'Manager\HomeController@save_business_branch');
+        // Route::get('{slug}/branches', 'Manager\HomeController@business_branches')->name('branch.index');
+        // Route::get('{slug}/create_branch', 'Manager\HomeController@create_business_branch')->name('branch.create');
+        // Route::post('{slug}/create_branch', 'Manager\HomeController@save_business_branch');
     });
 
 
