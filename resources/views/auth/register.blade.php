@@ -167,7 +167,7 @@
                         <div class="log-in-button">
                             <ul>
                                 <li>
-                                    <a href="https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&flowEntry=ServiceLogin"
+                                    <a href="{{route('google_redirect_link')}}"
                                         class="btn google-button w-100">
                                         <img src="{{ asset('assets/public/assets/images/inner-page/google.png') }}" class="blur-up lazyload"
                                             alt="">
