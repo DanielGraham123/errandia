@@ -33,7 +33,7 @@ class Errand extends Model
     }
 
     public function subCategories(){
-        $cats = explode($this->sub_categories, ',');
+        $cats = explode(',', $this->sub_categories);
         $sub_categories = SubCategory::whereIn('id', $cats)->pluck('name')->all();
         return empty($sub_categories) ? '' : implode(', ', $sub_categories);
     }
