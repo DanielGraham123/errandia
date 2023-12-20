@@ -174,12 +174,12 @@
                                         Sign up with Google
                                     </a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="https://www.facebook.com/" class="btn google-button w-100">
                                         <img src="{{ asset('assets/public/assets/images/inner-page/facebook.png') }}" class="blur-up lazyload"
                                             alt=""> Sign up with Facebook
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
 

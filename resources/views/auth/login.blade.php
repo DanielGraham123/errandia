@@ -103,12 +103,12 @@
 												alt=""> Log In with Google
 										</a>
 									</li>
-									<li>
+									{{-- <li>
 										<a href="https://www.facebook.com/" class="btn google-button w-100">
 											<img src="{{ asset('assets/public/assets/images/inner-page/facebook.png') }}" class="blur-up lazyload"
 												alt=""> Log In with Facebook
 										</a>
-									</li>
+									</li> --}}
 								</ul>
 							</div>
 	
