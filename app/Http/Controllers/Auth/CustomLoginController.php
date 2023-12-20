@@ -102,7 +102,8 @@ class CustomLoginController extends Controller
 
                 return redirect()->route('business_admin.home')->with('success', 'Welcome to Business Admin Dashboard ' . $newUser->name);
             }else{
-                return \redirect()->route('login')->with('error', 'An account already exist with this email address');
+                Auth::login($existUser);
+                return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.$existUser->name);
             }
         }
     }
