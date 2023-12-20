@@ -90,7 +90,7 @@
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
                                         <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="{{ old('password') }}">
-                                        <span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 310px">
+                                        <span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 305px">
 											<i class="fa fa-eye-slash" id="hidePassword" style="cursor: pointer"></i>
 											<i class="fa fa-eye" id="showPassword" style="cursor: pointer;display: none"></i>
 										   </span>

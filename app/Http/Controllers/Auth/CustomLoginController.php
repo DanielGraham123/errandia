@@ -84,18 +84,17 @@ class CustomLoginController extends Controller
     public function handleGoogleCallback(Request $request)
     {
         $user = Socialite::driver('google')->stateless()->user();
-        $existUser = User::where('google_id', $user->getId())->first();
-        if($existUser){
+        $existUser = User::where('google_id', $user->id)->first();
+        if(isset($existUser)){
             Auth::login($existUser);
             return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.$existUser->name);
         }else {
             $newUser = User::create([
-                'name'      => $user->getName(),
-                'email'     => $user->getEmail(),
-                'google_id' => $user->getId(),
+                'name'      => $user->name,
+                'email'     => $user->email,
+                'google_id' => $user->id,
                 'active'    => true,
                 'email_verified_at' => Carbon::now(),
-                'password' => Hash::make($user->getName())
             ]);
             Auth::login($newUser);
 
