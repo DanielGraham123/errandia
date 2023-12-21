@@ -85,4 +85,10 @@ class Shop extends Model
         # code...
         return $this->hasManyThrough(Review::class, Product::class, 'id', 'item_id');
     }
+
+    public function subscriptions()
+    {
+        # code...
+        return $this->hasMany(ShopSubscription::class);
+    }
 }

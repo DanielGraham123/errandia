@@ -80,6 +80,11 @@ a{
 .button-tertiary:active{ background-color: var(--color-gray); }
 .button-tertiary:hover{ background-color: var(--color-lightcyan); }
 
+.button-danger{ color: var(--color-lightred) !important; border-radius: 5px; padding: 0.7em 2.4rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; text-decoration: none;}
+.button-danger:disabled{ color: var(--color-darkgray); }
+.button-danger:active{ background-color: var(--color-gray); }
+.button-danger:hover{ background-color: var(--color-lightcyan); }
+
 /* ICON BUTTONS */
 .icon-button-primary{ color: var(--color-lightcyan); background-color: var(--color-lightblue); border-radius: 5px; padding: 0.2rem 2rem; margin: 0.2rem 0.5rem; font-size: 14px; font-weight: 600; }
 .icon-button-primary .icon{ background-color: var(--color-light); width: 5px; height: 5px; }
@@ -216,6 +221,22 @@ input{
 	border-radius: 0.2rem !important;
 }
 
+.bdge{
+	border: 1px solid gray;
+	padding: 4px 0.4rem;
+	border-radius: 0.2rem;
+	font-size: small;
+	font-weight: 600;
+}
 
+.bdge-success{
+	background-color: var(--color-lightblue);
+	color: white;
+}
+
+.bdge-danger{
+	background-color: var(--color-lightred);
+	color: white;
+}
 
 /* MULTIPLE IMAGE UPLOAD STYLES */

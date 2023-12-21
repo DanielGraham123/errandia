@@ -189,11 +189,11 @@
                                                         <i></i>
                                                         <a href="{{ route('login') }}">Log In</a>
                                                     </li>
+                                                    <li class="product-box-contain">
+                                                        <a href="{{ route('register') }}">Register</a>
+                                                    </li>
                                                 @endif
 
-                                                <li class="product-box-contain">
-                                                    <a href="{{ route('register') }}">Register</a>
-                                                </li>
                                                 @if (auth()->check() || auth('admin')->check())
                                                     <li class="product-box-contain">
                                                         <a href="@if(auth()->check()) {{ route('business_admin.home') }} @else {{ route('admin.home') }} @endif">My Dashboard</a>

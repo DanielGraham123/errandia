@@ -11,23 +11,67 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function verifyPhone(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'phone' => 'required',
-            'password' => 'required',
         ]);
 
         if($validator->fails()) {
-            return response()->json(['data' => [
-                'message' => $validator->errors()->first()
-            ]], 401);
+            return response()->json(['message' => $validator->errors()->first()], 400);
         }
 
         $user = User::where('phone', $request->phone)->first();
+        if ($user) {
+            return response()->json([
+                'data' => [
+                    'phone' => $request->phone,
+                    'name' => $user->name ?? ''
+                ],
+                'message' => 'Phone number exist']);
+        } else {
+            return response()->json(['message' => "No account exists with this phone number"], 400);
+        }
+    }
+
+    public function phoneLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 400);
+        }
+
+        $user = User::where('phone', $request->phone)->first();
+        if ($user) {
+            $token = $user->createToken('token')->accessToken;
+            return response()->json(['data' => [
+                'token' => $token,
+                'user' => new UserResource($user),
+            ]]);
+        } else {
+            return response()->json(['message' => "Invalid phone number"], 400);
+        }
+    }
+
+    public function emailLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string',
+            'password' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 400);
+        }
+
+        $user = User::where('email', $request->email)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             $token = $user->createToken('token')->accessToken;
             return response()->json(['data' => [
@@ -35,33 +79,30 @@ class AuthController extends Controller
                 'user' => new UserResource($user),
             ]]);
         } else {
-            return response()->json(['data' => [
-                'message' => "Invalid credentials"
-            ]], 401);
+            return response()->json(['message' => "Invalid email or password"], 400);
         }
     }
     
     public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:200',
-            'email' => 'nullable|string|email|unique:users,email',
-            'phone' => 'required|unique:users,phone',
-            'password' => 'required|string|min:6'
-        ]);
+    {        
+        $rules = [
+            'name' => ['required', 'string', 'max:200', 'min:3'],
+            'email' => ['nullable', 'string', 'email', 'unique:users,email'],
+            'phone' => ['required', 'unique:users,phone'],
+            'password' => ['required','string', 'min:10', 'max:15', 
+                Password::min(8)
+                ->letters()  // Ensure at least one letter
+                ->mixedCase()   // Ensure at least one uppercase and one lowercase letter
+                ->numbers()  // Ensure at least one number
+                ->symbols("~`!@#$%^&*()_-+={[}]|\:;'<,>.?/")  // Ensure only allowed special characters
+                ->uncompromised()
+            ],
+        ];
 
-        // $validator->after(function ($validator) use ($request) {
-        //     if (empty($request->street_id)) {
-        //         $validator->errors()->add(
-        //             'street_id', 'Please select a street'
-        //         );
-        //     }
-        // });
+        $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()) {
-            return response()->json(['data' => [
-                'message' => $validator->errors()->first()
-            ]], 401);
+            return response()->json(['message' => $validator->errors()->first()], 400);
         }
 
         try {
@@ -87,9 +128,7 @@ class AuthController extends Controller
                 'user' => new UserResource($user),
             ]]);
         } catch(\Exception $e) {
-            return response()->json(['data' => [
-                'message' => $e->getMessage()
-            ]], 500);
+            return response()->json(['error' => $e->getMessage(), 'message' => "Sorry, We encountered an error."], 400);
         }
     }
 }

@@ -1,6 +1,6 @@
 @extends('admin.layout')
 @section('section')
-    <form class="py-4">
+    <form class="py-4" method="post">
         @csrf
         <div class="shadow py-5 px-4" style="border-radius: 0.6rem;">
             
@@ -19,9 +19,9 @@
                 <input type="text" name="amount" class="form-control input input-lg rounded" placeholder="Amount*">
             </div>
             <div class=" my-3 input-group imput-group-merge rounded-md">
-                <input type="number" name="duration" class="form-control input input-lg rounded" placeholder="number of Months" >
+                <input type="number" name="duration" class="form-control input input-lg rounded" placeholder="number of Days" >
                 <div class="input-group-addon px-0 mx-0" style="width: 7rem;">
-                    Months
+                    Days
                 </div>
             </div>
             <div class=" my-3 input-group imput-group-merge rounded-md">

@@ -56,11 +56,11 @@
 
                         <div class="footer-contain">
                             <ul>
-                                @for($i = 0; $i < 6; $i++)
-                                <li>
-                                    <a href="#" class="text-content">Page Name</a>
-                                </li>
-                                @endfor
+                               @foreach ($policies as $policy)
+                                   <li>
+                                       <a href="{{ route('public.privacy_policy', $policy->slug) }}" class="text-content">{{ $policy->title }}</a>
+                                   </li>
+                               @endforeach
                             </ul>
                         </div>
                     </div>

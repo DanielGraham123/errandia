@@ -25,6 +25,7 @@
                                 <input type="file" accept="image/*" class="form-control rounded" name="image" required onchange="defaultPreview(event)">
                                 <span class="d-block text-overline" style="font-weight: 700;">This appear as the main image on the website</span>
                             </div>
+                            <span></span>
                         </div>
                     </div>
                     <span class="d-block my-4"><button class="button-primary" type="submit">NEXT</button></span>
@@ -136,11 +137,13 @@
 @endsection
 @section('script')
     <script>
+        const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
         let defaultPreview = function(event){
             let files = event.target.files[0];
             let url = URL.createObjectURL(files);
             let prevw = `<img style="width: 12rem; height: 12rem; border-radius: 0.6rem;" src="${url}">`;
-            $('#defaultImageContainer').append(prevw);
+            $('#defaultImageContainer > span').html(prevw);
         }
 
 
@@ -155,12 +158,13 @@
         $(document).ready(function(){
             init();
         });
+
         
         let init = function(){
             $('.multipleImageUplaoder').each((index, elem)=>{
                 let ___trigger = `<div class="d-flex flex-wrap multipleImageContainer py-3"></div>
                     <div style="width: 0; height: 0; overflow: hidden;" class="imageFieldsContainer">
-                        <input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}')">
+                        <input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}', this)">
                     </div>
                     <div class="py-3 px-3">
                         <a title="add image" onclick="addImage(${index})"><span class="fa fa-plus fa-4x border rounded p-4 text-primary bg-light"></span></a>
@@ -169,7 +173,7 @@
             })
         }
         let refresh = function(index){
-            let field = `<input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}')">`;
+            let field = `<input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}', this)">`;
             let container = $('.multipleImageUplaoder').get(index).children.item(1);
             $(container).append(field);
         }
@@ -179,7 +183,7 @@
             // let field = `<input type="file" name="gallery[]", accept="image/*" id="${get_id()}" onchange="preview('${get_id()}', '${index}')">`;
         }
         
-        let preview = function(field_id, index){
+        let preview = function(field_id, index, ele){
             let file = document.getElementById(field_id).files[0];
             let url = URL.createObjectURL(file);
             let image = `<div id="preview_${get_id()}">
@@ -218,5 +222,34 @@
             $('#product_image_preview_box').html(html);
             
         }
+
+
+        function  uploadImage(obj){
+            var formData = new FormData()
+            formData.append('image',obj.files[0]);
+            let percentage = '0';
+            $.ajax({
+                type:'POST',
+                url: "/api/products/"+product.id+"/images/upload/",
+                data: formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    percentage = '0';
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    percentage = percentComplete;
+                    $('.progress .progress-bar').css("width", percentage+'%', function() {
+                        return $(this).attr("aria-valuenow", percentage) + "%";
+                    })
+                },
+                success: (res) => {
+                },
+                error: function(data){
+                }
+            });
+        }
+
     </script>
 @endsection

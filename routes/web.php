@@ -4,12 +4,7 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Auth\CustomForgotPasswordController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\documentation\BaseController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\NotificationsController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -42,6 +37,9 @@ Route::post('reset_password_with_token/password/reset', [CustomForgotPasswordCon
 Route::get('reset_password_with_token/{token}/{email}', [CustomForgotPasswordController::class, 'resetForm'])->name('reset');
 Route::post('reset_password_with_token', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password_with_token');
 
+Route::get('reset_password', [CustomForgotPasswordController::class, 'resetForm'])->name('reset_password');
+Route::post('reset_password', [CustomForgotPasswordController::class, 'validatePasswordRequest']);
+
 Route::get('widgets', function(){
     return view('widgets');
 });
@@ -67,9 +65,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('{slug}/delete', [AdminHomeController::class, 'delete_business'])->name('delete');
         Route::get('{slug}/suspend', [AdminHomeController::class, 'suspend_business'])->name('suspend');
         Route::get('{slug}/verify', [AdminHomeController::class, 'verify_business'])->name('verify');
-        Route::get('{slug}/branches', [AdminHomeController::class, 'business_branches'])->name('branch.index');
-        Route::get('{slug}/create_branch', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
-        Route::post('{slug}/create_branch', [AdminHomeController::class, 'save_business_branch']);
+        // Route::get('{slug}/branches', [AdminHomeController::class, 'business_branches'])->name('branch.index');
+        // Route::get('{slug}/create_branch', [AdminHomeController::class, 'create_business_branch'])->name('branch.create');
+        // Route::post('{slug}/create_branch', [AdminHomeController::class, 'save_business_branch']);
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
@@ -120,6 +118,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::prefix('plans')->name('plans.')->group(function(){
         Route::get('', [AdminHomeController::class, 'subscription_plans'])->name('index');
         Route::get('create', [AdminHomeController::class, 'create_subscription_plan'])->name('create');
+        Route::post('create', [AdminHomeController::class, 'save_subscription_plan']);
     });
     Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
         Route::get('', [AdminHomeController::class, 'sms_bundles'])->name('index');
@@ -137,7 +136,7 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
     Route::prefix('pages')->name('pages.')->group(function(){
         Route::get('', [AdminHomeController::class, 'all_pages'])->name('index');
-        Route::get('privacy', [AdminHomeController::class, 'privacy_policy'])->name('privacy');
+        Route::get('privacy', [AdminHomeController::class, 'show_privacy_policy'])->name('privacy');
         Route::post('privacy', [AdminHomeController::class, 'save_privacy_policy']);
         Route::get('team_members', [AdminHomeController::class, 'page_team_members'])->name('team_members');
     });
@@ -190,9 +189,9 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('{slug}/delete', 'BAdmin\HomeController@delete_business')->name('delete');
         Route::get('{slug}/suspend', 'BAdmin\HomeController@suspend_business')->name('suspend');
         Route::get('{slug}/verify', 'BAdmin\HomeController@verify_business')->name('verify');
-        Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
-        Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
-        Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
+        // Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
+        // Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
+        // Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
     });
 
     Route::prefix('{shop_slug}/managers')->name('managers.')->group(function(){
@@ -206,9 +205,9 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('{slug}/delete', 'BAdmin\HomeController@delete_business')->name('delete');
         Route::get('{slug}/suspend', 'BAdmin\HomeController@suspend_business')->name('suspend');
         Route::get('{slug}/verify', 'BAdmin\HomeController@verify_business')->name('verify');
-        Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
-        Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
-        Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
+        // Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
+        // Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
+        // Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
@@ -216,7 +215,8 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('edit/{slug}', 'BAdmin\HomeController@edit_errand')->name('edit');
         Route::post('edit/{slug}', 'BAdmin\HomeController@update_errand');
         Route::get('show/{slug}', 'BAdmin\HomeController@show_errand')->name('show');
-        Route::get('set_found/{slug}', 'BAdmin\HomeController@show_errand')->name('set_found');
+        Route::get('set_found/{slug}', 'BAdmin\HomeController@set_errand_found')->name('set_found');
+        Route::get('refresh/{slug}', 'BAdmin\HomeController@refresh_errand')->name('refresh');
         Route::get('create', 'BAdmin\HomeController@create_errand')->name('create');
         Route::post('create', 'BAdmin\HomeController@save_errand');
         Route::post('create_update', 'BAdmin\HomeController@update_save_errand')->name('create_update');
@@ -268,7 +268,14 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
     });
     Route::prefix('reports')->name('reports.')->group(function(){
         Route::get('sms', 'BAdmin\HomeController@sms_reports')->name('sms');
-        Route::get('subscriptions', 'BAdmin\HomeController@subscription_report')->name('subscription');
+        Route::get('subscriptions', 'BAdmin\HomeController@subscriptions')->name('subscription');
+    });
+    Route::prefix('subscriptions')->name('subscriptions.')->group(function(){
+        Route::get('create', 'BAdmin\HomeController@create_subscription')->name('create');
+        Route::post('create', 'BAdmin\HomeController@save_subscription');
+        Route::post('renew/{id}', 'BAdmin\HomeController@renew_subscription')->name('renew');
+        Route::get('cancel/{id}', 'BAdmin\HomeController@renew_subscription')->name('cancel');
+        Route::get('subscriptions', 'BAdmin\HomeController@subscriptions')->name('subscription');
     });
     Route::prefix('settings')->name('settings.')->group(function(){
         Route::get('profile', 'BAdmin\HomeController@my_profile')->name('profile');
@@ -322,9 +329,9 @@ Route::prefix('manager')->name('manager.')->middleware('isManager')->group(funct
         Route::get('{slug}/delete', 'Manager\HomeController@delete_business')->name('delete');
         Route::get('{slug}/suspend', 'Manager\HomeController@suspend_business')->name('suspend');
         Route::get('{slug}/verify', 'Manager\HomeController@verify_business')->name('verify');
-        Route::get('{slug}/branches', 'Manager\HomeController@business_branches')->name('branch.index');
-        Route::get('{slug}/create_branch', 'Manager\HomeController@create_business_branch')->name('branch.create');
-        Route::post('{slug}/create_branch', 'Manager\HomeController@save_business_branch');
+        // Route::get('{slug}/branches', 'Manager\HomeController@business_branches')->name('branch.index');
+        // Route::get('{slug}/create_branch', 'Manager\HomeController@create_business_branch')->name('branch.create');
+        // Route::post('{slug}/create_branch', 'Manager\HomeController@save_business_branch');
     });
 
 
@@ -403,13 +410,19 @@ Route::name('public.')->group(function(){
     Route::get('sub_category/{slug}/businesses', 'WelcomeController@sub_category_businesses')->name('scategory.businesses');
     Route::get('categories/{slug}', 'WelcomeController@show_category')->name('category.show');
     Route::get('errands', 'WelcomeController@errands')->name('errands');
-    Route::get('errands/show/{slug}', 'WelcomeController@view_errand')->name('errands.view');
-    Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run');
+    Route::get('errands/show', 'WelcomeController@view_errand')->name('errands.view');
+    Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run')->middleware('isBusinessAdmin');
     Route::post('errands/run', 'WelcomeController@run_arrnd_save');
     Route::post('errands/run/update', 'WelcomeController@run_arrnd_update')->name('errands.run.update');
     Route::get('search', 'WelcomeController@search')->name('search');
     Route::get('products', 'WelcomeController@products')->name('products.index');
     Route::get('products/show/{slug}', 'WelcomeController@show_product')->name('products.show');
+    Route::get('products/review/{slug}', 'WelcomeController@review_product')->name('products.review')->middleware('isBusinessAdmin');
+    Route::post('products/review/{slug}', 'WelcomeController@save_product_review')->middleware('isBusinessAdmin');
+    Route::get('review/{id}/report', 'WelcomeController@report_review')->name('report_review');
+    Route::post('review/{id}/report', 'WelcomeController@report_review_save');
+    Route::get('review/{id}/delete', 'WelcomeController@delete_review')->name('delete_review');
+    Route::get('policies/{slug}', [Controller::class, 'privacy_policy'])->name('privacy_policy');
 });
 
 

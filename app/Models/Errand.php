@@ -15,7 +15,7 @@ class Errand extends Model
     public function posted_by()
     {
         # code...
-        return $this->belongsTo(User::class, 'user-id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function location(){
@@ -24,6 +24,11 @@ class Errand extends Model
 
     public function _categories(){
         $cats = explode(',', $this->sub_categories);
+        return SubCategory::whereIn('id', $cats)->get();
+    }
+
+    public function getSubcategories(){
+        $cats = explode('-', $this->sub_categories);
         return SubCategory::whereIn('id', $cats)->get();
     }
 

@@ -11,6 +11,11 @@ class ErrandImage extends Model
     
     protected $table = 'item_quote_images';
 
+    protected $fillable = [
+        'item_quote_id',
+        'image'
+    ];
+
     public function getImage()
     {
         return $this->image ? asset('storage/'. $this->image) : '';

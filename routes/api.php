@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ProductImageUploadController;
+use App\Http\Controllers\ProductUploadController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
+/*er;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
@@ -21,7 +24,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api'], function() {
-    Route::post('/login', 'AuthController@login');
+    Route::post('/phone/login', 'AuthController@phoneLogin');
+    Route::post('/email/login', 'AuthController@emailLogin');
+    Route::post('/phone/verify', 'AuthController@verifyPhone');
     Route::post('/register', 'AuthController@register');
 
     Route::get('/countries', 'LocationController@countries');
@@ -48,6 +53,8 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::get('/notifications', 'NotificationController@index');
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
-    Route::post('save_images/{id}', [ProductImageUploadController::class, 'uploadProductGallery']);
+    Route::post('/products/{id}/images/upload', [ProductUploadController::class, 'uploadProductGallery']);
+    Route::delete('/product/{id}/images/delete', [ProductUploadController::class, 'removeProductImage']);
+     Route::post('save_images/{id}', [ProductImageUploadController::class, 'uploadProductGallery']);
     Route::delete('remove_image/{product_id}/', [ProductImageUploadController::class, 'removeProductImage']);
 });

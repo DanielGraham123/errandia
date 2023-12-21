@@ -1,0 +1,13 @@
+Booking@2023
+Trasned Products/ervices throws an error
+Remove branch from businesses
+Created businesses are automatically sjowing suspended
+upload default image should have only 1 image option
+Under Draft products/service , the name should be publish
+Adding products and services redirects to the same route after inserting and its wrong
+Services default image is missing under view services
+Edit Services Images returns empty
+Nl2br is not working on services and products adding
+Other products on products details should show only public products
+Add dashboard button before edit , images buttons on product details admin board
+Unpublish not working on business images

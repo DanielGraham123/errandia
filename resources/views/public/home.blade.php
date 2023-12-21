@@ -221,18 +221,19 @@
                                         <div class="top-selling-title">
                                             <h3>Recently Posted Errands</h3>
                                         </div>
-                                        @for($i = 0; $i < 6; $i++)
+                                       @foreach($errands as $errand)
                                             <div class="top-selling-contain wow fadeInUp" style="border:1px solid#eee;">
-                                                <a href="product-left-thumbnail.html" class="top-selling-image">
-                                                    <img src="{{ asset('assets/images/default2.jpeg') }}"
+                                                <a href="{{route('public.errands.view', ['slug' => $errand->slug])}}" class="top-selling-image">
+                                                    <img src="{{ asset('uploads/quote_images/'.$errand->image) }}"
                                                         class="img-fluid blur-up lazyload" alt="">
                                                 </a>
                                                 <div class="top-selling-detail">
-                                                    <a href="product-left-thumbnail.html">
-                                                        <h5>Tuffets Whole Wheat Bread</h5>
+                                                    <a  href="{{route('public.errands.view', ['slug' => $errand->slug])}}">
+                                                        <h5>{{$errand->title}}</h5>
                                                     </a>
                                                     <div class="product-rating">
-                                                        <p class="line-clamp-3">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Saepe veniam consectetur fugit ut recusandae error provident inventore molestias perspiciatis, voluptatibus excepturi voluptas et maiores delectus beatae, vero porro, fugiat ipsum?</p>
+                                                        <p class="line-clamp-3 description">
+                                                            {{$errand->description}}                                                        </p>
                                                     </div>
                                                     <button class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color btn-sm"> Call Customer
                                                     &nbsp;<span class="add-icon bg-light-gray">
@@ -241,7 +242,7 @@
                                                     </button>
                                                 </div> 
                                             </div>
-                                        @endfor
+                                         @endforeach
 
  
                                     </div>
@@ -257,23 +258,23 @@
                                             <h3>Trending Services</h3>
                                         </div>
 
-                                        @for($i = 0; $i < 6; $i++)
+                                        @foreach($services as $service)
                                             <div class="top-selling-contain wow fadeInUp" style="border:1px solid#eee;">
-                                                <a href="product-left-thumbnail.html" class="top-selling-image">
-                                                    <img src="{{ asset('assets/images/default1.jpg') }}"
+                                                <a href="{{route('public.products.show', ['slug' => $service->slug])}}" class="top-selling-image">
+                                                    <img src="{{ asset('uploads/item_images/'.$service->featured_image) }}"
                                                         class="img-fluid blur-up lazyload" alt="">
                                                 </a>
                                                 <div class="top-selling-detail">
-                                                    <a href="product-left-thumbnail.html">
-                                                        <h5>service name</h5>
+                                                    <a href="{{route('public.products.show', ['slug' => $service->slug])}}">
+                                                        <h5>{{$service->name}}</h5>
                                                     </a>
-                                                        <span>Business Name<br>
-                                                        Location</span>
+                                                        <span>{{$service->shop->name}}<br>
+                                                        {{$service->shop->contactInfo->location()}}</span>
                                                     
-                                                    <h6>1000</h6>
+                                                    <h6>{{$service->unit_price}}</h6>
                                                 </div>    
                                             </div>
-                                        @endfor
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -287,22 +288,22 @@
                                             <h3>Trending Products</h3>
                                         </div>
 
-                                        @for($i = 0; $i < 6; $i++)
+                                        @foreach($products as $product)
                                             <div class="top-selling-contain wow fadeInUp" style="border:1px solid#eee;">
-                                                <a href="product-left-thumbnail.html" class="top-selling-image">
-                                                    <img src="{{ asset('assets/images/default1.jpg') }}"
+                                                <a href="{{route('public.products.show', ['slug' => $product->slug])}}" class="top-selling-image">
+                                                    <img src="{{ asset('uploads/item_images/'.$product->featured_image) }}"
                                                         class="img-fluid blur-up lazyload" alt="">
                                                 </a>
                                                 <div class="top-selling-detail">
-                                                    <a href="product-left-thumbnail.html">
-                                                        <h5>product name</h5>
+                                                    <a href="{{route('public.products.show', ['slug' => $product->slug])}}">
+                                                        <h5>{{$product->name}}</h5>
                                                     </a>
-                                                        <span>Business Name<br>
-                                                        Location</span>
-                                                    <h6>1000</h6>
+                                                        <span>{{$product->shop->name}}<br>
+                                                        {{$product->shop->contactInfo->location()}}</span>
+                                                    <h6>{{$product->unit_price}}</h6>
                                                 </div>         
                                             </div>
-                                        @endfor
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
