@@ -11,7 +11,7 @@
                     </div>
                     <div class="row my-3">
                         <span class="col-sm-3 text-extra text-capitalize">Description</span>
-                        <span class="col-sm-9 text-body-sm text-capitalize">{{ $errand->description??'' }}</span>
+                        <span class="col-sm-9 text-body-sm text-capitalize">{!! $errand->description??'' !!}</span>
                     </div>
                     <div class="row my-3">
                         <span class="col-sm-3 text-extra text-capitalize">categories</span>

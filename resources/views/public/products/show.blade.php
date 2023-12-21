@@ -104,7 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="procuct-contain">
-                                    <p class="line-clamp-3">{{$item->description ?? ''}}
+                                    <p class="line-clamp-3">{!! $item->description ?? '' !!}
                                     </p>
                                 </div>
 
@@ -161,7 +161,7 @@
                                         aria-labelledby="description-tab">
                                         <div class="product-description">
                                             <div class="nav-desh">
-                                                <p>{{ $item->description??'' }}</p>
+                                                <p>{!! $item->description??'' !!}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -403,7 +403,7 @@
                                 </div>
                             </div>
 
-                            <p class="vendor-detail">{{$item->shop->description??''}}</p>
+                            <p class="vendor-detail">{!! $item->shop->description??'' !!}</p>
 
                             <div class="vendor-list">
                                 <ul>
