@@ -26,7 +26,7 @@
                     
                     <div class="row my-5">
                         @if (auth()->user()->shops->count() > 0)
-                            <div class="col-sm-6 col-md-4 col-lg-3 p-2">
+                            <div class="col-sm-6 col-xl-4 col-xxl-3 p-2">
                                 <div class="rounded shadow bg-white card px-4 py-3">
                                     <div class="card-img-top">
                                         <img class="img-responsive mx-auto my-4" style="width: 6rem !important;" src="{{ asset('assets/badmin/icon-create-shop.svg') }}">
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="col-sm-6 col-md-4 col-lg-3 p-2">
+                        <div class="col-sm-6 col-xl-4 col-xxl-3 p-2">
                             <div class="rounded shadow bg-white card px-4 py-3">
                                 <div class="card-img-top">
                                     <img class="img-responsive mx-auto my-4" style="width: 6rem !important;" src="{{ asset('assets/badmin/icon-errand.svg') }}">
@@ -47,7 +47,7 @@
                                 <a class="button-secondary my-3 mx-auto" href="{{ route('business_admin.errands.create') }}">Run an errand</a>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-4 col-lg-3 p-2">
+                        <div class="col-sm-6 col-xl-4 col-xxl-3 p-2">
                             <div class="rounded shadow bg-white card px-4 py-3">
                                 <div class="card-img-top">
                                     <img class="img-responsive mx-auto my-4" style="width: 6rem !important;" src="{{ asset('assets/badmin/icon-profile.svg') }}">
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         @if (auth()->user()->shops->count()  > 0)
-                            <div class="col-sm-6 col-md-4 col-lg-3 p-2">
+                            <div class="col-sm-6 col-xl-4 col-xxl-3 p-2">
                                 <div class="rounded shadow bg-white card px-4 py-3">
                                     <div class="card-img-top">
                                         <img class="img-responsive mx-auto my-4" style="width: 6rem !important;" src="{{ asset('assets/badmin/icon-products-2.svg') }}">
@@ -73,7 +73,7 @@
             
             
                         {{-- IF USRE ALREADY HAS A SHOP --}}
-                        <div class="col-sm-6 col-md-4 col-lg-3 p-2">
+                        <div class="col-sm-6 col-xl-4 col-xxl-3 p-2">
                             <div class="rounded shadow bg-white card px-4 py-3">
                                 <div class="card-img-top">
                                     <img class="img-responsive mx-auto my-4" style="width: 6rem !important;" src="{{ asset('assets/badmin/icon-dashboard-errand.svg') }}">
@@ -85,7 +85,7 @@
                             </div>
                         </div>
                         @if (auth()->user()->shops->count()  > 0)
-                            <div class="col-sm-6 col-md-4 col-lg-3 p-2">
+                            <div class="col-sm-6 col-xl-4 col-xxl-3 p-2">
                                 <div class="rounded shadow bg-white card px-4 py-3">
                                     <div class="card-img-top">
                                         <img class="img-responsive mx-auto my-4" style="width: 6rem !important;" src="{{ asset('assets/badmin/icon-dashboard-businesses.svg') }}">
@@ -97,7 +97,7 @@
                                 </div>
                             </div>
                         
-                            <div class="col-sm-6 col-md-4 col-lg-3 p-2">
+                            <div class="col-sm-6 col-xl-4 col-xxl-3 p-2">
                                 <div class="rounded shadow bg-white card px-4 py-3">
                                     <div class="card-img-top">
                                         <img class="img-responsive mx-auto my-4" style="width: 6rem !important;" src="{{ asset('assets/badmin/icon-dashboard-products-services.svg') }}">
@@ -109,7 +109,7 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="col-sm-6 col-md-4 col-lg-3 p-2">
+                        <div class="col-sm-6 col-xl-4 col-xxl-3 p-2">
                             <div class="rounded shadow bg-white card px-4 py-3">
                                 <div class="card-img-top">
                                     <img class="img-responsive mx-auto my-4" style="width: 6rem !important;" src="{{ asset('assets/badmin/icon-dashboard-businesses.svg') }}">

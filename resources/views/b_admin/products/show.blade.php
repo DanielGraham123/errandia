@@ -486,7 +486,7 @@
                                 <h3>Other Products</h3>
 
                                 <ul class="product-list product-right-sidebar border-0 p-0">
-                                    @foreach($item->shop->items()->take(10)->get() as $it)
+                                    @foreach($item->shop->items()->where('status', 1)->take(10)->get() as $it)
                                         <li>
                                             <div class="offer-product">
                                                 <a href="{{ route('business_admin.products.show', $it->slug) }}" class="offer-image">

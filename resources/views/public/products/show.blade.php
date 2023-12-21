@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-xxl-9 col-xl-8 col-lg-7 wow fadeInUp">
                     <div class="row g-4">
-                        <div class="col-xl-6 wow fadeInUp">
+                        <div class="col-xl-5 wow fadeInUp">
                             <div class="product-left-box">
                                 <div class="row g-2">
                                     <div class="col-xxl-10 col-lg-12 col-md-10 order-xxl-2 order-lg-1 order-md-2">
@@ -67,13 +67,14 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="col-xl-7 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="right-box-contain">
                                 @if($item->shop->user_id == auth()->id())
-                                    <div class="d-flex justify-content-end pt-2">
-                                        <a href="{{ route('business_admin.products.photos', $item->slug) }}" class="nav-link button-tertiary"><span class="fa fa-file"></span> Images</a>
-                                        <a href="{{ route('business_admin.products.edit', $item->slug) }}" class="nav-link button-tertiary"><span class="fa fa-edit"></span> Edit</a>
-                                        <a href="{{ route('business_admin.products.unpublish', $item->slug) }}" class="nav-link button-tertiary"><span class="fa fa-pencil"></span> Unpublish</a>
+                                    <div class="nav justify-content-end pt-2">
+                                        <a href="{{ route('business_admin.home') }}" class="nav-link button-tertiary mr-1"><span class="fa fa-home"></span> Dashboard</a>
+                                        <a href="{{ route('business_admin.products.edit', $item->slug) }}" class="nav-link button-tertiary mr-1"><span class="fa fa-edit"></span> Edit</a>
+                                        <a href="{{ route('business_admin.products.photos', $item->slug) }}" class="nav-link button-tertiary mr-1"><span class="fa fa-file"></span> Images</a>
+                                        <a href="{{ route('business_admin.products.unpublish', $item->slug) }}" class="nav-link button-tertiary mr-1"><span class="fa fa-pencil"></span> Unpublish</a>
                                         <a href="{{ route('business_admin.products.delete', $item->slug) }}" class="nav-link button-danger"><span class="fa fa-trash"></span> Delete</a>
                                     </div>
                                 @endif
@@ -189,75 +190,6 @@
                                             </table>
                                         </div>
                                     </div>
-
-                                    {{-- <div class="tab-pane fade" id="care" role="tabpanel" aria-labelledby="care-tab">
-                                        <div class="information-box">
-                                            <div class="row g-4">
-                                                <div class="col-xl-5 ">
-                                                    <div class="d-flex justify-content-center flex-wrap py-4">
-                                                        @if (auth()->user() == null)
-                                                            <a class="button-primary mb-5" href="{{ route('login') }}">Login to make enquiry</a><br>
-                                                            <span class="text-extra text-center">Don't have an account? <a href="{{ route('register') }}" class="button-secondary d-flex my-2">create and account</a></span>
-                                                        @else
-                                                            <h5 class="text-h6">Make an enquiry</h5>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-7">
-                                                    @if(auth()->check())
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="review-title">
-                                                                    <h4 class="fw-500">Make enquiry</h4>
-                                                                </div>
-                                                                <form action="" method="post">
-                                                                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                                                                    <div class="row g-4">
-                
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <input type="url" class="form-control" id="review1"
-                                                                                    placeholder="Item name" name="title">
-                                                                                <label for="review1">Enquiry Item name</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <input type="file" accept="image/*" multiple class="form-control" id="limitedImages"
-                                                                                    placeholder="upload review images" name="images" oninput="imageChanged(event)">
-                                                                                <label for="review1">Item image(s)</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating d-flex" id="preview_box">
-                                                                                
-                                                                            </div>
-                                                                        </div>
-                
-                                                                        <div class="col-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <textarea class="form-control"
-                                                                                    placeholder="Leave a comment here"
-                                                                                    id="floatingTextarea2"
-                                                                                    style="height: 150px" name="description"></textarea>
-                                                                                <label for="floatingTextarea2">Write Your
-                                                                                    Enquiry</label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="d-flex justify-content-end py-2">
-                                                                        <button type="submit" class="button-secondary">Submit</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                    </div> --}}
 
                                     <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
                                         <div class="review-box">

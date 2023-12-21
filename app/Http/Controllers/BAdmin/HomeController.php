@@ -383,7 +383,7 @@ class HomeController extends Controller
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
                 $product = Product::whereSlug($request->item_slug)->first();
-                $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                $update = ['unit_price'=> $request->unit_price, 'description'=>nl2br($request->description), 'status'=>1];
                 if($product != null){
                     $biz = $data['shop'];
                     if($biz != null && $biz->contactInfo != null){
@@ -448,6 +448,10 @@ class HomeController extends Controller
                 if(($product_instance = \App\Models\Product::where($unique_check)->first()) == null){
                     $product_instance = new \App\Models\Product($item);
                     $product_instance->save();
+
+                    if($product_instance->featured_image != null){
+                        ProductImage::insert(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image]);
+                    }
                 }
                 $data['item_id'] = $product_instance->id;
 
@@ -473,7 +477,7 @@ class HomeController extends Controller
                 }
                 
                 $data['proposed_categories'] = $guess;
-                $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
+                $data['categories'] = SubCategory::orderBy('name')->get();
                 $data['step'] = 2;
                 return view('b_admin.services.create', $data);
                 break;
@@ -508,7 +512,7 @@ class HomeController extends Controller
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
                 $product = Product::whereSlug($request->item_slug)->first();
-                $update = ['unit_price'=> $request->unit_price??'', 'description'=>$request->description, 'status'=>1];
+                $update = ['unit_price'=> $request->unit_price??'', 'description'=>nl2br($request->description), 'status'=>1];
                 if($product != null){
                     $biz = $data['shop'];
                     if($biz != null && $biz->contactInfo != null){
@@ -531,7 +535,7 @@ class HomeController extends Controller
                         $file->move($path, $fname);
                         $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
                     }
-                    \App\Models\ProductImage::insert($item_images);
+                    ProductImage::insert($item_images);
                 }
 
             }
@@ -659,7 +663,7 @@ class HomeController extends Controller
                     }
                     DB::beginTransaction();
                     $product = \App\Models\Product::whereSlug($request->item_slug)->first();
-                    $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                    $update = ['unit_price'=> $request->unit_price, 'description'=>nl2br($request->description), 'status'=>1];
                     if($product != null){
                         $biz = $product->shop;
                         if($biz != null && $biz->contactInfo != null){
@@ -806,7 +810,7 @@ class HomeController extends Controller
                     }
                     DB::beginTransaction();
                     $product = \App\Models\Product::whereSlug($request->item_slug)->first();
-                    $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                    $update = ['unit_price'=> $request->unit_price, 'description'=>nl2br($request->description), 'status'=>1];
                     if($product != null){
                         $biz = $product->shop;
                         if($biz != null && $biz->contactInfo != null){
