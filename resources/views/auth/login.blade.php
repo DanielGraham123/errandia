@@ -42,14 +42,14 @@
 							</div>
 	
 							<div class="input-box">
-								<form class="row g-4" method="POST" action="{{ route('login.submit') }}">
+								<form class="row g-4" method="POST">
 									@csrf
 									<div class="col-12">
 										<div class="form-floating theme-form-floating log-in-form">
 											<input type="text" class="form-control" name="username" id="email" placeholder="Email Address">
 											<label for="email">Email Address/Username</label>
-											@if($errors->has('email'))
-												@foreach($errors->get('email') as $error)
+											@if($errors->has('username'))
+												@foreach($errors->get('username') as $error)
 													<small style="color: red"><i class="fa fa-circle fa-xs"></i>&nbsp;{{ $error }}</small>
 												@endforeach
 											@endif
