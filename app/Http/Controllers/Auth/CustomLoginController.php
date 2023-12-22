@@ -24,6 +24,7 @@ class CustomLoginController extends Controller
     }
 
     public function login(Request $request){
+        // dd(123123);
         $validator = Validator::make($request->all(), [
             'username' => 'required',
             'password' => 'required'

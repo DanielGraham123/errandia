@@ -42,7 +42,7 @@
 							</div>
 	
 							<div class="input-box">
-								<form class="row g-4" method="POST">
+								<form class="row g-4" method="POST" action="{{ route('login.submit') }}">
 									@csrf
 									<div class="col-12">
 										<div class="form-floating theme-form-floating log-in-form">
