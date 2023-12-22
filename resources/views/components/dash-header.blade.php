@@ -128,19 +128,9 @@
                                              --}}
                                         
 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="#"
-                                                    data-bs-toggle="dropdown">Feed Back</a>
-                                                    
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('business_admin.reviews.index') }}">Business reviews</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('business_admin.reviews.index') }}">Reviews made</a>
-                                                    </li>
-                                                
-                                                </ul>
+                                            <li class="nav-item ">
+                                                <a class="nav-link " href="#"
+                                                    data-bs-toggle="">Reviews</a>
                                             </li>
                                             
                                             
