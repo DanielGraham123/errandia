@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\Shop;
+use Illuminate\Support\Facades\DB;
 
 
 class WelcomeController extends Controller
@@ -44,6 +45,15 @@ class WelcomeController extends Controller
                             ->orderBy('items.views', 'DESC')->take(6)->get();
         $data['products'] = Product::where('items.service', false)
             ->orderBy('items.views', 'DESC')->take(6)->get();
+            
+        $data['featured_products'] = Product::inRandomOrder()->take(8)->get();
+        $errands = Errand::groupBy('town_id')->where('town_id', '>', 0)->select('id', 'town_id', DB::raw('COUNT(*) as _count'))->groupBy('town_id')->orderBy('town_id', 'DESC')->take(25)->get();
+        $data['towns'] = $errands->map(function($err){
+            $err->town = $err->town->name??'';
+            return $err;
+        });
+
+
         return view("public.home", $data);
     }
 

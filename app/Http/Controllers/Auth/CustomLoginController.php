@@ -22,8 +22,6 @@ class CustomLoginController extends Controller
         // session()->flush();
         return view('auth.login');
     }
-    
-
 
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
