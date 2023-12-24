@@ -9,6 +9,10 @@ class Review extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['buyer_id', 'item_id', 'rating', 'review', 'status'];
+
+    protected $dates = ['created_at', 'created_at'];
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'item_id');
@@ -22,5 +26,10 @@ class Review extends Model
     public function images()
     {
         return $this->hasMany(ReviewImage::class, 'review_id');
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(ReviewReport::class, 'review_id');
     }
 }

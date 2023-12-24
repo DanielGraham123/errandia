@@ -26,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        View::share('policies', \App\Models\PrivacyPolicy::orderBy('title')->get());
+       View::share('policies', \App\Models\PrivacyPolicy::orderBy('title')->get());
     }
 }

@@ -11,7 +11,7 @@
                     </div>
                     <div class="row my-3">
                         <span class="col-sm-3 text-extra text-capitalize">Description</span>
-                        <span class="col-sm-9 text-body-sm text-capitalize">{{ $errand->description??'' }}</span>
+                        <span class="col-sm-9 text-body-sm text-capitalize">{!! $errand->description??'' !!}</span>
                     </div>
                     <div class="row my-3">
                         <span class="col-sm-3 text-extra text-capitalize">categories</span>
@@ -57,31 +57,45 @@
                 </div>
             </div>
             <div class="col-12 col-xl-6 ">
-                <div class="border bg-white shadow-md p-5 m-3" style="border-radius: 0.6rem;">
-                    <span class="h5" style="color: var(--color-darkblue);">Posted By</span>
-                    <span class="d-block"><img style="width: 6rem; height 6rem; border-radius: 50%; border: 1px solid var(--color-darkblue);" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}"> <span class="text-overline ml-3">{{ $errand->posted_by->name??'user' }}</span></span>
-                    <div class="row my-3">
-                        <span class="col-sm-3 text-extra text-capitalize">phone</span>
-                        <span class="col-sm-9 text-body text-capitalize">
-                            @if(($errand->posted_by->phone??null) != null)
-                                <a href="tel:{{ $errand->posted_by->phone }}" class="button-secondary d-block"> <span class="fa fa-phone"></span> Call</a> 
-                                <a href="https://wa.me/{{ $errand->posted_by->phone }}" class="button-success d-block"> <span class="fa fa-whatsapp"></span> Whatsapp</a> 
+                @if($errand->user_id == auth()->id())
+                    <div class="border bg-white shadow-md p-5 m-3" style="border-radius: 0.6rem;">
+                        <div class="nav d-flex">
+                            @if ($errand->read_status == 0)
+                                <a href="{{ route('business_admin.errands.set_found', $errand->slug) }}" class="button-secondary">MARK AS FOUND</a>
                             @endif
-                        </span>
-                    </div>
-                    <div class="row my-3">
-                        <span class="col-sm-3 text-extra text-capitalize">Email</span>
-                        <span class="col-sm-9 text-body-sm text-capitalize">
-                            @if(($errand->posted_by->email??null) != null)
-                               <a href="mailto: {{ $errand->posted_by->email }}" class="button-secondary d-block"> <span class="fa fa-message"></span> Write </a>  
+                            @if ($errand->read_status == 1)
+                                <a href="{{ route('business_admin.errands.refresh', $errand->slug) }}" class="button-secondary">RE-RUN</a>
                             @endif
-                        </span>
+                            <a href="{{ route('business_admin.errands.delete', $errand->slug) }}" class="btn btn-outline-danger btn-sm">DELETE</a>
+                        </div>
                     </div>
-                    <div class="row my-3">
-                        <span class="col-sm-3 text-extra text-capitalize">Location</span>
-                        <span class="col-sm-9 text-body-sm text-capitalize">{{ $errand->location()??'' }}</span>
+                @else
+                    <div class="border bg-white shadow-md p-5 m-3" style="border-radius: 0.6rem;">
+                        <span class="h5" style="color: var(--color-darkblue);">Posted By</span>
+                        <span class="d-block"><img style="width: 6rem; height 6rem; border-radius: 50%; border: 1px solid var(--color-darkblue);" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}"> <span class="text-overline ml-3">{{ $errand->posted_by->name??'user' }}</span></span>
+                        <div class="row my-3">
+                            <span class="col-sm-3 text-extra text-capitalize">phone</span>
+                            <span class="col-sm-9 text-body text-capitalize">
+                                @if(($errand->posted_by->phone??null) != null)
+                                    <a href="tel:{{ $errand->posted_by->phone }}" class="button-secondary d-block"> <span class="fa fa-phone"></span> Call</a> 
+                                    <a href="https://wa.me/{{ $errand->posted_by->phone }}" class="button-success d-block"> <span class="fa fa-whatsapp"></span> Whatsapp</a> 
+                                @endif
+                            </span>
+                        </div>
+                        <div class="row my-3">
+                            <span class="col-sm-3 text-extra text-capitalize">Email</span>
+                            <span class="col-sm-9 text-body-sm text-capitalize">
+                                @if(($errand->posted_by->email??null) != null)
+                                <a href="mailto: {{ $errand->posted_by->email }}" class="button-secondary d-block"> <span class="fa fa-message"></span> Write </a>  
+                                @endif
+                            </span>
+                        </div>
+                        <div class="row my-3">
+                            <span class="col-sm-3 text-extra text-capitalize">Location</span>
+                            <span class="col-sm-9 text-body-sm text-capitalize">{{ $errand->location()??'' }}</span>
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
 

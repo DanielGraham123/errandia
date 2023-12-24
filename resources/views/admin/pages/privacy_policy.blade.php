@@ -32,19 +32,18 @@
                     @php
                         $k = 1;
                     @endphp
-                    @foreach (\App\Models\PrivacyPolicy::orderBy('title')->get() as $polc)
-                        <tr>
-                            <td>{{ $k++ }}</td>
-                            <td>{{ $polc->title }}</td>
-                            <td>{!! $polc->content !!}</td>
-                        </tr>
-                    @endforeach
+{{--                    @foreach (\App\Models\PrivacyPolicy::orderBy('title')->get() as $polc)--}}
+{{--                        <tr>--}}
+{{--                            <td>{{ $k++ }}</td>--}}
+{{--                            <td>{{ $polc->title }}</td>--}}
+{{--                            <td>{!! $polc->content !!}</td>--}}
+{{--                        </tr>--}}
+{{--                    @endforeach--}}
                 </tbody>
             </table>
         </div>
     </div>
 @endsection
 @section('script')
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>tinymce.init({ selector:'textarea#text-editor1' });</script>
+    
 @endsection

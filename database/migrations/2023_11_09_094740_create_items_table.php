@@ -32,6 +32,7 @@ class CreateItemsTable extends Migration
             $table->integer('quantity')->nullable();
             $table->string('tags')->nullable();
             $table->timestamps();
+            $table->softdeletes();
         });
     }
 

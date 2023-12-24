@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-xxl-9 col-xl-8 col-lg-7 wow fadeInUp">
                     <div class="row g-4">
-                        <div class="col-xl-6 wow fadeInUp">
+                        <div class="col-xl-5 wow fadeInUp">
                             <div class="product-left-box">
                                 <div class="row g-2">
                                     <div class="col-xxl-10 col-lg-12 col-md-10 order-xxl-2 order-lg-1 order-md-2">
@@ -67,8 +67,17 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="col-xl-7 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="right-box-contain">
+                                @if($item->shop->user_id == auth()->id())
+                                    <div class="nav justify-content-end pt-2">
+                                        <a href="{{ route('business_admin.home') }}" class="nav-link button-tertiary mr-1"><span class="fa fa-home"></span> Dashboard</a>
+                                        <a href="{{ route('business_admin.products.edit', $item->slug) }}" class="nav-link button-tertiary mr-1"><span class="fa fa-edit"></span> Edit</a>
+                                        <a href="{{ route('business_admin.products.photos', $item->slug) }}" class="nav-link button-tertiary mr-1"><span class="fa fa-file"></span> Images</a>
+                                        <a href="{{ route('business_admin.products.unpublish', $item->slug) }}" class="nav-link button-tertiary mr-1"><span class="fa fa-pencil"></span> Unpublish</a>
+                                        <a href="{{ route('business_admin.products.delete', $item->slug) }}" class="nav-link button-danger"><span class="fa fa-trash"></span> Delete</a>
+                                    </div>
+                                @endif
                                 <h6 class="offer-top">available</h6>
                                 <h2 class="name">{{ $item->name??'' }}</h2>
                                 <div class="price-rating">
@@ -91,57 +100,14 @@
                                                 <i data-feather="star"></i>
                                             </li>
                                         </ul>
-                                        <span class="review">23 Customer Review</span>
+                                        <span class="review">{{ $item->reviews->count() }} Customer Review</span>
                                     </div>
                                 </div>
-
                                 <div class="procuct-contain">
-                                    <p class="line-clamp-3">{{$item->description ?? ''}}
+                                    <p class="line-clamp-3">{!! $item->description ?? '' !!}
                                     </p>
                                 </div>
-{{-- 
 
-                                <div class="time deal-timer product-deal-timer mx-md-0 mx-auto" id="clockdiv-1"
-                                    data-hours="1" data-minutes="2" data-seconds="3">
-                                    <div class="product-title">
-                                        <h4>Hurry up! Sales Ends In</h4>
-                                    </div>
-                                    <ul>
-                                        <li>
-                                            <div class="counter d-block">
-                                                <div class="days d-block">
-                                                    <h5></h5>
-                                                </div>
-                                                <h6>Days</h6>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="counter d-block">
-                                                <div class="hours d-block">
-                                                    <h5></h5>
-                                                </div>
-                                                <h6>Hours</h6>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="counter d-block">
-                                                <div class="minutes d-block">
-                                                    <h5></h5>
-                                                </div>
-                                                <h6>Min</h6>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="counter d-block">
-                                                <div class="seconds d-block">
-                                                    <h5></h5>
-                                                </div>
-                                                <h6>Sec</h6>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
- --}}
 
 
                                 <div class="note-box product-packege">
@@ -153,12 +119,14 @@
                                         class="btn btn-md bg-dark cart-button text-white w-100"><i class="fa fa-phone mr-2 d-inlineblock"></i> &nbsp; Call</button>
                                 </div>
 
+
                                
                             </div>
                         </div>
 
                         <div class="col-12">
                             <div class="product-section-box">
+                                
                                 <ul class="nav nav-tabs custom-nav" id="myTab" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
@@ -167,22 +135,25 @@
                                     </li>
 
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="info-tab" data-bs-toggle="tab"
-                                            data-bs-target="#info" type="button" role="tab" aria-controls="info"
-                                            aria-selected="false">Business Profile</button>
+                                        <button class="nav-link" id="review-tab" data-bs-toggle="tab"
+                                            data-bs-target="#review" type="button" role="tab" aria-controls="review"
+                                            aria-selected="false">Reviews</button>
                                     </li>
-
-                                    <li class="nav-item" role="presentation">
+                                    
+                                    {{-- <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="care-tab" data-bs-toggle="tab"
                                             data-bs-target="#care" type="button" role="tab" aria-controls="care"
                                             aria-selected="false">Enquiry</button>
-                                    </li>
+                                    </li> --}}
 
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="review-tab" data-bs-toggle="tab"
-                                            data-bs-target="#review" type="button" role="tab" aria-controls="review"
-                                            aria-selected="false">Review</button>
+                                        <button class="nav-link" id="info-tab" data-bs-toggle="tab"
+                                            data-bs-target="#info" type="button" role="tab" aria-controls="info"
+                                            aria-selected="false">Profile</button>
                                     </li>
+
+
+
                                 </ul>
 
                                 <div class="tab-content custom-tab" id="myTabContent">
@@ -190,7 +161,7 @@
                                         aria-labelledby="description-tab">
                                         <div class="product-description">
                                             <div class="nav-desh">
-                                                <p>{{ $item->description??'' }}</p>
+                                                <p>{!! $item->description??'' !!}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -220,401 +191,175 @@
                                         </div>
                                     </div>
 
-                                    <div class="tab-pane fade" id="care" role="tabpanel" aria-labelledby="care-tab">
-                                        <div class="information-box">
+                                    <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                                        <div class="review-box">
                                             <div class="row g-4">
-                                                <div class="col-xl-5 ">
-                                                    <div class="d-flex justify-content-center flex-wrap py-4">
-                                                        @if (auth()->user() == null)
-                                                            <a class="button-primary mb-5" href="{{ route('login') }}">Login to make enquiry</a><br>
-                                                            <span class="text-extra">Don't have an account? <a href="{{ route('register') }}" class="button-secondary">create and account</a></span>
-                                                        @else
-                                                            <h5 class="text-h6">Make an enquiry</h5>
-                                                        @endif
+                                                <div class="col-xl-6">
+                                                    <div class="review-title">
+                                                        <h4 class="fw-500">Customer reviews</h4>
+                                                    </div>
+
+                                                    <div class="d-flex">
+                                                        <div class="product-rating">
+                                                            <ul class="rating">
+                                                                @for($i = 1; $i <= 5; $i++)
+                                                                    <li>
+                                                                        <i data-feather="star" class="{{ $average_rating >= $i ? 'fill' : '' }}"></i>
+                                                                    </li>
+                                                                @endfor
+                                                                
+                                                            </ul>
+                                                        </div>
+                                                        <h6 class="ms-3">{{ $average_rating }} Out Of 5</h6>
+                                                    </div>
+
+                                                    <div class="rating-box">
+                                                        <ul>
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>5 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating5 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating5 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>4 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating4 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating4 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>3 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating3 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating3 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>2 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating2 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating2 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="rating-list">
+                                                                    <h5>1 Star</h5>
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar" role="progressbar"
+                                                                            style="width: {{ $rating1 }}%" aria-valuenow="100"
+                                                                            aria-valuemin="0" aria-valuemax="100">
+                                                                            {{ $rating1 }}%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                                <div class="col-xl-7">
-                                                    @if(auth()->check())
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="review-title">
-                                                                    <h4 class="fw-500">Make enquiry</h4>
-                                                                </div>
-                                                                <form action="" method="post">
-                                                                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                                                                    <div class="row g-4">
-                
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <input type="url" class="form-control" id="review1"
-                                                                                    placeholder="Item name" name="title">
-                                                                                <label for="review1">Enquiry Item name</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <input type="file" accept="image/*" multiple class="form-control" id="limitedImages"
-                                                                                    placeholder="upload review images" name="images" oninput="imageChanged(event)">
-                                                                                <label for="review1">Item image(s)</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating d-flex" id="preview_box">
-                                                                                
-                                                                            </div>
-                                                                        </div>
-                
-                                                                        <div class="col-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <textarea class="form-control"
-                                                                                    placeholder="Leave a comment here"
-                                                                                    id="floatingTextarea2"
-                                                                                    style="height: 150px" name="description"></textarea>
-                                                                                <label for="floatingTextarea2">Write Your
-                                                                                    Enquiry</label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="d-flex justify-content-end py-2">
-                                                                        <button type="submit" class="button-secondary">Submit</button>
-                                                                    </div>
-                                                                </form>
+                                                
+                                                <div class="col-xl-6 py-4">
+                                                    @if($item->shop->user_id != auth()->id())
+                                                        @if (auth()->check())
+                                                            <div class="d-flex justify-content-center py-5 px-3 my-2">
+                                                                <a href="{{ route('public.products.review', $item->slug) }}" class="button-secondary">Write a Review</a>
                                                             </div>
-                                                        </div>
+                                                        @else
+                                                            <div class="text-center">
+                                                                <div class="d-flex justify-content-center">
+                                                                    <a class="button-primary mb-5" href="{{ route('login') }}">Login to make review</a><br>
+                                                                </div>
+                                                                <span class="text-extra text-center">Don't have an account? <a href="{{ route('register') }}" class="button-secondary d-flex my-2">create and account</a></span>
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                 </div>
 
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-                                        <div class="review-box">
-                                            @if (auth()->check())
-                                                <div class="row g-4">
-                                                    <div class="col-xl-6">
-                                                        <div class="review-title">
-                                                            <h4 class="fw-500">Customer reviews</h4>
-                                                        </div>
-
-                                                        <div class="d-flex">
-                                                            <div class="product-rating">
-                                                                <ul class="rating">
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star" class="fill"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star"></i>
-                                                                    </li>
-                                                                    <li>
-                                                                        <i data-feather="star"></i>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <h6 class="ms-3">4.2 Out Of 5</h6>
-                                                        </div>
-
-                                                        <div class="rating-box">
-                                                            <ul>
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>5 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 68%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                68%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>4 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 67%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                67%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>3 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 42%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                42%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>2 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 30%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                30%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="rating-list">
-                                                                        <h5>1 Star</h5>
-                                                                        <div class="progress">
-                                                                            <div class="progress-bar" role="progressbar"
-                                                                                style="width: 24%" aria-valuenow="100"
-                                                                                aria-valuemin="0" aria-valuemax="100">
-                                                                                24%
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                <div class="col-12">
+                                                    <div class="review-title">
+                                                        <h4 class="fw-500">Customer Reviews</h4>
                                                     </div>
 
-                                                    <div class="col-xl-6">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div class="review-title">
-                                                                    <h4 class="fw-500">Add a review</h4>
-                                                                </div>
-                                                                <form action="" method="post">
-                                                                    <input type="hidden" name="name" value="{{ auth()->id() }}">
-                                                                    <div class="row g-4">
-                                                                        
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <input type="file" accept="image/*" multiple class="form-control" id="limitedImages"
-                                                                                    placeholder="upload review images" name="images" oninput="reviewImageChanged(event)">
-                                                                                <label for="review1">Item image(s)</label>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-12">
-                                                                            <div class="form-floating theme-form-floating d-flex" id="review_preview_box">
-                                                                                
-                                                                            </div>
-                                                                        </div>
-                
-                                                                        <div class="col-12">
-                                                                            <div class="form-floating theme-form-floating">
-                                                                                <textarea class="form-control"
-                                                                                    placeholder="Leave a comment here"
-                                                                                    id="floatingTextarea2" name="description"
-                                                                                    style="height: 150px"></textarea>
-                                                                                <label for="floatingTextarea2">Write Your
-                                                                                    Comment</label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="d-flex justify-content-end py-2">
-                                                                        <button type="submit" class="button-secondary">Submit</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-12">
-                                                        <div class="review-title">
-                                                            <h4 class="fw-500">Customer questions & answers</h4>
-                                                        </div>
-
-                                                        <div class="review-people">
-                                                            <ul class="review-list">
+                                                    <div class="review-people">
+                                                        <ul class="review-list">
+                                                            @forelse ($reviews as $review)
                                                                 <li>
                                                                     <div class="people-box">
                                                                         <div>
                                                                             <div class="people-image">
-                                                                                <img src="../assets/images/review/1.jpg"
-                                                                                    class="img-fluid blur-up lazyload"
-                                                                                    alt="">
+                                                                                <img src="{{ $item->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$item->featured_image??'') }}"
+                                                                                    class="img-fluid blur-up lazyload" alt="">
                                                                             </div>
                                                                         </div>
 
                                                                         <div class="people-comment">
-                                                                            <a class="name"
-                                                                                href="javascript:void(0)">Tracey</a>
+                                                                            <div class="pull-right d-flex justify-content-between">
+                                                                                <a class="name" href="javascript:void(0)">{{ substr($review->user->name??'', 1, 3) }}*** <span class="text-content pl-4 h6">{{ $review->created_at->diffForHumans() }}</span></a> 
+                                                                                @if($review->user->id == auth()->id())
+                                                                                    <a href="{{ route('public.delete_review', $review->id) }}" class="text-danger pull-right"><span class="fa fa-trash"></span> Delete</a>
+                                                                                @endif
+                                                                                @if($review->product->shop->user_id == auth()->id())
+                                                                                    <button class="text-danger border-0" data-bs-toggle="modal" data-review_id ="{{ $review->id }}" data-review_text="{{ $review->review }}" onclick="reportReview(event)" data-bs-target="#add-address"><i class="me-2 fa fa-flag"></i> report</button>
+                                                                                @endif
+                                                                            </div>
                                                                             <div class="date-time">
-                                                                                <h6 class="text-content">14 Jan, 2022 at
-                                                                                    12.58 AM</h6>
+                                                                                <p>{!! $review->review??'' !!}</p>
 
                                                                                 <div class="product-rating">
                                                                                     <ul class="rating">
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
+                                                                                        @for($i = 1; $i < 6; $i++)
+                                                                                            <li>
+                                                                                                <i data-feather="star"class="{{ $review->rating >= $i ? 'fill' : ''  }}"></i>
+                                                                                            </li>
+                                                                                        @endfor
                                                                                     </ul>
                                                                                 </div>
                                                                             </div>
+                                                                            
 
-                                                                            <div class="reply">
-                                                                                <p>Icing cookie carrot cake chocolate cake
-                                                                                    sugar plum jelly-o danish. Dragée dragée
-                                                                                    shortbread tootsie roll croissant muffin
-                                                                                    cake I love gummi bears. Candy canes ice
-                                                                                    cream caramels tiramisu marshmallow cake
-                                                                                    shortbread candy canes cookie.<a
-                                                                                        href="javascript:void(0)">Reply</a>
-                                                                                </p>
+                                                                            <div class="d-flex flex-wrap g-2">
+                                                                                @foreach ($review->images as $image)
+                                                                                    <img src="{{ asset('uploads/review_images/'.$image->image??'') }}" alt="" srcset="" class="img img-thumbnail m-1" style="height:5rem; width:5rem;">
+                                                                                @endforeach
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </li>
+                                                            @empty
+                                                                
+                                                            @endforelse
+                                                            
 
-                                                                <li>
-                                                                    <div class="people-box">
-                                                                        <div>
-                                                                            <div class="people-image">
-                                                                                <img src="../assets/images/review/2.jpg"
-                                                                                    class="img-fluid blur-up lazyload"
-                                                                                    alt="">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="people-comment">
-                                                                            <a class="name"
-                                                                                href="javascript:void(0)">Olivia</a>
-                                                                            <div class="date-time">
-                                                                                <h6 class="text-content">01 May, 2022 at
-                                                                                    08.31 AM</h6>
-                                                                                <div class="product-rating">
-                                                                                    <ul class="rating">
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="reply">
-                                                                                <p>Tootsie roll cake danish halvah powder
-                                                                                    Tootsie roll candy marshmallow cookie
-                                                                                    brownie apple pie pudding brownie
-                                                                                    chocolate bar. Jujubes gummi bears I
-                                                                                    love powder danish oat cake tart
-                                                                                    croissant.<a
-                                                                                        href="javascript:void(0)">Reply</a>
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-
-                                                                <li>
-                                                                    <div class="people-box">
-                                                                        <div>
-                                                                            <div class="people-image">
-                                                                                <img src="../assets/images/review/3.jpg"
-                                                                                    class="img-fluid blur-up lazyload"
-                                                                                    alt="">
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="people-comment">
-                                                                            <a class="name"
-                                                                                href="javascript:void(0)">Gabrielle</a>
-                                                                            <div class="date-time">
-                                                                                <h6 class="text-content">21 May, 2022 at
-                                                                                    05.52 PM</h6>
-
-                                                                                <div class="product-rating">
-                                                                                    <ul class="rating">
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"
-                                                                                                class="fill"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <i data-feather="star"></i>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="reply">
-                                                                                <p>Biscuit chupa chups gummies powder I love
-                                                                                    sweet pudding jelly beans. Lemon drops
-                                                                                    marzipan apple pie gingerbread macaroon
-                                                                                    croissant cotton candy pastry wafer.
-                                                                                    Carrot cake halvah I love tart caramels
-                                                                                    pudding icing chocolate gummi bears.
-                                                                                    Gummi bears danish cotton candy muffin
-                                                                                    marzipan caramels awesome feel. <a
-                                                                                        href="javascript:void(0)">Reply</a>
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                            @else
-                                            <div class="">
-                                                <a class="button-primary mb-5 d-block" href="{{ route('login') }}">Login to make review</a><br>
-                                                <span class="text-extra">Don't have an account? <a href="{{ route('register') }}" class="button-secondary">create and account</a></span>
                                             </div>
-                                            @endif
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -632,7 +377,7 @@
                                 </div>
 
                                 <div class="vendor-name">
-                                    <h5 class="fw-500">{{ $item->shop->name??'' }}</h5>
+                                    <h5 class="fw-500">{{ ($item->shop->name??'') }}</h5>
 
                                     <div class="product-rating mt-1">
                                         <ul class="rating">
@@ -652,13 +397,13 @@
                                                 <i data-feather="star"></i>
                                             </li>
                                         </ul>
-                                        <span>(36 Reviews)</span>
+                                        <span>({{ $shop_reviews }} Reviews)</span>
                                     </div>
 
                                 </div>
                             </div>
 
-                            <p class="vendor-detail">{{$item->shop->description??''}}</p>
+                            <p class="vendor-detail">{!! $item->shop->description??'' !!}</p>
 
                             <div class="vendor-list">
                                 <ul>
@@ -681,7 +426,7 @@
                                     @foreach($item->shop->items()->take(10)->get() as $it)
                                         <li>
                                             <div class="offer-product">
-                                                <a href="{{ route('public.products.show', $it->slug) }}" class="offer-image">
+                                                <a href="{{ route('business_admin.products.show', $it->slug) }}" class="offer-image">
                                                     <img src="{{ $it->featured_image ==  null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$it->featured_image) }}" class="img-fluid blur-up lazyload" alt="">
                                                 </a>
 
@@ -753,6 +498,48 @@
     <!-- Sticky Cart Box End -->
 
 
+
+    <!-- Add address modal box start -->
+    <div class="modal fade theme-modal" id="add-address" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Report a Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="report_review_form">
+                        @csrf
+                        <div class="form-floating mb-4 theme-form-floating">
+                            <div class="quote" id="report_review_form_text"></div>
+                            <label for="fname">review</label>
+                        </div>
+                        <div class="form-floating mb-4 theme-form-floating">
+                            <textarea type="text" rows="5" class="form-control" name="reason" placeholder="Enter report reason"></textarea>
+                            <label for="fname">Reason</label>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn theme-bg-color btn-md text-white" data-bs-dismiss="modal">Save
+                                changes</button>
+                        </div>
+                        </div>
+
+                    </form>
+
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-md" data-bs-dismiss="modal">Close</button>
+                    
+            </div>
+        </div>
+    </div>
+    <!-- Add address modal box end -->
+
+
 @endsection
 @section('script')
     <script>
@@ -797,6 +584,13 @@
             }
             $('#review_preview_box').html(html);
             
+        }
+
+        reportReview = function(event){
+            let action = "{{ route('public.report_review', '__REV_ID_') }}".replace('__REV_ID_', $(event.target).data('review_id'));
+            // alert(action);
+            $('#report_review_form').attr('action', action);
+            $('#report_review_form_text').text($(event.target).data('review_text'));
         }
     </script>
 @endsection

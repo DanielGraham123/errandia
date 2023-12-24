@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Guardian;
 use App\Models\User;
-// use Auth;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use \Cookie;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
 
 class CustomLoginController extends Controller
 {
@@ -23,14 +22,16 @@ class CustomLoginController extends Controller
         // session()->flush();
         return view('auth.login');
     }
-    
-
 
     public function login(Request $request){
-        $this->validate($request, [
+        // dd(123123);
+        $validator = Validator::make($request->all(), [
             'username' => 'required',
-            'password' => 'required|min:2'
+            'password' => 'required'
         ]);
+        if($validator->fails()){
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
         session()->flush();
 
         if( Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
@@ -56,9 +57,10 @@ class CustomLoginController extends Controller
     }
 
     public function signup(Request $request){
-        $validator = Validator::make($request->all(), ['name'=>'required', 'phone'=>'required', 'email'=>'required|email', 'confirm_password'=>'required|min:6', 'password'=>'required|same:confirm_password']);
+        $validator = Validator::make($request->all(), ['name'=>'required', 'phone'=>'required|unique:users,phone',
+            'email'=>'required|email|unique:users,email', 'password'=>'required|confirmed|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/']);
         if($validator->fails()){
-            return back()->with('error', $validator->errors()->first())->withInput();
+            return Redirect::back()->withErrors($validator)->withInput();
         }
         $data = ['name'=>$request->name, 'email'=>$request->email, 'phone'=>$request->phone, 'password'=>\Hash::make($request->password)];
         $user = new User($data);
@@ -70,5 +72,38 @@ class CustomLoginController extends Controller
             return redirect(route('business_admin.home'));
         }
         return redirect(route('login'))->with('success', 'Your account successfully created.');
+    }
+
+    public function googleSignRedirect(Request $request)
+    {
+        return Socialite::driver('google')->stateless()->redirect();
+    }
+
+
+    public function handleGoogleCallback(Request $request)
+    {
+        $user = Socialite::driver('google')->stateless()->user();
+        $existUser = User::where('google_id', $user->id)->first();
+        if(isset($existUser)){
+            Auth::login($existUser);
+            return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.$existUser->name);
+        }else {
+            $emailUser = User::where('email', $user->email)->first();
+            if (!isset($emailUser)) {
+                $newUser = User::create([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'google_id' => $user->id,
+                    'active' => true,
+                    'email_verified_at' => Carbon::now(),
+                ]);
+                Auth::login($newUser);
+
+                return redirect()->route('business_admin.home')->with('success', 'Welcome to Business Admin Dashboard ' . $newUser->name);
+            }else{
+                Auth::login($emailUser);
+                return redirect()->route('business_admin.home')->with('success','Welcome to Business Admin Dashboard '.$emailUser->name);
+            }
+        }
     }
 }
