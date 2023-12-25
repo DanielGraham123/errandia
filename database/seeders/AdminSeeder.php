@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
             'email' => 'admin',
             'phone' => '237983432334',
             'password' => \Illuminate\Support\Facades\Hash::make('password'),
-            'active'=>1
+            'active'=> 1
         ]);
     }
 }

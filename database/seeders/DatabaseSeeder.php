@@ -19,16 +19,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        $this->call(AdminSeeder::class);
-//        $this->call(UserSeeder::class);
+        $this->call(AdminSeeder::class);
+        $this->call(UserSeeder::class);
 //        $this->call(PermissionSeeder::class);
 //        $this->call(RolesSeeder::class);
 //        $this->call(RolesPermissionSeeder::class);
 //        $this->call(UserRoleSeeder::class);
 //        $this->call(UserPermissionSeeder::class);
-        $this->call(\Database\Seeders\ItemSeeder::class);
-        $this->call(\Database\Seeders\ErrandSeeder::class);
-        $this->call(\Database\Seeders\ItemEnquirySeeder::class);
+//        $this->call(\Database\Seeders\ItemSeeder::class);
+//        $this->call(\Database\Seeders\ErrandSeeder::class);
+//        $this->call(\Database\Seeders\ItemEnquirySeeder::class);
 //        $this->call(\Database\Seeders\CurrencySeeder::class);
     }
 }

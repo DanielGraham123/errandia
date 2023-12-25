@@ -20,7 +20,6 @@ class CreatePrivacyPolicies extends Migration
                 $table->string('slug', 200);
                 $table->mediumText('content');
                 $table->timestamps();
-
                 $table->unique(['title', 'slug']);
             });
         }
