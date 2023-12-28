@@ -24,6 +24,6 @@
 @endsection
 @section('script')
     <script>
-        new RichTextEditor('.adv-editor')
+        new RichTextEditor('adv-editor')
     </script>
 @endsection
