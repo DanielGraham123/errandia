@@ -12,7 +12,7 @@
                     </div>
                     <div class="my-2">
                         <label class="text-info d-block">Content</label>
-                        <textarea class="form-control adv-editor" name="content" value="{{ old('content') }}" placeholder="Enter content here" id="adv-editor"></textarea>
+                        <textarea class=" adv-editor" name="content" value="{{ old('content') }}" placeholder="Enter content here" id="adv-editor"></textarea>
                     </div>
                     <div class="mt-4 d-flex justify-content-end">
                         <input type="submit" class="button-secondary" value="Publish">
@@ -24,6 +24,6 @@
 @endsection
 @section('script')
     <script>
-        new RichTextEditor('#adv-editor')
+        new RichTextEditor('.adv-editor')
     </script>
 @endsection
