@@ -34,12 +34,18 @@ Route::post('register', [CustomLoginController::class, 'signup']);
 Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
 Route::get('logout', [CustomLoginController::class, 'logout'])->name('logout');
 
-Route::post('reset_password_with_token/password/reset', [CustomForgotPasswordController::class, 'validatePasswordRequest'])->name('reset_password_without_token');
-Route::get('reset_password_with_token/{token}/{email}', [CustomForgotPasswordController::class, 'resetForm'])->name('reset');
-Route::post('reset_password_with_token', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password_with_token');
 
-Route::get('reset_password', [CustomForgotPasswordController::class, 'resetForm'])->name('reset_password');
-Route::post('reset_password', [CustomForgotPasswordController::class, 'validatePasswordRequest']);
+Route::middleware('guest')->group(function() {
+    Route::get('forgot_password', [CustomForgotPasswordController::class, 'forgotPassword'])->name('forgot_password');
+    Route::post('forgot_password', [CustomForgotPasswordController::class, 'sendPasswordResetLink'])->name('password.reset');
+    Route::get('reset_password', [CustomForgotPasswordController::class, 'showResetPassword'])->name('show_reset_password');
+    Route::post('reset_password', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password');
+});
+
+Route::middleware("guest")->group(function() {
+    Route::get("/auth/redirect", [CustomLoginController::class, 'googleSignRedirect'])->name("google_redirect_link");
+    Route::get("/auth/google/callback", [CustomLoginController::class, 'handleGoogleCallback'])->name('handle_google_callback');
+});
 
 Route::get('widgets', function(){
     return view('widgets');
@@ -448,6 +454,5 @@ Route::get('mode/{locale}', function ($batch) {
 Route::any('{any?}', function(){
     return view('404');
 });
-
 
 

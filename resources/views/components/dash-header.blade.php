@@ -111,7 +111,7 @@
                                                 </ul>
                                             </li>
 
-                                            <li class="nav-item dropdown">
+                                            {{-- <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="{{ route('business_admin.enquiries.index') }}"
                                                     data-bs-toggle="dropdown">Enquiries</a>
                                                     
@@ -125,7 +125,7 @@
                                                 
                                                 </ul>
                                             </li>
-                                            
+                                             --}}
                                         
 
                                             <li class="nav-item dropdown">

@@ -7,12 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ResetEmail extends Mailable
+class PasswordResetConfirmation extends Mailable
 {
     use Queueable, SerializesModels;
 
     private $data;
-
     /**
      * Create a new message instance.
      *
@@ -30,9 +29,9 @@ class ResetEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.reset_email')->with([
+        return $this->markdown('emails.password_reset_confirmation')->with([
             'data'  => $this->data,
-        ])->subject("Password Reset Link from Errandia")
+        ])->subject("Password Reset Confirmation")
             ->to($this->data['email']);
     }
 }
