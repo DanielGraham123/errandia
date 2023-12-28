@@ -61,6 +61,7 @@
                                        <a href="{{ route('public.privacy_policy', $policy->slug) }}" class="text-content">{{ $policy->title }}</a>
                                    </li>
                                @endforeach
+                                
                             </ul>
                         </div>
                     </div>
@@ -76,8 +77,7 @@
                                     <a href="#" class="text-content">Register/Sign In</a>
                                 </li>
                                 <li>
-                                  
-                                    <a href="faq.html" class="text-content">FAQ</a>
+                                    <a href="{{ route('public.faqs.index') }}" class="text-content">FAQs</a>
                                 </li>
                             </ul>
                         </div>

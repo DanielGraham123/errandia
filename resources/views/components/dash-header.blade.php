@@ -137,7 +137,7 @@
                                                         <a class="dropdown-item" href="{{ route('business_admin.reviews.index') }}">Business reviews</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('business_admin.reviews.index') }}">Reviews made</a>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.reviews.myindex') }}">Reviews made</a>
                                                     </li>
                                                 
                                                 </ul>

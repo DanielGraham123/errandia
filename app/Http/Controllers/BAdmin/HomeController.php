@@ -1221,4 +1221,57 @@ class HomeController extends Controller
 
         return back();
     }
+
+    public function follow_business($slug)
+    {
+        # code...
+        $business = \App\Models\Shop::whereSlug($slug)->first();
+        if($business != null){
+            if(\App\Models\ShopSubscriber::where(['user_id'=>auth()->id(), 'shop_id'=>$business->id])->count() == 0){
+                (new \App\Models\ShopSubscriber(['user_id'=>auth()->id(), 'shop_id'=>$business->id]))->save();
+                return redirect()->route('public.business.show', $slug)->with('success', "Operation completed");
+            }else{
+                return redirect()->route('public.business.show', $slug)->with('message', "Already a subsriber");
+            }
+        }
+        return redirect()->route('public.business.show', $slug)->with('error', "Failed to identify business");            
+    }
+
+    public function unfollow_business($slug)
+    {
+        # code...
+        $business = \App\Models\Shop::whereSlug($slug)->first();
+        if($business != null){
+            if(\App\Models\ShopSubscriber::where(['user_id'=>auth()->id(), 'shop_id'=>$business->id])->count() > 0){
+                \App\Models\ShopSubscriber::where(['user_id'=>auth()->id(), 'shop_id'=>$business->id])->each(function($row){
+                    $row->delete();
+                });
+                return redirect()->route('public.business.show', $slug)->with('success', "Operation completed");
+            }else{
+                return redirect()->route('public.business.show', $slug)->with('message', "Not a subsriber");
+            }
+        }
+        return redirect()->route('public.business.show', $slug)->with('error', "Failed to identify business");
+    }
+
+    public function reviews()
+    {
+        # code...
+        $shops = auth()->user()->shops();
+        $reviews = [];
+        if($shops->count() > 0 && count($items = \App\Models\Product::whereIn('shop_id', $shops->pluck('id')->toArray())->get()) != 0){
+            $reviews = \App\Models\Review::whereIn('item_id', $items->pluck('id')->toArray())->get();
+        }
+        $data['title'] = "My Business Reviews";
+        $data['reviews'] = $reviews;
+        return view('b_admin.reviews.recieved', $data);
+    }
+
+    public function my_reviews()
+    {
+        # code...
+        $data['title'] = "My Reviews";
+        $data['reviews'] = \App\Models\Review::where('buyer_id', auth()->id())->get();
+        return view('b_admin.reviews.sent', $data);
+    }
 }
