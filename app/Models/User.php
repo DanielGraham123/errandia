@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Street::class, 'street_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'buyer_id');
+    }
 }

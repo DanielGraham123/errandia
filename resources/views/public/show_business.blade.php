@@ -35,7 +35,11 @@
                                 <a class="button-secondary " href="tel:{{ $shop->contactInfo->phone ?? '' }}"><span class="fa fa-phone"></span> Call {{ $shop->contactInfo->phone ?? '???' }}</a>
                             </div>
                             <div class="my-2 d-flex justify-content-center ">
-                                <a class="button-secondary " href=""> Follow this Business</a>
+                                @if ($shop->subscribersR()->where('user_id', auth()->id())->count() == 0)
+                                    <a class="button-secondary " href="{{ route('business_admin.businesses.follow', $shop->slug) }}"> Follow this Business</a>
+                                @else
+                                    <a class="button-tertiary " href="{{ route('business_admin.businesses.unfollow', $shop->slug) }}"> Unfollow this Business</a>                                    
+                                @endif
                             </div>
 
                             <div class="my-2 text-body">
@@ -67,7 +71,9 @@
                                         @else
                                             <span class="fa fa-cog fa-2x text-h1 d-block text-center mx-2"></span>
                                         @endif
-                                        <b class="h6 d-block">No Branches</b>
+                                        <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                            <p>No Branches</p>
+                                        </div></div>
                                     </div>
                                 @endforelse
                             @endif
@@ -93,7 +99,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="container mx-auto row g-sm-4 g-3 product-list-section row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-2">
+                                        <div class="container mx-auto row g-sm-4 g-3 product-list-section row-cols-xxl-4 row-cols-lg-3 row-cols-md-3 row-cols-2">
                                             @forelse ($products as $key => $prod)
                                                 <div>
                                                     <div class="product-box-3 h-100 wow fadeInUp shadow bg-white" style="visibility: visible; animation-name: fadeInUp;">
@@ -133,16 +139,16 @@
                                                     </div>
                                                 </div>
                                             @empty
-                                                <div class="text-center text-danger h6">No related businesses for this shop</div>
+                                                <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                                    <p>Sorry we could not find any product for this shop</p>
+                                                </div></div>
                                             @endforelse
                                 
                                         </div>
                                     </section>
-                                    
                                     {{-- PRODUCTS END --}}
 
                                     {{-- SERVICES START --}}
-
                                     <section class="breadscrumb-section pt-0 mb-5 pb-3">
                                         <div class="container-fluid">
                                             <div class="row">
@@ -152,7 +158,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="container mx-auto row g-sm-4 g-3 product-list-section row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-2">
+                                        <div class="container mx-auto row g-sm-4 g-3 product-list-section row-cols-xxl-4 row-cols-lg-3 row-cols-md-3 row-cols-2">
                                             @forelse ($services as $key => $prod)
                                                 <div>
                                                     <div class="product-box-3 h-100 wow fadeInUp shadow bg-white" style="visibility: visible; animation-name: fadeInUp;">
@@ -192,12 +198,13 @@
                                                     </div>
                                                 </div>
                                             @empty
-                                                <div class="text-center text-danger h6">No related businesses for this shop</div>
+                                                <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                                    <p>Sorry we could not find any service for this shop</p>
+                                                </div></div>
                                             @endforelse
                                 
                                         </div>
                                     </section>
-                                    
                                     {{-- SERVICES END --}}
 
                                     {{-- Tabbed content Start --}}
@@ -233,24 +240,14 @@
                                                                             <div class="d-flex">
                                                                                 <div class="product-rating">
                                                                                     <ul class="rating">
-                                                                                        <li>
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fill"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                                                                        </li>
-                                                                                        <li>
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                                                                        </li>
+                                                                                        @for($i = 1; $i <= 5; $i++)
+                                                                                            <li>
+                                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star {{ $average_rating >= $i ? 'fill' : '' }}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                                                            </li>
+                                                                                        @endfor
                                                                                     </ul>
                                                                                 </div>
-                                                                                <h6 class="ms-3">4.2 Out Of 5</h6>
+                                                                                <h6 class="ms-3">{{ $average_rating }} Out Of 5</h6>
                                                                             </div>
 
                                                                             <div class="rating-box">
@@ -259,8 +256,8 @@
                                                                                         <div class="rating-list">
                                                                                             <h5>5 Star</h5>
                                                                                             <div class="progress">
-                                                                                                <div class="progress-bar" role="progressbar" style="width: 68%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                                                                    68%
+                                                                                                <div class="progress-bar" role="progressbar" style="width: {{ $rating5 }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                                                                    {{ $rating5 }}%
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -270,8 +267,8 @@
                                                                                         <div class="rating-list">
                                                                                             <h5>4 Star</h5>
                                                                                             <div class="progress">
-                                                                                                <div class="progress-bar" role="progressbar" style="width: 67%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                                                                    67%
+                                                                                                <div class="progress-bar" role="progressbar" style="width: {{ $rating4 }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                                                                    {{ $rating4 }}%
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -281,8 +278,8 @@
                                                                                         <div class="rating-list">
                                                                                             <h5>3 Star</h5>
                                                                                             <div class="progress">
-                                                                                                <div class="progress-bar" role="progressbar" style="width: 42%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                                                                    42%
+                                                                                                <div class="progress-bar" role="progressbar" style="width: {{ $rating3 }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                                                                    {{ $rating3 }}%
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -292,8 +289,8 @@
                                                                                         <div class="rating-list">
                                                                                             <h5>2 Star</h5>
                                                                                             <div class="progress">
-                                                                                                <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                                                                    30%
+                                                                                                <div class="progress-bar" role="progressbar" style="width: {{ $rating2 }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                                                                    {{ $rating2 }}%
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -303,8 +300,8 @@
                                                                                         <div class="rating-list">
                                                                                             <h5>1 Star</h5>
                                                                                             <div class="progress">
-                                                                                                <div class="progress-bar" role="progressbar" style="width: 24%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                                                                                                    24%
+                                                                                                <div class="progress-bar" role="progressbar" style="width: {{ $rating1 }}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                                                                    {{ $rating1 }}%
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -315,6 +312,67 @@
 
                                                                         <div class="col-xl-6 h-100 d-flex flex-column justify-content-center">
                                                                             <a href="#" class="button-secondary my-5 mx-auto">Login to Add Your Review</a>
+                                                                        </div>
+
+                                                                        <div class="col-12">
+                                                                            <div class="review-title">
+                                                                                <h4 class="fw-500">Customer Reviews</h4>
+                                                                            </div>
+
+                                                                            <div class="review-people">
+                                                                                <ul class="review-list">
+                                                                                    @forelse ($reviews as $review)
+                                                                                        <li>
+                                                                                            <div class="people-box">
+                                                                                                <div>
+                                                                                                    <div class="people-image">
+                                                                                                        <img src="{{ $item->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$item->featured_image??'') }}"
+                                                                                                            class="img-fluid blur-up lazyload" alt="">
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="people-comment">
+                                                                                                    <div class="pull-right d-flex justify-content-between">
+                                                                                                        <a class="name" href="javascript:void(0)">{{ substr($review->user->name??'', 1, 3) }}*** <span class="text-content pl-4 h6">{{ $review->created_at->diffForHumans() }}</span></a> 
+                                                                                                        @if($review->user->id == auth()->id())
+                                                                                                            <a href="{{ route('public.delete_review', $review->id) }}" class="text-danger pull-right"><span class="fa fa-trash"></span> Delete</a>
+                                                                                                        @endif
+                                                                                                        @if($review->product->shop->user_id == auth()->id())
+                                                                                                            <button class="text-danger border-0" data-bs-toggle="modal" data-review_id ="{{ $review->id }}" data-review_text="{{ $review->review }}" onclick="reportReview(event)" data-bs-target="#add-address"><i class="me-2 fa fa-flag"></i> report</button>
+                                                                                                        @endif
+                                                                                                    </div>
+                                                                                                    <div class="date-time">
+                                                                                                        <p>{!! $review->review??'' !!}</p>
+
+                                                                                                        <div class="product-rating">
+                                                                                                            <ul class="rating">
+                                                                                                                @for($i = 1; $i < 6; $i++)
+                                                                                                                    <li>
+                                                                                                                        <i data-feather="star"class="{{ $review->rating >= $i ? 'fill' : ''  }}"></i>
+                                                                                                                    </li>
+                                                                                                                @endfor
+                                                                                                            </ul>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    
+
+                                                                                                    <div class="d-flex flex-wrap g-2">
+                                                                                                        @foreach ($review->images as $image)
+                                                                                                            <img src="{{ asset('uploads/review_images/'.$image->image??'') }}" alt="" srcset="" class="img img-thumbnail m-1" style="height:5rem; width:5rem;">
+                                                                                                        @endforeach
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    @empty
+                                                                                        <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                                                                            <p>0 reviews found</p>
+                                                                                        </div></div>
+                                                                                    @endforelse
+                                                                                    
+
+                                                                                </ul>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -373,7 +431,9 @@
                                                     </div>
                                                 </div>
                                             @empty
-                                                <div class="text-center text-danger h6">No branches for this shop</div>
+                                                <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                                    <p>0 Branches found</p>
+                                                </div></div>
                                             @endforelse
 
                                         </div>
@@ -439,7 +499,9 @@
                     </div>
                 </div>
             @empty
-                <div class="text-center text-danger h6">No related businesses for this shop</div>
+                <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                    <p>0 related businesses found</p>
+                </div></div>
             @endforelse
 
         </div>

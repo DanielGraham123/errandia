@@ -8,6 +8,7 @@ use App\Models\ErrandImage;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Region;
+use App\Models\Review;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
@@ -96,6 +97,17 @@ class WelcomeController extends Controller
         $data['products'] = $data['shop']->products->take(8);
         $data['services'] = $data['shop']->services->take(8);
         $data['related_shops'] = Shop::where('category_id', $data['shop']->category_id)->where('slug', '!=', $slug)->inRandomOrder()->get();
+
+        $reviews = Review::whereIn('item_id', $data['shop']->items()->pluck('id')->toArray())->distinct()->get();
+        $reviews_count = $reviews->count();
+        $data['average_rating'] = $reviews->sum('rating')/($reviews_count > 0 ?:1);
+        $data['rating1'] = round($reviews->where('rating', 1)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['rating2'] = round($reviews->where('rating', 2)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['rating3'] = round($reviews->where('rating', 3)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['rating4'] = round($reviews->where('rating', 4)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['rating5'] = round($reviews->where('rating', 5)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['reviews'] = $reviews;
+
         // dd($data);
         return view("public.show_business", $data);
     }
@@ -271,7 +283,11 @@ class WelcomeController extends Controller
         $data['rating1'] = round(($item->reviews()->where('rating', 1)->sum('rating')/$reviews_sum)*100);
 
         $reported = \App\Models\ReviewReport::pluck('review_id')->toArray();
-        $data['reviews'] = $item->reviews()->whereNotIn('id', $reported)->get();
+        if(request()->has('review')){
+            $data['reviews'] = \App\Models\Review::where('id', request('review'))->get();
+        }else{
+            $data['reviews'] = $item->reviews()->whereNotIn('id', $reported)->get();
+        }
 
         $data['shop_reviews'] = $item->shop->items()->join('reviews', 'reviews.item_id', '=', 'items.id')->count();
         // dd($data);

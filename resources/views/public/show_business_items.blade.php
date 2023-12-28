@@ -35,7 +35,11 @@
                                 <a class="button-secondary " href="tel:{{ $shop->contactInfo->phone ?? '' }}"><span class="fa fa-phone"></span> Call {{ $shop->contactInfo->phone ?? '???' }}</a>
                             </div>
                             <div class="my-2 d-flex justify-content-center ">
-                                <a class="button-secondary " href=""> Follow this Business</a>
+                                @if ($shop->subscribersR()->where('user_id', auth()->id())->count() == 0)
+                                    <a class="button-secondary " href="{{ route('business_admin.businesses.follow', $shop->slug) }}"> Follow this Business</a>
+                                @else
+                                    <a class="button-tertiary " href="{{ route('business_admin.businesses.unfollow', $shop->slug) }}"> Unfollow this Business</a>                                    
+                                @endif
                             </div>
 
                             <div class="my-2 text-body">
@@ -67,7 +71,9 @@
                                         @else
                                             <span class="fa fa-cog fa-2x text-h1 d-block text-center mx-2"></span>
                                         @endif
-                                        <b class="h6 d-block">No Branches</b>
+                                        <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                            <p>0 Branches found</p>
+                                        </div></div>
                                     </div>
                                 @endforelse
                             @endif
@@ -121,7 +127,9 @@
                                                                             </div>
                                                                         </div>
                                                                     @empty
-                                                                        <div class="text-center text-danger h6">No products for this shop</div>
+                                                                        <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                                                            <p>Sorry no products were found for this shop</p>
+                                                                        </div></div>
                                                                     @endforelse
                                                                 </div>
                                                             </div>
@@ -178,7 +186,9 @@
                                                                             </div>
                                                                         </div>
                                                                     @empty
-                                                                        <div class="text-center text-danger h6">No services for this shop</div>
+                                                                        <div class="card bg-light my-2 w-100 py-1"><div class="card-body text-center px-3 py-1">
+                                                                            <p>Sorry no services were found for this shop</p>
+                                                                        </div></div>
                                                                     @endforelse
                                                                 </div>
                                                             </div>
