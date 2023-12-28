@@ -5,7 +5,7 @@
             <span class="text-h4 d-block">Post New Errand </span>
             <span class="text-overline d-block">Run a custom product search errand to instantly reach suppliers </span>
         </div>
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" onsubmit="formReload()">
             @csrf
             <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
 
@@ -47,7 +47,7 @@
                 </div>
                 
                 <span class="d-block mt-4" style="font-weight: 700;">Description</span>
-                <textarea class="form-control rounded" name="description" rows='4' required>{{ old('description', 'Description') }}</textarea>
+                <textarea class="form-control rounded" name="description" rows='4' required placeholder="Errand description">{{ old('description') }}</textarea>
                 
             </div>
             <span class="d-flex justify-content-end my-4"><button class="button-primary" type="submit">Proceed</button></span>

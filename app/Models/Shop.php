@@ -44,6 +44,10 @@ class Shop extends Model
         }return '';
     }
 
+    public function items(){
+        return $this->hasMany(Product::class, 'shop_id')->inRandomOrder();
+    }
+
     public function products(){
         return $this->hasMany(Product::class, 'shop_id')->where('service', 0);
     }
@@ -80,5 +84,21 @@ class Shop extends Model
     {
         # code...
         return $this->hasManyThrough(Review::class, Product::class, 'id', 'item_id');
+    }
+
+    public function subscriptions()
+    {
+        # code...
+        return $this->hasMany(ShopSubscription::class);
+    }
+
+    public function subscribersR()
+    {
+        return $this->hasMany(ShopSubscriber::class, 'shop_id');
+    }
+
+    public function subscribers()
+    {
+        return $this->belongsToMany(User::class, ShopSubscriber::class, 'shop_id');
     }
 }

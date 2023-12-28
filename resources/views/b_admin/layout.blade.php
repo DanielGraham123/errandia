@@ -51,6 +51,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('libs')}}/datatables.net-bs4/css/responsive.dataTables.min.css">
 
+    {{-- Image uploader JQuery plugin styles --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/image-uploader/image-uploader.min.css')}}">
+
 
 
     <style>
@@ -80,14 +83,19 @@
                 <div class="col-12">
                     <div class="breadscrumb-contain">
                         <h2>User Dashboard</h2>
+                        @if (auth()->user()->shops->count() == 0)
+                            <span class="mx-4">
+                                <a href="{{ route('business_admin.businesses.create') }}" class="btn text-white mt-xxl-4 mt-2 home-button mend-auto theme-bg-color"><span class="text-white fa fa-plus mx-2"></span>Create business</a>
+                            </span>
+                        @endif
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a href="index.html">
+                                    <a href="{{ route('business_admin.home') }}">
                                         <i class="fa-solid fa-house"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Welcome to Errand user </li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ $title??"" }} </li>
                             </ol>
                         </nav>
                     </div>
@@ -97,61 +105,72 @@
     </section>
     <!-- Breadcrumb Section End -->
 
+    
+    {{-- Error Alerts --}}
+    @if (session()->has('success'))
+        <div class="alert alert-success">{{ session()->get('success') }}</div>
+    @elseif(session()->has('message'))
+        <div class="alert alert-primary">{{ session()->get('message') }}</div>
+    @elseif(session()->has('error'))
+        <div class="alert alert-danger">{{ session()->get('error') }}</div>
+    @endif
+    {{-- End Error Alerts --}}
 
+    <div id="modal-box"></div>
     
-        <!-- User Dashboard Section Start -->
-        <section class="user-dashboard-section section-b-space">
-            <div class="container-fluid-lg">
-                <div class="row">
-                    <div class="col-xxl-3 col-lg-4">
-                        <div class="dashboard-left-sidebar">
-                            <div class="close-button d-flex d-lg-none">
-                                <button class="close-sidebar">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
+    <!-- User Dashboard Section Start -->
+    <section class="user-dashboard-section section-b-space">
+        <div class="container-fluid-lg">
+            <div class="row">
+                <div class="col-xxl-3 col-lg-4">
+                    <div class="dashboard-left-sidebar">
+                        <div class="close-button d-flex d-lg-none">
+                            <button class="close-sidebar">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="profile-box">
+                            <div class="cover-image">
+                                <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
+                                    alt="">
                             </div>
-                            <div class="profile-box">
-                                <div class="cover-image">
-                                    <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
-                                        alt="">
-                                </div>
-    
-                                <div class="profile-contain">
-                                    <div class="profile-image">
-                                        <div class="position-relative">
-                                            <img src="{{ asset('assets/public/assets/images/inner-page/user/1.jpg') }}"
-                                                class="blur-up lazyload update_img" alt="">
-                                            <div class="cover-icon">
-                                                <i class="fa-solid fa-pen">
-                                                    <input type="file" onchange="readURL(this,0)">
-                                                </i>
-                                            </div>
+
+                            <div class="profile-contain">
+                                <div class="profile-image">
+                                    <div class="position-relative">
+                                        <img src="{{ asset('assets/public/assets/images/inner-page/user/1.jpg') }}"
+                                            class="blur-up lazyload update_img" alt="">
+                                        <div class="cover-icon">
+                                            <i class="fa-solid fa-pen">
+                                                <input type="file" onchange="readURL(this,0)">
+                                            </i>
                                         </div>
                                     </div>
-    
-                                    <div class="profile-name">
-                                        <h3>Vicki E. Pope</h3>
-                                        <h6 class="text-content">vicki.pope@gmail.com</h6>
-                                    </div>
+                                </div>
+
+                                <div class="profile-name">
+                                    <h3>{{ auth()->user()->name??'' }}</h3>
+                                    <h6 class="text-content">{{ auth()->user()->email??'' }}</h6>
                                 </div>
                             </div>
-    
-                          Text Under Profile
                         </div>
-                    </div>
-    
-    
-    
-                    <div class="col-xxl-9 col-lg-8">
-                        <!-- Main Content start -->
-                        @yield('section')
-                        <!-- Main Content end -->
+
+                        Text Under Profile
                     </div>
                 </div>
+
+
+
+                <div class="col-xxl-9 col-lg-8">
+                    <!-- Main Content start -->
+                    @yield('section')
+                    <!-- Main Content end -->
+                </div>
             </div>
-        </section>
-        <!-- User Dashboard Section End -->
-    
+        </div>
+    </section>
+    <!-- User Dashboard Section End -->
+
 
 
 
@@ -235,72 +254,146 @@
 
 
 
+    {{-- Image uploader script --}}
+    <script src="{{ asset('assets/image-uploader/image-uploader.min.js')}}"></script>
+
+
+
 
     @yield('script')
 
     <script>
          $(function () {
-        $('.table , .adv-table table').DataTable(
-            {
-            responsive: true,
-            dom: 'Bfrtip',
-            buttons: [
-                 // 'copy', 'csv', 'excel',
-                {
-                    // text: 'Download PDF',
-                    // extend: 'pdfHtml5',
-                    // message: '',
-                    // orientation: 'portrait',
-                    exportOptions: {
-                        columns: ':visible'
-                    },
-                    customize: function (doc) {
-                        doc.pageMargins = [10,10,10,10];
-                        doc.defaultStyle.fontSize = 7;
-                        doc.styles.tableHeader.fontSize = 7;
-                        doc.styles.title.fontSize = 9;
-                        doc.content[0].text = doc.content[0].text.trim();
+            $('.table , .adv-table table').DataTable(
+                {   
+                    responsive: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        // 'copy', 'csv', 'excel',
+                        {
+                            // text: 'Download PDF',
+                            // extend: 'pdfHtml5',
+                            // message: '',
+                            // orientation: 'portrait',
+                            exportOptions: {
+                                columns: ':visible'
+                            },
+                            customize: function (doc) {
+                                doc.pageMargins = [10,10,10,10];
+                                doc.defaultStyle.fontSize = 7;
+                                doc.styles.tableHeader.fontSize = 7;
+                                doc.styles.title.fontSize = 9;
+                                doc.content[0].text = doc.content[0].text.trim();
 
-                        doc['footer']=(function(page, pages) {
-                            return {
-                                columns: [
-                                    "{!! $title ?? '' !!}",
-                                    {
-                                        // This is the right column
-                                        alignment: 'right',
-                                        text: ['page ', { text: page.toString() },  ' of ', { text: pages.toString() }]
+                                doc['footer']=(function(page, pages) {
+                                    return {
+                                        columns: [
+                                            "{!! $title ?? '' !!}",
+                                            {
+                                                // This is the right column
+                                                alignment: 'right',
+                                                text: ['page ', { text: page.toString() },  ' of ', { text: pages.toString() }]
+                                            }
+                                        ],
+                                        margin: [10, 0]
                                     }
-                                ],
-                                margin: [10, 0]
+                                });
+                                // Styling the table: create style object
+                                var objLayout = {};
+                                // Horizontal line thickness
+                                objLayout['hLineWidth'] = function(i) { return .5; };
+                                // Vertikal line thickness
+                                objLayout['vLineWidth'] = function(i) { return .5; };
+                                // Horizontal line color
+                                objLayout['hLineColor'] = function(i) { return '#aaa'; };
+                                // Vertical line color
+                                objLayout['vLineColor'] = function(i) { return '#aaa'; };
+                                // Left padding of the cell
+                                objLayout['paddingLeft'] = function(i) { return 4; };
+                                // Right padding of the cell
+                                objLayout['paddingRight'] = function(i) { return 4; };
+                                // Inject the object in the document
+                                doc.content[1].layout = objLayout;
                             }
-                        });
-                        // Styling the table: create style object
-                        var objLayout = {};
-                        // Horizontal line thickness
-                        objLayout['hLineWidth'] = function(i) { return .5; };
-                        // Vertikal line thickness
-                        objLayout['vLineWidth'] = function(i) { return .5; };
-                        // Horizontal line color
-                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
-                        // Vertical line color
-                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
-                        // Left padding of the cell
-                        objLayout['paddingLeft'] = function(i) { return 4; };
-                        // Right padding of the cell
-                        objLayout['paddingRight'] = function(i) { return 4; };
-                        // Inject the object in the document
-                        doc.content[1].layout = objLayout;
-                    }
-                }
+                        }
 
-            ],
-            info:     true,
-            searching: true,
-            lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
-        }
-        );
+                    ],
+                    info:     true,
+                    searching: true,
+                    lengthMenu: [[10, 25, 50, -1],[10, 25, 50, 'All']],
+                }
+            );
+
+
+
+            $('form').each((index, element)=>{
+                $(element).on('submit', (event)=>{
+                    // $(element).
+                    // event.preventDefault();
+                    let submit_btn = $(element).find("button, input[type='submit']").first();
+                    $(submit_btn).prop('disabled', 'true');
+                })
+            })
 
     });
+    </script>
+    <script>
+
+        // Get all inputs that have a word limit
+        document.querySelectorAll('input[data-max-words]').forEach(input => {
+            // Remember the word limit for the current input
+            let maxWords = parseInt(input.getAttribute('data-max-words') || 0)
+            // Add an eventlistener to test for key inputs
+            input.addEventListener('keydown', e => {
+                let target = e.currentTarget
+                // Split the text in the input and get the current number of words
+                let words = target.value.split(/\s+/).length
+                // If the word count is > than the max amount and a space is pressed
+                // Don't allow for the space to be inserted
+                if (!target.getAttribute('data-announce'))
+                // Note: this is a shorthand if statement
+                // If the first two tests fail allow the key to be inserted
+                // Otherwise we prevent the default from happening
+                words >= maxWords && e.keyCode == 32 && e.preventDefault()
+                else
+                words >= maxWords && e.keyCode == 32 && (e.preventDefault() || alert('Word Limit Reached'))
+            })
+        })
+
+        window.onbeforeunload = function(){
+            alert('Redirecting');
+        }
+
+
+
+
+        let _prompt = function(url = null, question = null){
+            // 
+            let markup = `<div id="confirm-modal" class="modal fade">
+                    <div class="modal-dialog modal-confirm">
+                        <div class="modal-content">
+                            <div class="modal-header flex-column">
+                                <div class="icon-box">
+                                    <i class="" style="font-size: 12rem; font-weight: light;">&times;</i>
+                                </div>						
+                                <h4 class="modal-title w-100">Are you sure?</h4>	
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>${question}</p>
+                            </div>
+                            <div class="modal-footer bg-white justify-content-center">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <form action="${url}">
+                                    <button type="submit" class="btn btn-danger" onclick="redirect()">Continue</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            $('#modal-box').html(markup);
+            $('#confirm-modal').modal('show');
+        }
     </script>
 </body>
 

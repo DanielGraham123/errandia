@@ -94,6 +94,7 @@
 @endsection
 @section('script')
     <script>
+        const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         let loadTowns = function(event){
             let region = event.target.value;
             if(region != null){

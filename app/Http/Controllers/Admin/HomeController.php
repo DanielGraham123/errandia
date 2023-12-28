@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Config;
 use App\Models\Errand;
 use App\Models\File;
+use App\Models\PrivacyPolicy;
 use App\Models\Region;
 use App\Models\Shop;
 use App\Models\ShopSubscription;
@@ -239,6 +240,31 @@ class HomeController  extends Controller
         $data['title'] = "Add New Subscription Plan";
         return view('admin.subscriptions.create', $data);
     }
+
+    public function save_subscription_plan (Request $request)
+    {
+        # code...
+        // dd($request->all());
+
+        $validity = Validator::make($request->all(), ['name'=>'required', 'amount'=>'required|numeric', 'duration'=>'required']);
+        if($validity->fails()){
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
+        }
+
+        $data = ['name'=>$request->name, 'amount'=>$request->amount, 'duration'=>$request->duration, 'currency'=>$request->currency??'XAF', 'description'=>$request->description??''];
+        if(Subscription::where(['name'=>$request->name, 'amount'=>$request->amoun, 'duration'=>$request->duration])->count() > 0){
+            session()->flash('error', 'Plan already exist');
+            return back()->withInput();
+        }
+
+        $instance = new Subscription($data);
+        $instance->save();
+
+        return redirect()->route('admin.plans.index');
+    }
+
+    
 
     public function subscription_report (Request $reuest)
     {
@@ -471,5 +497,39 @@ class HomeController  extends Controller
             return redirect(route('admin.businesses.index'))->with('success', 'Business successfully created');
         }
         return redirect(route('admin.businesses.index'))->with('error', 'Business not found');
+    }
+
+
+    public function all_pages()
+    {
+        # code...
+    }
+
+
+    public function show_privacy_policy()
+    {
+        # code...
+        $data['title'] = "Privacy Policies";
+        return view('admin.pages.privacy_policy', $data);
+    }
+
+
+    public function save_privacy_policy(Request $request)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['title'=>'required', 'content'=>'required']);
+        if($validity->fails()){
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
+        }
+
+//        $data = ['title'=>$request->title, 'content'=>$request->content];
+//        if(PrivacyPolicy::where(['title'=>$request->title])->count() > 0){
+//            session()->flash('error', "A privacy policy record with the same tiitle already exist");
+//            return back()->withInput();
+//        }
+//
+//        (new PrivacyPolicy($data))->save();
+        return back()->with('success', "Operation complete");
     }
 }

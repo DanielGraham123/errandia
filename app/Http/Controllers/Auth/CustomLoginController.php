@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use \Cookie;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class CustomLoginController extends Controller
@@ -27,10 +28,13 @@ class CustomLoginController extends Controller
 
 
     public function login(Request $request){
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'username' => 'required',
-            'password' => 'required|min:2'
+            'password' => 'required'
         ]);
+        if($validator->fails()){
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
         session()->flush();
 
         if( Auth::attempt(['email'=>$request->username,'password'=>$request->password])){
@@ -56,9 +60,10 @@ class CustomLoginController extends Controller
     }
 
     public function signup(Request $request){
-        $validator = Validator::make($request->all(), ['name'=>'required', 'phone'=>'required', 'email'=>'required|email', 'confirm_password'=>'required|min:6', 'password'=>'required|same:confirm_password']);
+        $validator = Validator::make($request->all(), ['name'=>'required', 'phone'=>'required|unique:users,phone',
+            'email'=>'required|email|unique:users,email', 'password'=>'required|confirmed|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*#?&]/']);
         if($validator->fails()){
-            return back()->with('error', $validator->errors()->first())->withInput();
+            return Redirect::back()->withErrors($validator)->withInput();
         }
         $data = ['name'=>$request->name, 'email'=>$request->email, 'phone'=>$request->phone, 'password'=>\Hash::make($request->password)];
         $user = new User($data);

@@ -13,7 +13,10 @@
                             </div>
 
                             <div class="footer-logo-contain">
-                                <p>Stay at home and let errandia do the search for you</p>
+                                <p>
+                                    Searching for products and services online is now easier than ever. Use Errandia
+                                     to find the products and services you need, all from the comfort of your own home.
+                                    </p>
 
                                 <ul class="address">
                                     <li>
@@ -53,11 +56,12 @@
 
                         <div class="footer-contain">
                             <ul>
-                                @for($i = 0; $i < 6; $i++)
-                                <li>
-                                    <a href="#" class="text-content">Page Name</a>
-                                </li>
-                                @endfor
+                               @foreach ($policies as $policy)
+                                   <li>
+                                       <a href="{{ route('public.privacy_policy', $policy->slug) }}" class="text-content">{{ $policy->title }}</a>
+                                   </li>
+                               @endforeach
+                                
                             </ul>
                         </div>
                     </div>
@@ -73,8 +77,7 @@
                                     <a href="#" class="text-content">Register/Sign In</a>
                                 </li>
                                 <li>
-                                  
-                                    <a href="faq.html" class="text-content">FAQ</a>
+                                    <a href="{{ route('public.faqs.index') }}" class="text-content">FAQs</a>
                                 </li>
                             </ul>
                         </div>

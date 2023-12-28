@@ -15,7 +15,7 @@
         </div>
         <div class="py-1 px-2 d-flex">
 
-            <table class="table">
+            <table class="table table-responsive">
                 <thead class="text-capitalize">
                     <th></th>
                     <th>name</th>
@@ -53,20 +53,26 @@
                                     </button>
 
                                     <ul class="dropdown-menu dropdown-light">
-                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.businesses.show', $business->slug) }}" class="text-decoration-none text-secondary">view</a></li>
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.businesses.edit', $business->slug) }}" class="text-decoration-none text-secondary">edit</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.businesses.show', $business->slug) }}" class="text-decoration-none text-secondary">view</a></li>
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.products.index', $business->slug) }}" class="text-decoration-none text-secondary">products</a></li>
                                         <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.services.index', $business->slug) }}" class="text-decoration-none text-secondary">services</a></li>
-                                        @if ($business->parent_slug == null)
-                                            <li class="dropdown-item py-1 border-y"> <a href="{{route('business_admin.businesses.branch.create', $business->slug)}}" class="text-decoration-none text-secondary">add branch</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a href="{{ route('business_admin.managers.index', $business->slug) }}" class="text-decoration-none text-secondary">managers</a></li>
+                                        @if ($business->status == 1)
+                                            <li class="dropdown-item py-1 border-y"> <a onclick="_prompt(`{{ route('business_admin.businesses.suspend', $business->slug) }}`, 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
+                                        @else
+                                            <li class="dropdown-item py-1 border-y"> <a onclick="_prompt(`{{ route('business_admin.businesses.suspend', $business->slug) }}`, 'Are you sure you intend to activate this item?')" class="text-decoration-none text-secondary">activate</a></li>
                                         @endif
-                                        <li class="dropdown-item py-1 border-y"> <a href="#" onclick="_prompt(`{{ route('business_admin.businesses.suspend', $business->slug) }}`, 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
-                                        <li class="dropdown-item py-1 border-y"> <a href="#" onclick="_prompt(`{{ route('business_admin.businesses.delete', $business->slug) }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none text-secondary">Delete</a></li>
+                                        <li class="dropdown-item py-1 border-y"> <a onclick="_prompt(`{{ route('business_admin.businesses.delete', $business->slug) }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none text-secondary">Delete</a></li>
                                     </ul>
                                 </div>
                              </td>
                             <td>
-                                <span class="label label-sm label-info arrowed arrowed-righ">Active</span>
+                                @if ($business->status == 1)
+                                    <span class="bdge bdge-success">Active</span>
+                                @else
+                                    <span class="bdge bdge-danger">Suspended</span>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

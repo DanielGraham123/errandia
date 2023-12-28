@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="breadscrumb-contain">
-                        <h2>Region Name</h2>
+                        <h2>{{$region->name??''}}</h2>
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
@@ -30,24 +30,31 @@
                     <div class="left-box wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
                         <div class="shop-left-sidebar">
                             <div class="location-list nav-link">
-                                <div class="search-input my-3">
-                                    <select class="form-control">
-                                        <option>Region</option>
-                                    </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
-                                </div>
-                                <div class="search-input my-3">
-                                    <select class="form-control">
-                                        <option>Town</option>
-                                    </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
-                                </div>
-                                <div class="search-input my-3">
-                                    <select class="form-control">
-                                        <option>Street</option>
-                                    </select>
-                                    {{-- <i class="fa-solid fa-magnifying-glass"></i> --}}
-                                </div>
+                                <form method="GET" action="{{ route('public.businesses', ['region_id' => ""]) }}">
+                                    <div class="search-input my-3">
+                                        <select class="form-control" oninput="loadTowns(event)" name="region_id">
+                                            <option>Region</option>
+                                            @foreach($regions as $key => $region)
+                                                <option value="{{$region->id}}" >
+                                                    <a href="{{ route('public.errands', ['region' =>$region->name]) }}">{{$region->name}}</a>
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="search-input my-3">
+                                        <select class="form-control" oninput="loadStreets(event)" id="town_selection" name="town_id">
+                                            <option>Town</option>
+                                        </select>
+                                    </div>
+                                    <div class="search-input my-3">
+                                        <select class="form-control" name="street_id">
+                                            <option>Street</option>
+                                        </select>
+                                    </div>
+                                    <button class="button-primary w-100" type="submit">
+                                        Apply filter
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -67,29 +74,10 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li>
-                                            <a class="dropdown-item" id="pop" href="javascript:void(0)">Popularity</a>
+                                            <a class="dropdown-item" id="aToz" href="{{route('public.businesses', ['orderBy' => "DESC"])}}">A - Z Order</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" id="low" href="javascript:void(0)">Low - High
-                                                Price</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="high" href="javascript:void(0)">High - Low
-                                                Price</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="rating" href="javascript:void(0)">Average
-                                                Rating</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="aToz" href="javascript:void(0)">A - Z Order</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="zToa" href="javascript:void(0)">Z - A Order</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" id="off" href="javascript:void(0)">% Off - Hight To
-                                                Low</a>
+                                            <a class="dropdown-item" id="zToa" href="{{route('public.businesses', ['orderBy' => "ASC"])}}">Z - A Order</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -119,25 +107,25 @@
                     </div>
 
                     <div class="row g-sm-4 g-3 product-list-section row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2">
-                        @for ($i=0; $i < 12; $i++)
+                        @foreach($businesses->items() as $key => $business)
                             <div>
-                                <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                <div class="product-box-3 h-100 wow fadeInUp shadow-md border" style="visibility: visible; animation-name: fadeInUp;">
                                     <div class="product-header">
                                         <div class="product-image">
-                                            <a href="{{ route('public.business.show', 'slug') }}">
+                                            <a href="{{ route('public.business.show', ['slug' => $business->slug]) }}">
                                                 <img src="{{ asset('assets/images/nishang.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="product-footer">
                                         <div class="product-detail">
-                                            <a href="{{ route('public.business.show', 'slug') }}">
-                                                <h5 class="name">Nishang System</h5>
+                                            <a href="{{ route('public.business.show', ['slug' => $business->slug]) }}">
+                                                <h5 class="name">{{$business->name}}</h5>
                                             </a>
-                                            <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
+                                            <h6 class="unit"><span class="fa fa-location"></span>{{$business->contactInfo->location()}}</h6>
                                             </h5>
                                             <div class="add-to-cart-box bg-white shadow" >
-                                                <a  href="{{ route('public.business.show', 'slug') }}" class="btn btn-add-cart">Check this Business
+                                                <a  href="{{ route('public.business.show', ['slug' => $business->slug]) }}" class="btn btn-add-cart">Check this Business
                                                     <span class="add-icon bg-light-gray">
                                                         <i class="fa fa-business-time"></i>
                                                     </span>
@@ -158,38 +146,78 @@
                                     </div>
                                 </div>
                             </div>
-                        @endfor
+                        @endforeach
 
                     </div>
 
-                    <nav class="custome-pagination">
+                    @if($businesses->total() > 0)
+                        <nav class="custome-pagination">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-disabled="true">
+                            <li class="{{$businesses->currentPage() == 1 ? 'page-item disabled':'page-item'}}">
+                                <a class="page-link"  tabindex="-1" aria-disabled="true" href="{{route('public.businesses', ['page' => $businesses->currentPage() - 1, 'region_id'=> $region->id ?? ''])}}">
                                     <i class="fa-solid fa-angles-left"></i>
                                 </a>
                             </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="javascript:void(0)">1</a>
+                            @for($i = 1; $i <= $businesses->lastPage(); $i++)
+                            <li class="{{$businesses->currentPage() == $i ? 'page-item active':'page-item'}}">
+                                <a class="page-link" href="{{route('public.businesses', ['page' => $i, 'region_id'=> $region->id ?? ''])}}">{{$i}}</a>
                             </li>
-                            <li class="page-item" aria-current="page">
-                                <a class="page-link" href="javascript:void(0)">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:void(0)">
+                            @endfor
+                            <li class="{{$businesses->currentPage() == $businesses->lastPage() ? 'page-item disabled': 'page-item'}}">
+                                <a class="page-link" href="{{route('public.businesses', ['page' => $businesses->currentPage() + 1, 'region_id'=> $region->id ?? ''])}}">
                                     <i class="fa-solid fa-angles-right"></i>
                                 </a>
                             </li>
                         </ul>
                     </nav>
+                    @else
+                        <div class="card mt-5 w-100 "><div class="card-body text-center">
+                                <p class="text-h6">Sorry we could not find any shop available in {{$region->name ?? ''}} Region</p>
+                             </div></div>
+                    @endif
                 </div>
             </div>
         </div>
     </section>
 @endsection
 @section('script')
+    <script>
+        let loadTowns = function (evt) {
+            let regionId = evt.target.value;
+            if (regionId != null) {
+                let route = "{{ route('region.towns', '__ID__') }}".replace('__ID__', regionId);
+                $.ajax({
+                    method: 'get', url: route, success: function (response) {
+                        if (response.data != null) {
+                            let html = `<option>Town</option>`;
+                            response.data.forEach(element => {
+                                html += `<option value="${element.id}">${element.name}</option>`;
+                            })
+                            $('#town_selection').html(html);
+                        }
+                    }
+                })
+            }
+        }
 
+        let loadStreets = function (event) {
+            let town = event.target.value;
+            if (town != null) {
+                let route = "{{ route('town.streets', '__ID__') }}".replace('__ID__', town);
+                $.ajax({
+                    method: 'get', url: route, success: function (response) {
+                        if (response.data != null) {
+                            let html = `<option>Street</option>`;
+                            response.data.forEach(element => {
+                                html += `<option value="${element.id}">${element.name}</option>`;
+                            })
+                            $('#street_selection').html(html);
+                        }
+                    }
+                })
+            }
+        }
+
+
+    </script>
 @endsection

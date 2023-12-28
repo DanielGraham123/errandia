@@ -5,7 +5,7 @@
             <span class="text-h4 d-block">Edit Errand </span>
             <span class="text-overline d-block">Run a custom product search errand to instantly reach suppliers </span>
         </div>
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" onsubmit="formReload()">
             @csrf
             <div class="py-1 my-5 py-5 px-5 border bg-white" style="border-radius: 1rem;">
 

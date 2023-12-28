@@ -1,6 +1,6 @@
 @extends('b_admin.layout')
 @section('section')
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" onsubmit="formReload()">
     @csrf
     <div class="container">
         <div class="py-4 my-5 px-3 shadow" style="border-radius: 0.8rem;">

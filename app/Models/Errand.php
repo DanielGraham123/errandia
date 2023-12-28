@@ -10,21 +10,26 @@ class Errand extends Model
     use HasFactory;
 
     protected $table = 'item_quotes';
-    protected $fillable = ['title', 'description', 'user_id', 'slug', 'read_status', 'categories', 'region_id', 'town_id', 'street_id'];
+    protected $fillable = ['title', 'description', 'user_id', 'slug', 'read_status', 'sub_categories', 'region_id', 'town_id', 'street_id', 'visibility', 'status'];
 
     public function posted_by()
     {
         # code...
-        return $this->belongsTo(User::class, 'user-id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function location(){
-        return null;
+        return $this->region == null ? '' : ($this->region->country->name.', '.$this->region->name.', '.($this->town == null ? '' : ($this->town->name.', '.($this->street == null ? '' : $this->street->name))));
     }
 
     public function _categories(){
-        $cats = explode($this->categories, ',');
-        return SubCategory::whereIn('id', $cats);
+        $cats = explode(',', $this->sub_categories);
+        return SubCategory::whereIn('id', $cats)->get();
+    }
+
+    public function getSubcategories(){
+        $cats = explode('-', $this->sub_categories);
+        return SubCategory::whereIn('id', $cats)->get();
     }
 
     public function user()
@@ -35,5 +40,20 @@ class Errand extends Model
     public function images()
     {
         return $this->hasMany(ErrandImage::class, 'item_quote_id');
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
+    }
+
+    public function town()
+    {
+        return $this->belongsTo(Town::class, 'town_id');
+    }
+
+    public function street()
+    {
+        return $this->belongsTo(Street::class, 'street_id');
     }
 }
