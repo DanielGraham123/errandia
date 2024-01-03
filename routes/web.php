@@ -267,6 +267,11 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('', 'BAdmin\HomeController@reviews')->name('index');
         Route::get('made', 'BAdmin\HomeController@my_reviews')->name('myindex');
     });
+    Route::prefix('following')->name('following.')->group(function(){
+        Route::get('', 'BAdmin\HomeController@following')->name('index');
+        Route::get('followers', 'BAdmin\HomeController@followers')->name('followers');
+        Route::get('unsubscribe/{id}', 'BAdmin\HomeController@unfollow')->name('unfollow');
+    });
 
     Route::prefix('enquiries')->name('enquiries.')->group(function(){
         Route::get('', 'BAdmin\HomeController@enquiries')->name('index');
