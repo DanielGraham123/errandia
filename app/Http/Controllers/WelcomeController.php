@@ -42,9 +42,22 @@ class WelcomeController extends Controller
     {
         $data['errands'] = Errand::orderBy('id', 'DESC')->take(6)->get();
         $data['services'] = Product::where('items.service', true)
-                            ->orderBy('items.views', 'DESC')->take(6)->get();
+            ->orderBy('items.views', 'DESC')->take(6)->get();
         $data['products'] = Product::where('items.service', false)
             ->orderBy('items.views', 'DESC')->take(6)->get();
+        $data['items'] = Product::inRandomOrder()->take(24)->get();
+        $data['categories'] = Category::all()->map(function($row){
+            $products = collect();
+            $row->sub_categories->each(function($rec)use($products){
+                $products->merge($rec->items->all());
+            });
+
+
+            $row->products_count = $products->unique()->count();
+            // $row->products_count = $row->sub_categories()->join('item_categories', 'item_categories.sub_category_id', '=', 'sub_categories.id')->join('items', 'items.id', '=', 'item_categories.item_id')->distinct()->select('items.*')->count();
+            return $row;
+        });
+        // dd($data);
         return view("public.home", $data);
     }
 
@@ -383,5 +396,27 @@ class WelcomeController extends Controller
             //throw $th;
             return back()->with('error', $th->getMessage());
         }
+    }
+
+
+    public function category_products($category_slug, $sub_cate_slug = null)
+    {
+        # code...
+        $data['regions'] = Region::orderBy('name')->get();
+        $category = Category::whereSlug($category_slug)->first();
+        if($sub_cate_slug != null){
+            $sub_category = SubCategory::whereSlug($sub_cate_slug)->first();
+            $data['title'] = "Products and Services under ".$sub_category->name??'';
+            $data['items'] = $sub_category->items;
+        }else{
+            $data['title']  = "Products and Services under ".$category->name??'';
+            $items = collect();
+            $category->sub_cagories()->each(function($rec)use($items){
+                $items->merge($rec->items->all());
+            });
+            $data['items'] = $items->unique();
+        }
+        // dd($data);
+        return view('public.category_items', $data);
     }
 }
