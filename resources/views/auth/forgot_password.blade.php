@@ -38,21 +38,21 @@
 							<div class="log-in-box">
 								<div class="log-in-title">
 									<h3>Welcome To Errandia</h3>
-									<h4>Forgot your password</h4>
+									<h4>Forgot your password?</h4>
 								</div>
 	
 								<div class="input-box">
-									<form class="row g-4" method="post">
+									<form class="row g-4" method="POST">
 										@csrf
 										<div class="col-12">
 											<div class="form-floating theme-form-floating log-in-form">
-												<input type="email" class="form-control" id="email" name="email" placeholder="Email Address">
+												<input type="email" class="form-control" id="email" name="email" placeholder="Email Address" value="{{old('email')}}">
 												<label for="email">Email Address</label>
 											</div>
 										</div>
 	
 										<div class="col-12">
-											<button class="btn btn-animation w-100" type="submit">Next</button>
+											<button class="btn btn-animation w-100" type="submit">Send Password Reset Link</button>
 										</div>
 									</form>
 								</div>
@@ -65,18 +65,5 @@
 	
 @endsection
 @section('script')
-	<script>
-		$(document).ready(function (e){
-			$("#hidePassword").on("click", function (e){
-				$("#hidePassword").css({"display": "none"})
-				$("#showPassword").css({"display": "block"})
-				$("#password").attr("type", "text")
-			})
-			$("#showPassword").on("click", function (e){
-				$("#hidePassword").css({"display": "block"})
-				$("#showPassword").css({"display": "none"})
-				$("#password").attr("type", "password")
-			})
-		})
-	</script>
+
 @endsection

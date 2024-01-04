@@ -16,7 +16,6 @@ class CreateItemQuotesTable extends Migration
         Schema::create('item_quotes', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('street_id');
             $table->integer('town_id');
             $table->integer('region_id');
             $table->integer('country_id');

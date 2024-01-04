@@ -108,8 +108,8 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
           <tr>
             <td align="center" valign="top" style="padding: 36px 24px;">
-              <a href="{{$data['link']}}" target="_blank" style="display: inline-block;">
-                <img class="image_fluid" src="{{url('public/assets/images')}}/header.jpg">
+              <a target="_blank" style="display: inline-block; height: 50%;width: 50%">
+                <img class="image_fluid" src="{{url('public/assets/images/errandiabg.jpg')}}">
               </a>
             </td>
           </tr>
@@ -134,7 +134,7 @@
         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
           <tr>
             <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
-              <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Reset Your Password</h1>
+              <h3 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px;">Reset Your Password</h3>
             </td>
           </tr>
         </table>
@@ -190,6 +190,14 @@
             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
               <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
               <p style="margin: 0;"><a href="{{$data['link']}}" target="_blank">Reset</a></p>
+            </td>
+          </tr>
+          <!-- end copy -->
+
+          <!-- start copy -->
+          <tr>
+            <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;color: red">
+              <p style="margin: 0;">This password reset link will expire in 15 minutes:</p>
             </td>
           </tr>
           <!-- end copy -->
