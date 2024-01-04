@@ -54,6 +54,7 @@ class WelcomeController extends Controller
         });
         $data['towns'] = Town::join('item_quotes', 'item_quotes.town_id', '=', 'towns.id')->select(['towns.*', DB::raw('COUNT(item_quotes.id) as _count')])->groupBy('towns.id')->orderBy('_count', 'DESC')->distinct()->get(15);
         // dd($data);
+
         return view("public.home", $data);
     }
 

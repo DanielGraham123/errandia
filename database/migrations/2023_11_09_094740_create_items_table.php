@@ -13,27 +13,26 @@ class CreateItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('items', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('shop_id');
-            $table->text('description');
-            $table->integer('unit_price');
-            $table->integer('slug');
-            $table->boolean('is_service')->default(false);
-            $table->bigInteger('views')->nullable();
-            $table->text('search_index')->nullable();
-            $table->text('tags')->nullable();
-            $table->boolean('status')->default(0);
-            $table->boolean('service')->default(false);
-            $table->text('search_index');
-            $table->text('views');
-            $table->string('featured_image');
-            $table->integer('quantity')->nullable();
-            $table->string('tags')->nullable();
-            $table->timestamps();
-            $table->softdeletes();
-        });
+        if(!Schema::hasTable('items')) {
+            Schema::create('items', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->integer('shop_id');
+                $table->text('description');
+                $table->integer('unit_price');
+                $table->integer('slug');
+                $table->boolean('is_service')->default(false);
+                $table->text('search_index')->nullable();
+                $table->text('tags')->nullable();
+                $table->boolean('status')->default(0);
+                $table->boolean('service')->default(false);
+                $table->text('views');
+                $table->string('featured_image');
+                $table->integer('quantity')->nullable();
+                $table->timestamps();
+                $table->softdeletes();
+            });
+        }
     }
 
     /**

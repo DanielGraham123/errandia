@@ -14,7 +14,7 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-            $date = new \DateTime();
+
             foreach(config('constants.PERMISSION_GROUPS') as $group){
                 \DB::table('permissions')->insert([
                     'name' => "Manage ".$group['name'],

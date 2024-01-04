@@ -32,6 +32,7 @@ class User extends Authenticatable
         'type',
         'password',
         'active',
+        'google_id'
     ];
     protected $connection = 'mysql';
 

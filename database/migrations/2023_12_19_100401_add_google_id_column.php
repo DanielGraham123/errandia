@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateShopSubscriptionsTableAddStatus extends Migration
+class AddGoogleIdColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
      */
     public function up()
     {
-        //
-        Schema::table('shop_subscriptions', function(Blueprint $table){
-            $table->boolean('status')->default(0);
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('google_id')->nullable();
         });
     }
 
@@ -26,8 +25,6 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
      */
     public function down()
     {
-        Schema::table('shop_subscriptions', function(Blueprint $table){
-            $table->dropColumn('status');
-        });
+        //
     }
 }
