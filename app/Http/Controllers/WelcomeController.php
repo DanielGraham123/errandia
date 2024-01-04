@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\Shop;
-
+use Illuminate\Support\Facades\DB;
 
 class WelcomeController extends Controller
 {
@@ -47,16 +47,12 @@ class WelcomeController extends Controller
             ->orderBy('items.views', 'DESC')->take(6)->get();
         $data['items'] = Product::inRandomOrder()->take(24)->get();
         $data['categories'] = Category::all()->map(function($row){
-            $products = collect();
-            $row->sub_categories->each(function($rec)use($products){
-                $products->merge($rec->items->all());
-            });
-
-
-            $row->products_count = $products->unique()->count();
-            // $row->products_count = $row->sub_categories()->join('item_categories', 'item_categories.sub_category_id', '=', 'sub_categories.id')->join('items', 'items.id', '=', 'item_categories.item_id')->distinct()->select('items.*')->count();
+            $subcats = $row->sub_categories->pluck('id')->toArray();
+            $products = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->whereIn('item_categories.sub_category_id', $subcats)->groupBy('items.id')->distinct()->count();
+            $row->products_count = $products;
             return $row;
         });
+        $data['towns'] = Town::join('item_quotes', 'item_quotes.town_id', '=', 'towns.id')->select(['towns.*', DB::raw('COUNT(item_quotes.id) as _count')])->groupBy('towns.id')->orderBy('_count', 'DESC')->distinct()->get(15);
         // dd($data);
         return view("public.home", $data);
     }
@@ -410,11 +406,10 @@ class WelcomeController extends Controller
             $data['items'] = $sub_category->items;
         }else{
             $data['title']  = "Products and Services under ".$category->name??'';
-            $items = collect();
-            $category->sub_cagories()->each(function($rec)use($items){
-                $items->merge($rec->items->all());
-            });
-            $data['items'] = $items->unique();
+            $subcats = $category->sub_categories->pluck('id')->toArray();
+            $products = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->whereIn('item_categories.sub_category_id', $subcats)->select('items.*')->distinct()->get();
+            
+            $data['items'] = $products;
         }
         // dd($data);
         return view('public.category_items', $data);

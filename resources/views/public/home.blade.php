@@ -199,13 +199,13 @@
                         </button>
                     </h2>
                     <ul class="category-list custom-padding custom-height">
-                        @foreach (\App\Models\Town::take(15)->get() as $town)
+                        @foreach ($towns as $town)
                             <li>
                                 <div class="form-check ps-0 m-0 category-list-box">
                                     <input class="checkbox_animated" type="checkbox" id="fruit">
                                     <label class="form-check-label" for="fruit">
                                         <span class="name">{{ $town->name }}</span>
-                                        <span class="number">(15)</span>
+                                        <span class="number">({{ $town->_count }})</span>
                                     </label>
                                 </div>
                             </li>
