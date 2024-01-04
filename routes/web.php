@@ -273,6 +273,11 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('', 'BAdmin\HomeController@reviews')->name('index');
         Route::get('made', 'BAdmin\HomeController@my_reviews')->name('myindex');
     });
+    Route::prefix('following')->name('following.')->group(function(){
+        Route::get('', 'BAdmin\HomeController@following')->name('index');
+        Route::get('followers', 'BAdmin\HomeController@followers')->name('followers');
+        Route::get('unsubscribe/{id}', 'BAdmin\HomeController@unfollow')->name('unfollow');
+    });
 
     Route::prefix('enquiries')->name('enquiries.')->group(function(){
         Route::get('', 'BAdmin\HomeController@enquiries')->name('index');
@@ -426,6 +431,7 @@ Route::name('public.')->group(function(){
     Route::get('business/{slug}/items/{type}', 'WelcomeController@show_business_items')->name('business.show_items');
     Route::get('sub_category/{slug}/businesses', 'WelcomeController@sub_category_businesses')->name('scategory.businesses');
     Route::get('categories/{slug}', 'WelcomeController@show_category')->name('category.show');
+    Route::get('categories/{slug}/products/{sub_category_slug?}', 'WelcomeController@category_products')->name('category.products');
     Route::get('errands', 'WelcomeController@errands')->name('errands');
     Route::get('errands/show', 'WelcomeController@view_errand')->name('errands.view');
     Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run')->middleware('isBusinessAdmin');

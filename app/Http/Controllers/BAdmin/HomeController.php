@@ -30,7 +30,14 @@ class HomeController extends Controller
     const PRODUCT_IMAGE_PATH = "uploads/products/";
     public function home(){
         // dd(1231231230);
-        return view('b_admin.dashboard');
+        $data['statistics'] = [
+            'errands'=>auth()->user()->errands()->count(),
+            'shops'=>auth()->user()->shops()->count(),
+            'products'=>auth()->user()->shops()->join('items', 'items.shop_id', '=', 'shops.id')->where('items.status', 1)->where('service', 0)->count(),
+            'services'=>auth()->user()->shops()->join('items', 'items.shop_id', '=', 'shops.id')->where('items.status', 1)->where('service', 1)->count(),
+            'enquiries'=>00
+        ];
+        return view('b_admin.dashboard', $data);
     }
 
     public function businesses(){
@@ -1273,5 +1280,31 @@ class HomeController extends Controller
         $data['title'] = "My Reviews";
         $data['reviews'] = \App\Models\Review::where('buyer_id', auth()->id())->get();
         return view('b_admin.reviews.sent', $data);
+    }
+
+    public function following()
+    {
+        # code...
+        $data['title'] = "Businesses I Follow";
+        $data['followings'] = \App\Models\ShopSubscriber::where('user_id', auth()->id())->get();
+        return view('b_admin.following.sent', $data);
+    }
+
+    public function followers()
+    {
+        # code...
+        $data['title'] = "My Subscribers";
+        $data['followings'] = \App\Models\ShopSubscriber::whereIn('shop_id', auth()->user()->shops()->pluck('id')->toArray())->get();
+        return view('b_admin.following.recieved', $data);
+    }
+
+    public function unfollow($id)
+    {
+        # code...
+        if(($subs = \App\Models\ShopSubscriber::find($id)) != null){
+            $subs->delete();
+            return back()->with('success', "Operation completed");
+        }
+        return back()->with('error', 'Failed to unsubscribe. Try again later.');
     }
 }
