@@ -110,8 +110,9 @@
                                                 
                                                 </ul>
                                             </li>
+{{-- 
+                                            <li class="nav-item dropdown">
 
-                                            {{-- <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="{{ route('business_admin.enquiries.index') }}"
                                                     data-bs-toggle="dropdown">Enquiries</a>
                                                     
@@ -156,10 +157,10 @@
                                                     
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <a class="dropdown-item" href="#">My Followers</a>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.following.followers') }}">My Followers</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="#">Following</a>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.following.index') }}">Following</a>
                                                     </li>
                                                 
                                                 </ul>

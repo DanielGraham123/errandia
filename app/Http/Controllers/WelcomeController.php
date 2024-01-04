@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Auth;
 use \App\Models\Shop;
 use Illuminate\Support\Facades\DB;
 
-
 class WelcomeController extends Controller
 {
     const ERRAND_IMAGE_PATH = "uploads/quote_images";
@@ -43,17 +42,18 @@ class WelcomeController extends Controller
     {
         $data['errands'] = Errand::orderBy('id', 'DESC')->take(6)->get();
         $data['services'] = Product::where('items.service', true)
-                            ->orderBy('items.views', 'DESC')->take(6)->get();
+            ->orderBy('items.views', 'DESC')->take(6)->get();
         $data['products'] = Product::where('items.service', false)
             ->orderBy('items.views', 'DESC')->take(6)->get();
-            
-        $data['featured_products'] = Product::inRandomOrder()->take(8)->get();
-        $errands = Errand::groupBy('town_id')->where('town_id', '>', 0)->select('id', 'town_id', DB::raw('COUNT(*) as _count'))->groupBy('town_id')->orderBy('town_id', 'DESC')->take(25)->get();
-        $data['towns'] = $errands->map(function($err){
-            $err->town = $err->town->name??'';
-            return $err;
+        $data['items'] = Product::inRandomOrder()->take(24)->get();
+        $data['categories'] = Category::all()->map(function($row){
+            $subcats = $row->sub_categories->pluck('id')->toArray();
+            $products = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->whereIn('item_categories.sub_category_id', $subcats)->groupBy('items.id')->distinct()->count();
+            $row->products_count = $products;
+            return $row;
         });
-
+        $data['towns'] = Town::join('item_quotes', 'item_quotes.town_id', '=', 'towns.id')->select(['towns.*', DB::raw('COUNT(item_quotes.id) as _count')])->groupBy('towns.id')->orderBy('_count', 'DESC')->distinct()->get(15);
+        // dd($data);
 
         return view("public.home", $data);
     }
@@ -393,5 +393,26 @@ class WelcomeController extends Controller
             //throw $th;
             return back()->with('error', $th->getMessage());
         }
+    }
+
+
+    public function category_products($category_slug, $sub_cate_slug = null)
+    {
+        # code...
+        $data['regions'] = Region::orderBy('name')->get();
+        $category = Category::whereSlug($category_slug)->first();
+        if($sub_cate_slug != null){
+            $sub_category = SubCategory::whereSlug($sub_cate_slug)->first();
+            $data['title'] = "Products and Services under ".$sub_category->name??'';
+            $data['items'] = $sub_category->items;
+        }else{
+            $data['title']  = "Products and Services under ".$category->name??'';
+            $subcats = $category->sub_categories->pluck('id')->toArray();
+            $products = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->whereIn('item_categories.sub_category_id', $subcats)->select('items.*')->distinct()->get();
+            
+            $data['items'] = $products;
+        }
+        // dd($data);
+        return view('public.category_items', $data);
     }
 }

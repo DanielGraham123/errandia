@@ -33,6 +33,6 @@ class SubCategory extends Model
     public function items()
     {
         # code...
-        return $this->belongsToMany(Shop::class, 'item_categories', 'item_id', 'sub_category_id');
+        return $this->belongsToMany(Product::class, 'item_categories', 'item_id', 'sub_category_id');
     }
 }
