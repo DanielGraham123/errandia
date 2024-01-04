@@ -45,7 +45,7 @@ class WelcomeController extends Controller
             ->orderBy('items.views', 'DESC')->take(6)->get();
         $data['products'] = Product::where('items.service', false)
             ->orderBy('items.views', 'DESC')->take(6)->get();
-        $data['items'] = Product::inRandomOrder()->take(24)->get();
+        $data['items'] = Product::inRandomOrder()->take(8)->get();
         $data['categories'] = Category::all()->map(function($row){
             $subcats = $row->sub_categories->pluck('id')->toArray();
             $products = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->whereIn('item_categories.sub_category_id', $subcats)->groupBy('items.id')->distinct()->count();
