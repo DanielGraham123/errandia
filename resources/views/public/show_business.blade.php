@@ -326,7 +326,7 @@
                                                                                             <div class="people-box">
                                                                                                 <div>
                                                                                                     <div class="people-image">
-                                                                                                        <img src="{{ $item->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$item->featured_image??'') }}"
+                                                                                                        <img src="{{ $review->product->featured_image == null ? asset('assets/images/default1.jpg') : asset('uploads/item_images/'.$review->product->featured_image??'') }}"
                                                                                                             class="img-fluid blur-up lazyload" alt="">
                                                                                                     </div>
                                                                                                 </div>
