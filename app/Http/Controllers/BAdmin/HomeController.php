@@ -1214,11 +1214,11 @@ class HomeController extends Controller
     public function save_subscription(Request $request)
     {
         # code...
+        return $request->all();
         $validity = Validator::make($request->all(), ['shop_id'=>'required', 'payment_method'=>'required', 'subscription_id'=>'required', 'account_number'=>'required']);
 
         if($validity->fails()){
-            session()->flash('error', $validity->errors()->first());
-            return back()->withInput();
+            return back()->with('error', $validity->errors()->first());
         }
 
         try{
