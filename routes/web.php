@@ -184,7 +184,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
 
 Route::get('region/{id}/towns', [Controller::class, 'region_towns'])->name('region.towns');
 Route::get('town/{id}/streets', [Controller::class, 'town_streets'])->name('town.streets');
-//Route::get("test_save_images", [\App\Http\Controllers\BAdmin\HomeController::class, 'saveProductImages'])->name('save_product_image');
+Route::get("category/{id}/sub_categories", function($id){
+    return response()->json(['data'=> \App\Models\Category::find($id)->sub_categories]);
+})->name('category.sub_categories');
 
 //Route::get('save_images',[\App\Http\Controllers\BAdmin\HomeController::class, 'saveProductImages'])->name('save_product_image');
 Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')->group(function () {
@@ -299,7 +301,8 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('subscriptions', 'BAdmin\HomeController@subscriptions')->name('subscription');
     });
     Route::prefix('settings')->name('settings.')->group(function(){
-        Route::get('profile', 'BAdmin\HomeController@my_profile')->name('profile');
+        Route::get('profile', 'BAdmin\HomeController@edit_profile')->name('profile');
+        Route::post('profile', 'BAdmin\HomeController@update_profile')->name('profile');
         Route::get('footer', 'BAdmin\HomeController@footer_settings')->name('footer');
         Route::get('password', 'BAdmin\HomeController@change_password')->name('change_password');
     });

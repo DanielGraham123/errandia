@@ -35,4 +35,10 @@ class SubCategory extends Model
         # code...
         return $this->belongsToMany(Product::class, 'item_categories', 'item_id', 'sub_category_id');
     }
+
+    public function sibling_group()
+    {
+        # code...
+        return $this->category->sub_categories();
+    }
 }
