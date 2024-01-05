@@ -13,12 +13,14 @@ class CreateShopSubscribersTable extends Migration
      */
     public function up()
     {
-        Schema::create('shop_subscribers', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('shop_id');
-            $table->unsignedBigInteger('user_id');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('shop_subscribers')){
+            Schema::create('shop_subscribers', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('shop_id');
+                $table->unsignedBigInteger('user_id');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

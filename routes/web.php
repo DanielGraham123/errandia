@@ -27,10 +27,6 @@ Route::get('reset_pass', function(){
 });
 Route::get('set_local/{lang}', [Controller::class, 'set_local'])->name('lang.switch');
 
-Route::post('login', [CustomLoginController::class, 'login'])->name('login.submit');
-Route::get('login', [CustomLoginController::class, 'showLoginForm'])->name('login');
-Route::get('register', [CustomLoginController::class, 'register'])->name('register');
-Route::post('register', [CustomLoginController::class, 'signup']);
 Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
 Route::get('logout', [CustomLoginController::class, 'logout'])->name('logout');
 
@@ -40,16 +36,19 @@ Route::middleware('guest')->group(function() {
     Route::post('forgot_password', [CustomForgotPasswordController::class, 'sendPasswordResetLink'])->name('password.reset');
     Route::get('reset_password', [CustomForgotPasswordController::class, 'showResetPassword'])->name('show_reset_password');
     Route::post('reset_password', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password');
-});
-
-Route::middleware("guest")->group(function() {
     Route::get("/auth/redirect", [CustomLoginController::class, 'googleSignRedirect'])->name("google_redirect_link");
     Route::get("/auth/google/callback", [CustomLoginController::class, 'handleGoogleCallback'])->name('handle_google_callback');
+    Route::get('login/submit', [CustomLoginController::class, 'login'])->name('login.submit');
+    Route::post('login/submit', [CustomLoginController::class, 'login']);
+    Route::get('login', [CustomLoginController::class, 'showLoginForm'])->name('login');
+    Route::get('register', [CustomLoginController::class, 'register'])->name('register');
+    Route::post('register', [CustomLoginController::class, 'signup']);
 });
 
 Route::get('widgets', function(){
     return view('widgets');
 });
+
 
 Route::get('', 'WelcomeController@home');
 Route::get('home', 'WelcomeController@home');
