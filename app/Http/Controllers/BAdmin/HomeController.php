@@ -16,6 +16,7 @@ use App\Models\Region;
 use App\Models\Shop;
 use App\Models\Street;
 use App\Models\SubCategory;
+use App\Models\Subscription;
 use App\Models\Town;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Throwable;
 
 class HomeController extends Controller
 {
@@ -1219,14 +1221,26 @@ class HomeController extends Controller
             return back()->withInput();
         }
 
-        // Create a pending subscription
-        $plan = \App\Models\Subscription::find($request->subscription_id);
-        $instance = new \App\Models\ShopSubscription(['shop_id'=>$request->shop_id, 'subscription_id'=>$request->subscription_id, 'subscription_date'=>now(), 'expiration_date'=>now()->addDays($plan->duration??0)]);
-        $instance->save();
-
-        // Make payment and update subscription record
-
-        return back();
+        try{
+            $plan = Subscription::find($request->subscription_id);
+            if($plan != null){
+                
+                $transaction_id = $this->momoService->makePayments(['account_number'=>$request->accoutn_number, 'amount'=>$plan->amount]);
+                if($transaction_id != null){
+                    // Create a pending subscription
+                    $instance = new \App\Models\ShopSubscription(['shop_id'=>$request->shop_id, 'subscription_id'=>$request->subscription_id, 'subscription_date'=>now(), 'expiration_date'=>now()->addDays($plan->duration??0)]);
+                    $instance->payment_id = $transaction_id;
+                    $instance->save();
+                    return back()->with('success', 'Suscription initialized. Awaiting payment.');
+                }
+            }
+    
+            // Make payment and update subscription record
+    
+            return back()->with('error', "Failed to initialize subscription. Try again later");
+        }catch(Throwable $th){
+            return back()->with('error', $th->getMessage());
+        }
     }
 
     public function follow_business($slug)
