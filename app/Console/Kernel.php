@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('subscription_payment_follower')->everyThirtyMinutes();
+        $schedule->command('subscription_payment_follower')->everyTenMinutes();
     }
 
     /**
