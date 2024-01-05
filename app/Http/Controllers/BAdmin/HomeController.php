@@ -1214,7 +1214,7 @@ class HomeController extends Controller
     public function save_subscription(Request $request)
     {
         # code...
-        return $request->all();
+        // return $request->all();
         $validity = Validator::make($request->all(), ['shop_id'=>'required', 'payment_method'=>'required', 'subscription_id'=>'required', 'account_number'=>'required']);
 
         if($validity->fails()){
@@ -1225,7 +1225,7 @@ class HomeController extends Controller
             $plan = Subscription::find($request->subscription_id);
             if($plan != null){
                 
-                $transaction_id = $this->momoService->makePayments(['account_number'=>$request->accoutn_number, 'amount'=>$plan->amount]);
+                $transaction_id = $this->momoService->makePayments(['account_number'=>$request->account_number, 'amount'=>$plan->amount]);
                 if($transaction_id != null){
                     // Create a pending subscription
                     $instance = new \App\Models\ShopSubscription(['shop_id'=>$request->shop_id, 'subscription_id'=>$request->subscription_id, 'subscription_date'=>now(), 'expiration_date'=>now()->addDays($plan->duration??0)]);
