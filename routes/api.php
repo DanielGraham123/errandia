@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProductImageUploadController;
 use App\Http\Controllers\ProductUploadController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('subscription/payment/callback', [Controller::class, 'subscription_payment_callback']);
+
 
 Route::group(['namespace' => 'Api'], function() {
     Route::post('/phone/login', 'AuthController@phoneLogin');
