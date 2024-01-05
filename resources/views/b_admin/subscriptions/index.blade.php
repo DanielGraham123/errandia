@@ -52,8 +52,8 @@
         </div>
     </div>
 
-        <!-- Add address modal box start -->
-        <div class="modal fade theme-modal" id="add-address" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <!-- Add address modal box start -->
+    <div class="modal fade theme-modal" id="add-address" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
             <div class="modal-content">

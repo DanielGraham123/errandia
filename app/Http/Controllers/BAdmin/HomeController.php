@@ -216,6 +216,12 @@ class HomeController extends Controller
 
     public function show_business ($slug){
         $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['regions'] = Region::orderBy('name')->get();
+        $data['categories'] = Category::orderBy('name')->get();
+        $data['shop_subcats'] = $data['shop']->subCategories;
+        $data['sub_categories'] = $data['shop']->category->sibling_group;
+        $data['all_sub_categories'] = SubCategory::orderBy('name')->get();
+        // dd($data);
         return view('b_admin.businesses.show', $data);
     }
 
@@ -1216,5 +1222,23 @@ class HomeController extends Controller
         // Make payment and update subscription record
 
         return back();
+    }
+
+    public function edit_profile(){
+        $data['title'] = "Update User Profile";
+        $data['user'] = auth()->user();
+        return view('b_admin.user_profile', $data);
+    }
+
+    public function update_profile(Request $request){
+        $validity = Validator::make($request->all(), ['name'=>'required', 'email'=>'email', 'phone'=>'required']);
+
+        if($validity->fails()){
+            session()->flash('error', $validity->errors()->first());
+            return back()->withInput();
+        }
+
+        auth()->user()->update(['name'=>$request->name, 'email'=>$request->email, 'phone'=>$request->phone]);
+        return back()->with('success', 'Operation Completed');
     }
 }

@@ -54,7 +54,7 @@
                                 </div>
                                 <h5 class="card-title text-h6">Complete Profile</h5>
                                 <p class="card-text text-body" style="font-weight: 500;">Create a shop and start selling online</p>
-                                <a class="button-secondary my-3 mx-auto" href="">Update Profile</a>
+                                <a class="button-secondary my-3 mx-auto" href="{{ route('business_admin.settings.profile') }}">Update Profile</a>
                                 <span class="text-quote text-center d-block">Your profile is <span class="text-danger">20%</span> complete</span>
                             </div>
                         </div>
