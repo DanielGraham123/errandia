@@ -194,6 +194,9 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         // Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
         // Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
         // Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
+        Route::post('{slug}/contact/update', 'BAdmin\HomeController@update_business_contact')->name('contact.update');
+        Route::post('{slug}/categories/update', 'BAdmin\HomeController@update_business_categories')->name('categories.update');
+        Route::post('{slug}/profile/update', 'BAdmin\HomeController@update_business_profile')->name('profile.update');
     });
 
     Route::prefix('{shop_slug}/managers')->name('managers.')->group(function(){

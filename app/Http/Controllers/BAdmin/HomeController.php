@@ -14,6 +14,8 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Region;
 use App\Models\Shop;
+use App\Models\ShopCategory;
+use App\Models\ShopContactInfo;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
@@ -1240,5 +1242,80 @@ class HomeController extends Controller
 
         auth()->user()->update(['name'=>$request->name, 'email'=>$request->email, 'phone'=>$request->phone]);
         return back()->with('success', 'Operation Completed');
+    }
+
+    public function update_business_contact(Request $request, $slug)
+    {
+        # code...
+        $validity = Validator::make($request->all(), [
+            'street'=>'required',
+            'address'=>'required', 'whatsapp'=>'nullable', 'phone'=>'nullable',
+            'email'=>'email', 'website'=>'url', 'facebook'=>'url', 'instagram'=>'url'
+        ]);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+        // dd($request->all());
+
+        $shop = Shop::whereSlug($slug)->first();
+        $contactInfo = $shop->contactInfo??null;
+        if($contactInfo == null){
+            ShopContactInfo::create([
+                'shop_id'=>$shop->id, 'street_id'=>$request->street, 'address'=>$request->address, 
+                'whatsapp'=>$request->whatsapp, 'phone'=>$request->phone,
+                'email'=>$request->email, 'website'=>$request->website,
+                'facebook'=>$request->facebook, 'instagram'=>$request->instagram
+            ]);
+            return back()->with('success', 'Operation Complete');
+        }
+        $contactInfo->update([
+            'street_id'=>$request->street, 'address'=>$request->address, 
+            'whatsapp'=>$request->whatsapp, 'phone'=>$request->phone,
+            'email'=>$request->email, 'website'=>$request->website,
+            'facebook'=>$request->facebook, 'instagram'=>$request->instagram
+        ]);
+        return back()->with('success', 'Operation Complete');
+
+    }
+
+    public function update_business_categories(Request $request, $slug)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['sub_categories'=>'required|array']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        $shop = Shop::whereSlug($slug)->first();
+
+        // dd($request->all());
+        if($shop != null){
+            // clear any existing shop categories
+            $shop->subCategories()->each(function($rec){
+                $rec->delete();
+            });
+    
+            // save current sub categories
+            $scats = [];
+            foreach ($request->sub_categories as $key => $scat) {
+                # code...
+                $scats[] = ['sub_category_id'=>$scat, 'shop_id'=>$shop->id];
+            }
+            ShopCategory::insert($scats);
+            return back()->with('success', 'Operation complete');
+        }
+        return back()->with('error', 'Operation failed. Failed to retrive shop');
+    }
+
+    public function update_business_profile(Request $request, $slug)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['name'=>'required', 'description'=>'required']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        Shop::whereSlug($slug)->first()->update(['name'=>$request->name, 'description'=>$request->description]);
+        return back()->with('success', 'operation complete');
     }
 }
