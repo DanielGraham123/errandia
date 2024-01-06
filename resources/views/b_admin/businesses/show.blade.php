@@ -101,11 +101,16 @@
 
                         <div class="col-12">
                             <div class="dashboard-contant-title">
-                                <h4>Description <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#description">Edit</a></h4>
+                                <h4>Shop Info <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#description">Edit</a></h4>
                             </div>
 
                             <div class="row g-4">
-                                <div class="col-xxl-6">
+                                <div class="col-xxl-4">
+                                    <div class="dashboard-detail">
+                                        <h5 class="text-content">{{$shop->name??''}}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-xxl-8">
                                     <div class="dashboard-detail">
                                         <h6 class="text-content">{{$shop->description??''}}</h6>
                                     </div>
@@ -263,7 +268,7 @@
                     </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form method="POST" action="">
+                    <form method="POST" action="{{ route('business_admin.businesses.contact.update', $shop->slug) }}">
                         @csrf
                         <div class="form-floating mb-4 theme-form-floating">
                             <span class="text-capitalize">Location</span>
@@ -273,20 +278,20 @@
                                     <select name="region" class="form-control input-sm" required onchange="loadTowns(event)">
                                         <option></option>
                                         @foreach($regions as $key => $reg)
-                                            <option value="{{$reg->id}}">{{$reg->name}}</option>
+                                            <option value="{{$reg->id}}" {{ $reg->id == ($shop->contactInfo->street->town->region->id??0) ? 'selected' : '' }}>{{$reg->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-6 my-1">
                                     <small class="text-secondary text-uppercase">town</small>
                                     <select name="town" class="form-control input-sm select_town" required onchange="loadStreets(event)">
-                                        <option></option>
+                                        <option value="{{ $shop->contactInfo->street->town->id }}" selected>{{ $shop->contactInfo->street->town->name }}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 my-1">
                                     <small class="text-secondary text-uppercase">street</small>
                                     <select name="street" class="form-control input-sm select_street" required>
-                                        <option></option>
+                                        <option value="{{ $shop->contactInfo->street->id }}" selected>{{ $shop->contactInfo->street->name }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -332,7 +337,7 @@
     <!-- Categories modal -->
     <div class="modal fade theme-modal" id="categories" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen-md-down">
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="modal-title text-h4" id="exampleModalLabel">Business Sub-Categories</span>
@@ -341,7 +346,7 @@
                     </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form method="POST" action="">
+                    <form method="POST" action="{{ route('business_admin.businesses.categories.update', $shop->slug) }}">
                         @csrf
                         {{-- <div class="form-floating mb-4 theme-form-floating">
                             <span class="text-capitalize">Categories</span>
@@ -355,9 +360,9 @@
                         <div class="my-4 theme-form-floating">
                             <span class="text-capitalize">Sub Categories</span>
                             <div class="card">
-                                <div class="card-body" id="select_subcats">
+                                <div class="card-body row" id="select_subcats">
                                     @foreach($all_sub_categories as $key => $scat)
-                                        <span class="px-2 py-1 text-secondary"><input type="checkbox" class="mx-1" name="sub_categories[]" value="{{$scat->id}}" {{in_array( $scat->id, $shop_subcats->pluck('id')->toArray()) ? 'checked' : ''}}>{{$scat->name}}</span>
+                                        <span class="col-6 col-md-4 pr-1 pb-1 text-secondary"><input type="checkbox" class="mx-1" name="sub_categories[]" value="{{$scat->id}}" {{in_array( $scat->id, $shop_subcats->pluck('id')->toArray()) ? 'checked' : ''}}>{{$scat->name}}</span>
                                     @endforeach
                                 </div>
                             </div>
@@ -385,14 +390,18 @@
         <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
             <div class="modal-content">
                 <div class="modal-header">
-                    <span class="modal-title text-h4" id="exampleModalLabel">Business Description</span>
+                    <span class="modal-title text-h4" id="exampleModalLabel">Business</span>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
                 <div class="modal-body p-4">
-                    <form method="POST" action="">
+                    <form method="POST" action="{{ route('business_admin.businesses.profile.update', $shop->slug) }}">
                         @csrf
+                        <div class="form-floating mb-4 theme-form-floating">
+                            <span class="text-capitalize">name</span>
+                            <input name="name" class="form-control input-sm" required value="{{$shop->name??''}}">
+                        </div>
                         <div class="form-floating mb-4 theme-form-floating">
                             <span class="text-capitalize">description</span>
                             <textarea name="description" class="form-control input-sm" required>{{$shop->description??''}}
@@ -423,14 +432,12 @@
             $.ajax({
                 method: 'get', url: url,
                 success: function(data){
-                    towns = $data.data;
+                    towns = data.data;
                     let html = `<option></option>`;
                     towns.forEach(town=>{
                         html += `<option value="${town.id}">${town.name}</option>`
                     });
-                    $('.select_town').forEach(element=>{
-                        $(element).html(html);
-                    });
+                    $('.select_town').html(html);
                 }
             })
         }
@@ -440,14 +447,12 @@
             $.ajax({
                 method: 'get', url: url,
                 success: function(data){
-                    streets = $data.data;
+                    streets = data.data;
                     let html = `<option></option>`;
                     streets.forEach(street=>{
                         html += `<option value="${street.id}">${element.name}</option>`;
                     });
-                    $('.select_street').forEach(elm=>{
-                        $(elm).html(html);
-                    });
+                    $('.select_street')html(html);
                 }
             })
         }
