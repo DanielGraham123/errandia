@@ -211,10 +211,14 @@ class WelcomeController extends Controller
         $data['region'] = Region::find($region_id);
       
         if(is_null($region_id)){
-            $errands = Errand::orderBy('created_at', 'DESC')->where('read_status', 0)->where('status', 1)->where(function($query){
+            $errands = Errand::orderBy('created_at', 'DESC')->where('read_status', 0)
+                // ->where('status', 1)
+                ->where(function($query){
                   auth()->check() ? $query->where('user_id', '!=', auth()->id()) : null; });
         }else {
-            $errands = Errand::where('region_id', $region_id)->where('read_status', 0)->where('status', 1)->where(function($query){
+            $errands = Errand::where('region_id', $region_id)->where('read_status', 0)
+                // ->where('status', 1)
+                ->where(function($query){
                     auth()->check() ? $query->where('user_id', '!=', auth()->id()) : null; });
 
             if(!is_null($town_id) && $town_id != "Town"){

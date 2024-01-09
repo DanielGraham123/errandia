@@ -31,7 +31,7 @@ class Shop extends Model
     }
 
     public function branches(){
-        return $this->hasMany(Shop::class, 'parent_slug', 'slug');
+        return Shop::where('parent_slug', $this->slug)->orWhere('slug', $this->slug);
     }
 
     public function contactInfo(){

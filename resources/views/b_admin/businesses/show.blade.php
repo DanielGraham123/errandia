@@ -90,7 +90,7 @@
 
                         <div class="col-xl-6">
                             <div class="dashboard-contant-title">
-                                <h4>Categories <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#categories">Edit</a></h4>
+                                <h4>Categories <a href="{{ route('business_admin.businesses.categories.update', $shop->slug) }}" >Edit</a></h4>
                             </div>
                             <div class="dashboard-detail">
                                 @foreach($shop->subCategories as $scat)
@@ -160,61 +160,44 @@
         <div class="row my-3 border-bottom">
             <span class="mr-5 text-capitalize text-extra">Business Category  </span><span class="text-secondary text-capitalize">{{ $shop->category->name??'' }}</span>
         </div>
-        <div class="row my-3 d-flex text-capitalize">
-            <a href="#" class="button-primary text-white"><span class="fa fa-edit icon"></span>edit business</a>
-            <a href="#" class="btn btn-md btn-danger mx-3"><span class="fa fa-block icon"></span>suspend</a>
-        </div>
+
     </div>
     <div class="row">
         <div class=" col-lg-6">
             <div class="py-4 my-5 px-3 shadow" style="border-radius: 0.8rem;">
                 <div class="text-h5 text-center text-uppercase my-3 ">Staff</div>
-                <div class="row bg-white rounded border my-2 px-3 mx-5 shadow">
-                    <span class="col-sm-2">
-                        <span class="fa fa-user fa-3x text-primary"></span>
-                    </span>
-                    <div class="col-sm-10">
-                        <span class="d-block my-1 h5 my-2 text-dark h6">Juston King</span>
-                        <span class="label label-info arrowed-in">Branch Location</span>
+                @foreach ($managers as $man)
+                    <div class="row bg-white rounded border my-2 px-3 mx-5 shadow">
+                        <span class="col-sm-2">
+                            <span class="fa fa-user fa-3x text-primary"></span>
+                        </span>
+                        <div class="col-sm-10">
+                            <span class="d-block my-1 h5 my-2 text-dark h6">{{ $man->name??'' }}</span>
+                            <span class="label label-info arrowed-in">{{ $shop->contactInfo->location() }}</span>
+                        </div>
                     </div>
-                </div>
-                <div class="row bg-white rounded border my-2 px-3 mx-5 shadow">
-                    <span class="col-sm-2">
-                        <span class="fa fa-user fa-3x text-primary"></span>
-                    </span>
-                    <div class="col-sm-10">
-                        <span class="d-block my-1 h5 my-2 text-dark h6">Juston King</span>
-                        <span class="label label-info arrowed-in">Branch Location</span>
-                    </div>
-                </div>
+                @endforeach
                 <div class="my-2 py-5 mx-2">
-                    <a href="#" class="button-secondary">Add Staff</a>
+                    <a href="{{ route('business_admin.managers.create', $shop->slug) }}" class="button-secondary">Add Staff</a>
                 </div>
             </div>
         </div>
         <div class=" col-lg-6">
             <div class="py-4 my-5 px-3 shadow" style="border-radius: 0.8rem;">
                 <div class="text-h5 text-center text-uppercase my-3 ">Branches <span class="text-primary">02</span></div>
-                <div class="row bg-white rounded border my-2 px-3 mx-5 shadow">
-                    <span class="col-sm-2">
-                        <span class="fa fa-user fa-3x text-primary"></span>
-                    </span>
-                    <div class="col-sm-10">
-                        <span class="d-block my-1 h5 my-2 text-dark h6">Juston King</span>
-                        <span class="label label-light arrowed-in">Products: <span class="text-dark">12</span> Services<span class="text-dark">02</span></span>
+                @foreach ($branches as $branch)
+                    <div class="row bg-white rounded border my-2 px-3 mx-5 shadow">
+                        <span class="col-sm-2">
+                            <span class="fa fa-user fa-3x text-primary"></span>
+                        </span>
+                        <div class="col-sm-10">
+                            <span class="d-block my-1 h5 my-2 text-dark h6">{{ $branch->name??'' }}</span>
+                            <span class="label label-light arrowed-in">Products: <span class="text-dark">{{ $branch->products()->count() }}</span> Services<span class="text-dark">{{ $branch->services()->count() }}</span></span>
+                        </div>
                     </div>
-                </div>
-                <div class="row bg-white rounded border my-2 px-3 mx-5 shadow">
-                    <span class="col-sm-2">
-                        <span class="fa fa-user fa-3x text-primary"></span>
-                    </span>
-                    <div class="col-sm-10">
-                        <span class="d-block my-1 h5 my-2 text-dark h6">Juston King</span>
-                        <span class="label label-light arrowed-in">Products: <span class="text-dark">12</span> Services<span class="text-dark">02</span></span>
-                    </div>
-                </div>
+                @endforeach
                 <div class="my-2 py-5 mx-2">
-                    <a href="#" class="button-secondary">Add Branch</a>
+                    <a href="{{ route('business_admin.businesses.branch.create', $shop->slug) }}" class="button-secondary">Add Branch</a>
                 </div>
             </div>
         </div>
@@ -302,26 +285,50 @@
                         </div>
                         <div class="my-4 theme-form-floating">
                             <span class="text-capitalize">Whatsapp number</span>
-                            <input class="form-control input-sm" name="whatsapp" type="tel" value="{{ $shop->contactInfo->whatsapp }}">
+                            <div class="d-flex">
+                                <div class="w-50">
+                                    <select class="form-control input-sm" name="whatsapp_country_code" required>
+                                        <option>Country</option>
+                                        @foreach (config('country-phone-codes') as $phcode)
+                                            <option value="{{ $phcode['code'] }}" {{ old('whatsapp_country_code', $shop->contactInfo->whatsapp_country_code) == $phcode['code'] ? 'selected' : '' }}>{{ $phcode['country'] }} ( {{ $phcode['code'] }} )</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="w-50">
+                                    <input type="tel" class="form-control input-sm" name="whatsapp" required value="{{ old('whatsapp', $shop->contactInfo->whatsapp) }}">
+                                </div>
+                            </div>
                         </div>
                         <div class=" my-4 theme-form-floating">
                             <span class="text-capitalize">Phone number</span>
-                            <input class="form-control input-sm" name="phone", type="tel" value="{{ $shop->contactInfo->phone }}">
+                            <div class="d-flex">
+                                <div class="w-50">
+                                    <select class="form-control input-sm" name="phone_country_code" required>
+                                        <option>Country</option>
+                                        @foreach (config('country-phone-codes') as $phcode)
+                                            <option value="{{ $phcode['code'] }}" {{ old('phone_country_code', $shop->contactInfo->phone_country_code) == $phcode['code'] ? 'selected' : '' }}>{{ $phcode['country'] }} ( {{ $phcode['code'] }} )</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="w-50">
+                                    <input type="tel" class="form-control input-sm" name="whatsapp" required value="{{ old('whatsapp', $shop->contactInfo->phone) }}">
+                                </div>
+                            </div>
                         </div>
                         <div class="my-4 theme-form-floating">
                             <span class="text-capitalize">Business Email</span>
                             <input class="form-control input-sm" name="email" value="{{ $shop->contactInfo->email }}" type="email">
                         </div>
                         <div class="my-4 theme-form-floating">
-                            <span class="text-capitalize">Website</span>
+                            <span class="text-capitalize">Website <small class="text-danger">(must start with https://... or http://...)</small></span>
                             <input class="form-control input-sm" name="website" value="{{ $shop->contactInfo->website }}" type="url">
                         </div>
                         <div class="my-4 theme-form-floating">
-                            <span class="text-capitalize">Facebook</span>
+                            <span class="text-capitalize">Facebook <small class="text-danger">(must start with https://... or http://...)</small></span>
                             <input class="form-control input-sm" name="facebook" value="{{ $shop->contactInfo->facebook }}" type="url">
                         </div>
                         <div class="my-4 theme-form-floating">
-                            <span class="text-capitalize">instagram</span>
+                            <span class="text-capitalize">instagram <small class="text-danger">(must start with https://... or http://...)</small></span>
                             <input class="form-control input-sm" name="instagram" value="{{ $shop->contactInfo->instagram }}" type="url">
                         </div>
                         <div class="d-flex justify-content-end py-2 mt-4">

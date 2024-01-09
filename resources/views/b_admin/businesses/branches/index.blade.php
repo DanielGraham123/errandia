@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="col-md-9 col-lg-9">
-                <span class="text-h5 mb-4">Businesses Branches <span class="label label-light label-md rounded border mx-2">{{ $business->branches->count()??0 }}</span></span>
+                <span class="text-h5 mb-4">Businesses Branches <span class="label label-light label-md rounded border mx-2">{{ $business->branches()->count()??0 }}</span></span>
                 <div class="mx-5 my-3">
                     <div class="row">
                         <div class="col-sm-6 col-lg-4 p-2">
@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                         </div>
-                        @foreach ($business->branches as $branch)
+                        @foreach ($business->branches()->get() as $branch)
                             <div class="col-sm-6 col-lg-4 p-2">
                                 <div class="card px-3 py-5" style="border-radius: 1rem;">
                                     @if ($branch->image_path != null)
