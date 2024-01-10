@@ -121,7 +121,7 @@
                                     <div class="product-header">
                                         <div class="product-image">
                                             <a>
-                                                <img src="{{ asset('assets/public/assets/images/charger.png') }}"
+                                                <img src="{{ $value->images()->count() == 0 ? asset('assets/public/assets/images/charger.png') : asset('uploads/quote_images/'.$value->images()->first()->image??'')}}"
                                                      class="img-fluid blur-up lazyloaded" alt="">
                                             </a>
 

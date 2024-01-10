@@ -419,4 +419,10 @@ class WelcomeController extends Controller
         // dd($data);
         return view('public.category_items', $data);
     }
+
+    public function show_category($slug)
+    {
+        # code...
+        return $this->category_products($slug);
+    }
 }
