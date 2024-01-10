@@ -27,7 +27,7 @@
                         <td>{{ $subs->user->name??'' }}</td>
                         <td>{{ $subs->user->email??'' }} / {{ $subs->user->phone??'' }}</td>
                         <td>
-                            <a class="btn btn-primary btn-xs" href="{{ route('business_admin.following.unfollow', $subs->id) }}">unsubscribe</a>
+                            <a class="button-secondary" href="{{ route('business_admin.following.unfollow', $subs->id) }}">unsubscribe</a>
                         </td>
                     </tr>
                 @endforeach
