@@ -214,7 +214,7 @@ class HomeController extends Controller
     public function business_branches($slug){
         $business = Shop::whereSlug($slug)->first();
         $data['business'] = $business;
-        $data['branches'] = $business->branches;
+        $data['branches'] = $business->branches()->get();
         return view('manager.businesses.branches.index', $data);
     }
 

@@ -227,10 +227,12 @@ class HomeController extends Controller
 
     public function show_business ($slug){
         $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['branches'] = $data['shop']->branches()->get();
         $data['regions'] = Region::orderBy('name')->get();
         $data['categories'] = Category::orderBy('name')->get();
         $data['shop_subcats'] = $data['shop']->subCategories;
         $data['sub_categories'] = $data['shop']->category->sibling_group;
+        $data['managers'] = $data['shop']->managers;
         $data['all_sub_categories'] = SubCategory::orderBy('name')->get();
         // dd($data);
         return view('b_admin.businesses.show', $data);
@@ -248,7 +250,7 @@ class HomeController extends Controller
     public function business_branches($slug){
         $business = Shop::whereSlug($slug)->first();
         $data['business'] = $business;
-        $data['branches'] = $business->branches;
+        $data['branches'] = $business->branches()->get();
         return view('b_admin.businesses.branches.index', $data);
     }
 
@@ -438,6 +440,12 @@ class HomeController extends Controller
 
     public function save_service(Request $request, $slug){
 
+        if(($user = auth()->user()) != null){
+            if($user->photo == null){
+                session()->flash('error', 'Profile photo not set. Please update profile and try again.');
+                return back()->withInput();
+            }
+        }
         $data['shop'] = Shop::whereSlug($slug)->first();
         switch ($request->step??null) {
             case '1':
@@ -1337,15 +1345,34 @@ class HomeController extends Controller
     }
 
     public function update_profile(Request $request){
-        $validity = Validator::make($request->all(), ['name'=>'required', 'email'=>'email', 'phone'=>'required']);
+        $validity = Validator::make($request->all(), ['name'=>'required', 'email'=>'email', 'phone'=>'required', 'phone_country_code'=>'required']);
 
         if($validity->fails()){
             session()->flash('error', $validity->errors()->first());
             return back()->withInput();
         }
 
-        auth()->user()->update(['name'=>$request->name, 'email'=>$request->email, 'phone'=>$request->phone]);
+        auth()->user()->update(['name'=>$request->name, 'email'=>$request->email, 'phone'=>$request->phone, 'phone_country_code'=>$request->phone_country_code]);
         return back()->with('success', 'Operation Completed');
+    }
+
+    public function update_photo(Request $request)
+    {
+        # code...
+        $validity = Validator::make($request->all(), ['image'=>'required|file']);
+        if($validity->fails()){
+            return back()->with('error', $validity->errors()->first());
+        }
+
+        if(($file = $request->file('image')) !== null){
+            $fname = '_user_'.auth()->id().'_'.time().random_int(10000, 99999).'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads/user_photos'), $fname);
+            $user = auth()->user();
+            $user->photo = $fname;
+            $user->save();
+            return back()->with('success', 'Operation Complete');
+        }
+        return back()->with('error', 'No file selected');
     }
 
     public function update_business_contact(Request $request, $slug)
@@ -1353,7 +1380,7 @@ class HomeController extends Controller
         # code...
         $validity = Validator::make($request->all(), [
             'street'=>'required',
-            'address'=>'required', 'whatsapp'=>'nullable', 'phone'=>'nullable',
+            'address'=>'required', 'whatsapp'=>'nullable', 'whatsapp_country_code'=>'required_with:whatsapp', 'phone'=>'nullable', 'phone_country_code'=>'required_with:phone',
             'email'=>'email', 'website'=>'url', 'facebook'=>'url', 'instagram'=>'url'
         ]);
         if($validity->fails()){
@@ -1366,7 +1393,8 @@ class HomeController extends Controller
         if($contactInfo == null){
             ShopContactInfo::create([
                 'shop_id'=>$shop->id, 'street_id'=>$request->street, 'address'=>$request->address, 
-                'whatsapp'=>$request->whatsapp, 'phone'=>$request->phone,
+                'whatsapp'=>$request->whatsapp, 'phone'=>$request->phone, 
+                'phone_country_code'=>$request->phone_country_code, 'whatsapp_country_code'=>$request->whatsapp_country_code,
                 'email'=>$request->email, 'website'=>$request->website,
                 'facebook'=>$request->facebook, 'instagram'=>$request->instagram
             ]);
@@ -1375,11 +1403,21 @@ class HomeController extends Controller
         $contactInfo->update([
             'street_id'=>$request->street, 'address'=>$request->address, 
             'whatsapp'=>$request->whatsapp, 'phone'=>$request->phone,
+            'phone_country_code'=>$request->phone_country_code, 'whatsapp_country_code'=>$request->whatsapp_country_code,
             'email'=>$request->email, 'website'=>$request->website,
             'facebook'=>$request->facebook, 'instagram'=>$request->instagram
         ]);
         return back()->with('success', 'Operation Complete');
+    }
 
+    public function edit_business_categories(Request $request, $slug)
+    {
+        # code...
+        $data['title'] = "Update Business Categories";
+        $data['scats'] = SubCategory::orderBy('name')->get();
+        $data['shop'] = Shop::whereSlug($slug)->first();
+        $data['biz_cats'] = $data['shop']->subCategories()->pluck('sub_categories.id')->toArray();
+        return view('b_admin.businesses.categories.update', $data);
     }
 
     public function update_business_categories(Request $request, $slug)
@@ -1395,15 +1433,17 @@ class HomeController extends Controller
         // dd($request->all());
         if($shop != null){
             // clear any existing shop categories
-            $shop->subCategories()->each(function($rec){
-                $rec->delete();
+            $shop->subCategories()->each(function($rec)use($request){
+                if(!in_array($rec->id, $request->sub_categories))
+                    $rec->delete();
             });
     
             // save current sub categories
             $scats = [];
             foreach ($request->sub_categories as $key => $scat) {
                 # code...
-                $scats[] = ['sub_category_id'=>$scat, 'shop_id'=>$shop->id];
+                if($shop->subCategories()->where(['sub_category_id'=>$scat, 'shop_id'=>$shop->id])->count() == 0)
+                    $scats[] = ['sub_category_id'=>$scat, 'shop_id'=>$shop->id];
             }
             ShopCategory::insert($scats);
             return back()->with('success', 'Operation complete');

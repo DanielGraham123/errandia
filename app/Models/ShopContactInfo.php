@@ -12,7 +12,7 @@ class ShopContactInfo extends Model
 
     protected $table = 'shop_contact_info';
 
-    protected $fillable = ['shop_id', 'street_id', 'phone', 'whatsapp', 'address', 'facebook', 'instagram', 'website', 'email'];
+    protected $fillable = ['shop_id', 'street_id', 'phone', 'whatsapp', 'address', 'facebook', 'instagram', 'website', 'email', 'phone_country_code', 'whatsapp_country_code'];
 
     public function shop()
     {

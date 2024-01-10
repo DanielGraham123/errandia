@@ -205,11 +205,15 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('{slug}/delete', 'BAdmin\HomeController@delete_business')->name('delete');
         Route::get('{slug}/suspend', 'BAdmin\HomeController@suspend_business')->name('suspend');
         Route::get('{slug}/verify', 'BAdmin\HomeController@verify_business')->name('verify');
+        Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
+        Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
+        Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
         Route::get('follow/{slug}', 'BAdmin\HomeController@follow_business')->name('follow');
         Route::get('unfollow/{slug}', 'BAdmin\HomeController@unfollow_business')->name('unfollow');
         // Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
         // Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
         Route::post('{slug}/contact/update', 'BAdmin\HomeController@update_business_contact')->name('contact.update');
+        Route::get('{slug}/categories/update', 'BAdmin\HomeController@edit_business_categories')->name('categories.update');
         Route::post('{slug}/categories/update', 'BAdmin\HomeController@update_business_categories')->name('categories.update');
         Route::post('{slug}/profile/update', 'BAdmin\HomeController@update_business_profile')->name('profile.update');
     });
@@ -306,6 +310,7 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
     Route::prefix('settings')->name('settings.')->group(function(){
         Route::get('profile', 'BAdmin\HomeController@edit_profile')->name('profile');
         Route::post('profile', 'BAdmin\HomeController@update_profile')->name('profile');
+        Route::post('profile/update_phto', 'BAdmin\HomeController@update_photo')->name('profile.update_photo');
         Route::get('footer', 'BAdmin\HomeController@footer_settings')->name('footer');
         Route::get('password', 'BAdmin\HomeController@change_password')->name('change_password');
     });

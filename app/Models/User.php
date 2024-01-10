@@ -32,6 +32,7 @@ class User extends Authenticatable
         'type',
         'password',
         'active',
+        'phone_country_code',
         'google_id'
     ];
     protected $connection = 'mysql';
@@ -78,6 +79,10 @@ class User extends Authenticatable
         return $this->belongsTo(Street::class, 'street_id');
     }
 
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class, 'user_id');
+    }
     public function reviews()
     {
         return $this->hasMany(Review::class, 'buyer_id');
