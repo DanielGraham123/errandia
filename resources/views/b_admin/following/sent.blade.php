@@ -25,7 +25,7 @@
                         </td>
                         <td>{{ $subs->shop->contactInfo->email??'' }} / {{ $subs->shop->contactInfo->phone??'' }}</td>
                         <td>
-                            <a class="btn btn-outline-primary btn-xs" href="{{ route('business_admin.following.unfollow', $subs->id) }}">unsubscribe</a>
+                            <a class="btn btn-primary btn-xs" href="{{ route('business_admin.following.unfollow', $subs->id) }}">unsubscribe</a>
                         </td>
                     </tr>
                 @endforeach

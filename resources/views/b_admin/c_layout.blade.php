@@ -131,7 +131,7 @@
                             <div class="profile-contain">
                                 <div class="profile-image">
                                     <div class="position-relative">
-                                        <img src="{{ asset('assets/public/assets/images/inner-page/user/1.jpg') }}"
+                                        <img src="{{ auth()->user()->photo == null ? asset('assets/public/assets/images/inner-page/user/1.jpg') : asset('uploads/user_photos/'.auth()->user()->photo) }}"
                                             class="blur-up lazyload update_img" alt="">
                                         <div class="cover-icon">
                                             <i class="fa-solid fa-pen">
@@ -142,8 +142,8 @@
                                 </div>
 
                                 <div class="profile-name">
-                                    <h3>Vicki E. Pope</h3>
-                                    <h6 class="text-content">vicki.pope@gmail.com</h6>
+                                    <h3>{{ auth()->user()->name??'profile name' }}</h3>
+                                    <h6 class="text-content">{{ auth()->user()->email??'authuser@email.ext' }}</h6>
                                 </div>
                             </div>
                         </div>
