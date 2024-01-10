@@ -42,14 +42,14 @@
 							</div>
 	
 							<div class="input-box">
-								<form class="row g-4" method="POST">
+								<form class="row g-4" method="POST" action="{{ route('login.submit') }}">
 									@csrf
 									<div class="col-12">
 										<div class="form-floating theme-form-floating log-in-form">
 											<input type="text" class="form-control" name="username" id="email" placeholder="Email Address">
 											<label for="email">Email Address/Username</label>
-											@if($errors->has('email'))
-												@foreach($errors->get('email') as $error)
+											@if($errors->has('username'))
+												@foreach($errors->get('username') as $error)
 													<small style="color: red"><i class="fa fa-circle fa-xs"></i>&nbsp;{{ $error }}</small>
 												@endforeach
 											@endif
@@ -59,7 +59,7 @@
 									<div class="col-12">
 										<div class="form-floating theme-form-floating log-in-form">
 											<input type="password" class="form-control" id="password" name="password"   placeholder="Password">
-											<span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 330px">
+											<span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 305px">
 											<i class="fa fa-eye-slash" id="hidePassword" style="cursor: pointer"></i>
 											<i class="fa fa-eye" id="showPassword" style="cursor: pointer;display: none"></i>
 										   </span>
@@ -80,13 +80,12 @@
 													id="flexCheckDefault">
 												<label class="form-check-label" for="flexCheckDefault">Remember me</label>
 											</div>
-											<a href="{{ route('reset_password') }}" class="forgot-password">Forgot Password?</a>
+											<a href="{{ route('forgot_password') }}" class="forgot-password">Forgot Password?</a>
 										</div>
 									</div>
 	
 									<div class="col-12">
-										<button class="btn btn-animation w-100 justify-content-center theme-bg-color" type="submit">Log
-											In</button>
+										<button class="btn btn-animation w-100 justify-content-center theme-bg-color" type="submit">Log In</button>
 									</div>
 								</form>
 							</div>
@@ -98,17 +97,17 @@
 							<div class="log-in-button">
 								<ul>
 									<li>
-										<a href="https://www.google.com/" class="btn google-button w-100">
+										<a href="{{route('google_redirect_link')}}" class="btn google-button w-100">
 											<img src="{{ asset('assets/public/assets/images/inner-page/google.png') }}" class="blur-up lazyload"
 												alt=""> Log In with Google
 										</a>
 									</li>
-									<li>
+									{{-- <li>
 										<a href="https://www.facebook.com/" class="btn google-button w-100">
 											<img src="{{ asset('assets/public/assets/images/inner-page/facebook.png') }}" class="blur-up lazyload"
 												alt=""> Log In with Facebook
 										</a>
-									</li>
+									</li> --}}
 								</ul>
 							</div>
 	

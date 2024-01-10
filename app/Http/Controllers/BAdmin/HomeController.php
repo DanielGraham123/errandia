@@ -18,6 +18,7 @@ use App\Models\ShopCategory;
 use App\Models\ShopContactInfo;
 use App\Models\Street;
 use App\Models\SubCategory;
+use App\Models\Subscription;
 use App\Models\Town;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,13 +27,21 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Throwable;
 
 class HomeController extends Controller
 {
     const PRODUCT_IMAGE_PATH = "uploads/products/";
     public function home(){
         // dd(1231231230);
-        return view('b_admin.dashboard');
+        $data['statistics'] = [
+            'errands'=>auth()->user()->errands()->count(),
+            'shops'=>auth()->user()->shops()->count(),
+            'products'=>auth()->user()->shops()->join('items', 'items.shop_id', '=', 'shops.id')->where('items.status', 1)->where('service', 0)->count(),
+            'services'=>auth()->user()->shops()->join('items', 'items.shop_id', '=', 'shops.id')->where('items.status', 1)->where('service', 1)->count(),
+            'enquiries'=>00
+        ];
+        return view('b_admin.dashboard', $data);
     }
 
     public function businesses(){
@@ -393,7 +402,7 @@ class HomeController extends Controller
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
                 $product = Product::whereSlug($request->item_slug)->first();
-                $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                $update = ['unit_price'=> $request->unit_price, 'description'=>nl2br($request->description), 'status'=>1];
                 if($product != null){
                     $biz = $data['shop'];
                     if($biz != null && $biz->contactInfo != null){
@@ -464,6 +473,10 @@ class HomeController extends Controller
                 if(($product_instance = \App\Models\Product::where($unique_check)->first()) == null){
                     $product_instance = new \App\Models\Product($item);
                     $product_instance->save();
+
+                    if($product_instance->featured_image != null){
+                        ProductImage::insert(['item_id'=>$product_instance->id, 'image'=>$product_instance->featured_image]);
+                    }
                 }
                 $data['item_id'] = $product_instance->id;
 
@@ -489,7 +502,7 @@ class HomeController extends Controller
                 }
                 
                 $data['proposed_categories'] = $guess;
-                $data['categories'] = \App\Models\SubCategory::orderBy('name')->get();
+                $data['categories'] = SubCategory::orderBy('name')->get();
                 $data['step'] = 2;
                 return view('b_admin.services.create', $data);
                 break;
@@ -524,7 +537,7 @@ class HomeController extends Controller
                     return back()->withInput(request()->all())->with('error', $validity->errors()->first());
                 }
                 $product = Product::whereSlug($request->item_slug)->first();
-                $update = ['unit_price'=> $request->unit_price??'', 'description'=>$request->description, 'status'=>1];
+                $update = ['unit_price'=> $request->unit_price??'', 'description'=>nl2br($request->description), 'status'=>1];
                 if($product != null){
                     $biz = $data['shop'];
                     if($biz != null && $biz->contactInfo != null){
@@ -547,7 +560,7 @@ class HomeController extends Controller
                         $file->move($path, $fname);
                         $item_images[] = ['item_id'=>$product->id, 'image'=>$fname];
                     }
-                    \App\Models\ProductImage::insert($item_images);
+                    ProductImage::insert($item_images);
                 }
 
             }
@@ -675,7 +688,7 @@ class HomeController extends Controller
                     }
                     DB::beginTransaction();
                     $product = \App\Models\Product::whereSlug($request->item_slug)->first();
-                    $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                    $update = ['unit_price'=> $request->unit_price, 'description'=>nl2br($request->description), 'status'=>1];
                     if($product != null){
                         $biz = $product->shop;
                         if($biz != null && $biz->contactInfo != null){
@@ -822,7 +835,7 @@ class HomeController extends Controller
                     }
                     DB::beginTransaction();
                     $product = \App\Models\Product::whereSlug($request->item_slug)->first();
-                    $update = ['unit_price'=> $request->unit_price, 'description'=>$request->description, 'status'=>1];
+                    $update = ['unit_price'=> $request->unit_price, 'description'=>nl2br($request->description), 'status'=>1];
                     if($product != null){
                         $biz = $product->shop;
                         if($biz != null && $biz->contactInfo != null){
@@ -1217,21 +1230,112 @@ class HomeController extends Controller
     public function save_subscription(Request $request)
     {
         # code...
+        // return $request->all();
         $validity = Validator::make($request->all(), ['shop_id'=>'required', 'payment_method'=>'required', 'subscription_id'=>'required', 'account_number'=>'required']);
 
         if($validity->fails()){
-            session()->flash('error', $validity->errors()->first());
-            return back()->withInput();
+            return back()->with('error', $validity->errors()->first());
         }
 
-        // Create a pending subscription
-        $plan = \App\Models\Subscription::find($request->subscription_id);
-        $instance = new \App\Models\ShopSubscription(['shop_id'=>$request->shop_id, 'subscription_id'=>$request->subscription_id, 'subscription_date'=>now(), 'expiration_date'=>now()->addDays($plan->duration??0)]);
-        $instance->save();
+        try{
+            $plan = Subscription::find($request->subscription_id);
+            if($plan != null){
+                
+                $transaction_id = $this->momoService->makePayments(['account_number'=>$request->account_number, 'amount'=>$plan->amount]);
+                if($transaction_id != null){
+                    // Create a pending subscription
+                    $instance = new \App\Models\ShopSubscription(['shop_id'=>$request->shop_id, 'subscription_id'=>$request->subscription_id, 'subscription_date'=>now(), 'expiration_date'=>now()->addDays($plan->duration??0)]);
+                    $instance->payment_id = $transaction_id;
+                    $instance->save();
+                    return back()->with('success', 'Suscription initialized. Awaiting payment.');
+                }
+            }
+    
+            // Make payment and update subscription record
+    
+            return back()->with('error', "Failed to initialize subscription. Try again later");
+        }catch(Throwable $th){
+            return back()->with('error', $th->getMessage());
+        }
+    }
 
-        // Make payment and update subscription record
+    public function follow_business($slug)
+    {
+        # code...
+        $business = \App\Models\Shop::whereSlug($slug)->first();
+        if($business != null){
+            if(\App\Models\ShopSubscriber::where(['user_id'=>auth()->id(), 'shop_id'=>$business->id])->count() == 0){
+                (new \App\Models\ShopSubscriber(['user_id'=>auth()->id(), 'shop_id'=>$business->id]))->save();
+                return redirect()->route('public.business.show', $slug)->with('success', "Operation completed");
+            }else{
+                return redirect()->route('public.business.show', $slug)->with('message', "Already a subsriber");
+            }
+        }
+        return redirect()->route('public.business.show', $slug)->with('error', "Failed to identify business");            
+    }
 
-        return back();
+    public function unfollow_business($slug)
+    {
+        # code...
+        $business = \App\Models\Shop::whereSlug($slug)->first();
+        if($business != null){
+            if(\App\Models\ShopSubscriber::where(['user_id'=>auth()->id(), 'shop_id'=>$business->id])->count() > 0){
+                \App\Models\ShopSubscriber::where(['user_id'=>auth()->id(), 'shop_id'=>$business->id])->each(function($row){
+                    $row->delete();
+                });
+                return redirect()->route('public.business.show', $slug)->with('success', "Operation completed");
+            }else{
+                return redirect()->route('public.business.show', $slug)->with('message', "Not a subsriber");
+            }
+        }
+        return redirect()->route('public.business.show', $slug)->with('error', "Failed to identify business");
+    }
+
+    public function reviews()
+    {
+        # code...
+        $shops = auth()->user()->shops();
+        $reviews = [];
+        if($shops->count() > 0 && count($items = \App\Models\Product::whereIn('shop_id', $shops->pluck('id')->toArray())->get()) != 0){
+            $reviews = \App\Models\Review::whereIn('item_id', $items->pluck('id')->toArray())->get();
+        }
+        $data['title'] = "My Business Reviews";
+        $data['reviews'] = $reviews;
+        return view('b_admin.reviews.recieved', $data);
+    }
+
+    public function my_reviews()
+    {
+        # code...
+        $data['title'] = "My Reviews";
+        $data['reviews'] = \App\Models\Review::where('buyer_id', auth()->id())->get();
+        return view('b_admin.reviews.sent', $data);
+    }
+
+    public function following()
+    {
+        # code...
+        $data['title'] = "Businesses I Follow";
+        $data['followings'] = \App\Models\ShopSubscriber::where('user_id', auth()->id())->get();
+        return view('b_admin.following.sent', $data);
+    }
+
+    public function followers()
+    {
+        # code...
+        $data['title'] = "My Subscribers";
+        $data['followings'] = \App\Models\ShopSubscriber::whereIn('shop_id', auth()->user()->shops()->pluck('id')->toArray())->get();
+        return view('b_admin.following.recieved', $data);
+    }
+
+    public function unfollow($id)
+    {
+        # code...
+        if(($subs = \App\Models\ShopSubscriber::find($id)) != null){
+            $subs->delete();
+            return back()->with('success', "Operation completed");
+        }
+        return back()->with('error', 'Failed to unsubscribe. Try again later.');
     }
 
     public function edit_profile(){

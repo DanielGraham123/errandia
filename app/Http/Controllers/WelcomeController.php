@@ -8,6 +8,7 @@ use App\Models\ErrandImage;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Region;
+use App\Models\Review;
 use App\Models\Street;
 use App\Models\SubCategory;
 use App\Models\Town;
@@ -17,7 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use \App\Models\Shop;
-
+use Illuminate\Support\Facades\DB;
 
 class WelcomeController extends Controller
 {
@@ -41,9 +42,19 @@ class WelcomeController extends Controller
     {
         $data['errands'] = Errand::orderBy('id', 'DESC')->take(6)->get();
         $data['services'] = Product::where('items.service', true)
-                            ->orderBy('items.views', 'DESC')->take(6)->get();
+            ->orderBy('items.views', 'DESC')->take(6)->get();
         $data['products'] = Product::where('items.service', false)
             ->orderBy('items.views', 'DESC')->take(6)->get();
+        $data['items'] = Product::inRandomOrder()->take(8)->get();
+        $data['categories'] = Category::all()->map(function($row){
+            $subcats = $row->sub_categories->pluck('id')->toArray();
+            $products = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->whereIn('item_categories.sub_category_id', $subcats)->groupBy('items.id')->distinct()->count();
+            $row->products_count = $products;
+            return $row;
+        });
+        $data['towns'] = Town::join('item_quotes', 'item_quotes.town_id', '=', 'towns.id')->select(['towns.*', DB::raw('COUNT(item_quotes.id) as _count')])->groupBy('towns.id')->orderBy('_count', 'DESC')->distinct()->get(15);
+        // dd($data);
+
         return view("public.home", $data);
     }
 
@@ -86,6 +97,17 @@ class WelcomeController extends Controller
         $data['products'] = $data['shop']->products->take(8);
         $data['services'] = $data['shop']->services->take(8);
         $data['related_shops'] = Shop::where('category_id', $data['shop']->category_id)->where('slug', '!=', $slug)->inRandomOrder()->get();
+
+        $reviews = Review::whereIn('item_id', $data['shop']->items()->pluck('id')->toArray())->distinct()->get();
+        $reviews_count = $reviews->count();
+        $data['average_rating'] = $reviews->sum('rating')/($reviews_count > 0 ?:1);
+        $data['rating1'] = round($reviews->where('rating', 1)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['rating2'] = round($reviews->where('rating', 2)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['rating3'] = round($reviews->where('rating', 3)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['rating4'] = round($reviews->where('rating', 4)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['rating5'] = round($reviews->where('rating', 5)->sum('rating')*100/($reviews->sum('rating')>0?:1));
+        $data['reviews'] = $reviews;
+
         // dd($data);
         return view("public.show_business", $data);
     }
@@ -265,7 +287,11 @@ class WelcomeController extends Controller
         $data['rating1'] = round(($item->reviews()->where('rating', 1)->sum('rating')/$reviews_sum)*100);
 
         $reported = \App\Models\ReviewReport::pluck('review_id')->toArray();
-        $data['reviews'] = $item->reviews()->whereNotIn('id', $reported)->get();
+        if(request()->has('review')){
+            $data['reviews'] = \App\Models\Review::where('id', request('review'))->get();
+        }else{
+            $data['reviews'] = $item->reviews()->whereNotIn('id', $reported)->get();
+        }
 
         $data['shop_reviews'] = $item->shop->items()->join('reviews', 'reviews.item_id', '=', 'items.id')->count();
         // dd($data);
@@ -371,5 +397,26 @@ class WelcomeController extends Controller
             //throw $th;
             return back()->with('error', $th->getMessage());
         }
+    }
+
+
+    public function category_products($category_slug, $sub_cate_slug = null)
+    {
+        # code...
+        $data['regions'] = Region::orderBy('name')->get();
+        $category = Category::whereSlug($category_slug)->first();
+        if($sub_cate_slug != null){
+            $sub_category = SubCategory::whereSlug($sub_cate_slug)->first();
+            $data['title'] = "Products and Services under ".$sub_category->name??'';
+            $data['items'] = $sub_category->items;
+        }else{
+            $data['title']  = "Products and Services under ".$category->name??'';
+            $subcats = $category->sub_categories->pluck('id')->toArray();
+            $products = Product::join('item_categories', 'item_categories.item_id', '=', 'items.id')->whereIn('item_categories.sub_category_id', $subcats)->select('items.*')->distinct()->get();
+            
+            $data['items'] = $products;
+        }
+        // dd($data);
+        return view('public.category_items', $data);
     }
 }

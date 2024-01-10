@@ -30,6 +30,7 @@ class ErrandResource extends JsonResource
             'slug' =>  $this->slug,
             'read_status' => $this->read_status,
             'user' => new UserResource($user),
+            'categories' => $this->subCategories(),
             'images' => $images,
             'created_at' => $this->created_at,
             'when' => $this->created_at->diffForHumans(),

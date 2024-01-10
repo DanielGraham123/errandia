@@ -37,9 +37,9 @@
     <link href="{{ asset('tel_input_build/css/intlTelInput.css') }}" rel="stylesheet">
 
 
-    {{-- <link rel="stylesheet" href="{{asset('richtexteditor/rte_theme_default.css')}}" />
+    <link rel="stylesheet" href="{{asset('richtexteditor/rte_theme_default.css')}}" />
     <script type="text/javascript" src="{{asset('/richtexteditor/rte.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script> --}}
+    <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script>
 
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>tinymce.init({ selector:'textarea#text-editor1' });</script>
@@ -546,6 +546,14 @@
                             <a href="{{ route('admin.pages.team_members') }}" class="text-capitalize">
                                 <i class="menu-icon fa fa-caret-right"></i>
                                 Team Members
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.faqs.index') }}" class="text-capitalize">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                FAQs
                             </a>
                             <b class="arrow"></b>
                         </li>

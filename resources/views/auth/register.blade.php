@@ -90,7 +90,7 @@
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
                                         <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="{{ old('password') }}">
-                                        <span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 330px">
+                                        <span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 305px">
 											<i class="fa fa-eye-slash" id="hidePassword" style="cursor: pointer"></i>
 											<i class="fa fa-eye" id="showPassword" style="cursor: pointer;display: none"></i>
 										   </span>
@@ -135,7 +135,7 @@
                                 <div class="col-12">
                                     <div class="form-floating theme-form-floating">
                                         <input type="password" class="form-control" id="confirm_password" name="password_confirmation"   placeholder="Confirm Password">
-                                        <span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 330px">
+                                        <span class="d-flex justify-content-end" style="position: absolute;top: 20px;left: 310px">
 											<i class="fa fa-eye-slash" id="hideConfirmPassword" style="cursor: pointer"></i>
 											<i class="fa fa-eye" id="showConfirmPassword" style="cursor: pointer;display: none"></i>
 										   </span>
@@ -167,19 +167,19 @@
                         <div class="log-in-button">
                             <ul>
                                 <li>
-                                    <a href="https://accounts.google.com/signin/v2/identifier?flowName=GlifWebSignIn&flowEntry=ServiceLogin"
+                                    <a href="{{route('google_redirect_link')}}"
                                         class="btn google-button w-100">
                                         <img src="{{ asset('assets/public/assets/images/inner-page/google.png') }}" class="blur-up lazyload"
                                             alt="">
                                         Sign up with Google
                                     </a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="https://www.facebook.com/" class="btn google-button w-100">
                                         <img src="{{ asset('assets/public/assets/images/inner-page/facebook.png') }}" class="blur-up lazyload"
                                             alt=""> Sign up with Facebook
                                     </a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
 

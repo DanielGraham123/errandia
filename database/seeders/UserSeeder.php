@@ -33,5 +33,13 @@ class UserSeeder extends Seeder
             'phone' => '7489354980'
         ]);
 
+        User::create([
+            'name' => 'Vicky Foukou',
+            'email' => 'vicky.foukou@gmail.com',
+            'password' =>  Hash::make('vicky2023'),
+            'address' => 'Nice, France',
+            'phone' => '677821241'
+        ]);
+
     }
 }
