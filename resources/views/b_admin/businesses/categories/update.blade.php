@@ -4,7 +4,7 @@
         <div class="my-4 card">
             <div class="card-body">
                 <h3 class="text-secondary fw-bold my-3">Update Business Categories</h3>
-                <form method="POST">
+                <form method="POST" action="{{ route('business_admin.businesses.categories.update', $shop->slug) }}">
                     @csrf
                     <div class="py-2">
                         <label class="text-info text-capitalize">categories</label>

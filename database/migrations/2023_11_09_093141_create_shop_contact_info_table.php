@@ -18,7 +18,9 @@ class CreateShopContactInfoTable extends Migration
             $table->integer('shop_id');
             $table->integer('street_id');
             $table->string('phone');
+            $table->string('phone_country_code');
             $table->string('whatsapp')->nullable();
+            $table->string('whatsapp_country_code')->nullable();
             $table->string('address')->nullable();
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();

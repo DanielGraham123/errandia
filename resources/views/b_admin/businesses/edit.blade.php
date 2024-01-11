@@ -9,20 +9,21 @@
                 <div class="col-md-12 px-2 py-2">
                     <input type="text" name="name" class="form-control" value="{{ old('name', $shop->name) }}" required placeholder="Business Name">
                 </div>
-                <div class="col-md-7 px-2 py-2">
+                <div class="col-md-8 px-2 py-2">
+                    <span class="text-capitalize">Logo</span>
                     <input type="file" name="image" accept="image/*" class="form-control" value="{{ old('image') }}" placeholder="Logo">
                 </div>
-                <div class="col-md-5 px-2 py-2">
+                <div class="col-md-4 px-2 py-2">
                     <img src="{{ asset('uploads/logos/'.$shop->image_path) }}" style="height:7rem; width:7rem; border-radius:0.3rem;">
                 </div>
-                <div class="col-md-12 px-2 py-2">
+                {{-- <div class="col-md-12 px-2 py-2">
                     <select name="category" class="form-control" placeholder="" requried>
                         <option>Business categories</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}" {{ old('category', $shop->category_id) == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
                 {{-- <div class="col-md-12 px-2 py-2">
                     <input type="file" name="logo" class="form-control" value="{{ old('logo') }}" placeholder="Business Name">
                 </div> --}}
@@ -56,26 +57,39 @@
                 <div class="col-md-12 px-2 py-2">
                     <input type="text" name="address" class="form-control" value="{{ old('website', $shop->contactInfo->website) }}" placeholder="Business address">
                 </div>
-                <div class="col-md-12 px-2 py-2">
-                    <div class="input-group">
-                        <span class="fa fa-phone text-h6"></span>
-                        {{-- <select class="input-group-addon" name="phone_code" style="max-width: 7rem !important;">
-                            @foreach (config('country-phone-codes') as $phcode)
-                                <option value="+{{ $phcode['code'] }}" {{ old('phone_code') == $phcode ? 'selected' : '' }}>{{ $phcode['iso'] }} (+{{ $phcode['code'] }})</option>
-                            @endforeach
-                        </select> --}}
-                        <input class="form-control" name="phone" value="{{old('phone', $shop->contactInfo->phone??'')}}" type="tel" required />
+                
+                <div class=" py-2 theme-form-floating">
+                    <span class="text-capitalize">Phone number</span>
+                    <div class="d-flex">
+                        <div class="w-50 position-relative">
+                            <span class="position-absolute fa-2x m-2 fa fa-phone"></span>
+                            <select class="form-control input-sm" style="padding-left: 3.5rem;" name="phone_country_code" required>
+                                <option>Country</option>
+                                @foreach (config('country-phone-codes') as $phcode)
+                                    <option value="{{ $phcode['code'] }}" {{ old('phone_country_code', $shop->contactInfo->phone_country_code) == $phcode['code'] ? 'selected' : '' }}>{{ $phcode['country'] }} ( {{ $phcode['code'] }} )</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="w-50">
+                            <input type="tel" class="form-control input-sm" name="phone" required value="{{ old('phone', $shop->contactInfo->phone) }}">
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-12 px-2 py-2">
-                    <div class="input-group">
-                        <span class="input-group-addon fa fa-whatsapp text-h6"></span>
-                        {{-- <select class="form-control w-25" name="whatsapp_phone_code" style="max-width: 7rem !important;">
-                            @foreach (config('country-phone-codes') as $phcode)
-                                <option value="+{{ $phcode['code'] }}" {{ old('whatsapp_phone_code') == $phcode ? 'selected' : '' }}>{{ $phcode['iso'] }} (+{{ $phcode['code'] }})</option>
-                            @endforeach
-                        </select> --}}
-                        <input class="form-control" name="whatsapp_phone" value="{{old('whatsapp_phone', $shop->contactInfo->whatsapp??'')}}" type="tel" placeholder="Whatstapp phone number" />
+                <div class=" py-2 theme-form-floating">
+                    <span class="text-capitalize">Whatsapp number</span>
+                    <div class="d-flex">
+                        <div class="w-50 position-relative">
+                            <span class="position-absolute fa-2x m-2 fa fa-whatsapp"></span>
+                            <select class="form-control input-sm" style="padding-left: 3.5rem;" name="whatsapp_country_code" required>
+                                <option>Country</option>
+                                @foreach (config('country-phone-codes') as $phcode)
+                                    <option value="{{ $phcode['code'] }}" {{ old('whatsapp_country_code', $shop->contactInfo->whatsapp_country_code) == $phcode['code'] ? 'selected' : '' }}>{{ $phcode['country'] }} ( {{ $phcode['code'] }} )</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="w-50">
+                            <input type="tel" class="form-control input-sm" name="whatsapp" required value="{{ old('whatsapp', $shop->contactInfo->whatsapp) }}">
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6 px-2 py-2">
