@@ -32,7 +32,7 @@ class ResetEmail extends Mailable
     {
         return $this->markdown('emails.reset_email')->with([
             'data'  => $this->data,
-        ])->subject("Password Reset Link from Buib E-learn ")
+        ])->subject("Password Reset Link from Errandia")
             ->to($this->data['email']);
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Auth\CustomForgotPasswordController;
 use App\Http\Controllers\Auth\CustomLoginController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FAQsController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -26,23 +27,28 @@ Route::get('reset_pass', function(){
 });
 Route::get('set_local/{lang}', [Controller::class, 'set_local'])->name('lang.switch');
 
-Route::post('login', [CustomLoginController::class, 'login'])->name('login.submit');
-Route::get('login', [CustomLoginController::class, 'showLoginForm'])->name('login');
-Route::get('register', [CustomLoginController::class, 'register'])->name('register');
-Route::post('register', [CustomLoginController::class, 'signup']);
 Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
 Route::get('logout', [CustomLoginController::class, 'logout'])->name('logout');
 
-Route::post('reset_password_with_token/password/reset', [CustomForgotPasswordController::class, 'validatePasswordRequest'])->name('reset_password_without_token');
-Route::get('reset_password_with_token/{token}/{email}', [CustomForgotPasswordController::class, 'resetForm'])->name('reset');
-Route::post('reset_password_with_token', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password_with_token');
 
-Route::get('reset_password', [CustomForgotPasswordController::class, 'resetForm'])->name('reset_password');
-Route::post('reset_password', [CustomForgotPasswordController::class, 'validatePasswordRequest']);
+Route::middleware('guest')->group(function() {
+    Route::get('forgot_password', [CustomForgotPasswordController::class, 'forgotPassword'])->name('forgot_password');
+    Route::post('forgot_password', [CustomForgotPasswordController::class, 'sendPasswordResetLink'])->name('password.reset');
+    Route::get('reset_password', [CustomForgotPasswordController::class, 'showResetPassword'])->name('show_reset_password');
+    Route::post('reset_password', [CustomForgotPasswordController::class, 'resetPassword'])->name('reset_password');
+    Route::get("/auth/redirect", [CustomLoginController::class, 'googleSignRedirect'])->name("google_redirect_link");
+    Route::get("/auth/google/callback", [CustomLoginController::class, 'handleGoogleCallback'])->name('handle_google_callback');
+    Route::get('login/submit', [CustomLoginController::class, 'login'])->name('login.submit');
+    Route::post('login/submit', [CustomLoginController::class, 'login']);
+    Route::get('login', [CustomLoginController::class, 'showLoginForm'])->name('login');
+    Route::get('register', [CustomLoginController::class, 'register'])->name('register');
+    Route::post('register', [CustomLoginController::class, 'signup']);
+});
 
 Route::get('widgets', function(){
     return view('widgets');
 });
+
 
 Route::get('', 'WelcomeController@home');
 Route::get('home', 'WelcomeController@home');
@@ -166,6 +172,14 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::get('user/block/{user_id}', 'Admin\HomeController@block_user')->name('block_user');
     Route::get('user/activate/{user_id}', 'Admin\HomeController@activate_user')->name('activate_user');
 
+    Route::name('faqs.')->prefix('prefix')->group(function(){
+        Route::get('edit/{id}', [FAQsController::class, 'edit'])->name('edit');
+        Route::post('edit/{id}', [FAQsController::class, 'update']);
+        Route::get('create', [FAQsController::class, 'create'])->name('create');
+        Route::post('create', [FAQsController::class, 'save']);
+        Route::post('delete/{id}', [FAQsController::class, 'delete'])->name('delete');
+        Route::get('{id?}', [FAQsController::class, 'index'])->name('index');
+    });
 });
 
 Route::get('region/{id}/towns', [Controller::class, 'region_towns'])->name('region.towns');
@@ -194,6 +208,10 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
         Route::get('{slug}/branches', 'BAdmin\HomeController@business_branches')->name('branch.index');
         Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
         Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
+        Route::get('follow/{slug}', 'BAdmin\HomeController@follow_business')->name('follow');
+        Route::get('unfollow/{slug}', 'BAdmin\HomeController@unfollow_business')->name('unfollow');
+        // Route::get('{slug}/create_branch', 'BAdmin\HomeController@create_business_branch')->name('branch.create');
+        // Route::post('{slug}/create_branch', 'BAdmin\HomeController@save_business_branch');
         Route::post('{slug}/contact/update', 'BAdmin\HomeController@update_business_contact')->name('contact.update');
         Route::get('{slug}/categories/update', 'BAdmin\HomeController@edit_business_categories')->name('categories.update');
         Route::post('{slug}/categories/update', 'BAdmin\HomeController@update_business_categories')->name('categories.update');
@@ -261,6 +279,12 @@ Route::prefix('badmin')->name('business_admin.')->middleware('isBusinessAdmin')-
 
     Route::prefix('reviews')->name('reviews.')->group(function(){
         Route::get('', 'BAdmin\HomeController@reviews')->name('index');
+        Route::get('made', 'BAdmin\HomeController@my_reviews')->name('myindex');
+    });
+    Route::prefix('following')->name('following.')->group(function(){
+        Route::get('', 'BAdmin\HomeController@following')->name('index');
+        Route::get('followers', 'BAdmin\HomeController@followers')->name('followers');
+        Route::get('unsubscribe/{id}', 'BAdmin\HomeController@unfollow')->name('unfollow');
     });
 
     Route::prefix('enquiries')->name('enquiries.')->group(function(){
@@ -417,6 +441,7 @@ Route::name('public.')->group(function(){
     Route::get('business/{slug}/items/{type}', 'WelcomeController@show_business_items')->name('business.show_items');
     Route::get('sub_category/{slug}/businesses', 'WelcomeController@sub_category_businesses')->name('scategory.businesses');
     Route::get('categories/{slug}', 'WelcomeController@show_category')->name('category.show');
+    Route::get('categories/{slug}/products/{sub_category_slug?}', 'WelcomeController@category_products')->name('category.products');
     Route::get('errands', 'WelcomeController@errands')->name('errands');
     Route::get('errands/show', 'WelcomeController@view_errand')->name('errands.view');
     Route::get('errands/run', 'WelcomeController@run_arrnd')->name('errands.run')->middleware('isBusinessAdmin');
@@ -431,6 +456,8 @@ Route::name('public.')->group(function(){
     Route::post('review/{id}/report', 'WelcomeController@report_review_save');
     Route::get('review/{id}/delete', 'WelcomeController@delete_review')->name('delete_review');
     Route::get('policies/{slug}', [Controller::class, 'privacy_policy'])->name('privacy_policy');
+
+    Route::get('faqs/{id?}', [FAQsController::class, 'public_index'])->name('faqs.index');
 });
 
 
@@ -443,6 +470,5 @@ Route::get('mode/{locale}', function ($batch) {
 Route::any('{any?}', function(){
     return view('404');
 });
-
 
 

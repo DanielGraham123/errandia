@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Services\MomoService;
 
 /**
  * Summary of Controller
@@ -30,11 +31,14 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     var $current_accademic_year;
-    public function __construct()
+    var $momoService;
+
+    public function __construct(MomoService $momoService)
     {
         # code...
         ini_set('max_execution_time', 360);
         ini_set('extension', 'php_fileinfo.so');
+        $this->momoService = $momoService;
     }
 
     public function set_local(Request $request, $lang)
@@ -102,8 +106,12 @@ class Controller extends BaseController
 
     public function privacy_policy($slug){
         $data['title'] = "Software Policies";
-       $data['policy'] = \App\Models\PrivacyPolicy::whereSlug($slug)->first();
+        $data['policy'] = \App\Models\PrivacyPolicy::whereSlug($slug)->first();
         return view('public.policies', $data);
+    }
+
+    public function subscription_payment_callback(Request $request){
+        
     }
 
 }

@@ -111,22 +111,6 @@
                                                 </ul>
                                             </li>
 
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle" href="{{ route('business_admin.enquiries.index') }}"
-                                                    data-bs-toggle="dropdown">Enquiries</a>
-                                                    
-                                                <ul class="dropdown-menu">
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}">Enquiries recieved</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="{{ route('business_admin.errands.index') }}">Enquiries Sent</a>
-                                                    </li>
-                                                
-                                                </ul>
-                                            </li>
-                                            
-                                        
 
                                             <li class="nav-item dropdown">
                                                 <a class="nav-link dropdown-toggle" href="#"
@@ -137,7 +121,7 @@
                                                         <a class="dropdown-item" href="{{ route('business_admin.reviews.index') }}">Business reviews</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="{{ route('business_admin.reviews.index') }}">Reviews made</a>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.reviews.myindex') }}">Reviews made</a>
                                                     </li>
                                                 
                                                 </ul>
@@ -156,10 +140,10 @@
                                                     
                                                 <ul class="dropdown-menu">
                                                     <li>
-                                                        <a class="dropdown-item" href="#">My Followers</a>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.following.followers') }}">My Followers</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="#">Following</a>
+                                                        <a class="dropdown-item" href="{{ route('business_admin.following.index') }}">Following</a>
                                                     </li>
                                                 
                                                 </ul>

@@ -199,13 +199,13 @@
                         </button>
                     </h2>
                     <ul class="category-list custom-padding custom-height">
-                        @foreach (\App\Models\Town::take(15)->get() as $town)
+                        @foreach ($towns as $town)
                             <li>
                                 <div class="form-check ps-0 m-0 category-list-box">
                                     <input class="checkbox_animated" type="checkbox" id="fruit">
                                     <label class="form-check-label" for="fruit">
                                         <span class="name">{{ $town->name }}</span>
-                                        <span class="number">(15)</span>
+                                        <span class="number">({{ $town->_count }})</span>
                                     </label>
                                 </div>
                             </li>
@@ -384,85 +384,90 @@
                 </div>
 
                 <div class="col-custome-9 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                    <div class="show-button">
-                        
-                        <div class="top-filter-menu">
-                            <div class="category-dropdown">
-                                <h5 class="text-content">Recently Posted Errands (<a class="nav-item" id="low" href="#">See All</a>)</h5>
-                            </div>
+                    <div class="fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                        <div class="show-button">
+                            
+                            <div class="top-filter-menu">
+                                <div class="category-dropdown">
+                                    <h5 class="text-content">Products & Services (<a class="nav-item" id="low" href="#">See All</a>)</h5>
+                                </div>
 
-                            <div class="grid-option d-none d-md-block">
-                                <ul>
-                                    <li class="three-grid">
-                                        <a href="javascript:void(0)">
-                                            <img src="{{ asset('assets/public/assets/svg/grid-3.svg') }}" class="blur-up lazyloaded" alt="">
-                                        </a>
-                                    </li>
-                                    <li class="grid-btn d-xxl-inline-block d-none active">
-                                        <a href="javascript:void(0)">
-                                            <img src="{{ asset('assets/public/assets/svg/grid-4.svg') }}" class="blur-up lazyload d-lg-inline-block d-none" alt="">
-                                            <img src="{{ asset('assets/public/assets/svg/grid.svg') }}" class="blur-up lazyload img-fluid d-lg-none d-inline-block" alt="">
-                                        </a>
-                                    </li>
-                                    <li class="list-btn">
-                                        <a href="javascript:void(0)">
-                                            <img src="{{ asset('assets/public/assets/svg/list.svg') }}" class="blur-up lazyloaded" alt="">
-                                        </a>
-                                    </li>
-                                </ul>
+                                <div class="grid-option d-none d-md-block">
+                                    <ul>
+                                        <li class="three-grid">
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset('assets/public/assets/svg/grid-3.svg') }}" class="blur-up lazyloaded" alt="">
+                                            </a>
+                                        </li>
+                                        <li class="grid-btn d-xxl-inline-block d-none active">
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset('assets/public/assets/svg/grid-4.svg') }}" class="blur-up lazyload d-lg-inline-block d-none" alt="">
+                                                <img src="{{ asset('assets/public/assets/svg/grid.svg') }}" class="blur-up lazyload img-fluid d-lg-none d-inline-block" alt="">
+                                            </a>
+                                        </li>
+                                        <li class="list-btn">
+                                            <a href="javascript:void(0)">
+                                                <img src="{{ asset('assets/public/assets/svg/list.svg') }}" class="blur-up lazyloaded" alt="">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
-                        @foreach($errands as $errand)
-                            <div>
-                                <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                                    <div class="product-header">
-                                        <div class="product-image">
-                                            <a href="product-left-thumbnail.html">
-                                                <img src="{{ asset('assets/public/assets/images/charger.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                            </a>
+                        <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-4 row-cols-xl-3 row-cols-md-2 row-cols-2 product-list-section">
+                            @foreach ($items as $item)
+                                
+                                <div>
+                                    <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
+                                        <div class="product-header">
+                                            <div class="product-image">
+                                                <a href="{{ route('public.products.show', $item->slug) }}">
+                                                    <img src="{{ asset('uploads/item_images/'.$item->featured_image) }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                </a>
 
-                                            
+                                                
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="product-footer">
-                                        <div class="product-detail">
-                                            <a href="product-left-thumbnail.html">
-                                                <h5 class="name">{{$errand->title}}</h5>
-                                            </a>
-                                            <p class="text-content mt-1 mb-2 line-clamp-3">
-                                                {{$errand->description}}
-                                            </p>
-
-                                            <h6 class="unit"><span class="fa fa-location"></span>{{$errand->location()}}</h6>
-
-                                            </h5>
-                                            <div class="add-to-cart-box bg-white shadow" >
-                                                <button class="btn btn-add-cart">Call this Customer
-                                                    <span class="add-icon bg-light-gray">
-                                                        <i class="fa fa-phone"></i>
-                                                    </span>
-                                                </button>
-                                                <div class="cart_qty qty-box">
-                                                    <div class="input-group bg-white">
-                                                        <button type="button" class="qty-left-minus bg-gray" data-type="minus" data-field="">
-                                                            <i class="fa fa-minus" aria-hidden="true"></i>
-                                                        </button>
-                                                        <input class="form-control input-number qty-input" type="text" name="quantity" value="0">
-                                                        <button type="button" class="qty-right-plus bg-gray" data-type="plus" data-field="">
-                                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                                        </button>
-                                                    </div>
+                                        <div class="product-footer">
+                                            <div class="product-detail">
+                                                <a href="{{ route('public.products.show', 'slug') }}">
+                                                    <h5 class="name">{{ $item->name ?? '' }}</h5>
+                                                </a>
+                                                <p class="text-content mt-1 mb-2 product-content">{{$item->description??''}}</p>
+                                                
+                                                <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
+                                                </h5>
+                                                <div class="add-to-cart-box shadow bg-white">
+                                                    <a href="tel:{{ $item->shop->contactInfo->phone }}" class="btn btn-add-cart">Call the Supplier
+                                                        <span class="add-icon bg-light-gray">
+                                                            <i class="fa fa-phone"></i>
+                                                        </span>
+                                                    </a>
+                                                    
+                                                </div>
+                                                <div class="add-to-cart-box bg-success text-white">
+                                                    <a href="https://wa.me/{{ $item->shop->contactInfo->phone }}?text=' Found {{ $item->name??'' }} on Errandia.com and am interested in.'" class="btn btn-add-cart text-white">Chat on Whatsapp
+                                                        <span class="add-icon bg-light-gray">
+                                                            <i class="fa fa-whatsapp"></i>
+                                                        </span>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
+
                     </div>
+                    {{-- <section class="section-b-space shop-section">
+                        <div class="container-fluid-lg">
+                            <div class="">
+
+                            </div>
+                        </div>
+                    </section> --}}
 
                 </div>
             </div>
@@ -470,112 +475,7 @@
     </section>
 
 
-    <section class="section-b-space shop-section">
-        <div class="container-fluid-lg">
-            <div class="">
-
-                <div class="fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                    <div class="show-button">
-                        
-                        <div class="top-filter-menu">
-                            <div class="category-dropdown">
-                                <h5 class="text-content">Featured Products (<a class="nav-item" id="low" href="#">See All</a>)</h5>
-                            </div>
-
-                            <div class="grid-option d-none d-md-block">
-                                <ul>
-                                    <li class="three-grid">
-                                        <a href="javascript:void(0)">
-                                            <img src="{{ asset('assets/public/assets/svg/grid-3.svg') }}" class="blur-up lazyloaded" alt="">
-                                        </a>
-                                    </li>
-                                    <li class="grid-btn d-xxl-inline-block d-none active">
-                                        <a href="javascript:void(0)">
-                                            <img src="{{ asset('assets/public/assets/svg/grid-4.svg') }}" class="blur-up lazyload d-lg-inline-block d-none" alt="">
-                                            <img src="{{ asset('assets/public/assets/svg/grid.svg') }}" class="blur-up lazyload img-fluid d-lg-none d-inline-block" alt="">
-                                        </a>
-                                    </li>
-                                    <li class="list-btn">
-                                        <a href="javascript:void(0)">
-                                            <img src="{{ asset('assets/public/assets/svg/list.svg') }}" class="blur-up lazyloaded" alt="">
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
-                        @for($i = 0; $i < 8; $i++)
-                            <div>
-                                <div class="product-box-3 h-100 wow fadeInUp" style="visibility: visible; animation-name: fadeInUp;">
-                                    <div class="product-header">
-                                        <div class="product-image">
-                                            <a href="{{ route('public.products.show', 'slug') }}">
-                                                <img src="{{ asset('assets/public/assets/images/charger.png') }}" class="img-fluid blur-up lazyloaded" alt="">
-                                            </a>
-
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="product-footer">
-                                        <div class="product-detail">
-                                            <a href="{{ route('public.products.show', 'slug') }}">
-                                                <h5 class="name">I need a Dell Laptop charger</h5>
-                                            </a>
-                                            <p class="text-content mt-1 mb-2 product-content">Cheesy feet cheesy grin brie.
-                                                Mascarpone cheese and wine hard cheese the big cheese everyone loves smelly
-                                                cheese macaroni cheese croque monsieur.</p>
-                                            
-                                            <h6 class="unit"><span class="fa fa-location"></span>Akwa, Douala</h6>
-                                            </h5>
-                                            <div class="add-to-cart-box shadow bg-white">
-                                                <button class="btn btn-add-cart">Call the Supplier
-                                                    <span class="add-icon bg-light-gray">
-                                                        <i class="fa fa-phone"></i>
-                                                    </span>
-                                                </button>
-                                                <div class="cart_qty qty-box">
-                                                    <div class="input-group bg-white">
-                                                        <button type="button" class="qty-left-minus bg-gray" data-type="minus" data-field="">
-                                                            <i class="fa fa-minus" aria-hidden="true"></i>
-                                                        </button>
-                                                        <input class="form-control input-number qty-input" type="text" name="quantity" value="0">
-                                                        <button type="button" class="qty-right-plus bg-gray" data-type="plus" data-field="">
-                                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="add-to-cart-box bg-success text-white">
-                                                <button class="btn btn-add-cart text-white">Chat on Whatsapp
-                                                    <span class="add-icon bg-light-gray">
-                                                        <i class="fa fa-whatsapp"></i>
-                                                    </span>
-                                                </button>
-                                                <div class="cart_qty qty-box">
-                                                    <div class="input-group bg-white">
-                                                        <button type="button" class="qty-left-minus bg-gray" data-type="minus" data-field="">
-                                                            <i class="fa fa-minus" aria-hidden="true"></i>
-                                                        </button>
-                                                        <input class="form-control input-number qty-input" type="text" name="quantity" value="0">
-                                                        <button type="button" class="qty-right-plus bg-gray" data-type="plus" data-field="">
-                                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endfor
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
 
     <section>
@@ -614,20 +514,20 @@
                     </div>
 
                     <div class="row g-sm-4 g-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-2 row-cols-md-3 row-cols-2 product-list-section">
-                        @foreach (\App\Models\Category::orderBy('name')->get() as $category)
+                        @foreach($categories as $category)
                             <div class="MuiBox-root css-q4zoya">
                                 <div  class="d-flex">
                                     <img alt="motors" src="{{ asset('assets/admin/icons/'.$category->image_path.'.svg') }}" style="width: 2.2rem; height: 2.2rem; mr-4 mb-2">
-                                    <h5 class=" d-inlineblock ml-3"><b>{{ $category->name }}</b> <small> (N errands recieved)</small></h5>
+                                    <h5 class=" d-inlineblock ml-3"><b>{{ $category->name }}</b></h5>
                                 </div>
                                 <div class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column css-1wkwmmc">
-                                    @foreach ($category->sub_categories()->take(4)->get() as $subcat)
+                                    @foreach ($category->sub_categories()->take(4)->get() as $subcat) 
                                         <div class="MuiGrid-root MuiGrid-item css-1wxaqej">
-                                            <a class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-u00jnd" data-testid="subcategory-link" href="/motors/used-cars/">{{ $subcat->name }}</a>
+                                            <a class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-u00jnd" data-testid="subcategory-link" href="{{ route('public.category.products', [$category->slug, $subcat->slug]) }}">{{ $subcat->name }} ({{ $subcat->items->count() }})</a>
                                         </div>
                                     @endforeach
                                     <div class="">
-                                        <a class="text-danger" tabindex="0" href="/classified/mobile-phones-pdas/">All in Mobile Phones &amp; Tablets</a>
+                                        <a class="text-danger" tabindex="0" href="{{ route('public.category.products', [$category->slug]) }}">All in {{ $category->name }}</a>
                                     </div>
                                 </div>
                             </div>

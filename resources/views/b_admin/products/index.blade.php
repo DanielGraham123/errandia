@@ -54,7 +54,12 @@
                                         <li class="dropdown-item"><a href="{{ route('business_admin.products.edit', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-edit.svg') }}" style="height: 1.1rem;"> edit</a></li>
                                         <li class="dropdown-item"><a href="{{ route('business_admin.products.show', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-view.svg') }}" style="height: 1.1rem;"> view details</a></li>
                                         <li class="dropdown-item"><a href="{{ route('business_admin.products.photos', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-edit-photo.svg') }}" style="height: 1.1rem;"> edit photo</a></li>
-                                        <li class="dropdown-item"><a href="{{ route('business_admin.products.unpublish', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-unpublish.svg') }}" style="height: 1.1rem;"> unpublish</a></li>
+                                        @if ($prod->status == 1)
+                                            <li class="dropdown-item"><a href="{{ route('business_admin.products.unpublish', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-unpublish.svg') }}" style="height: 1.1rem;"> unpublish</a></li>
+                                        @else
+                                            <li class="dropdown-item"><a href="{{ route('business_admin.products.unpublish', $prod->slug??'slug') }}" class="text-decoration-none mb-2"> <img src="{{ asset('assets/badmin/icon-unpublish.svg') }}" style="height: 1.1rem;"> publish</a></li>
+                                            
+                                        @endif
                                         <li class="dropdown-item"><a href="#" onclick="_prompt(`{{ route('business_admin.products.delete', $prod->slug??'slug') }}`, 'Are you sure you intend to delete this item? This process cannot be undone.')" class="text-decoration-none mb-2"> <img src="{{ asset('assets/admin/icons/icon-trash.svg') }}" style="height: 1.1rem;"> Delete</a></li>
                                     </ul>
                                 </div>

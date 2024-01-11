@@ -37,7 +37,7 @@
                             <td>
                                 <a href="{{ route('business_admin.products.show', $prod->slug) }}">
                                     <span class="">
-                                        <img style="height: 3rem; width: 3rem; border-radius: 0.5rem; border: 1px solid gray; margin: 0.4rem 0.7rem;" src="{{ asset('uploads/item_images/'.$prod->featured_image) }}">
+                                        <img style="height: 3rem; width: 3rem; border-radius: 0.5rem; border: 1px solid gray; margin: 0.4rem 0.7rem;" src="{{ $prod->featured_image == null ? '' : asset('uploads/item_images/').'/'.$prod->featured_image??'' }}">
                                         <span style="color: var(--color-darkblue)">{{ $prod->name??"Service name" }}</span>
                                     </span>
                                 </a>

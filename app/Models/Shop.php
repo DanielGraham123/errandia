@@ -91,4 +91,14 @@ class Shop extends Model
         # code...
         return $this->hasMany(ShopSubscription::class);
     }
+
+    public function subscribersR()
+    {
+        return $this->hasMany(ShopSubscriber::class, 'shop_id');
+    }
+
+    public function subscribers()
+    {
+        return $this->belongsToMany(User::class, ShopSubscriber::class, 'shop_id');
+    }
 }

@@ -96,7 +96,7 @@
                                 </div>
 
                                 <div class="procuct-contain">
-                                    <p class="line-clamp-3">{{$item->description ?? ''}}
+                                    <p class="line-clamp-3">{!! $item->description ?? '' !!}
                                     </p>
                                 </div>
 
@@ -150,7 +150,7 @@
                                         aria-labelledby="description-tab">
                                         <div class="product-description">
                                             <div class="nav-desh">
-                                                <p>{{ $item->description??'' }}</p>
+                                                <p>{!! $item->description??'' !!}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -479,7 +479,7 @@
                                 <h3>Other Products</h3>
 
                                 <ul class="product-list product-right-sidebar border-0 p-0">
-                                    @foreach($item->shop->items()->take(10)->get() as $it)
+                                    @foreach($item->shop->items()->where('status', 1)->take(10)->get() as $it)
                                         <li>
                                             <div class="offer-product">
                                                 <a href="{{ route('public.products.show', $it->slug) }}" class="offer-image">

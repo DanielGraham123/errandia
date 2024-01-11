@@ -33,6 +33,7 @@ class User extends Authenticatable
         'password',
         'active',
         'phone_country_code',
+        'google_id'
     ];
     protected $connection = 'mysql';
 
@@ -81,5 +82,14 @@ class User extends Authenticatable
     public function profile()
     {
         return $this->hasOne(UserProfile::class, 'user_id');
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'buyer_id');
+    }
+
+    public function errands()
+    {
+        return $this->hasMany(Errand::class, 'user_id');
     }
 }
