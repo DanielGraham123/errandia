@@ -46,7 +46,10 @@ class HomeController extends Controller
 
     public function businesses(){
         $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')->where('shop_managers.user_id', auth()->id())->select('shops.*')->get();
-        $data['businesses'] = $shops;
+        if(request('action') == 'trash')
+            $data['businesses'] = $shops->where('deleted_at', '!=', null)->all();
+        else
+            $data['businesses'] = $shops->where('deleted_at', null)->all();
         return view('b_admin.businesses.index', $data);
     }
 
@@ -72,10 +75,10 @@ class HomeController extends Controller
     public function save_business(Request $request){
         
         $validity = Validator::make($request->all(), [
-            'name'=>'required', 'category'=>'required', 'region'=>'required', 
+            'name'=>'required', 'region'=>'required', 
             'town'=>'required', 'street'=>'required', 'website'=>'url|nullable',
-            'phone'=>'required|integer', 'phone_code'=>'required_with:phone', 
-            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 'whatsapp_phone'=>'integer|nullable', 'email'=>'email',
+            'phone'=>'required|integer', 'phone_country_code'=>'required_with:phone', 
+            'whatsapp_country_code'=>'required_with:whatsapp', 'whatsapp'=>'integer|nullable', 'email'=>'email|nullable',
         ]);
 
         if($validity->fails()){
@@ -86,7 +89,7 @@ class HomeController extends Controller
         $business = new \App\Models\Shop();
 
 
-        $shop_data = ['name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
+        $shop_data = ['name'=>$request->name, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
                     'status'=>1 ];
         if(Shop::where(['name'=>$request->name])->count() > 0){
             session()->flash('error', 'Business with same name already exist');
@@ -103,7 +106,7 @@ class HomeController extends Controller
         $business->save();
 
         // SAVE BUSINESS CONTACT INFO
-        $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+        $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone_country_code'=>$request->phone_country_code??'', 'phone'=>$request->phone, 'whatsapp_country_code'=>$request->whatsapp_country_code, 'whatsapp'=>$request->whatsapp, 'website'=>$request->website, 'email'=>$request->email];
         \App\Models\ShopContactInfo::updateOrInsert(['shop_id'=>$business->id], $contact_data);
         
         // SET DEFAULT BUSINESS MANAGER
@@ -117,10 +120,10 @@ class HomeController extends Controller
         
         $validity = Validator::make($request->all(), [
             'town'=>'required', 'street'=>'required', 'website'=>'url|nullable',
-            'name'=>'required', 'category'=>'required', 'region'=>'required', 
-            'phone'=>'required|integer', 'phone_code'=>'required_with:phone', 
-            'whatsapp_phone'=>'integer|nullable', 'email'=>'email|nullable',
-            'whatsapp_phone_code'=>'required_with:whatsapp_phone', 
+            'name'=>'required', 'region'=>'required', 
+            'phone'=>'required|integer', 'phone_country_code'=>'required_with:phone', 
+            'whatsapp'=>'integer|nullable', 'email'=>'email|nullable',
+            'whatsapp_country_code'=>'required_with:whatsapp', 
             'fb_link'=>'url|nullable', 'ins_link'=>'url|nullable',
         ]);
 
@@ -159,7 +162,7 @@ class HomeController extends Controller
         $business->save();
 
         // SAVE BUSINESS CONTACT INFO
-        $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+        $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone_country_code'=>$request->phone_country_code, 'phone'=>$request->phone, 'whatsapp_country_code'=>$request->whatsapp_country_code, 'whatsapp'=>$request->whatsapp, 'website'=>$request->website, 'email'=>$request->email];
         \App\Models\ShopContactInfo::updateOrInsert(['shop_id'=>$business->id], $contact_data);
         
         // SET DEFAULT BUSINESS MANAGER
@@ -184,11 +187,11 @@ class HomeController extends Controller
     public function update_business(Request $request, $slug){
         
         $validity = Validator::make($request->all(), [
-            'name'=>'required', 'category'=>'required', 'region'=>'required', 
+            'name'=>'required', 'region'=>'required', 
             'town'=>'required', 'street'=>'required', 'website'=>'url',
             'is_branch'=>'required', 'phone'=>'required|integer',
-            //  'phone_code'=>'required_with:phone', 
-             'whatsapp_phone'=>'integer|nullable', 'email'=>'email',
+             'phone_country_code'=>'required_with:phone', 
+             'whatsapp'=>'integer|nullable', 'whatsapp_country_code'=>'required_with:whatsapp', 'email'=>'email',
         ]);
 
         if($validity->fails()){
@@ -213,7 +216,7 @@ class HomeController extends Controller
             $business->update($shop_data);
 
             // SET CONTACT INFO
-            $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+            $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone_country_code'=>$request->phone_country_code, 'phone'=>$request->phone, 'whatsapp_country_code'=>$request->whatsapp_country_code, 'whatsapp'=>$request->whatsapp, 'website'=>$request->website, 'email'=>$request->email];
             \App\Models\ShopContactInfo::updateOrInsert(['shop_id'=>$business->id], $contact_data);
             
             // SET DEFAULT BUSINESS MANAGER
@@ -299,7 +302,14 @@ class HomeController extends Controller
 
     public function create_products($slug){
         $user = auth()->user();
-        $data['shop'] = Shop::whereSlug($slug)->first();
+        $shop = Shop::whereSlug($slug)->first();
+        $data['shop'] = $shop;
+        $data['title'] = "Update Business Categories";
+        $data['scats'] = SubCategory::orderBy('name')->get();
+        $data['biz_cats'] = $shop->subCategories()->pluck('sub_categories.id')->toArray();
+        if(count($data['biz_cats']) == 0){
+            return view('b_admin.businesses.categories.update', $data);
+        }
         // $data['currencies'] = Currency::all();
         return view('b_admin.products.create', $data);
     }
@@ -915,6 +925,14 @@ class HomeController extends Controller
     public function create_service($slug){
         $user = auth()->user();
         $data['shop'] = Shop::whereSlug($slug)->first();
+        $shop = Shop::whereSlug($slug)->first();
+        $data['shop'] = $shop;
+        $data['title'] = "Update Business Categories";
+        $data['scats'] = SubCategory::orderBy('name')->get();
+        $data['biz_cats'] = $shop->subCategories()->pluck('sub_categories.id')->toArray();
+        if(count($data['biz_cats']) == 0){
+            return view('b_admin.businesses.categories.update', $data);
+        }
         // $data['currencies'] = Currency::all();
         return view('b_admin.services.create', $data);
     }
