@@ -37,9 +37,18 @@
     <link href="{{ asset('tel_input_build/css/intlTelInput.css') }}" rel="stylesheet">
 
 
-    <link rel="stylesheet" href="{{asset('richtexteditor/rte_theme_default.css')}}" />
+    {{-- <link rel="stylesheet" href="{{asset('richtexteditor/rte_theme_default.css')}}" />
     <script type="text/javascript" src="{{asset('/richtexteditor/rte.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script> --}}
+
+    {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+    tinymce.init({
+        selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
+        plugins: 'powerpaste advcode table lists checklist',
+        toolbar: 'undo redo | blocks| bold italic | bullist numlist checklist | code | table'
+    });
+    </script> --}}
 
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>tinymce.init({ selector:'textarea#text-editor1' });</script>
