@@ -96,7 +96,7 @@ class WelcomeController extends Controller
         $data['branches'] = Shop::Where('parent_slug', $slug)->get();
         $data['products'] = $data['shop']->products->take(8);
         $data['services'] = $data['shop']->services->take(8);
-        $data['related_shops'] = Shop::where('category_id', $data['shop']->category_id)->where('slug', '!=', $slug)->inRandomOrder()->get();
+        $data['related_shops'] = Shop::join('shop_categories', 'shop_categories.shop_id', '=', 'shop.id')->whereIn('shop_categories.sub_category_id', $data['shop']->subCategories()->pluck('id')->toArray())->inRandomOrder()->select('shops.*')->get();
 
         $reviews = Review::whereIn('item_id', $data['shop']->items()->pluck('id')->toArray())->distinct()->get();
         $reviews_count = $reviews->count();

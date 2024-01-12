@@ -4,6 +4,7 @@
         <div class="my-4 card">
             <div class="card-body">
                 <h3 class="text-secondary fw-bold my-3">Update Business Categories</h3>
+                <h5 class="text-warning">{{ $info??'' }}</h5>
                 <form method="POST" action="{{ route('business_admin.businesses.categories.update', $shop->slug) }}">
                     @csrf
                     <div class="py-2">
@@ -19,7 +20,7 @@
                         </div>
                         <hr>
                         <div class="d-flex justify-content-end py-2">
-                            <button class="button-secondary text-capitalize" type="submit">update</button>
+                            <button class="button-secondary text-capitalize" type="submit">{{ $action ?? "update" }}</button>
                         </div>
                     </div>
                 </form>
