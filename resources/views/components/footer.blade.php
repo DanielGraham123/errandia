@@ -41,7 +41,7 @@
                             <ul>
                                 @foreach (\App\Models\Category::orderBy('name')->get() as $category)
                                 <li>
-                                    <a href="#" class="text-content">{{ $category->name }}</a>
+                                    <a href="{{ route('public.category.show', $category->slug) }}" class="text-content">{{ $category->name }}</a>
                                 </li>
                                 <li>
                                 @endforeach
