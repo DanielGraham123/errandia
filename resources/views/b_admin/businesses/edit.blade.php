@@ -16,17 +16,7 @@
                 <div class="col-md-4 px-2 py-2">
                     <img src="{{ asset('uploads/logos/'.$shop->image_path) }}" style="height:7rem; width:7rem; border-radius:0.3rem;">
                 </div>
-                {{-- <div class="col-md-12 px-2 py-2">
-                    <select name="category" class="form-control" placeholder="" requried>
-                        <option>Business categories</option>
-                        @foreach ($categories as $cat)
-                            <option value="{{ $cat->id }}" {{ old('category', $shop->category_id) == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-                        @endforeach
-                    </select>
-                </div> --}}
-                {{-- <div class="col-md-12 px-2 py-2">
-                    <input type="file" name="logo" class="form-control" value="{{ old('logo') }}" placeholder="Business Name">
-                </div> --}}
+                
                 <div class="col-md-12 px-2 py-2">
                     <textarea name="description" class="form-control" rows="4" required>{{ old('description', $shop->description??'') }}</textarea>
                 </div>

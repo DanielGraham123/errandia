@@ -18,13 +18,31 @@
                     <div class="mt-4 d-flex justify-content-end">
                         <input type="submit" class="button-secondary" value="Publish">
                     </div>
+                    <div class="my-2">
+                        <label class="text-info d-block">Title</label>
+                        <input type="hidden" name="content" id="editor_field">
+                        <div class="form-control adv-editor" style="height: 13rem;" id="quill_editor_1">
+                            {{ old('content') }}
+                        </div>
+                    </div>
                 </form>
+                <div class="my-2">
+                    <label class="text-info d-block">Content</label>
+                    <input type="hidden" name="content" id="editor_field">
+                    <div class="form-control adv-editor" style="height: 13rem;" id="quill_editor_1">
+                        {{ old('content') }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 @endsection
 @section('script')
-    {{-- <script>
-        new RichTextEditor('#adv-editor')
-    </script> --}}
+    <script>
+        $('#editor-form').on('submit', function(){
+            $(this).preventDefault();
+            $('#editor_field').val($('#quill_editor_1'));
+            $(this).submit();
+        })
+    </script>
 @endsection

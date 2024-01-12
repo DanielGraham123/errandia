@@ -136,7 +136,8 @@
                             <div class="profile-contain">
                                 <div class="profile-image">
                                     <div class="position-relative">
-                                        <img src="{{ auth()->user()->photo == null ? asset('assets/public/assets/images/inner-page/user/1.jpg') : asset('uploads/user_photos/'.auth()->user()->photo) }}"
+                                        <img src="{{ (auth()->user()->photo??null) == null ? asset('assets/public/assets/images/inner-page/user/1.jpg') : asset('uploads/user_photos/'.auth()->user()->photo) }}"
+
                                             class="blur-up lazyload update_img" alt="">
                                         <div class="cover-icon">
                                             <i class="fa-solid fa-pen">
@@ -147,13 +148,30 @@
                                 </div>
 
                                 <div class="profile-name">
-                                    <h3>{{ auth()->user()->name??'profile name' }}</h3>
-                                    <h6 class="text-content">{{ auth()->user()->email??'authuser@email.ext' }}</h6>
+                                    <h3>{{ auth()->user()->name??'' }}</h3>
+                                    <h6 class="text-content">{{ auth()->user()->email??'' }} <br> {{auth()->user()->address}} </h6>
+                                </div>
+
+                                <div class="my-2 d-flex">
+                                    <img class="mr-3" styl="height: 2rem; width: 2rem;" src="{{ asset('assets/badmin/icon-member.svg') }}">
+                                    <b class="">Member since {{ \Carbon\Carbon::parse(auth()->user()->created_at)->format('M Y') }}</b>
+                                </div>
+
+                                <div class="my-2 d-flex justify-content-center">
+                                    <a class="button-secondary " href="tel:{{ auth()->user()->phone ?? '' }}"><span class="fa fa-phone"></span> Call {{ auth()->user()->phone ?? '???' }}</a>
+
                                 </div>
                             </div>
                         </div>
 
-                        Text Under Profile
+                        <ul class="nav nav-pills user-nav-pills" id="pills-tab" role="tablist">
+                            @foreach (auth()->user()->shops as $shop)
+                                <li class="nav-item" role="presentation">
+                                    <a href="{{ route('business_admin.businesses.show', $shop->slug) }}" class="nav-link"  aria-selected="true"><i data-feather="home"></i>
+                                        {{ $shop->name }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
 

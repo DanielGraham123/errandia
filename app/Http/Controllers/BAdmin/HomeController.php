@@ -138,14 +138,7 @@ class HomeController extends Controller
             return back()->withInput();
         }
         $business = new \App\Models\Shop();
-        $data = [
-            'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
-            'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone_code.$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
-            'whatsapp_phone'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'email'=>$request->email, 'status'=>$request->status, 'is_branch'=>$request->is_branch,
-            'fb_link'=>$request->fb_link, 'ins_link'=>$request->ins_link, 'manager_id'=>$request->manager, 'address'=>$request->address, 'parent_slug'=>$request->parent_slug??null
-        ];
-
-        $shop_data = ['name'=>$request->name, 'description'=>$request->description, 'category_id'=>$request->category, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
+        $shop_data = ['name'=>$request->name, 'description'=>$request->description, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
         'status'=>$request->status, 'is_branch'=>true, 'parent_slug'=>$request->parent_slug??null];
 
         // if(Shop::where(['name'=>$request->name])->count() > 0){
@@ -202,12 +195,8 @@ class HomeController extends Controller
         $business = \App\Models\Shop::whereSlug($slug)->first();
 
         if($business != null){
-            $data = [
-                'name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description, 'region_id'=>$request->region, 'user_id'=>auth()->id(), 
-                'town_id'=>$request->town, 'street_id'=>$request->street, 'website'=>$request->website, 'phone'=>$request->phone, 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
-                'whatsapp_phone'=>$request->whatsapp_phone, 'email'=>$request->email, 'is_branch'=>$request->is_branch, 
-            ];
-            $shop_data = ['name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
+            
+            $shop_data = ['name'=>$request->name, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
                     'status'=>false, ];
             if(Shop::where(['name'=>$request->name])->where('slug', '!=', $slug)->count() > 0){
                 session()->flash('error', 'Business with same name already exist');
@@ -234,9 +223,8 @@ class HomeController extends Controller
         $data['regions'] = Region::orderBy('name')->get();
         $data['categories'] = Category::orderBy('name')->get();
         $data['shop_subcats'] = $data['shop']->subCategories;
-        $data['sub_categories'] = $data['shop']->category->sibling_group;
-        $data['managers'] = $data['shop']->managers;
         $data['all_sub_categories'] = SubCategory::orderBy('name')->get();
+        $data['managers'] = $data['shop']->managers;
         // dd($data);
         return view('b_admin.businesses.show', $data);
     }
@@ -308,6 +296,8 @@ class HomeController extends Controller
         $data['scats'] = SubCategory::orderBy('name')->get();
         $data['biz_cats'] = $shop->subCategories()->pluck('sub_categories.id')->toArray();
         if(count($data['biz_cats']) == 0){
+            $data['action'] = "Next";
+            $data['info'] = "Shops must have atleast a category to post a product/service";
             return view('b_admin.businesses.categories.update', $data);
         }
         // $data['currencies'] = Currency::all();
@@ -931,6 +921,8 @@ class HomeController extends Controller
         $data['scats'] = SubCategory::orderBy('name')->get();
         $data['biz_cats'] = $shop->subCategories()->pluck('sub_categories.id')->toArray();
         if(count($data['biz_cats']) == 0){
+            $data['action'] = "Next";
+            $data['info'] = "Shops must have atleast a category to post a product/service";
             return view('b_admin.businesses.categories.update', $data);
         }
         // $data['currencies'] = Currency::all();
