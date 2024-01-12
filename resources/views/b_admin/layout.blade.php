@@ -154,12 +154,12 @@
                                 <div class="profile-name">
                                     <h3>{{ auth()->user()->name??'' }}</h3>
                                     <h6 class="text-content">{{ auth()->user()->email??'' }} <br> {{auth()->user()->address}} </h6>
+                                    <div class="my-2 d-flex">
+                                        <img class="mr-3" styl="height: 2rem; width: 2rem;" src="{{ asset('assets/badmin/icon-member.svg') }}">
+                                        <b class="">Member since {{ \Carbon\Carbon::parse(auth()->user()->created_at)->format('M Y') }}</b>
+                                    </div>
                                 </div>
 
-                                <div class="my-2 d-flex">
-                                    <img class="mr-3" styl="height: 2rem; width: 2rem;" src="{{ asset('assets/badmin/icon-member.svg') }}">
-                                    <b class="">Member since {{ \Carbon\Carbon::parse(auth()->user()->created_at)->format('M Y') }}</b>
-                                </div>
 
                                 <div class="my-2 d-flex justify-content-center">
                                     <a class="button-secondary " href="tel:{{ auth()->user()->phone ?? '' }}"><span class="fa fa-phone"></span> Call {{ auth()->user()->phone ?? '???' }}</a>
@@ -167,54 +167,16 @@
                             </div>
                         </div>
 
-                        <ul class="nav nav-pills user-nav-pills" id="pills-tab" role="tablist">
+                        <ul class="nav nav-pills user-nav-pills" id="pills-tab">
                             @foreach (auth()->user()->shops as $shop)
-                                <li class="nav-item" role="presentation">
-                                    <a href="{{ route('business_admin.businesses.show', $shop->slug) }}" class="nav-link"  aria-selected="true"><i data-feather="home"></i>
+                                <li class="nav-item">
+                                    <a href="{{ route('business_admin.businesses.show', $shop->slug) }}" class="nav-link fs-5"  aria-selected="true"><i data-feather="caret"></i>
                                         {{ $shop->name }}</a>
                                 </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
-
-                <div class="col-xxl-3 col-lg-4">
-                    <div class="dashboard-left-sidebar">
-                        <div class="close-button d-flex d-lg-none">
-                            <button class="close-sidebar">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                        <div class="profile-box">
-                            <div class="cover-image">
-                                <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
-                                    alt="">
-                            </div>
-
-                            <div class="profile-contain">
-                                <div class="profile-image">
-                                    <div class="position-relative">
-                                        <img src="{{ auth()->user()->photo == null ? asset('assets/public/assets/images/inner-page/user/1.jpg') : asset('uploads/user_photos/'.auth()->user()->photo) }}"
-                                            class="blur-up lazyload update_img" alt="">
-                                        <div class="cover-icon">
-                                            <i class="fa-solid fa-pen">
-                                                <input type="file" onchange="readURL(this,0)">
-                                            </i>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="profile-name">
-                                    <h3>{{ auth()->user()->name??'profile name' }}</h3>
-                                    <h6 class="text-content">{{ auth()->user()->email??'authuser@email.ext' }}</h6>
-                                </div>
-                            </div>
-                        </div>
-
-                        Text Under Profile
-                    </div>
-                </div>
-
 
 
                 <div class="col-xxl-9 col-lg-8">
