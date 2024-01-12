@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="{{ asset('assets/quill-bs4') }}/css/quill.css">
     <link rel="stylesheet" href="{{ asset('assets/quill-bs4') }}/css/quill.snow.css">
     <link rel="stylesheet" href="{{ asset('assets/quill-bs4') }}/css/quill.bubble.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> --}}
 
     {{-- <link rel="stylesheet" href="{{asset('richtexteditor/rte_theme_default.css')}}" />
     <script type="text/javascript" src="{{asset('/richtexteditor/rte.js')}}"></script>
@@ -49,6 +49,15 @@
 
     {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>tinymce.init({ selector:'textarea#text-editor1' });</script> --}}
+
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+    tinymce.init({
+        selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
+        plugins: 'powerpaste advcode table lists checklist',
+        toolbar: 'undo redo | blocks| bold italic | bullist numlist checklist | code | table'
+    });
+    </script>
 
 
     @php
@@ -678,7 +687,7 @@
 <script src="{{ asset('assets/public/assets/js/bootstrap/popper.min.js') }}"></script>
 <script src="{{ asset('assets/quill-bs4/sprite.svg.js') }}"></script>
 <script src="{{ asset('assets/quill-bs4/bootstrap-quill.js') }}"></script> --}}
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
@@ -750,7 +759,7 @@
         theme: 'snow',
         placeholder: "Write something..."
     });
-</script>
+</script> --}}
 
 
 <script>
