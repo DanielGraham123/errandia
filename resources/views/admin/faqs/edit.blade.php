@@ -13,18 +13,11 @@
                         <label class="text-info d-block">Title</label>
                         <input class="form-control" name="title" placeholder="Enter title here" value="{{ old($item->title, 'title') }}">
                     </div>
-                    <div class="my-2">
-                        <label class="text-info d-block">Content</label>
-
-                        <textarea class="form-control adv-editor" name="content" value="{{ old($item->content, 'content') }}" placeholder="Enter content here" id="quill_editor_1"></textarea>
-                    </div>
-                    <div class="my-2 d-flex justify-content-end">
-                        <input type="submit" class="btn btn-primary btn-xs" value="save">
-                    </div>
+                    <input type="hidden" name="content" id="editor_field">
+                    
                 </form>
                 <div class="my-2">
                     <label class="text-info d-block">Content</label>
-                    <input type="hidden" name="content" id="editor_field">
                     <div class="form-control adv-editor" style="height: 13rem;" id="quill_editor_1">
                         {{ old($item->content, 'content') }}
                     </div>
