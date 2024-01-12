@@ -169,8 +169,8 @@
 
                         <ul class="nav nav-pills user-nav-pills" id="pills-tab">
                             @foreach (auth()->user()->shops as $shop)
-                                <li class="nav-item">
-                                    <a href="{{ route('business_admin.businesses.show', $shop->slug) }}" class="nav-link fs-5"  aria-selected="true"><i data-feather="caret"></i>
+                                <li class="nav-item py-0">
+                                    <a href="{{ route('business_admin.businesses.show', $shop->slug) }}" class="nav-link py-1"  aria-selected="true"><i data-feather="caret"></i>
                                         {{ $shop->name }}</a>
                                 </li>
                             @endforeach
