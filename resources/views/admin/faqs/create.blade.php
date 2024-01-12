@@ -12,7 +12,7 @@
                     </div>
                     <div class="my-2">
                         <label class="text-info d-block">Content</label>
-                        <textarea class="form-control adv-editor" name="content" value="{{ old('content') }}" placeholder="Enter content here" id="adv-editor"></textarea>
+                        <textarea class="form-control adv-editor" name="content" value="{{ old('content') }}" placeholder="Enter content here" id="quill_editor_1"></textarea>
                     </div>
                     <div class="mt-4 d-flex justify-content-end">
                         <input type="submit" class="button-secondary" value="Publish">
