@@ -6,29 +6,18 @@
                 <h5>Create New FAQ Item</h5><hr>
                 <form method="POST">
                     @csrf
-                    <div class="my-2">
-                        <label class="text-info d-block">Title</label>
-                        <input class="form-control" name="title" placeholder="Enter title here" value="{{ old('title') }}">
-                    </div>
-                    <div class="my-2">
-                        <label class="text-info d-block">Content</label>
-                        <textarea class="form-control adv-editor" name="content" value="{{ old('content') }}" placeholder="Enter content here" id="quill_editor_1"></textarea>
-
-                    </div>
                     <div class="mt-4 d-flex justify-content-end">
                         <input type="submit" class="button-secondary" value="Publish">
                     </div>
                     <div class="my-2">
                         <label class="text-info d-block">Title</label>
-                        <input type="hidden" name="content" id="editor_field">
-                        <div class="form-control adv-editor" style="height: 13rem;" id="quill_editor_1">
-                            {{ old('content') }}
-                        </div>
+                        <input class="form-control" name="title" placeholder="Enter title here" value="{{ old('title') }}">
                     </div>
+                    <input type="hidden" name="content" id="editor_field">
                 </form>
+                
                 <div class="my-2">
                     <label class="text-info d-block">Content</label>
-                    <input type="hidden" name="content" id="editor_field">
                     <div class="form-control adv-editor" style="height: 13rem;" id="quill_editor_1">
                         {{ old('content') }}
                     </div>
