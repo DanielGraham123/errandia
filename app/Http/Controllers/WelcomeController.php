@@ -169,11 +169,13 @@ class WelcomeController extends Controller
          foreach($request['images'] as $image)
          {
              $imageName = time().'.'.$image->getClientOriginalName();
-             $image->move(public_path(self::ERRAND_IMAGE_PATH.'/'.$errand->title.'/images/'), $imageName);
+             $image->move(public_path(self::ERRAND_IMAGE_PATH), $imageName);
+            //  $image->move(public_path(self::ERRAND_IMAGE_PATH.'/'.$errand->title.'/images/'), $imageName);
 
              ErrandImage::create([
                  'item_quote_id' => $errand->id,
-                 'image'         => self::ERRAND_IMAGE_PATH.'/'.$errand->title.'/images/'.$imageName,
+                 'image'         => $imageName,
+                //  'image'         => self::ERRAND_IMAGE_PATH.'/'.$errand->title.'/images/'.$imageName,
                  'created_at'    => Carbon::now(),
                  'updated_at'    => Carbon::now()
              ]);
@@ -260,7 +262,7 @@ class WelcomeController extends Controller
     public function view_errand(Request $request)
     {
         $errand = Errand::whereSlug($request->slug)->first();
-//        dd($errand->getSubcategories());
+        //dd($errand->getSubcategories());
         $data['errand'] = $errand;
         if(auth()->user() != null)
             return view('public.errands.show', $data);
@@ -418,5 +420,11 @@ class WelcomeController extends Controller
         }
         // dd($data);
         return view('public.category_items', $data);
+    }
+
+    public function show_category($slug)
+    {
+        # code...
+        return $this->category_products($slug);
     }
 }

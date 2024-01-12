@@ -12,6 +12,7 @@
                     </div>
                     <div class="my-2">
                         <label class="text-info d-block">Content</label>
+
                         <textarea class="form-control adv-editor" name="content" value="{{ old($item->content, 'content') }}" placeholder="Enter content here" id="quill_editor_1"></textarea>
                     </div>
                     <div class="my-2 d-flex justify-content-end">
@@ -23,7 +24,7 @@
     </div>
 @endsection
 @section('script')
-    <script>
+    {{-- <script>
         new RichTextEditor('adv-editor')
-    </script>
+    </script> --}}
 @endsection

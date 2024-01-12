@@ -113,7 +113,7 @@
                                     <div class="product-header">
                                         <div class="product-image">
                                             <a href="{{ route('public.business.show', ['slug' => $business->slug]) }}">
-                                                <img src="{{ asset('assets/images/nishang.jpg') }}" class="img-fluid blur-up lazyloaded" alt="">
+                                                <img src="{{ $business->image_path == null ? asset('assets/images/nishang.jpg') : asset('uploads/logos/'.$business->image_path) }}" class="img-fluid blur-up lazyloaded" alt="">
                                             </a>
                                         </div>
                                     </div>
