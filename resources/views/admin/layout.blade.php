@@ -37,21 +37,16 @@
     <link href="{{ asset('tel_input_build/css/intlTelInput.css') }}" rel="stylesheet">
 
 
+    <link rel="stylesheet" href="{{ asset('assets/quill-bs4') }}/css/quill.css">
+    <link rel="stylesheet" href="{{ asset('assets/quill-bs4') }}/css/quill.snow.css">
+    <link rel="stylesheet" href="{{ asset('assets/quill-bs4') }}/css/quill.bubble.css">
     {{-- <link rel="stylesheet" href="{{asset('richtexteditor/rte_theme_default.css')}}" />
     <script type="text/javascript" src="{{asset('/richtexteditor/rte.js')}}"></script>
     <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script> --}}
 
-    {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-    tinymce.init({
-        selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
-        plugins: 'powerpaste advcode table lists checklist',
-        toolbar: 'undo redo | blocks| bold italic | bullist numlist checklist | code | table'
-    });
-    </script> --}}
 
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>tinymce.init({ selector:'textarea#text-editor1' });</script>
+    {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>tinymce.init({ selector:'textarea#text-editor1' });</script> --}}
 
 
     @php
@@ -676,6 +671,84 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" ></script>
 <script src="{{ asset('tel_input_build/js/intlTelInput.min.js') }}"></script>
 <script src="{{ asset('tel_input_build/js/intlTelInput-jquery.min.js') }}"></script>
+
+
+<script src="{{ asset('assets/public/assets/js/bootstrap/popper.min.js') }}"></script>
+<script src="{{ asset('assets/quill-bs4/sprite.svg.js') }}"></script>
+<script src="{{ asset('assets/quill-bs4/bootstrap-quill.js') }}"></script>
+
+
+<script>
+    var toolbarOptions = [
+        [{
+        'header': [1, 2, 3, 4, 5, 6, false]
+        }],
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+        ['blockquote', 'code-block'],
+
+        [{
+        'header': 1
+        }, {
+        'header': 2
+        }], // custom button values
+        [{
+        'list': 'ordered'
+        }, {
+        'list': 'bullet'
+        }],
+        [{
+        'script': 'sub'
+        }, {
+        'script': 'super'
+        }], // superscript/subscript
+        [{
+        'indent': '-1'
+        }, {
+        'indent': '+1'
+        }], // outdent/indent
+        [{
+        'direction': 'rtl'
+        }], // text direction
+
+        [{
+        'size': ['small', false, 'large', 'huge']
+        }], // custom dropdown
+
+        [{
+        'color': []
+        }, {
+        'background': []
+        }], // dropdown with defaults from theme
+        [{
+        'font': []
+        }],
+        [{
+        'align': []
+        }],
+        ['link', 'image'],
+
+        ['clean'] // remove formatting button
+    ];
+
+    var quillFull = new Quill('#quill_editor_1', {
+        modules: {
+            toolbar: toolbarOptions,
+            autoformat: true
+        },
+        theme: 'snow',
+        placeholder: "Write something..."
+    });
+    var quillFull = new Quill('#quill_editor_2', {
+        modules: {
+            toolbar: toolbarOptions,
+            autoformat: true
+        },
+        theme: 'snow',
+        placeholder: "Write something..."
+    });
+</script>
+
+
 <script>
     $(function () {
         $('.table , .adv-table table').DataTable(
