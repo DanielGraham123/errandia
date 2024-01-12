@@ -13,20 +13,19 @@
                         <label class="text-info d-block">Title</label>
                         <input class="form-control" name="title" placeholder="Enter title here" value="{{ old('title') }}">
                     </div>
-                    <input type="hidden" name="content" id="editor_field">
+                    <div class="my-2">
+                        <label class="text-info d-block">Content</label>
+                        <textarea class="form-control adv-editor" name="content" style="height: 13rem;" id="myeditorinstance">
+                            {{ old('content') }}
+                        </textarea>
+                    </div>
                 </form>
                 
-                <div class="my-2">
-                    <label class="text-info d-block">Content</label>
-                    <div class="form-control adv-editor" style="height: 13rem;" id="quill_editor_1">
-                        {{ old('content') }}
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 @endsection
-@section('script')
+{{-- @section('script')
     <script>
         $('#editor-form').on('submit', function(){
             $(this).preventDefault();
@@ -34,4 +33,4 @@
             $(this).submit();
         })
     </script>
-@endsection
+@endsection --}}
