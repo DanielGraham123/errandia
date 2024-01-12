@@ -125,7 +125,7 @@
     <section class="user-dashboard-section section-b-space">
         <div class="container-fluid-lg">
             <div class="row">
-                {{-- <div class="col-xxl-3 col-lg-4">
+                <div class="col-xxl-3 col-lg-4">
                     <div class="dashboard-left-sidebar">
                         <div class="close-button d-flex d-lg-none">
                             <button class="close-sidebar">
@@ -176,7 +176,7 @@
                             @endforeach
                         </ul>
                     </div>
-                </div> --}}
+                </div>
 
                 <div class="col-xxl-3 col-lg-4">
                     <div class="dashboard-left-sidebar">
