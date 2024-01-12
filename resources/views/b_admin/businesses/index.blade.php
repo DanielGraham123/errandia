@@ -15,7 +15,7 @@
                         {{-- @if(isset($shop))<a href="{{ route('business_admin.products.create', ["shop_slug" =>$shop->slug]) }}" class="dt-button buttons-collection buttons-colvis btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-plus bigger-110 blue"></i> <span class="">Add</span></span></a>@endif --}}
                         <a href="{{ Request::url() }}?action=all" class="dt-button buttons-print btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-bars bigger-110 grey"></i> <span class="">All</span></span></a>
                         <a href="{{ Request::url() }}?action=trash" class="dt-button buttons-print btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-trash bigger-110 grey"></i> <span class="">Trashed</span></span></a>
-                        <a href="{{ route('business_admin.businesses.create') }}" class="dt-button buttons-csv buttons-html5 btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-plus bigger-110 orange"></i> <span class="">AdNew Business</span></span></a>
+                        <a href="{{ route('business_admin.businesses.create') }}" class="dt-button buttons-csv buttons-html5 btn btn-white btn-primary btn-bold" tabindex="0" aria-controls="dynamic-table" data-original-title="" title=""><span><i class="fa fa-plus bigger-110 orange"></i> <span class="">Add New Business</span></span></a>
                     </div>
                 </div>
             </div>

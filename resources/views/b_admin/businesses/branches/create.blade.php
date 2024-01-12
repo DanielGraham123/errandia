@@ -55,12 +55,12 @@
                             <select class="form-control input-sm" style="padding-left: 3.5rem;" name="phone_country_code" required>
                                 <option>Country</option>
                                 @foreach (config('country-phone-codes') as $phcode)
-                                    <option value="{{ $phcode['code'] }}" {{ old('phone_country_code', $shop->contactInfo->phone_country_code) == $phcode['code'] ? 'selected' : '' }}>{{ $phcode['country'] }} ( {{ $phcode['code'] }} )</option>
+                                    <option value="{{ $phcode['code'] }}" {{ old('phone_country_code') == $phcode['code'] ? 'selected' : '' }}>{{ $phcode['country'] }} ( {{ $phcode['code'] }} )</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="w-50">
-                            <input type="tel" class="form-control input-sm" name="phone" required value="{{ old('phone', $shop->contactInfo->phone) }}">
+                            <input type="tel" class="form-control input-sm" name="phone" required value="{{ old('phone') }}">
                         </div>
                     </div>
                 </div>
@@ -72,12 +72,12 @@
                             <select class="form-control input-sm" style="padding-left: 3.5rem;" name="whatsapp_country_code" required>
                                 <option>Country</option>
                                 @foreach (config('country-phone-codes') as $phcode)
-                                    <option value="{{ $phcode['code'] }}" {{ old('whatsapp_country_code', $shop->contactInfo->whatsapp_country_code) == $phcode['code'] ? 'selected' : '' }}>{{ $phcode['country'] }} ( {{ $phcode['code'] }} )</option>
+                                    <option value="{{ $phcode['code'] }}" {{ old('whatsapp_country_code') == $phcode['code'] ? 'selected' : '' }}>{{ $phcode['country'] }} ( {{ $phcode['code'] }} )</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="w-50">
-                            <input type="tel" class="form-control input-sm" name="whatsapp" required value="{{ old('whatsapp', $shop->contactInfo->whatsapp) }}">
+                            <input type="tel" class="form-control input-sm" name="whatsapp" required value="{{ old('whatsapp') }}">
                         </div>
                     </div>
                 </div>
