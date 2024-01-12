@@ -66,7 +66,7 @@
                                     </div>
                                     <h5 class="card-title text-h6">Manage Products</h5>
                                     <p class="card-text text-body" style="font-weight: 500;">Create a shop and start selling online</p>
-                                    <a class="button-secondary my-3 mx-auto" href="">Manage Products</a>
+                                    <a class="button-secondary my-3 mx-auto" href="{{ route('business_admin.products.index') }}">Manage Products</a>
                                 </div>
                             </div>
                         @endif

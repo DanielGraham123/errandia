@@ -137,6 +137,7 @@
                                 <div class="profile-image">
                                     <div class="position-relative">
                                         <img src="{{ (auth()->user()->photo??null) == null ? asset('assets/public/assets/images/inner-page/user/1.jpg') : asset('uploads/user_photos/'.auth()->user()->photo) }}"
+
                                             class="blur-up lazyload update_img" alt="">
                                         <div class="cover-icon">
                                             <i class="fa-solid fa-pen">
@@ -158,6 +159,7 @@
 
                                 <div class="my-2 d-flex justify-content-center">
                                     <a class="button-secondary " href="tel:{{ auth()->user()->phone ?? '' }}"><span class="fa fa-phone"></span> Call {{ auth()->user()->phone ?? '???' }}</a>
+
                                 </div>
                             </div>
                         </div>

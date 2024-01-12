@@ -125,7 +125,7 @@
     <section class="user-dashboard-section section-b-space">
         <div class="container-fluid-lg">
             <div class="row">
-                <div class="col-xxl-3 col-lg-4">
+                {{-- <div class="col-xxl-3 col-lg-4">
                     <div class="dashboard-left-sidebar">
                         <div class="close-button d-flex d-lg-none">
                             <button class="close-sidebar">
@@ -175,6 +175,43 @@
                                 </li>
                             @endforeach
                         </ul>
+                    </div>
+                </div> --}}
+
+                <div class="col-xxl-3 col-lg-4">
+                    <div class="dashboard-left-sidebar">
+                        <div class="close-button d-flex d-lg-none">
+                            <button class="close-sidebar">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="profile-box">
+                            <div class="cover-image">
+                                <img src="{{ asset('assets/public/assets/images/inner-page/cover-img.jpg') }}" class="img-fluid blur-up lazyload"
+                                    alt="">
+                            </div>
+
+                            <div class="profile-contain">
+                                <div class="profile-image">
+                                    <div class="position-relative">
+                                        <img src="{{ auth()->user()->photo == null ? asset('assets/public/assets/images/inner-page/user/1.jpg') : asset('uploads/user_photos/'.auth()->user()->photo) }}"
+                                            class="blur-up lazyload update_img" alt="">
+                                        <div class="cover-icon">
+                                            <i class="fa-solid fa-pen">
+                                                <input type="file" onchange="readURL(this,0)">
+                                            </i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="profile-name">
+                                    <h3>{{ auth()->user()->name??'profile name' }}</h3>
+                                    <h6 class="text-content">{{ auth()->user()->email??'authuser@email.ext' }}</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        Text Under Profile
                     </div>
                 </div>
 

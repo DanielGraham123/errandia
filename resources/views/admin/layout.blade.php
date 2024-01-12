@@ -44,6 +44,7 @@
     <script type="text/javascript" src="{{asset('/richtexteditor/rte.js')}}"></script>
     <script type="text/javascript" src="{{asset('/richtexteditor/plugins/all_plugins.js')}}"></script> --}}
 
+
     {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>tinymce.init({ selector:'textarea#text-editor1' });</script> --}}
 
