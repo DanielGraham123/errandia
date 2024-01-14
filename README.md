@@ -24,3 +24,12 @@ Errandia is a platform that allows you search and fine any product, services fro
 - run "php artisan key:generate" to generate an app_key in the .env file
 - Connect to MySQL and create the database
 - Edit the .env file
+- run the next command to generate encryption keys : $ php artisan passport:install
+
+
+## Running  Errandia locally 
+
+ - open your terminal
+ - navigate into main directory project 
+ - add execution permission to the local_run.sh file :  $ chmod +x local_run.sh
+ - then run the application : $ bash local_run.sh

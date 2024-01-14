@@ -30,6 +30,8 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     var $current_accademic_year;
+    public $validations_errors = [];
+
     public function __construct()
     {
         # code...
@@ -104,6 +106,32 @@ class Controller extends BaseController
         $data['title'] = "Software Policies";
        $data['policy'] = \App\Models\PrivacyPolicy::whereSlug($slug)->first();
         return view('public.policies', $data);
+    }
+
+    /**
+     * @param $inputs
+     * @param $rules
+     * @return void
+     */
+
+    public function validate($inputs = [], $rules = [])
+    {
+        $validator = Validator::make($inputs, $rules);
+        if ($validator->fails()) {
+            $this->validations_errors = $validator->errors();
+        }
+    }
+
+    public function build_response($response, $message = '', $code  = 200, $data = [])
+    {
+        return
+            $response->json(
+                [
+                    'message' => $message,
+                    'data'    => empty($this->validations_errors) ? $data : $this->validations_errors,
+                ],
+                $code
+            );
     }
 
 }

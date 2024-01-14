@@ -37,3 +37,4 @@ yarn-error.log
 .idea/blade.xml
 .idea/laravel-idea.xml
 composer.lock
+public/mix-manifest.json

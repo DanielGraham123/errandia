@@ -13,73 +13,87 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
+use function PHPUnit\Framework\isEmpty;
+
 class AuthController extends Controller
 {
     public function verifyPhone(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $this->validate($request->all(), [
             'phone' => 'required',
         ]);
 
-        if($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
+        if(!empty($this->validations_errors)) {
+            return $this->build_response(response(), 'Error found when verifying the phone number', 400);
         }
 
         $user = User::where('phone', $request->phone)->first();
+
         if ($user) {
-            return response()->json([
-                'data' => [
+            return $this->build_response(
+                response(), 'Phone number exist', 200,
+                [
                     'phone' => $request->phone,
                     'name' => $user->name ?? ''
-                ],
-                'message' => 'Phone number exist']);
+                ]
+            );
+
         } else {
-            return response()->json(['message' => "No account exists with this phone number"], 400);
+            return $this->build_response(response(), "No account exists with this phone number", 400);
         }
     }
 
     public function phoneLogin(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $this->validate($request->all(), [
             'phone' => 'required',
         ]);
 
-        if($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
+        if(!empty($this->validations_errors)) {
+            return $this->build_response(response(), 'Invalid phone number', 400);
         }
 
         $user = User::where('phone', $request->phone)->first();
+
         if ($user) {
-            $token = $user->createToken('token')->accessToken;
-            return response()->json(['data' => [
-                'token' => $token,
-                'user' => new UserResource($user),
-            ]]);
+            return $this->build_response(
+                response(), 'user found', 200,
+                [
+                    'token' => $user->createToken('token')->accessToken,
+                    'user' => new UserResource($user),
+                ]
+            );
+
         } else {
-            return response()->json(['message' => "Invalid phone number"], 400);
+            return $this->build_response(response(), "Invalid phone number", 400);
         }
     }
 
     public function emailLogin(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string',
+        $this->validate($request->all(), [
+            'email' => 'required',
             'password' => 'required'
         ]);
 
-        if($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
+        if(!empty($this->validations_errors)) {
+            return $this->build_response(response(), "Invalid email or password", 400);
         }
 
         $user = User::where('email', $request->email)->first();
+
         if ($user && Hash::check($request->password, $user->password)) {
-            $token = $user->createToken('token')->accessToken;
-            return response()->json(['data' => [
-                'token' => $token,
-                'user' => new UserResource($user),
-            ]]);
+            return $this->build_response(
+                response(), 'user found', 200,
+                [
+                    'token' => $user->createToken('token')->accessToken,
+                    'user' => new UserResource($user),
+                ]
+            );
+
+
         } else {
-            return response()->json(['message' => "Invalid email or password"], 400);
+            return $this->build_response(response(), "Invalid email or password", 400);
         }
     }
     
@@ -89,21 +103,22 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:200', 'min:3'],
             'email' => ['nullable', 'string', 'email', 'unique:users,email'],
             'phone' => ['required', 'unique:users,phone'],
-            'password' => ['required','string', 'min:10', 'max:15', 
+            'password' => ['required','string', 'same:confirm_password', 'min:10', 'max:15',
                 Password::min(8)
                 ->letters()  // Ensure at least one letter
                 ->mixedCase()   // Ensure at least one uppercase and one lowercase letter
                 ->numbers()  // Ensure at least one number
                 ->symbols("~`!@#$%^&*()_-+={[}]|\:;'<,>.?/")  // Ensure only allowed special characters
                 ->uncompromised()
-            ],
+            ]
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $this->validate($request->all(), $rules);
 
-        if($validator->fails()) {
-            return response()->json(['message' => $validator->errors()->first()], 400);
+        if(!empty($this->validations_errors)) {
+            return $this->build_response(response(), 'Registration failed', 400);
         }
+
 
         try {
             $user = DB::transaction(function () use ($request) {
@@ -122,13 +137,18 @@ class AuthController extends Controller
                 $user->save();
                 return $user;
             });
-            $token = $user->createToken('token')->accessToken;
-            return response()->json(['data' => [
-                'token' => $token,
-                'user' => new UserResource($user),
-            ]]);
+
+            return  $this->build_response(
+                response(), 'Account created', 200,
+                [
+                    'token' => $user->createToken('token')->accessToken,
+                    'user' => new UserResource($user),
+                ]
+            );
+
         } catch(\Exception $e) {
-            return response()->json(['error' => $e->getMessage(), 'message' => "Sorry, We encountered an error."], 400);
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), 'Registration failed : '. $e->getMessage(), 400);
         }
     }
 }
