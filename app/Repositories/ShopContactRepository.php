@@ -5,7 +5,7 @@ use App\Http\Resources\ShopContactInfoResource;
 use App\Models\ShopContactInfo;
 use Illuminate\Support\Facades\DB;
 
-class ShopRepository {
+class ShopContactRepository {
 
     /**
      * get all products

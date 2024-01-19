@@ -31,7 +31,7 @@ class ReviewRepository {
     /**
      * get a product or service by slug
      */
-    public function getBySlug($id)
+    public function getById($id)
     {
         # read the record associated to a given slug
         $review = Review::find($id);

@@ -30,7 +30,7 @@ class ShopSubscriptionRepository {
     /**
      * get a product or service by slug
      */
-    public function getBySlug($id)
+    public function getById($id)
     {
         # read the record associated to a given slug
         $shopSubscription = ShopSubscription::find($id);

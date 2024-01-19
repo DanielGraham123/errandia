@@ -11,16 +11,16 @@ class ProductRepository {
 
     /**
      * get all products
-     * @param bool $service: nullable, specify the number of records to take
+     * @param bool $service: nullable, if true|1, returns services only. if false|0, returns products only. otherwise return both
      * @param int $size: nullable, specify the number of records to take
-     * @param string $category_slug: nullable, category slug to query products per category
+     * @param string $category_id: nullable, category id to query products per category
      */
-    public function get($size = null, $category_slug = null, $service = null)
+    public function get($size = null, $category_id = null, $service = null)
     {
         # code...
         $items = [];
-        if($category_slug != null){
-            $category = Category::whereSlug($category_slug)->first();
+        if($category_id != null){
+            $category = Category::find($category_id);
             
             $builder = $service == null ? 
                 $category->items()->orderBy('id', 'DESC') : 

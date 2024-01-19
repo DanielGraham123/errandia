@@ -13,14 +13,14 @@ class ShopRepository {
     /**
      * get all products
      * @param int $size: nullable, specify the number of records to take
-     * @param string $category_slug: nullable, category slug to query products per category
+     * @param string $category_id: nullable, category id to query products per category
      */
-    public function get($size = null, $category_slug = null)
+    public function get($size = null, $category_id = null)
     {
         # code...
-        $builder = $category_slug == null ?
+        $builder = $category_id == null ?
             Shop::orderBy('id', 'desc') : 
-            Category::whereSlug($category_slug)->first()->shops()->orderBy('id', 'desc') ?? null;
+            Category::find($category_id)->shops()->orderBy('id', 'desc') ?? null;
 
         if($builder == null)
             throw new \Exception("Category does not exist");
