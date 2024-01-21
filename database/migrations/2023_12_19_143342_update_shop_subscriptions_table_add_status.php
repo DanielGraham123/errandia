@@ -14,9 +14,9 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
     public function up()
     {
         //
-        Schema::table('shop_subscriptions', function(Blueprint $table){
-            $table->boolean('status')->default(0);
-        });
+        //Schema::table('shop_subscriptions', function(Blueprint $table){
+          //  $table->boolean('status')->default(0);
+        //});
     }
 
     /**
