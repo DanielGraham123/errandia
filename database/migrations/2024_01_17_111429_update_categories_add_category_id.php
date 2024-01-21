@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateShopSubscriptionsTableAddStatus extends Migration
+class UpdateCategoriesAddCategoryId extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
     public function up()
     {
         //
-        if(!Schema::hasColumn('shops_subscriptions', 'status')){
-            Schema::table('shops_subscriptions', function(Blueprint $table){
-                $table->boolean('status')->default(0);
+        if(!Schema::hasColumn('categories', 'category_id')){
+            Schema::table('categories', function(Blueprint $table){
+                $table->integer('category_id')->default(0);
             });
         }
     }
@@ -28,8 +28,6 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
      */
     public function down()
     {
-        Schema::table('shop_subscriptions', function(Blueprint $table){
-            $table->dropColumn('status');
-        });
+        //
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\ProductImageUploadController;
 use App\Http\Controllers\ProductUploadController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,16 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
     Route::post('/products/{id}/images/upload', [ProductUploadController::class, 'uploadProductGallery']);
     Route::delete('/product/{id}/images/delete', [ProductUploadController::class, 'removeProductImage']);
-     Route::post('save_images/{id}', [ProductImageUploadController::class, 'uploadProductGallery']);
+    Route::post('save_images/{id}', [ProductImageUploadController::class, 'uploadProductGallery']);
     Route::delete('remove_image/{product_id}/', [ProductImageUploadController::class, 'removeProductImage']);
+
+    Route::prefix('categories')->group(function(){
+        Route::get('/', [CategoryController::class, 'getAll']);
+        Route::get('/tree', [CategoryController::class, 'getTree']);
+        Route::post('/', [CategoryController::class, 'save']);
+        Route::get('/{slug}', [CategoryController::class, 'getBySlug']);
+        Route::get('/{slug}/children', [CategoryController::class, 'getWithChildren']);
+        Route::put('/{slug}', [CategoryController::class, 'update']);
+        Route::delete('/{slug}', [CategoryController::class, 'delete']);
+    });
 });

@@ -19,4 +19,22 @@ class Category extends Model
     {
         return $this->image_path ? asset('assets/admin/icons/'. $this->image_path. '.svg') : '';
     }
+
+    public function sliders()
+    {
+        # code...
+        return $this->hasMany(Slider::class, 'category_id');
+    }
+
+    public function shops()
+    {
+        # code...
+        return $this->belongsToMany(Shop::class, 'shop_categories', 'shop_id', 'sub_category_id');
+    }
+
+    public function items()
+    {
+        # code...
+        return $this->belongsToMany(Shop::class, 'item_categories', 'item_id', 'sub_category_id');
+    }
 }
