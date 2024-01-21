@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\ShopSubscriptionRepository;
+use Exception;
 use \Illuminate\Support\Facades\Http;
 
 class ShopSubscriptionService{
@@ -43,9 +44,13 @@ class ShopSubscriptionService{
         return $this->shopSubscriptionRepository->update($id, $data);
     }
 
-    public function delete($id)
+    public function delete($id, $user_id)
     {
         # code...
+        $shop = $this->shopSubscriptionRepository->getById($id)->shop;
+        if($user_id != $shop->user_id)
+            throw new Exception("Permission denied. Can only be deleted by the shop owner.");
+        return $this->shopSubscriptionRepository->delete($id);
     }
 
 }
