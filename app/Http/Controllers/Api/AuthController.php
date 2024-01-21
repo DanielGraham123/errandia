@@ -5,18 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Models\UserProfile;
-use App\Models\UserType;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
-use function PHPUnit\Framework\isEmpty;
 
 class AuthController extends Controller
 {
+
+    protected $userService;
+
+    public function __construct(UserService  $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function verifyPhone(Request $request)
     {
         $this->validate($request->all(), [
@@ -27,19 +31,17 @@ class AuthController extends Controller
             return $this->build_response(response(), 'Error found when verifying the phone number', 400);
         }
 
-        $user = User::where('phone', $request->phone)->first();
-
+        $user = $this->userService->findAndSendOTP($request->phone);
         if ($user) {
             return $this->build_response(
-                response(), 'Phone number exist', 200,
+                response(), 'A token has been sent to your phone number', 200,
                 [
-                    'phone' => $request->phone,
-                    'name' => $user->name ?? ''
+                    'uuid' => $user->uuid
                 ]
             );
 
         } else {
-            return $this->build_response(response(), "No account exists with this phone number", 400);
+            return $this->build_response(response(), "we can not identify", 400);
         }
     }
 
@@ -66,6 +68,18 @@ class AuthController extends Controller
 
         } else {
             return $this->build_response(response(), "Invalid phone number", 400);
+        }
+    }
+
+    public function verifyLoginOTP(Request $request)
+    {
+        $this->validate($request->all(), [
+            'otp_code' => 'required',
+            'uuid' => 'required',
+        ]);
+
+        if(!empty($this->validations_errors)) {
+            return $this->build_response(response(), 'code is not correct', 400);
         }
     }
 
