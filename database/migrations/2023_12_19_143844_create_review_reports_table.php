@@ -13,12 +13,14 @@ class CreateReviewReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('review_reports', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('review_id');
-            $table->text('reason');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('review_reports')){
+            Schema::create('review_reports', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('review_id');
+                $table->text('reason');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

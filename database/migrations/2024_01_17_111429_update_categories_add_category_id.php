@@ -28,6 +28,10 @@ class UpdateCategoriesAddCategoryId extends Migration
      */
     public function down()
     {
-        //
+        if(Schema::hasColumn('categories', 'category_id')){
+            Schema::table('categories', function(Blueprint $table){
+                $table->dropColumn('category_id');
+            });
+        }
     }
 }
