@@ -13,9 +13,11 @@ class DropPasswordResetTypeColumn extends Migration
      */
     public function up()
     {
-        Schema::table('password_resets', function (Blueprint $table){
-            $table->dropColumn('type');
-        });
+        if(Schema::hasColumn('password_resets', 'type')) {
+            Schema::table('password_resets', function (Blueprint $table) {
+                $table->dropColumn('type');
+            });
+        }
     }
 
     /**

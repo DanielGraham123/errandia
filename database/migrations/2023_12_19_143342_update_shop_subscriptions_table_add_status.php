@@ -28,8 +28,10 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
      */
     public function down()
     {
-        Schema::table('shop_subscriptions', function(Blueprint $table){
-            $table->dropColumn('status');
-        });
+        if(Schema::hasColumn('shop_subscriptions', 'status')) {
+            Schema::table('shop_subscriptions', function (Blueprint $table) {
+                $table->dropColumn('status');
+            });
+        }
     }
 }

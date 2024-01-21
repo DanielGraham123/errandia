@@ -13,9 +13,11 @@ class AddPasswordResetExpireAtColumn extends Migration
      */
     public function up()
     {
-        Schema::table('password_resets', function (Blueprint $table) {
-            $table->timestamp('expire_at');
-        });
+        if(!Schema::hasColumn('password_resets', 'expire_at')) {
+            Schema::table('password_resets', function (Blueprint $table) {
+                $table->timestamp('expire_at');
+            });
+        }
     }
 
     /**
@@ -25,6 +27,8 @@ class AddPasswordResetExpireAtColumn extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('password_resets', function(Blueprint $table){
+            $table->dropColumn('expire_at');
+        });
     }
 }
