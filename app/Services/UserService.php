@@ -27,7 +27,7 @@ class UserService {
                 $user->id,
                 (string) Uuid::uuid4(),
                 Random::generate(4, '0-9'),
-                Carbon::now()->addMinutes(10)
+                Carbon::now()->addMinutes(120)
             );
 
             $sent =  $this->smsService->send($user->phone,
@@ -44,5 +44,26 @@ class UserService {
 
         return null;
     }
+
+    /**
+     * Validate the OTP code and return the user object
+     *
+     * @param $uuid
+     * @param $code
+     * @return User|null
+     */
+    public function checkOTP($uuid, $code)
+    {
+        logger()->info("check otp " . $code.  " with uuid : " . $uuid);
+
+        $user_otp = $this->userOtpRepository->find($uuid, $code);
+        if($user_otp) {
+            $this->userOtpRepository->update($user_otp);
+            return $user_otp->user();
+        }
+
+        return null;
+    }
+
 
 }

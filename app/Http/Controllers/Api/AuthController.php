@@ -21,7 +21,7 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
-    public function verifyPhone(Request $request)
+    public function loginWithPhone(Request $request)
     {
         $this->validate($request->all(), [
             'phone' => 'required',
@@ -41,49 +41,36 @@ class AuthController extends Controller
             );
 
         } else {
-            return $this->build_response(response(), "we can not identify", 400);
+            return $this->build_response(response(), "Phone does not exist", 400);
         }
     }
 
-    public function phoneLogin(Request $request)
+    public function validateLoginOtpCode(Request $request)
     {
         $this->validate($request->all(), [
-            'phone' => 'required',
-        ]);
-
-        if(!empty($this->validations_errors)) {
-            return $this->build_response(response(), 'Invalid phone number', 400);
-        }
-
-        $user = User::where('phone', $request->phone)->first();
-
-        if ($user) {
-            return $this->build_response(
-                response(), 'user found', 200,
-                [
-                    'token' => $user->createToken('token')->accessToken,
-                    'user' => new UserResource($user),
-                ]
-            );
-
-        } else {
-            return $this->build_response(response(), "Invalid phone number", 400);
-        }
-    }
-
-    public function verifyLoginOTP(Request $request)
-    {
-        $this->validate($request->all(), [
-            'otp_code' => 'required',
+            'code' => 'required',
             'uuid' => 'required',
         ]);
 
         if(!empty($this->validations_errors)) {
             return $this->build_response(response(), 'code is not correct', 400);
         }
+
+        $user = $this->userService->checkOTP($request->uuid, $request->code);
+        if ($user) {
+            return $this->build_response(
+                response(), 'otp ok', 200,
+                [
+                    'token' => $user->createToken('token')->accessToken,
+                    'user' => new UserResource($user),
+                ]
+            );
+        } else {
+            return $this->build_response(response(), "code not valid or expired", 400);
+        }
     }
 
-    public function emailLogin(Request $request)
+    public function loginWithEmail(Request $request)
     {
         $this->validate($request->all(), [
             'email' => 'required',
@@ -111,7 +98,7 @@ class AuthController extends Controller
         }
     }
     
-    public function register(Request $request)
+    public function signup(Request $request)
     {        
         $rules = [
             'name' => ['required', 'string', 'max:200', 'min:3'],
@@ -164,5 +151,20 @@ class AuthController extends Controller
             logger()->error($e->getMessage());
             return $this->build_response(response(), 'Registration failed : '. $e->getMessage(), 400);
         }
+    }
+
+    public function forgetPassword(Request $request)
+    {
+        return $this->build_response(response(), 'not yet implement. :)', 200);
+    }
+
+    public function validateFpCode(Request $request)
+    {
+        return $this->build_response(response(), 'not yet implement. :)', 200);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        return $this->build_response(response(), 'not yet implement. :)', 200);
     }
 }

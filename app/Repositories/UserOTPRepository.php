@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\UserOTP;
+use Carbon\Carbon;
 
 class UserOTPRepository
 {
@@ -22,16 +23,18 @@ class UserOTPRepository
 
     public function find($uuid, $code)
     {
-        return UserOTP::wheer([
+        return UserOTP::where([
             'uuid' =>  $uuid,
             'code' =>  $code,
-            'verified' => false
-        ])->first();
+            'verified' => 0,
+        ])
+            ->where('expired_date', '>', Carbon::now())
+            ->first();
     }
 
-    public function update($id)
+    public function update($user_otp)
     {
-        $model = UserOTP::findOrFail($id);
-        $model->update(['verified' => true]);
+        $user_otp->verified = true;
+        $user_otp->save();
     }
 }
