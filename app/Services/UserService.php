@@ -49,6 +49,8 @@ class UserService{
         # code...
         $validationRules = [];
         $this->validationService->validate($data, $data);
+        if(empty($data))
+            throw new \Exception("No data provided for update");
         return $this->userRepository->update($id, $data);
     }
 

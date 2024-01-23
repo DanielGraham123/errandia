@@ -14,6 +14,23 @@ class ShopContactInfoResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $street = $this->street;
+        return [
+            'shop_id'=>$this->shop_id, 
+            'street'=>[
+                'name'=>$street->name,
+                'town_id'=>$street->town_id
+            ],
+            'location'=>$this->location(),
+            'phone'=>$this->phone, 
+            'phone_country_code'=>$this->phone_country_code, 
+            'whatsapp'=>$this->whatsapp, 
+            'whatsapp_country_code'=>$this->whatsapp_country_code, 
+            'address'=>$this->address, 
+            'facebook'=>$this->facebook, 
+            'instagram'=>$this->instagram, 
+            'website'=>$this->website, 
+            'email'=>$this->email
+        ];
     }
 }

@@ -31,7 +31,11 @@ class SubscriptionService{
     public function save($data)
     {
         # code...
-        $validationRules = [];
+        $validationRules = [
+            'name'=>'required|string', 'description'=>'required|string', 
+            'amount'=>'required|numeric', 'duration'=>'required|numeric', 
+            'status'=>'required'
+        ];
         $this->validationService->validate($data, $validationRules);
         return $this->subscriptionPlanRepository->store($data);
     }
@@ -41,6 +45,8 @@ class SubscriptionService{
         # code...
         $validationRules = [];
         $this->validationService->validate($data, $validationRules);
+        if(empty($data))
+        throw new \Exception("No data provided for update");
         return $this->subscriptionPlanRepository->update($id, $data);
     }
 

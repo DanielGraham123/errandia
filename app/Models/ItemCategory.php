@@ -11,7 +11,7 @@ class ItemCategory extends Model
      protected $fillable = ['item_id', 'category_id'];
      protected $table = 'item_categories';
 
-     public function categoty()
+     public function category()
      {
         # code...
         return $this->belongsTo(Category::class, 'category_id');

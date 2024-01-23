@@ -14,6 +14,13 @@ class ShopSubscriptionResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id'=>$this->id,
+            'shop_id'=>$this->shop_id, 
+            'subscription'=>(new SubscriptionPlanResource($this->subscription))->resolve(), 
+            'subscription_date'=>$this->$this->subscription_date, 
+            'expiration_date'=>$this->expiration_date, 
+            'status'=>$this->status
+        ];
     }
 }

@@ -30,8 +30,18 @@ class ShopService{
     public function save($data)
     {
         # code...
-        $validationRules = [];
+        $validationRules = [
+            'name'=>'required', 'description'=>'required', 'user_id'=>'required',
+            'slug'=>'required', 'image'=>'file|mimes:image/*|nullable', 
+            'status'=>'nullable', 'is_branch'=>'nullable', 'parent_slug'=>'nullable'
+        ];
         $this->validationService->validate($data, $validationRules);
+        if(($file = $data['image']) != null){
+            $path = public_path('uploads/logos/');
+            $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+            $file->move($path, $fname);
+            $data['image_path'] = asset('uploads/logos/'.$fname);
+        }
         return $this->shopRepository->store($data);
     }
 
@@ -40,6 +50,8 @@ class ShopService{
         # code...
         $validationRules = [];
         $this->validationService->validate($data, $validationRules);
+        if(empty($data))
+            throw new \Exception("No data provided for update");
     }
 
     public function delete($slug, $user_id)

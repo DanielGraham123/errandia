@@ -21,7 +21,7 @@ class CategoryService{
         $this->shopCategoryRepository = $shopCategoryRepository;
     }
 
-    public function getAll($size = null)
+    public function getAll($size = null, $filter = null)
     {
         # code...
         return $this->categoryRepository->get($size);
@@ -39,12 +39,20 @@ class CategoryService{
         return $this->categoryRepository->getBySlug($slug);
     }
 
+    public function searchAll($filter, $size=null)
+    {
+        # code...
+    }
+
     public function save($data)
     {
         # code...
         // validate and save a category
-        $validationRules = [];
+        $validationRules = [
+            'name'=>'required', 'description'=>'required', 'image_path'=>'required', 'slug'=>'required', 'status'=>'nullable', 'category_id'=>'nullable|numeric'
+        ];
         $this->validationService->validate($data, $validationRules);
+        
         return $this->categoryRepository->store($data);
     }
 
@@ -54,6 +62,8 @@ class CategoryService{
         // validate and save a category
         $validationRules = [];
         $this->validationService->validate($data, $validationRules);
+        if(empty($data))
+            throw new \Exception("No data for update");
         return $this->categoryRepository->update($slug, $data);
     }
 

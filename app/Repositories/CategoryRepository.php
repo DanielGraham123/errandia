@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ErrandResource;
+use App\Http\Resources\ShopResource;
 use App\Models\Category;
 use App\Models\Errand;
 use Exception;
@@ -35,6 +36,26 @@ class CategoryRepository {
         if($category == null)
             throw new Exception("Category record does not exist");
         return new CategoryResource($category);
+    }
+
+    /**
+     * get businesses per category
+     */
+    public function categoryShops($slug)
+    {
+        # read the record associated to a given slug
+        $category = Category::whereSlug($slug)->first();
+        $shops = $category->shops;
+        if($category == null)
+            throw new Exception("Category record does not exist");
+        return ShopResource::collection($shops);
+    }
+
+
+    public function searchAll($filter)
+    {
+        # code...
+        return collect();
     }
 
 
