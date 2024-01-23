@@ -131,13 +131,6 @@
                 <tr>
                     <td align="center" valign="top" width="600">
             <![endif]-->
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                <tr>
-                    <td align="left" bgcolor="#ffffff" style="padding: 36px 24px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
-                        <h3 style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -1px; line-height: 48px;">Password Reset Confirmation</h3>
-                    </td>
-                </tr>
-            </table>
             <!--[if (gte mso 9)|(IE)]>
             </td>
             </tr>
@@ -164,7 +157,7 @@
                         <p style="font-weight: bold; font-size: 18px; margin-bottom: 10px; margin-top: 10px">
                             {{$data['code']}}
                         </p>
-                        <p style="margin: 0;">Don't share this OTP with anyone. Our customer service team will never ask you for your password, OTP, credit card, or banking info. </p>
+                        <p style="margin: 0;">Don't share this OTP with anyone.</p>
                     </td>
                 </tr>
                 <!-- end copy -->

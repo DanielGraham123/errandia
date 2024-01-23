@@ -8,6 +8,7 @@ use App\Models\UserOTP;
 use App\Repositories\UserOTPRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Mockery\Exception;
 use Nette\Utils\Random;
 use Ramsey\Uuid\Uuid;
 
@@ -41,8 +42,14 @@ class UserService {
             if ($user->email == $identifier || $num_otp_sent > 3) {
                 $channel = $user->email;
                 $data['code'] =  $user_otp->code;
-                Mail::to($user->email)->send(new OtpMailer($data));
-                $sent = true;
+                $data['email'] =  $user->email;
+
+                try {
+                    Mail::to($user->email)->send(new OtpMailer($data));
+                    $sent = true;
+                } catch (Exception $e) {
+                    logger()->error($e->getMessage());
+                }
             } else {
                 $channel = $user->phone;
                 $sent =  $this->smsService->send($user->phone,
@@ -53,7 +60,7 @@ class UserService {
 
             if ($sent) {
                 logger()->info('A user with identifier : '. $channel.' requested an otp code for authentication');
-                return ['user' => $user, 'channel' => $channel];
+                return ['user' => $user, 'channel' => $channel, 'uuid' => $user_otp->uuid];
             }
 
             return  null;

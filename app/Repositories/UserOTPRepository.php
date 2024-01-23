@@ -41,8 +41,10 @@ class UserOTPRepository
     public function numberOfOtpRequested($user_id)
     {
         return UserOTP::where(
-            'user_id', $user_id,
-            'DATE(created_at)', Carbon::now()->get('Y-m-d')
+            [
+                'user_id' =>  $user_id,
+                'created_at' =>  Carbon::today()
+            ]
         )->count();
     }
 }
