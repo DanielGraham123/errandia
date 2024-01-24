@@ -21,22 +21,24 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
-    public function loginWithPhone(Request $request)
+    public function login(Request $request)
     {
         $this->validate($request->all(), [
-            'phone' => 'required',
+            'identifier' => 'required',
         ]);
 
         if(!empty($this->validations_errors)) {
             return $this->build_response(response(), 'Error found when verifying the phone number', 400);
         }
 
-        $user = $this->userService->findAndSendOTP($request->phone);
-        if ($user) {
+        $result = $this->userService->findAndSendOTP($request->get('identifier'));
+        if ($result) {
+            $user = $result['user'];
+            $channel = $result['channel'];
             return $this->build_response(
-                response(), 'A token has been sent to your phone number', 200,
+                response(), 'A token has been sent to your ' . ( $user->phone == $channel ? 'phone number' : 'email address' ), 200,
                 [
-                    'uuid' => $user->uuid
+                    'uuid' => $result['uuid']
                 ]
             );
 
@@ -45,7 +47,7 @@ class AuthController extends Controller
         }
     }
 
-    public function validateLoginOtpCode(Request $request)
+    public function validateOtpCode(Request $request)
     {
         $this->validate($request->all(), [
             'code' => 'required',
@@ -56,7 +58,7 @@ class AuthController extends Controller
             return $this->build_response(response(), 'code is not correct', 400);
         }
 
-        $user = $this->userService->checkOTP($request->uuid, $request->code);
+        $user = $this->userService->checkOTP($request->get('uuid'), $request->get('code'));
         if ($user) {
             return $this->build_response(
                 response(), 'otp ok', 200,

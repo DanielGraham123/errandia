@@ -37,4 +37,14 @@ class UserOTPRepository
         $user_otp->verified = true;
         $user_otp->save();
     }
+
+    public function numberOfOtpRequested($user_id)
+    {
+        return UserOTP::where(
+            [
+                'user_id' =>  $user_id,
+                'created_at' =>  Carbon::today()
+            ]
+        )->count();
+    }
 }

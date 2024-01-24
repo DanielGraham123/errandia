@@ -27,10 +27,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['namespace' => 'Api'], function() {
     Route::post('/auth/signup', 'AuthController@signup');
 
-    Route::post('/auth/login_with_phone', 'AuthController@loginWithPhone');
-    Route::post('/auth/validate_login_otp_code', 'AuthController@validateLoginOtpCode');
-    Route::post('/auth/login_with_email', 'AuthController@loginWithEmail');
-    Route::post('/auth/forget_password', 'AuthController@forgetPassword');
+    Route::post('/auth/login', 'AuthController@login');
+    Route::post('/auth/validate_otp_code', 'AuthController@validateOtpCode');
     Route::post('/auth/validate_fp_code', 'AuthController@validateFpCode');
     Route::post('/auth/reset_password', 'AuthController@resetPassword');
 
