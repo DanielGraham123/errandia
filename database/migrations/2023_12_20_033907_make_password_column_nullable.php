@@ -13,9 +13,11 @@ class MakePasswordColumnNullable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('password')->nullable()->change();
-        });
+        if(!Schema::hasColumn('users', 'password')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('password')->nullable()->change();
+            });
+        }
     }
 
     /**

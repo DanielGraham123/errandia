@@ -17,7 +17,7 @@ class CreateSubCategoriesTable extends Migration
             $table->id();
             $table->integer('category_id');
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->string('image_path');
             $table->string('slug');
             $table->boolean('status')->default(0);

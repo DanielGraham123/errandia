@@ -955,9 +955,7 @@ class HomeController extends Controller
         $data['errand'] = $request->all();
         $data['title'] = "Post Errand";
         $item = ['title'=>$request->title, 'region_id'=>$request->region??null, 'town_id'=>$request->town??null, 'street_id'=>$request->street??null, 'description'=>$request->description, 'user_id'=>auth()->id(), 'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre'];
-        // $unique_check = ['title'=>$request->title, 'region_id'=>$request->town, 'town_id'=>$request->town, 'street_id'=>$request->street, 'description'=>$request->description, 'user_id'=>auth()->id()];
-        // if(($instance = \App\Models\Errand::where($unique_check)->first()) == null){
-        // }
+
         $instance = new \App\Models\Errand($item);
         $instance->save();
 

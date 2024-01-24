@@ -14,9 +14,11 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
     public function up()
     {
         //
-        //Schema::table('shop_subscriptions', function(Blueprint $table){
-          //  $table->boolean('status')->default(0);
-        //});
+        if(!Schema::hasColumn('shops_subscriptions', 'status')){
+            Schema::table('shops_subscriptions', function(Blueprint $table){
+                $table->boolean('status')->default(0);
+            });
+        }
     }
 
     /**
@@ -26,8 +28,10 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
      */
     public function down()
     {
-        Schema::table('shop_subscriptions', function(Blueprint $table){
-            $table->dropColumn('status');
-        });
+        if(Schema::hasColumn('shop_subscriptions', 'status')) {
+            Schema::table('shop_subscriptions', function (Blueprint $table) {
+                $table->dropColumn('status');
+            });
+        }
     }
 }

@@ -5,19 +5,23 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Models\UserProfile;
-use App\Models\UserType;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
-use function PHPUnit\Framework\isEmpty;
 
 class AuthController extends Controller
 {
-    public function verifyPhone(Request $request)
+
+    protected $userService;
+
+    public function __construct(UserService  $userService)
+    {
+        $this->userService = $userService;
+    }
+
+    public function loginWithPhone(Request $request)
     {
         $this->validate($request->all(), [
             'phone' => 'required',
@@ -27,49 +31,46 @@ class AuthController extends Controller
             return $this->build_response(response(), 'Error found when verifying the phone number', 400);
         }
 
-        $user = User::where('phone', $request->phone)->first();
-
+        $user = $this->userService->findAndSendOTP($request->phone);
         if ($user) {
             return $this->build_response(
-                response(), 'Phone number exist', 200,
+                response(), 'A token has been sent to your phone number', 200,
                 [
-                    'phone' => $request->phone,
-                    'name' => $user->name ?? ''
+                    'uuid' => $user->uuid
                 ]
             );
 
         } else {
-            return $this->build_response(response(), "No account exists with this phone number", 400);
+            return $this->build_response(response(), "Phone does not exist", 400);
         }
     }
 
-    public function phoneLogin(Request $request)
+    public function validateLoginOtpCode(Request $request)
     {
         $this->validate($request->all(), [
-            'phone' => 'required',
+            'code' => 'required',
+            'uuid' => 'required',
         ]);
 
         if(!empty($this->validations_errors)) {
-            return $this->build_response(response(), 'Invalid phone number', 400);
+            return $this->build_response(response(), 'code is not correct', 400);
         }
 
-        $user = User::where('phone', $request->phone)->first();
-
+        $user = $this->userService->checkOTP($request->uuid, $request->code);
         if ($user) {
             return $this->build_response(
-                response(), 'user found', 200,
+                response(), 'otp ok', 200,
                 [
                     'token' => $user->createToken('token')->accessToken,
                     'user' => new UserResource($user),
                 ]
             );
-
         } else {
-            return $this->build_response(response(), "Invalid phone number", 400);
+            return $this->build_response(response(), "code not valid or expired", 400);
         }
     }
 
-    public function emailLogin(Request $request)
+    public function loginWithEmail(Request $request)
     {
         $this->validate($request->all(), [
             'email' => 'required',
@@ -97,7 +98,7 @@ class AuthController extends Controller
         }
     }
     
-    public function register(Request $request)
+    public function signup(Request $request)
     {        
         $rules = [
             'name' => ['required', 'string', 'max:200', 'min:3'],
@@ -150,5 +151,20 @@ class AuthController extends Controller
             logger()->error($e->getMessage());
             return $this->build_response(response(), 'Registration failed : '. $e->getMessage(), 400);
         }
+    }
+
+    public function forgetPassword(Request $request)
+    {
+        return $this->build_response(response(), 'not yet implement. :)', 200);
+    }
+
+    public function validateFpCode(Request $request)
+    {
+        return $this->build_response(response(), 'not yet implement. :)', 200);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        return $this->build_response(response(), 'not yet implement. :)', 200);
     }
 }

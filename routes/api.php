@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\ProductImageUploadController;
 use App\Http\Controllers\ProductUploadController;
 use Illuminate\Support\Facades\Route;
@@ -24,10 +25,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api'], function() {
-    Route::post('/phone/login', 'AuthController@phoneLogin');
-    Route::post('/email/login', 'AuthController@emailLogin');
-    Route::post('/phone/verify', 'AuthController@verifyPhone');
-    Route::post('/register', 'AuthController@register');
+    Route::post('/auth/signup', 'AuthController@signup');
+
+    Route::post('/auth/login_with_phone', 'AuthController@loginWithPhone');
+    Route::post('/auth/validate_login_otp_code', 'AuthController@validateLoginOtpCode');
+    Route::post('/auth/login_with_email', 'AuthController@loginWithEmail');
+    Route::post('/auth/forget_password', 'AuthController@forgetPassword');
+    Route::post('/auth/validate_fp_code', 'AuthController@validateFpCode');
+    Route::post('/auth/reset_password', 'AuthController@resetPassword');
 
     Route::get('/countries', 'LocationController@countries');
     Route::get('/regions', 'LocationController@regions');
@@ -55,6 +60,16 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
     Route::post('/products/{id}/images/upload', [ProductUploadController::class, 'uploadProductGallery']);
     Route::delete('/product/{id}/images/delete', [ProductUploadController::class, 'removeProductImage']);
-     Route::post('save_images/{id}', [ProductImageUploadController::class, 'uploadProductGallery']);
+    Route::post('save_images/{id}', [ProductImageUploadController::class, 'uploadProductGallery']);
     Route::delete('remove_image/{product_id}/', [ProductImageUploadController::class, 'removeProductImage']);
+
+    Route::prefix('categories')->group(function(){
+        Route::get('/', [CategoryController::class, 'getAll']);
+        Route::get('/tree', [CategoryController::class, 'getTree']);
+        Route::post('/', [CategoryController::class, 'save']);
+        Route::get('/{slug}', [CategoryController::class, 'getBySlug']);
+        Route::get('/{slug}/children', [CategoryController::class, 'getWithChildren']);
+        Route::put('/{slug}', [CategoryController::class, 'update']);
+        Route::delete('/{slug}', [CategoryController::class, 'delete']);
+    });
 });

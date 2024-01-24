@@ -13,9 +13,11 @@ class UpdatePasswordResetTable extends Migration
      */
     public function up()
     {
-        Schema::table('password_resets', function (Blueprint $table) {
-            $table->string('type');
-        });
+        if(!Schema::hasColumn('password_resets', 'type')) {
+            Schema::table('password_resets', function (Blueprint $table) {
+                $table->string('type');
+            });
+        }
     }
 
     /**
@@ -25,6 +27,8 @@ class UpdatePasswordResetTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('password_resets', function(Blueprint $table){
+            $table->dropColumn('type');
+        });
     }
 }

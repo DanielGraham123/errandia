@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReviewReportsTable extends Migration
+class CreateUserOTPSTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateReviewReportsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('review_reports')){
-            Schema::create('review_reports', function (Blueprint $table) {
+        if(!Schema::hasTable('user_otps')) {
+            Schema::create('user_otps', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('review_id');
-                $table->text('reason');
+                $table->string('uuid')->unique();
+                $table->string('code');
+                $table->integer('user_id');
+                $table->boolean('verified')->default(false);
+                $table->timestamp('expired_date');
                 $table->timestamps();
             });
         }
@@ -30,6 +33,6 @@ class CreateReviewReportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('review_reports');
+        Schema::dropIfExists('user_otps');
     }
 }
