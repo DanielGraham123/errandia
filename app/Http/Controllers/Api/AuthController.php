@@ -21,22 +21,24 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
-    public function loginWithPhone(Request $request)
+    public function login(Request $request)
     {
         $this->validate($request->all(), [
-            'phone' => 'required',
+            'identifier' => 'required',
         ]);
 
         if(!empty($this->validations_errors)) {
             return $this->build_response(response(), 'Error found when verifying the phone number', 400);
         }
 
-        $user = $this->userService->findAndSendOTP($request->phone);
-        if ($user) {
+        $result = $this->userService->findAndSendOTP($request->get('identifier'));
+        if ($result) {
+            $user = $result['user'];
+            $channel = $result['channel'];
             return $this->build_response(
-                response(), 'A token has been sent to your phone number', 200,
+                response(), 'A token has been sent to your ' . ( $user->phone == $channel ? 'phone number' : 'email address' ), 200,
                 [
-                    'uuid' => $user->uuid
+                    'uuid' => $result['uuid']
                 ]
             );
 
@@ -45,7 +47,7 @@ class AuthController extends Controller
         }
     }
 
-    public function validateLoginOtpCode(Request $request)
+    public function validateOtpCode(Request $request)
     {
         $this->validate($request->all(), [
             'code' => 'required',
@@ -56,7 +58,7 @@ class AuthController extends Controller
             return $this->build_response(response(), 'code is not correct', 400);
         }
 
-        $user = $this->userService->checkOTP($request->uuid, $request->code);
+        $user = $this->userService->checkOTP($request->get('uuid'), $request->get('code'));
         if ($user) {
             return $this->build_response(
                 response(), 'otp ok', 200,
@@ -102,16 +104,16 @@ class AuthController extends Controller
     {        
         $rules = [
             'name' => ['required', 'string', 'max:200', 'min:3'],
-            'email' => ['nullable', 'string', 'email', 'unique:users,email'],
+            'email' => ['required', 'string', 'email', 'unique:users,email'],
             'phone' => ['required', 'unique:users,phone'],
-            'password' => ['required','string', 'same:confirm_password', 'min:10', 'max:15',
-                Password::min(8)
-                ->letters()  // Ensure at least one letter
-                ->mixedCase()   // Ensure at least one uppercase and one lowercase letter
-                ->numbers()  // Ensure at least one number
-                ->symbols("~`!@#$%^&*()_-+={[}]|\:;'<,>.?/")  // Ensure only allowed special characters
-                ->uncompromised()
-            ]
+//            'password' => ['required','string', 'same:confirm_password', 'min:10', 'max:15',
+//                Password::min(8)
+//                ->letters()  // Ensure at least one letter
+//                ->mixedCase()   // Ensure at least one uppercase and one lowercase letter
+//                ->numbers()  // Ensure at least one number
+//                ->symbols("~`!@#$%^&*()_-+={[}]|\:;'<,>.?/")  // Ensure only allowed special characters
+//                ->uncompromised()
+//            ]
         ];
 
         $this->validate($request->all(), $rules);
@@ -127,11 +129,11 @@ class AuthController extends Controller
                 $user->name = $request->name;
                 $user->email = $request->email ?? '';
                 $user->phone = $request->phone;
-                $user->password = Hash::make($request->password);
-                $user->address = $request->address ?? '';
-                if ($request->street_id) {
-                    $user->street_id = $request->street_id;
-                }
+//                $user->password = Hash::make($request->password);
+//                $user->address = $request->address ?? '';
+//                if ($request->street_id) {
+//                    $user->street_id = $request->street_id;
+//                }
                 if ($request->file('profile')) {
                     $user->photo = $request->file('profile')->store('users');
                 } 
@@ -140,11 +142,7 @@ class AuthController extends Controller
             });
 
             return  $this->build_response(
-                response(), 'Account created', 200,
-                [
-                    'token' => $user->createToken('token')->accessToken,
-                    'user' => new UserResource($user),
-                ]
+                response(), 'Account created'
             );
 
         } catch(\Exception $e) {
