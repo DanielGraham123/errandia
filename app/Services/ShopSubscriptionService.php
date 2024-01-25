@@ -22,6 +22,12 @@ class ShopSubscriptionService{
         return $this->shopSubscriptionRepository->get($size, $shop_id);
     }
 
+    public function userSubscriptions($user_id)
+    {
+        # code...
+        return $this->shopSubscriptionRepository->userSubscriptions($user_id);
+    }
+
     public function getOne($id)
     {
         # code...
