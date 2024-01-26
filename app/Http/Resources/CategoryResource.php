@@ -18,6 +18,7 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'category_id' => $this->category_id,
             'icon_url' => $this->getIcon(),
             'icon_name' => $this->image_path . '.svg'
         ];

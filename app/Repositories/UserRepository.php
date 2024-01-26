@@ -11,7 +11,7 @@ class UserRepository {
      * get all products
      * @param int $size: nullable, specify the number of records to take
      */
-    public function get($size)
+    public function get($size = null)
     {
         # code...
         $users = $size == null ?

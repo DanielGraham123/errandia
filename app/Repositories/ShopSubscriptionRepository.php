@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\ShopSubscriptionResource;
 use App\Models\ShopSubscription;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class ShopSubscriptionRepository {
@@ -26,6 +27,18 @@ class ShopSubscriptionRepository {
         return ShopSubscriptionResource::collection($subscriptions);
     }
 
+
+    public function userSubscriptions($user_id)
+    {
+        # code...
+        $user = User::find($user_id);
+        if($user == null)
+            throw new \Exception("User not found");
+
+        $shop_ids = $user->shops()->pluck('id')->toArray();
+        $subscriptions = ShopSubscription::whereIn('shop_id', $shop_ids)->orderBy('id', 'DESC')->get();
+        return ShopSubscriptionResource::collection($subscriptions);
+    }
 
     /**
      * get a product or service by slug

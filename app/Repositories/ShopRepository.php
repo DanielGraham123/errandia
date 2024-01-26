@@ -67,6 +67,9 @@ class ShopRepository {
         # code...
         // validate data and save to database
         try {
+            if(Shop::where('name', $data['name'])->count() > 0){
+                throw new \Exception('A business already exist with same name');
+            }
             $record = DB::transaction(function()use($data){
                 $shop = new Shop($data);
                 $shop->save();

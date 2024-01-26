@@ -22,4 +22,10 @@ class ProductImage extends Model
     {
         return $this->image ? asset('storage/'. $this->image) : '';
     }
+
+    public function item()
+    {
+        # code...
+        return $this->belongsTo(Product::class, 'item_id');
+    }
 }

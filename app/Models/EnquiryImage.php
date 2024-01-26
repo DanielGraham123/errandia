@@ -10,4 +10,5 @@ class EnquiryImage extends Model
     use HasFactory;
 
     protected $table = "item_enquiry_images";
+
 }

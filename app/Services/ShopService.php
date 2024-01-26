@@ -2,17 +2,25 @@
 
 namespace App\Services;
 
+use App\Repositories\ShopManagerRepository;
 use App\Repositories\ShopRepository;
 use \Illuminate\Support\Facades\Http;
 
 class ShopService{
 
-    private $shopRepository;
-    private $validationService;
+    private 
+        $shopRepository,
+        $validationService,
+        $shopManagerRepository;
 
-    public function __construct(ShopRepository $shopRepository, ValidationService $validationService){
+    public function __construct(
+            ShopRepository $shopRepository, 
+            ValidationService $validationService,
+            ShopManagerRepository $shopManagerRepository
+        ){
         $this->shopRepository = $shopRepository;
         $this->validationService = $validationService;
+        $this->shopManagerRepository = $shopManagerRepository;
     }
 
     public function getAll($size = null, $category_id = null)
@@ -21,18 +29,57 @@ class ShopService{
         return $this->shopRepository->get($size, $category_id);
     }
 
+    public function getUserShops($user_id)
+    {
+        # code...
+        $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')->where('shop_managers.user_id', auth()->id())->select('shops.*')->get();
+        return $shops;
+    }
+
     public function getBySlug($slug)
     {
         # code...
         return $this->shopRepository->getBySlug($slug);
     }
 
+    public function getManagers($shop_id)
+    {
+        # code...
+        return $this->shopManagerRepository->get($shop_id);
+    }
+
     public function save($data)
+    {
+        # code...
+        $validationRules = [
+            'name'=>'required', 'description'=>'required', 'user_id'=>'required',
+            'slug'=>'required', 'image'=>'file|mimes:image/*|nullable', 
+            'status'=>'nullable', 'is_branch'=>'nullable', 'parent_slug'=>'nullable'
+        ];
+        $this->validationService->validate($data, $validationRules);
+        if(($file = $data['image']) != null){
+            $path = public_path('uploads/logos/');
+            $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+            $file->move($path, $fname);
+            $data['image_path'] = asset('uploads/logos/'.$fname);
+        }
+        return $this->shopRepository->store($data);
+    }
+
+    public function saveManager($data)
+    {
+        # code...
+        $validationRules = ['shop_id'=>'required', 'user_id'=>'required'];
+        $this->validationService->validate($data, $validationRules);
+        return $this->shopManagerRepository->store($data);
+    }
+
+    public function updateManager($id, $data)
     {
         # code...
         $validationRules = [];
         $this->validationService->validate($data, $validationRules);
-        return $this->shopRepository->store($data);
+        return $this->shopManagerRepository->update($id, $data);
     }
 
     public function update($slug, $data)
@@ -40,6 +87,19 @@ class ShopService{
         # code...
         $validationRules = [];
         $this->validationService->validate($data, $validationRules);
+        if(empty($data))
+            throw new \Exception("No data provided for update");
+        return $this->shopRepository->update($slug, $data);
+    }
+
+    public function updateContactInfo($shop_id, $contact_data)
+    {
+        # code...
+    }
+
+    public function updateManagers($shop_id, $manager_data)
+    {
+        # code...
     }
 
     public function delete($slug, $user_id)
