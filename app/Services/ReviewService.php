@@ -30,7 +30,9 @@ class ReviewService{
     public function save($data)
     {
         # code...
-        $validationRules = [];
+        $validationRules = [
+            'buyer_id'=>'required|numeric', 'item_id'=>'required|numeric', 'rating'=>'required|numeric', 'review'=>'required|string', 'status'=>'nullable'
+        ];
         $this->validationService->validate($data, $validationRules);
         return $this->reviewRepository->store($data);
     }
@@ -42,6 +44,8 @@ class ReviewService{
         // can only be updated by creator or product owner
         $validationRules = [];
         $this->validationService->validate($data, $validationRules);
+        if(empty($data))
+            throw new \Exception("Data not provided for update");
         return $this->reviewRepository->update($id, $data);
     }
 

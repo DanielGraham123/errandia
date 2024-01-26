@@ -10,4 +10,10 @@ class ReviewReport extends Model
     use HasFactory;
 
     protected $fillable = ['review_id', 'reason'];
+
+    public function review()
+    {
+        # code...
+        return $this->belongsTo(Review::class, 'review_id');
+    }
 }

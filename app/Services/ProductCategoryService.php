@@ -30,7 +30,7 @@ class ProductCategoryService{
     public function save($data)
     {
         # code...
-        $validationRules = ['item_id'=>'required', 'sub_category_id'=>'required'];
+        $validationRules = ['item_id'=>'required', 'category_id'=>'required'];
         $this->validationService->validate($data, $validationRules);
         $this->productCategoryRepository->store($data);
     }
@@ -38,8 +38,10 @@ class ProductCategoryService{
     public function update($id, $data)
     {
         # code...
-        $validationRules = ['item_id'=>'numeric|nullable', 'sub_category_id'=>'numeric|nullable'];
+        $validationRules = [];
         $this->validationService->validate($data, $validationRules);
+        if(empty($data))
+            throw new \Exception("No data provided for update");
         $this->productCategoryRepository->update($id, $data);
     }
 
