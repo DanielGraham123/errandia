@@ -22,7 +22,8 @@
         "nexmo/client": "^2.4",
         "nwidart/laravel-modules": "8.2",
         "predis/predis": "^2.2",
-        "spatie/laravel-permission": "^5.2"
+        "spatie/laravel-permission": "^5.2",
+        "elasticquent/elasticquent": "dev-master"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -35,7 +36,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "extra": {
         "laravel": {
