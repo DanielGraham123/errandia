@@ -21,7 +21,9 @@ class UserService{
     protected $userOtpRepository;
     protected $smsService;
 
-    public function __construct(UserRepository $userRepository, ValidationService $validationService, UserOTPRepository $userOtpRepository, SMSService  $smsService){
+    public function __construct(UserRepository $userRepository,
+                                ValidationService $validationService,
+                                UserOTPRepository $userOtpRepository, SMSService  $smsService){
         $this->userRepository = $userRepository;
         $this->validationService = $validationService;
         $this->userOtpRepository = $userOtpRepository;
