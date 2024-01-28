@@ -1,6 +1,6 @@
 <p style="text-align: center">
 <a href="https://errandia.com/" target="_blank">
-<img src="https://errandia.com/public/assets/admin/logo/errandia-logo.png" width="400"></a>
+<img src="https://errandia.com/assets/admin/logo/errandia-logo.png" width="400"></a>
 </p>
 
 
@@ -20,16 +20,15 @@ Errandia is a platform that allows you search and fine any product, services fro
 
 - Open your terminal
 - Paste the following command to clone the project : `git clone https://github.com/nishangsystems/errandia.git`
-- publish the vendor in the next command : `php artisan vendor:publish --provider="Elasticquent\ElasticquentServiceProvider"`
-- Navigate into the project root folder and run "composer install" to install composer packages
+- Navigate into the project root folder and run `composer install` to install composer packages
+- publish this vendor in the next command : `php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"`
 - run `php artisan key:generate` to generate an app_key in the .env file
 - Connect to MySQL and create the database
 - Edit the .env file
 - run the next command to generate encryption keys : `php artisan passport:install`
 
 
-## Running  Errandia locally 
-
+## Running  Errandia locally
  - open your terminal
  - navigate into main directory project 
  - add execution permission to the local_run.sh file :  $ `chmod +x local_run.sh`

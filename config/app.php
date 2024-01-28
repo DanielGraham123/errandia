@@ -181,7 +181,6 @@ return [
         App\Providers\PermissionsServiceProvider::class,
         App\Providers\SMSServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-        Elasticquent\ElasticquentServiceProvider::class,
     ],
 
     /*
@@ -233,7 +232,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         "Socialite" => Socialite::class,
-        'Es' => Elasticquent\ElasticquentElasticsearchFacade::class
     ],
 
 ];
