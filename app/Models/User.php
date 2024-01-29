@@ -32,7 +32,8 @@ class User extends Authenticatable
         'type',
         'password',
         'active',
-        'google_id'
+        'google_id',
+        'photo',
     ];
     protected $connection = 'mysql';
 
@@ -70,7 +71,7 @@ class User extends Authenticatable
 
     public function getProfileUrl()
     {
-        return $this->photo ? asset('storage/'. $this->photo) : '';
+        return $this->photo ? asset('uploads/user_photos/'. $this->photo) : '';
     }
 
     public function street()

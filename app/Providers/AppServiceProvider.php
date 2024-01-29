@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Repositories\UserOTPRepository;
+use App\Repositories\UserRepository;
 use App\Services\SMSService;
 use App\Services\UserService;
+use App\Services\ValidationService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -23,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(UserService::class, function ($app) {
-            return new UserService(new UserOTPRepository(), new SMSService());
+            return new UserService(new UserRepository(), new ValidationService, new UserOTPRepository(), new SMSService());
         });
     }
 
