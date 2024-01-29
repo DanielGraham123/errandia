@@ -2,23 +2,67 @@
 
 namespace App\Models;
 
+use GodJay\ScoutElasticsearch\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Searchable;
 
     const SORT_HIGH_PRICE = 1;
     const SORT_LOW_PRICE = 2;
 
     protected $table = 'items';
 
-    protected $fillable = ['name', 'shop_id', 'unit_price', 'description', 'slug', 'status', 'featured_image', 'quantity', 'views', 'service', 'search_index', 'tags'];
+    protected $fillable = [
+        'name',
+        'shop_id',
+        'unit_price',
+        'description',
+        'slug',
+        'status',
+        'featured_image',
+        'quantity',
+        'views',
+        'service',
+        'search_index',
+        'tags',
+        'category_id'
+    ];
 
+    public function searchableAs()
+    {
+        return 'products';
+    }
+
+    public function getElasticMapping()
+    {
+        return [
+            'name' => [
+                'type' => 'text',
+                'analyzer' => 'standard'
+            ],
+            'description' => [
+                'type' => 'text',
+                'analyzer' => 'standard'
+            ],
+            'status' => [
+                'type' => 'boolean'
+            ]
+        ];
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'name' => $this->attributes['name'],
+            'description' => $this->attributes['description'],
+            'status' => $this->attributes['status']
+        ];
+    }
 
     public function category()
     {
