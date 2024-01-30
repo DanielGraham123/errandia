@@ -50,14 +50,26 @@ class UserService{
         return $this->userRepository->store($data);
     }
 
-    public function update($id, $data)
+    public function update($id, $field_name, $value)
     {
-        # code...
-        $validationRules = [];
-        $this->validationService->validate($data, $data);
+        $this->userRepository->updatePartially($id, $field_name, $value);
         if(empty($data))
             throw new \Exception("No data provided for update");
         return $this->userRepository->update($id, $data);
+    }
+
+    public function updateProfileImage($user_id, $file)
+    {
+        # code...
+        if($file == null){
+            throw new \Exception("Empty file contents.");
+        }
+
+        $fname = 'profile_'.random_int(1000000, 9999999).'_'.time().'.'.$file->getClientOriginalExtension();
+        $file->move(public_path('uploads/user_photos'), $fname);
+        $path_name = $fname;
+        $this->userRepository->update($user_id, ['photo'=>$path_name]);
+        return $path_name;
     }
 
     public function delete($id, $user_id)

@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductImageUploadController;
 use App\Http\Controllers\ProductUploadController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Api\UserController;
 
 /*er;
 use Illuminate\Http\Request;
@@ -70,4 +71,10 @@ Route::group(['namespace' => 'Api'], function() {
         Route::put('/{slug}', [CategoryController::class, 'update']);
         Route::delete('/{slug}', [CategoryController::class, 'delete']);
     });
+
+
+    // secure endpoints that require auth token
+    Route::patch('/user', [UserController::class, 'update']);
+    Route::put('/user/image_upload', [UserController::class, 'userImageUpload']);
+
 });

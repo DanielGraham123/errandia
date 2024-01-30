@@ -55,6 +55,11 @@ class UserRepository {
         }
     }
 
+    public function updatePartially($id, $filed_name, $value)
+    {
+        User::where('id', $id)->update(["$filed_name" => $value]);
+    }
+
 
     /**
      * update a record in database
