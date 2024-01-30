@@ -32,14 +32,20 @@ class ShopService{
     public function getUserShops($user_id)
     {
         # code...
-        $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')->where('shop_managers.user_id', auth()->id())->select('shops.*')->get();
-        return $shops;
+        return $this->myShops($user_id);
     }
 
     public function getBySlug($slug)
     {
         # code...
         return $this->shopRepository->getBySlug($slug);
+    }
+
+
+    public function getBranches($slug)
+    {
+        # code...
+        return $this->shopRepository->getBranches($slug);
     }
 
     public function getManagers($shop_id)
