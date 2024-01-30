@@ -48,10 +48,14 @@ class UserController extends Controller
             $file = $request->file('image');
             $image_path = $this->userService->updateProfileImage($user->id, $file);
 
-            return $this->build_response(response(), 'Profile image updated', [
-                'image_path' => $image_path
-            ]);
-        } catch (\Throwable $th) {
+            return $this->build_response(
+                response(),
+                'Profile image updated',
+                200,
+                ['image_path' => $image_path]
+            );
+        } catch (\Throwable $e) {
+            logger()->error($e->getMessage());
             return $this->build_response(response(), 'failed to upload image', 400);
         }
     }

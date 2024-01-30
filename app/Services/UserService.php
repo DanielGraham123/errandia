@@ -65,7 +65,8 @@ class UserService{
         $fname = 'profile_'.random_int(1000000, 9999999).'_'.time().'.'.$file->getClientOriginalExtension();
         $file->move(public_path('uploads/user_photos'), $fname);
         $path_name = $fname;
-        $this->userRepository->update($user_id, ['photo'=>$path_name]);
+        logger()->info("File path : " . $path_name);
+        $this->userRepository->updatePartially($user_id, 'phone', $path_name);
         return $path_name;
     }
 
