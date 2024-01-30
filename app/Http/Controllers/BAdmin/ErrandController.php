@@ -124,40 +124,6 @@ class ErrandController extends Controller
         return view('b_admin.errands.edit', $data);
     }
 
-    
-
-    public function set_errand_found($slug)
-    {
-        $errand = Errand::whereSlug($slug)->first();
-        if($errand != null){
-            if($errand->user_id == auth()->id()){
-                $shop->update(['status'=>abs(1-$shop->status)]);
-                return back()->with('success', "Operation complete");
-            }
-            else
-                return back()->with('error', "Permission Denied");
-        }
-    }
-
-
-    public function refresh_errand($slug)
-    {
-        $errand = Errand::whereSlug($slug)->first();
-        if($errand->read_status == 1){
-            $errand->update(['read_status'=>0]);
-        }
-        return back()->with('success', 'Operation complete');
-    }
-
-
-    public function delete_errand($slug)
-    {
-        $errand = Errand::whereSlug($slug)->first();
-        if(!$errand == null){
-            $errand->delete();
-            return redirect()->route('business_admin.errands.index', ['action'=>'posted'])->with('success', 'Operation complete');
-        }
-    }
 
 
 }

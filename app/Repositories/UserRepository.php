@@ -3,7 +3,6 @@ namespace App\Repositories;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Models\UserProfile;
 use Illuminate\Support\Facades\DB;
 
 class UserRepository {
@@ -77,23 +76,6 @@ class UserRepository {
         } catch (\Throwable $th) {
             throw $th;
         }
-    }
-
-    public function updateProfile($user_id, $data)
-    {
-        # code...
-        if(empty($data)){
-            throw new \Exception("Empty profile update data");
-        }
-        $userProfile = UserProfile::where('user_id', $user_id)->first();
-        if($userProfile == null){
-            $data['user_id'] = $user_id;
-            $userProfile = new UserProfile($data);
-            $userProfile->save();
-        }else{
-            $userProfile->update($data);
-        }
-        return $userProfile;
     }
 
 

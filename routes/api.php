@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProductImageUploadController;
 use App\Http\Controllers\ProductUploadController;
 use Illuminate\Support\Facades\Route;
@@ -70,10 +69,5 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/{slug}/children', [CategoryController::class, 'getWithChildren']);
         Route::put('/{slug}', [CategoryController::class, 'update']);
         Route::delete('/{slug}', [CategoryController::class, 'delete']);
-    });
-
-    Route::prefix('profile')->group(function(){
-        Route::put('update', [UserController::class, 'update']);
-        Route::post('updatePhoto', [UserController::class, 'updateProfileImage']);
     });
 });

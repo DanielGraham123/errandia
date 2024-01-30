@@ -215,23 +215,6 @@ class ShopController extends Controller
             return back()->with('error', $th->getMessage());
         }
     }
-
-
-    
-
-    public function business_branches($slug){
-        try {
-            //code...
-            $data['business'] = $this->shopService->getBySlug($slug);
-            $data['branches'] = $this->shopService->getBranches($slug);
-            return view('b_admin.businesses.branches.index', $data);
-        } catch (\Throwable $th) {
-            //throw $th;
-            return back()->with('error', $th->getMessage());
-        }
-    }
-
-
     
 
     public function suspend_business($slug)

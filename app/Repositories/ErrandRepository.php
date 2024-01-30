@@ -17,36 +17,15 @@ class ErrandRepository {
      * @param int $size: nullable, specify the number of records to take
      * @param string $category_slug: nullable, category slug to query products per category
      */
-    public function get($size = null, $filter = null)
+    public function get($size = null)
     {
         # code...
         $errands = null;
         if($size != null){
-            $errands = Errand::orderBy('id', 'DESC')
-            ->where(function($query)use($filter){
-                $filter ==  null ? null : $query->where($filter);
-            })->take($size)->get();
+            $errands = Errand::orderBy('id', 'DESC')->take($size)->get();
         }else{
-            $errands = Errand::orderBy('id', 'DESC')
-            ->where(function($query)use($filter){
-                $filter ==  null ? null : $query->where($filter);
-            })->get();
+            $errands = Errand::orderBy('id', 'DESC')->get();
         }
-        return ErrandResource::collection($errands);
-    }
-
-    public function search($size = null, $filter = null)
-    {
-        # code...
-        $rawSql = '';
-        foreach ($filter as $key => $value) {
-            # code...
-            if(strlen($rawSql) > 0){
-                $rawSql += "or ";
-            }
-            $rawSql += "{$key} like %{$value}% ";
-        }
-        $errands = Errand::where(DB::raw($rawSql))->get();
         return ErrandResource::collection($errands);
     }
 
@@ -80,7 +59,6 @@ class ErrandRepository {
                 $errands[] = $err;
             }
         }
-        return ErrandResource::collection($errands);
     }
 
 

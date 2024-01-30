@@ -59,21 +59,6 @@ class ShopRepository {
     }
 
 
-    public function myShops($user_id)
-    {
-        # code...
-        $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')->where('shop_managers.user_id', $user_id)->select('shops.*')->get();
-        return ShopResource::collection($shops);
-    }
-
-    public function getBranches($slug)
-    {
-        # code...
-        // get branches of business with this slug
-        $shops = Shop::where('slug', $slug)->orWhere('parent_slug', $slug)->get();
-        return ShopResource::collection($shops);
-    }
-
     /**
      * save a record to database
      */
