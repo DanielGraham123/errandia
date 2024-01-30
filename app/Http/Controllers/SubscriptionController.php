@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Services\ShopSubscriptionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class SubscriptionController extends Controller
 {
     //
-    public function __construct(ShopSubscriptionService $shopSubscriptionService)
+    public function __construct(
+        ShopSubscriptionService $shopSubscriptionService,
+        
+    )
     {
         # code...
     }
@@ -55,7 +57,7 @@ class SubscriptionController extends Controller
         # code...
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id);
     {
         # code...
     }

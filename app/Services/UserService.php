@@ -54,23 +54,10 @@ class UserService{
     {
         # code...
         $validationRules = [];
-        $this->validationService->validate($data, $validationRules);
+        $this->validationService->validate($data, $data);
         if(empty($data))
             throw new \Exception("No data provided for update");
         return $this->userRepository->update($id, $data);
-    }
-
-    public function updateProfileImage($user_id, $file)
-    {
-        # code...
-        if($file == null){
-            throw new \Exception("Empty file contents.");
-        }
-        $fname = 'profile_'.random_int(1000000, 9999999).'_'.time().'.'.$file->getClientOriginalExtension();
-        $file->move(public_path('uploads/user_photos'), $fname);
-        $path_name = $fname;
-        // $path_name = asset('uploads/user_photos').'/'.$fname;
-        return $this->userRepository->update($user_id, ['photo'=>$path_name]);
     }
 
     public function delete($id, $user_id)
