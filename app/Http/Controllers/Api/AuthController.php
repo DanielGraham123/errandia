@@ -105,15 +105,7 @@ class AuthController extends Controller
         $rules = [
             'name' => ['required', 'string', 'max:200', 'min:3'],
             'email' => ['required', 'string', 'email', 'unique:users,email'],
-            'phone' => ['required', 'unique:users,phone'],
-//            'password' => ['required','string', 'same:confirm_password', 'min:10', 'max:15',
-//                Password::min(8)
-//                ->letters()  // Ensure at least one letter
-//                ->mixedCase()   // Ensure at least one uppercase and one lowercase letter
-//                ->numbers()  // Ensure at least one number
-//                ->symbols("~`!@#$%^&*()_-+={[}]|\:;'<,>.?/")  // Ensure only allowed special characters
-//                ->uncompromised()
-//            ]
+            'phone' => ['required', 'unique:users,phone']
         ];
 
         $this->validate($request->all(), $rules);
@@ -129,11 +121,7 @@ class AuthController extends Controller
                 $user->name = $request->name;
                 $user->email = $request->email ?? '';
                 $user->phone = $request->phone;
-//                $user->password = Hash::make($request->password);
-//                $user->address = $request->address ?? '';
-//                if ($request->street_id) {
-//                    $user->street_id = $request->street_id;
-//                }
+
                 if ($request->file('profile')) {
                     $user->photo = $request->file('profile')->store('users');
                 } 
