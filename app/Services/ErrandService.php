@@ -32,7 +32,7 @@ class ErrandService{
     public function searchAll($size, $filter)
     {
         # code...
-        return $this->errandRepository->get($size, $filter);
+        return $this->errandRepository->search($size, $filter);
     }
 
     public function getOne($slug)
