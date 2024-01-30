@@ -53,9 +53,6 @@ class UserService{
     public function update($id, $field_name, $value)
     {
         $this->userRepository->updatePartially($id, $field_name, $value);
-        if(empty($data))
-            throw new \Exception("No data provided for update");
-        return $this->userRepository->update($id, $data);
     }
 
     public function updateProfileImage($user_id, $file)

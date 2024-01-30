@@ -21,7 +21,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::middleware('auth:api')->group(function (){
+    Route::patch('/user', [UserController::class, 'update']);
+    Route::put('/user/image_upload', [UserController::class, 'userImageUpload']);
+});
+
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
+
     return $request->user();
 });
 
@@ -74,7 +82,5 @@ Route::group(['namespace' => 'Api'], function() {
 
 
     // secure endpoints that require auth token
-    Route::patch('/user', [UserController::class, 'update']);
-    Route::put('/user/image_upload', [UserController::class, 'userImageUpload']);
 
 });

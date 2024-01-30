@@ -24,7 +24,7 @@ class UserController extends Controller
         $user = $request->user('api');
         $rules = [
             'field_name' => ['required', Rule::in(['name', 'whatsapp_number'])],
-            'value' => 'required',
+            'field_value' => 'required',
         ];
 
         $this->validate($request->all(), $rules);
@@ -32,8 +32,13 @@ class UserController extends Controller
             return $this->build_response(response(), 'failed to update', 400);
         }
 
-        $this->userService->update($user->id, $request->get('filed_name'), $request->get('value'));
-        return $this->build_response(response(), 'successfully updated');
+        try {
+            $this->userService->update($user->id, $request->get('field_name'), $request->get('field_value'));
+            return $this->build_response(response(), 'successfully updated');
+        } catch(\Exception $e) {
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), 'failed  to update this field', 400);
+        }
     }
 
     public function userImageUpload(Request $request)
