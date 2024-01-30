@@ -72,8 +72,9 @@ Route::group(['namespace' => 'Api'], function() {
         Route::delete('/{slug}', [CategoryController::class, 'delete']);
     });
 
-    Route::prefix('profile')->group(function(){
-        Route::put('update', [UserController::class, 'update']);
-        Route::post('updatePhoto', [UserController::class, 'updateProfileImage']);
-    });
+
+    // secure endpoints that require auth token
+    Route::patch('/user', [UserController::class, 'update']);
+    Route::put('/user/image_upload', [UserController::class, 'updateProfileImage']);
+
 });
