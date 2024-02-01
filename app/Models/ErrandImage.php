@@ -20,4 +20,10 @@ class ErrandImage extends Model
     {
         return $this->image ? asset('storage/'. $this->image) : '';
     }
+
+    public function errand()
+    {
+        # code...
+        return $this->belongsTo(Errand::class, 'item_quote_id');
+    }
 }

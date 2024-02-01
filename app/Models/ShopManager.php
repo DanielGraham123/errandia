@@ -12,4 +12,16 @@ class ShopManager extends Model
     protected $table = "shop_managers";
 
     protected $fillable = ['shop_id', 'user_id', 'is_owner', 'status'];
+
+    public function shop()
+    {
+        # code...
+        return $this->belongsTo(Shop::class);
+    }
+
+    public function user()
+    {
+        # code...
+        return $this->belongsTo(User::class);
+    }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\BAdmin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ErrandResource;
 use App\Models\Errand;
 use App\Services\CategoryService;

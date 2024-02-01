@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\BAdmin;
 
+use App\Http\Controllers\Controller;
 use App\Services\ShopService;
 use Illuminate\Http\Request;
 

@@ -39,7 +39,14 @@ class ProductService{
     public function save($data)
     {
         # code...
-        $validationRules = [];
+        $validationRules = [
+            'name'=>'required', 'shop_id'=>'required', 
+            'unit_price'=>'nullable|numeric', 'description'=>'nullable|string', 
+            'slug'=>'required', 'status'=>'nullable', 
+            'featured_image'=>'nullable|file|mimes:image/*', 
+            'quantity'=>'nullable|numeric', 'views'=>'nullable|numeric', 
+            'service'=>'nullable', 'search_index'=>'required', 'tags'=>'nullable'
+        ];
         $this->validationService->validate($data, $validationRules);
         return $this->productRepository->store($data);
     }
@@ -49,6 +56,8 @@ class ProductService{
         # code...
         $validationRules = [];
         $this->validationService->validate($data, $validationRules);
+        if(empty($data))
+            throw new \Exception("No data provided for update");
         return $this->productRepository->update($slug, $data);
     }
 
