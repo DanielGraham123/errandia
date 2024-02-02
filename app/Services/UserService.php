@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
-use \Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File;
 use App\Mail\OtpMailer;
-use App\Models\UserOTP;
+
 use App\Repositories\UserOTPRepository;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Mockery\Exception;
 use Nette\Utils\Random;
 use Ramsey\Uuid\Uuid;
@@ -33,7 +34,7 @@ class UserService{
     public function getAll($size = null)
     {
         # code...
-        return $this->userRepository->get($size);
+        return $this->userRepository->findAll($size);
     }
 
     public function getById($id)
@@ -52,7 +53,7 @@ class UserService{
 
     public function update($id, $field_name, $value)
     {
-        $this->userRepository->updatePartially($id, $field_name, $value);
+        return $this->userRepository->updatePartially($id, $field_name, $value);
     }
 
     public function updateProfileImage($user_id, $file)
@@ -62,11 +63,19 @@ class UserService{
             throw new \Exception("Empty file contents.");
         }
 
-        $fname = 'profile_'.random_int(1000000, 9999999).'_'.time().'.'.$file->getClientOriginalExtension();
-        $file->move(public_path('uploads/user_photos'), $fname);
-        $path_name = $fname;
+        $user = $this->userRepository->getById($user_id);
+        if(!empty($user->photo) &&  File::exists(public_path($user->photo))) {
+            File::delete(public_path($user->photo));
+            logger()->info('previous image file deleted : ' . $user->photo);
+        }
+
+        $filename = 'profile_'.random_int(1000000, 9999999).'_'.time().'.'.$file->getClientOriginalExtension();
+        $file->move(public_path('uploads/user_photos'), $filename);
+
+        $path_name = '/uploads/user_photos/' . $filename;
         logger()->info("File path : " . $path_name);
-        $this->userRepository->updatePartially($user_id, 'phone', $path_name);
+        $this->userRepository->updatePartially($user_id, 'photo', $path_name);
+
         return $path_name;
     }
 
