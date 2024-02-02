@@ -11,7 +11,7 @@ class UserRepository {
      * get all products
      * @param int $size: nullable, specify the number of records to take
      */
-    public function get($size = null)
+    public function findAll($size = null)
     {
         # code...
         $users = $size == null ?
@@ -58,6 +58,7 @@ class UserRepository {
     public function updatePartially($id, $field_name, $value)
     {
         User::where('id', $id)->update([$field_name => $value]);
+        return User::find($id);
     }
 
 

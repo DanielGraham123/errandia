@@ -33,8 +33,10 @@ class UserController extends Controller
         }
 
         try {
-            $this->userService->update($user->id, $request->get('field_name'), $request->get('field_value'));
-            return $this->build_response(response(), 'successfully updated');
+            $user = $this->userService->update($user->id, $request->get('field_name'), $request->get('field_value'));
+            return $this->build_response(response(), 'successfully updated', 200, [
+                'user' => $user
+            ]);
         } catch(\Exception $e) {
             logger()->error($e->getMessage());
             return $this->build_response(response(), 'failed  to update this field', 400);

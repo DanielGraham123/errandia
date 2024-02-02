@@ -39,3 +39,4 @@ yarn-error.log
 composer.lock
 public/mix-manifest.json
 .idea
+public/uploads
