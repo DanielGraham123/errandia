@@ -48,8 +48,10 @@ Route::group(['namespace' => 'Api'], function() {
     // Shop
     Route::get('/sub_categories', 'ShopController@getSubCategories');
     Route::get('/categories', 'ShopController@getCategories');
+
     Route::post('/shops', 'ShopController@store');
     Route::get('/shops', 'ShopController@index');
+    Route::get('/shops/featured', 'ShopController@featured_shops');
 
     Route::resource('products', 'ProductController', ['only' => ['index', 'store']]);
     Route::post('/product/delete', 'ProductController@deleteProduct');
