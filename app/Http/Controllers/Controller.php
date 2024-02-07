@@ -134,4 +134,26 @@ class Controller extends BaseController
             );
     }
 
+    public function build_success_response($response, $message = '', $data = [])
+    {
+        return
+            $response->json(
+                [
+                    'message' => $message,
+                    'data'    => empty($this->validations_errors) ? $data : $this->validations_errors,
+                ],
+                200
+            );
+    }
+
+    public static function convert_paginated_result($result, $items)
+    {
+        return [
+            "current_page" => $result->currentPage(),
+            "per_page" => $result->perPage(),
+            "total" => $result->total(),
+            "items" => $items
+        ];
+    }
+
 }

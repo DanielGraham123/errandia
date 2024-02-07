@@ -14,22 +14,33 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Nette\Utils\Paginator;
 
 class ShopController extends Controller
 {
 
     public function index(Request $request)
     {
-        if ($request->featured) {
-            $shops = Shop::orderBy('created_at', 'desc')->take(10)->get();
-            return response()->json(['data' => [
-                'shops' => ShopResource::collection($shops)
-            ]]);
-        }
-        $shops = Shop::orderBy('created_at', 'desc')->paginate(15);
-        return response()->json(['data' => [
-            'shops' => ShopResource::collection($shops)
-        ]]);
+        $shops_page = Shop::orderBy('created_at', 'desc')->paginate(15);
+        return $this->build_success_response(
+            response() ,
+            'shops loaded',
+            self::convert_paginated_result(
+                $shops_page, ShopResource::collection($shops_page)
+            )
+        );
+    }
+
+    public function featured_shops(Request $request)
+    {
+        $shops = Shop::orderBy('created_at', 'desc')->take(10)->get();
+        return $this->build_success_response(
+            response(),
+            'shops loaded',
+            [
+                'items' => ShopResource::collection($shops)
+            ]
+        );
     }
 
     public function getCategories() {
