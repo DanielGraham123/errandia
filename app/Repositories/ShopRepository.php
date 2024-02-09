@@ -1,28 +1,32 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Http\Resources\ShopResource;
 use App\Http\Resources\UserResource;
 use App\Models\Category;
 use App\Models\Shop;
+use App\Models\ShopContactInfo;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
-class ShopRepository {
+class ShopRepository
+{
 
     /**
      * get all products
-     * @param int $size: nullable, specify the number of records to take
-     * @param string $category_id: nullable, category id to query products per category
+     * @param int $size : nullable, specify the number of records to take
+     * @param string $category_id : nullable, category id to query products per category
      */
     public function get($size = null, $category_id = null)
     {
         # code...
         $builder = $category_id == null ?
-            Shop::orderBy('id', 'desc') : 
+            Shop::orderBy('id', 'desc') :
             Category::find($category_id)->shops()->orderBy('id', 'desc') ?? null;
 
-        if($builder == null)
+        if ($builder == null)
             throw new \Exception("Category does not exist");
 
         $shops = $size == null ?
@@ -35,7 +39,7 @@ class ShopRepository {
 
     /**
      * get shop owners
-     * @param int $size: nullable, number of records to get from the database
+     * @param int $size : nullable, number of records to get from the database
      */
     public function shopOwners($size = null)
     {
@@ -53,8 +57,8 @@ class ShopRepository {
     {
         # read the record associated to a given slug
         $shop = Shop::whereSlug($slug)->first();
-        if($shop == null)
-            throw new \Exception("Shop record with record ".$slug." does not exist");
+        if ($shop == null)
+            throw new \Exception("Shop record with record " . $slug . " does not exist");
         return new ShopResource($shop);
     }
 
@@ -66,19 +70,47 @@ class ShopRepository {
     {
         # code...
         // validate data and save to database
-        try {
-            if(Shop::where('name', $data['name'])->count() > 0){
-                throw new \Exception('A business already exist with same name');
-            }
-            $record = DB::transaction(function()use($data){
-                $shop = new Shop($data);
-                $shop->save();
-                return $shop;
-            });
-            return new ShopResource($record);
-        } catch (\Throwable $th) {
-            throw $th;
+        if (Shop::where('name', $data['name'])->count() > 0) {
+            throw new \Exception('A business already exist with same name');
         }
+        $record = DB::transaction(function () use ($data) {
+            $user = auth('api')->user();
+            $shop = new Shop();
+            $shop->name = $data['name'];
+            $shop->description = $data['description'];
+            $shop->user_id = $user->id;
+            $shop->category_id = 0;
+            $shop->status = $data['status'] ?? true;
+            $shop->is_branch = $data['is_branch'] ?? false;
+            $shop->parent_slug = $data['parent_slug'] ?? '';
+            $shop->slug = Str::slug($data['name']) . '-' . time();
+            $shop->slogan = $data['slogan'] ?? '';
+
+//            if (isset($data['categories'])) {
+//                $categories = explode(",", trim($data['categories']));
+//                if (count($categories) > 0)
+//                    $shop->subCategories()->sync($categories);
+//            }
+
+            $shop->save();
+
+            $shop_info = ShopContactInfo::firstOrNew([
+                'shop_id' => $shop->id
+            ]);
+            $shop_info->street_id = $data['street_id'];
+            $shop_info->phone = $data['phone'] ?? '';
+            $shop_info->whatsapp = $data['whatsapp'] ?? '';
+            $shop_info->address = $data['address'] ?? '';
+            $shop_info->facebook = $data['facebook'] ?? '';
+            $shop_info->instagram = $data['instagram'] ?? '';
+            $shop_info->website = $data['website'] ?? '';
+            $shop_info->email = $data['email'] ?? '';
+            $shop_info->save();
+
+            return $shop;
+        });
+
+        return new ShopResource($record);
     }
 
 
@@ -90,9 +122,9 @@ class ShopRepository {
         # code...
         // validate data and save to database
         try {
-            $record = DB::transaction(function()use($slug, $data){
+            $record = DB::transaction(function () use ($slug, $data) {
                 $shop = Shop::whereSlug($slug)->first();
-                if($shop == null)
+                if ($shop == null)
                     throw new \Exception("Shop to be updated does not exist");
 
                 $shop->update($data);
@@ -113,7 +145,7 @@ class ShopRepository {
         # code...
         // validate data and save to database
         $shop = Shop::whereSlug($slug)->first();
-        if($shop == null)
+        if ($shop == null)
             throw new \Exception("shop record to be deleted does not exist");
 
         $shop->delete();
