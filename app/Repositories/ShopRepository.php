@@ -85,11 +85,12 @@ class ShopRepository
             $shop->parent_slug = $data['parent_slug'] ?? '';
             $shop->slug = Str::slug($data['name']) . '-' . time();
             $shop->slogan = $data['slogan'] ?? '';
+            $shop->image_path = $data['image_path'];
 
 //            if (isset($data['categories'])) {
 //                $categories = explode(",", trim($data['categories']));
 //                if (count($categories) > 0)
-//                    $shop->subCategories()->sync($categories);
+//                    $shop->categories = json_encode($categories);
 //            }
 
             $shop->save();

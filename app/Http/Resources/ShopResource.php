@@ -23,7 +23,7 @@ class ShopResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'user' => new UserResource($shop->user),
-            'image' => $this->getImage(),
+            'image' => $this->image_path,
             'status' => $this->status,
             'is_branch' => $this->is_branch,
             'slug' => $this->slug,
