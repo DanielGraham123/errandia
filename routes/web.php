@@ -31,7 +31,7 @@ Route::get('set_local/{lang}', [Controller::class, 'set_local'])->name('lang.swi
 Route::post('login', [CustomLoginController::class, 'login'])->name('login.submit');
 Route::get('login', [CustomLoginController::class, 'showLoginForm'])->name('login');
 Route::get('register', [CustomLoginController::class, 'register'])->name('register');
-Route::post('register', [CustomLoginController::class, 'signup']);
+//Route::post('/register_', [CustomLoginController::class, 'signup']);
 Route::post('logout', [CustomLoginController::class, 'logout'])->name('logout');
 Route::get('logout', [CustomLoginController::class, 'logout'])->name('logout');
 
