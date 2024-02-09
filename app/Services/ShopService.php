@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Shop;
 use App\Repositories\ShopManagerRepository;
 use App\Repositories\ShopRepository;
 use \Illuminate\Support\Facades\Http;
@@ -31,9 +32,11 @@ class ShopService{
 
     public function getUserShops($user_id)
     {
-        # code...
-        $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')->where('shop_managers.user_id', auth()->id())->select('shops.*')->get();
-        return $shops;
+//        $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')
+//            ->where('shop_managers.user_id', $user_id)
+//            ->select('shops.*')->get();
+//        return $shops;
+        return Shop::where('user_id', $user_id)->orderBy('name')->get();
     }
 
     public function getBySlug($slug)
@@ -50,13 +53,6 @@ class ShopService{
 
     public function save($data)
     {
-        # code...
-        $validationRules = [
-            'name'=>'required', 'description'=>'required', 'user_id'=>'required',
-            'slug'=>'required', 'image'=>'file|mimes:image/*|nullable', 
-            'status'=>'nullable', 'is_branch'=>'nullable', 'parent_slug'=>'nullable'
-        ];
-        $this->validationService->validate($data, $validationRules);
         if(($file = $data['image']) != null){
             $path = public_path('uploads/logos/');
             $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();

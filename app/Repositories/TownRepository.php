@@ -23,8 +23,8 @@ class TownRepository {
     {
         # code...
         $regions = $region_id == null ?
-            Town::orderBy('name')->get()->toArray() :
-            Town::where('region_id', $region_id)->orderBy('name')->get()->toArray();
+            Town::orderBy('name')->get() :
+            Town::where('region_id', $region_id)->orderBy('name')->get();
         return $regions;
     }
 
