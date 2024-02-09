@@ -22,8 +22,8 @@ class StreetRepository {
     {
         # code...
         $streets = $town_id == null ?
-            Street::orderBy('name')->get()->toArray() :
-            Street::where('town_id', $town_id)->orderBy('name')->get()->toArray();
+            Street::orderBy('name')->get() :
+            Street::where('town_id', $town_id)->orderBy('name')->get();
         return $streets;
     }
 

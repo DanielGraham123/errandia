@@ -65,11 +65,17 @@ class ShopController extends Controller
     public function save_business(Request $request){
         
         $validity = Validator::make($request->all(), [
-            'name'=>'required', 'category'=>'required', 'region'=>'required', 
-            'town'=>'required', 'street'=>'required', 'website'=>'url|nullable',
-            'phone'=>'required|integer', 'phone_code'=>'required_with:phone', 
+            'name'=>'required',
+            'category'=>'required',
+//            'region'=>'required',
+//            'town'=>'required',
+//            'street'=>'required',
+            'website'=>'url|nullable',
+            'phone'=>'required|integer',
+            'phone_code'=>'required_with:phone',
             'whatsapp_phone_code'=>'required_with:whatsapp_phone', 
-            'whatsapp_phone'=>'integer|nullable', 'email'=>'email',
+            'whatsapp_phone'=>'integer|nullable',
+            'email'=>'email|nullable',
         ]);
 
         if($validity->fails()){
@@ -78,26 +84,44 @@ class ShopController extends Controller
         }
 
         try {
-            //code...
-            $business = new \App\Models\Shop();
     
-    
-            $shop_data = ['name'=>$request->name, 'category_id'=>$request->category, 'description'=>$request->description,  'user_id'=>auth()->id(),  'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre', 
-                        'status'=>1, 'image'=>$request->file('image') ];
-           
+            $shop_data = [
+                'name'=> $request->name,
+                'category_id'=>$request->category,
+                'description'=>$request->description,
+                'user_id'=>auth()->id(),
+                'slug'=>'bDC'.time().'swI'.random_int(100000, 999999).'fgUfre',
+                'status'=> 1,
+                'image'=>$request->file('image')
+            ];
             $business = $this->shopService->save($shop_data);
+            logger()->info("business successfully created");
     
             // SAVE BUSINESS CONTACT INFO
-            $contact_data = ['shop_id'=>$business->id, 'address'=>$request->address??'', 'street_id'=>$request->street, 'phone'=>$request->phone_code.$request->phone, 'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null, 'website'=>$request->website, 'email'=>$request->email];
+            $contact_data = [
+                'shop_id'=>$business->id,
+                'address'=>$request->address??'',
+                'street_id'=> $request->street,
+                'phone'=>$request->phone_code.$request->phone,
+                'whatsapp'=>$request->whatsapp_phone != null ? $request->whatsapp_phone_code.$request->whatsapp_phone : null,
+                'website'=>$request->website,
+                'email'=>$request->email];
             $this->shopService->updateContactInfo($business->id, $contact_data);
+            logger()->info("business contact successfully saved");
             
             // SET DEFAULT BUSINESS MANAGER
-            $manager_data = ['shop_id'=>$business->id, 'user_id'=>auth()->id(), 'is_owner'=>true, 'status'=>true];
+            $manager_data = [
+                'shop_id'=>$business->id,
+                'user_id'=>auth()->id(),
+                'is_owner'=>true, 'status'=>true
+            ];
             $this->shopService->updateManagers($business->id, $manager_data);
+            logger()->info(" Business manager successfully saved");
     
             return redirect(route('business_admin.businesses.index'))->with('success', 'Business successfully created');
         } catch (\Throwable $th) {
             //throw $th;
+            logger()->error($th->getMessage());
             session()->flash('error', $th->getMessage());
             return back()->withInput();
         }

@@ -31,20 +31,14 @@
                     @foreach($businesses as $business)
                         <tr class="shadow-sm border-bottom bg-white">
                             <td>{{ $k++}}</td>
-                            <td>{{ $business->name }}
-                                {{-- <div class="row border-0">
-                                    <span class="col-sm-2">
-                                        <span class="fa  fa-handshake-o fa-2x text-primary"></span>
-                                    </span>
-                                    <div class="col-sm-10" style="font-size:12px">
-                                        <span class="d-block my-1 h5 my-2 text-dark" style="font-size:12px">{{ $business->name }}</span>
-                                        <span><span class="text-quote"> 4 Products</span><span class="text-body-sm"> 2 Services</span></span>
-                                    </div>
-                                </div> --}}
+                            <td>
+                                {{ $business->name }}
                             </td>
-                            <td>{{ $business->location() }} @if($business->is_branch == 0) <BR><span class="label label-success rounded arrow-in">
-                                Head Office<span> @endif</td>
-                             
+                            <td>{{ $business->location() }}
+                                @if($business->is_branch == 0)
+                                    <span class="label label-success rounded arrow-in">Head Office<span>
+                                @endif
+                            </td>
                             <td>
 
                                 <div class="dropdown">
