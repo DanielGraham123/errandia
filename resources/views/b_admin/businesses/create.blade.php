@@ -27,7 +27,7 @@
                     <textarea name="description" class="form-control" rows="4">{{ old('description', 'Description') }}</textarea>
                 </div>
                 <div class="col-md-4 py-2 px-2">
-                    <select name="region" class="form-control" oninput="loadTowns(event)" required>
+                    <select name="region" class="form-control" oninput="loadTowns(event)">
                         <option>Region</option>
                         @foreach ($regions as $reg)
                             <option value="{{ $reg->id }}" {{ old('region') == $reg->id ? 'selected' : '' }}>{{ $reg->name }}</option>
@@ -35,7 +35,7 @@
                     </select>
                 </div>
                 <div class="col-md-4 py-2 px-2">
-                    <select name="town" class="form-control" id="town_selection" oninput="loadStreets(event)" required>
+                    <select name="town" class="form-control" id="town_selection" oninput="loadStreets(event)" >
                         <option>Town</option>
                         @foreach ($towns as $tn)
                             <option value="{{ $tn->id }}" {{ old('town') == $tn->id ? 'selected' : '' }}>{{ $tn->name }}</option>
@@ -43,7 +43,7 @@
                     </select>
                 </div>
                 <div class="col-md-4 py-2 px-2">
-                    <select name="street" class="form-control" id="street_selection" required>
+                    <select name="street" class="form-control" id="street_selection">
                         <option>Street</option>
                         @foreach ($streets as $st)
                             <option value="{{ $st->id }}" {{ old('street') == $st->id ? 'selected' : '' }}>{{ $st->name }}</option>

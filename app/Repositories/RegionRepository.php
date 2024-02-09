@@ -20,9 +20,7 @@ class RegionRepository {
      */
     public function get()
     {
-        # code...
-        $regions = Region::orderBy('name')->get()->toArray();
-        return $regions;
+        return Region::orderBy('name')->get();
     }
 
 
