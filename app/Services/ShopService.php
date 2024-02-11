@@ -53,12 +53,15 @@ class ShopService{
 
     public function save($data)
     {
-        if(($file = $data['image']) != null){
+        if(isset($data['image']) && ($file = $data['image']) != null){
             $path = public_path('uploads/logos/');
             $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
             $file->move($path, $fname);
             $data['image_path'] = asset('uploads/logos/'.$fname);
+        } else {
+            $data['image_path'] = asset('uploads/logos/logo-default.png');
         }
+
         return $this->shopRepository->store($data);
     }
 

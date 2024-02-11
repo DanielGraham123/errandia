@@ -11,6 +11,7 @@ use App\Models\Shop;
 use App\Models\ShopContactInfo;
 use App\Models\SubCategory;
 use App\Models\User;
+use App\Services\ShopService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -18,6 +19,13 @@ use Nette\Utils\Paginator;
 
 class ShopController extends Controller
 {
+
+    protected $shopService;
+
+    public function __construct(ShopService $shopService)
+    {
+        $this->shopService = $shopService;
+    }
 
     public function index(Request $request)
     {
@@ -64,46 +72,16 @@ class ShopController extends Controller
     public function store(Request $request)
     {
         try {
-            $created = DB::transaction(function () use ($request) {
-                $user = auth('api')->user();
-                $shop = new Shop();
-                $shop->name = $request->name;
-                $shop->description = $request->description;
-                $shop->user_id = $user->id;
-                $shop->category_id = 0;
-                $shop->status = $request->status ?? true;
-                $shop->is_branch = $request->is_branch ?? false;
-                $shop->parent_slug = $request->parent_slug ?? '';
-                $shop->slug = Str::slug($request->name) . '-' . time();
-                $shop->slogan = $request->slogan ?? '';
+            $shopData = $request->all();
+            $created = $this->shopService->save($shopData);
 
-                if($request->file('image')) {
-                    $shop->image_path = $request->file('image')->store('shops');
-                }
-                $shop->save();
-                
-                $shop_info = ShopContactInfo::firstOrNew([
-                    'shop_id' => $shop->id
-                ]);
-                $shop_info->street_id = $request->street_id;
-                $shop_info->phone = $request->phone ?? '';
-                $shop_info->whatsapp = $request->whatsapp ?? '';
-                $shop_info->address = $request->address ?? '';
-                $shop_info->facebook = $request->facebook ?? '';
-                $shop_info->instagram = $request->instagram ?? '';
-                $shop_info->website = $request->website ?? '';
-                $shop_info->email = $request->email ?? '';
-                $shop_info->save();
-
-                $categories = explode(",",trim($request->categories));
-                if (count($categories) > 0) $shop->subCategories()->sync($categories);
-                return $shop;
-            });
-
-           return response()->json(['data' => [
-                'message' => 'Shop created',
-                'shop' => new ShopResource($created)
-           ]]);
+            return $this->build_success_response(
+                response(),
+                'Shop created successfully',
+                [
+                    'item' => new ShopResource($created)
+                ]
+            );
         } catch(\Exception $e) {
             return response()->json(['data' => [
                 'error' => $e->getMessage(),
