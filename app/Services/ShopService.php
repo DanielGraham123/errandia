@@ -56,13 +56,19 @@ class ShopService{
     {
         if(isset($data['image']) && ($file = $data['image']) != null){
             $path = public_path('uploads/logos/');
+            if(!file_exists($path))
+                mkdir($path, 0777, true);
             $fName = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+
             $file->move($path, $fName);
-            $data['image_path'] = asset('uploads/logos/'.$fName);
+
+            $data['image_path'] = 'uploads/logos/'.$fName;
+
+            logger()->info('Image uploaded for shop: ' . $data['image_path']);
         } else {
+            logger()->info('No image provided for shop. Using default image');
             $data['image_path'] = asset('assets/images/logo-default.png');
         }
-
         return $this->shopRepository->store($data);
     }
 
