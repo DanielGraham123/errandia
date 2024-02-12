@@ -6,6 +6,7 @@ use App\Models\Shop;
 use App\Repositories\ShopManagerRepository;
 use App\Repositories\ShopRepository;
 use \Illuminate\Support\Facades\Http;
+use PhpParser\Node\Scalar\String_;
 
 class ShopService{
 
@@ -55,11 +56,11 @@ class ShopService{
     {
         if(isset($data['image']) && ($file = $data['image']) != null){
             $path = public_path('uploads/logos/');
-            $fname = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
-            $file->move($path, $fname);
-            $data['image_path'] = asset('uploads/logos/'.$fname);
+            $fName = 'logo_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+            $file->move($path, $fName);
+            $data['image_path'] = asset('uploads/logos/'.$fName);
         } else {
-            $data['image_path'] = asset('uploads/logos/logo-default.png');
+            $data['image_path'] = asset('assets/images/logo-default.png');
         }
 
         return $this->shopRepository->store($data);
