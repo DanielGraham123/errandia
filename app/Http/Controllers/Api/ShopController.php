@@ -73,7 +73,11 @@ class ShopController extends Controller
     {
         try {
             $shopData = $request->all();
+            $user = auth('api')->user();
+            $shopData['user'] = $user;
+
             $created = $this->shopService->save($shopData);
+
 
             return $this->build_success_response(
                 response(),
@@ -83,10 +87,11 @@ class ShopController extends Controller
                 ]
             );
         } catch(\Exception $e) {
+            logger()->error('Error creating shop: ' . $e->getMessage());
             return response()->json(['data' => [
                 'error' => $e->getMessage(),
                 'message' => 'Sorry, we encountered an error'
-            ]], 500);
+            ]], 400);
         }
     }
 }

@@ -65,33 +65,36 @@ class ShopRepository
 
     /**
      * save a record to database
+     * @throws \Exception
      */
     public function store($data)
     {
-        # code...
         // validate data and save to database
         if (Shop::where('name', $data['name'])->count() > 0) {
             throw new \Exception('A business already exist with same name');
         }
+
         $record = DB::transaction(function () use ($data) {
-            $user = auth('api')->user();
+            $user = $data['user'];
+
             $shop = new Shop();
             $shop->name = $data['name'];
             $shop->description = $data['description'];
             $shop->user_id = $user->id;
-            $shop->category_id = 0;
+            $shop->category_id = $data['category_id'] ?? "1";
             $shop->status = $data['status'] ?? true;
+
             $shop->is_branch = $data['is_branch'] ?? false;
             $shop->parent_slug = $data['parent_slug'] ?? '';
             $shop->slug = Str::slug($data['name']) . '-' . time();
             $shop->slogan = $data['slogan'] ?? '';
             $shop->image_path = $data['image_path'];
 
-//            if (isset($data['categories'])) {
-//                $categories = explode(",", trim($data['categories']));
-//                if (count($categories) > 0)
-//                    $shop->categories = json_encode($categories);
-//            }
+            if (isset($data['categories'])) {
+                $categories = explode(",", trim($data['categories']));
+                if (count($categories) > 0)
+                    $shop->categories = json_encode($categories);
+            }
 
             $shop->save();
 
@@ -110,6 +113,8 @@ class ShopRepository
 
             return $shop;
         });
+
+        logger()->info('Shop saved: ' . json_encode($record));
 
         return new ShopResource($record);
     }
