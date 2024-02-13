@@ -26,12 +26,17 @@ class Shop extends Model
         return $this->belongsTo(Category::class,'category_id');
     }
 
+//    public function parent(){
+//        return $this->belongsTo(Shop::class, 'parent_slug', 'slug');
+//    }
+
+// get the parent based on the parent_id
     public function parent(){
-        return $this->belongsTo(Shop::class, 'parent_slug', 'slug');
+        return $this->belongsTo(Shop::class, 'parent_id');
     }
 
     public function branches(){
-        return $this->hasMany(Shop::class, 'parent_slug', 'slug');
+        return $this->hasMany(Shop::class, 'parent_id' );
     }
 
     public function contactInfo(){
