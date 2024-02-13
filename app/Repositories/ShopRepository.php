@@ -90,10 +90,21 @@ class ShopRepository
             $shop->slogan = $data['slogan'] ?? '';
             $shop->image_path = $data['image_path'];
 
-            if (isset($data['categories'])) {
-                $categories = explode(",", trim($data['categories']));
-                if (count($categories) > 0)
-                    $shop->categories = json_encode($categories);
+//            if (isset($data['categories'])) {
+//                $categories = explode(",", trim($data['categories']));
+//                if (count($categories) > 0)
+//                    $shop->categories = json_encode($categories);
+//            }
+
+            // Set category_id if provided and valid
+            if (isset($data['category_id'])) {
+                $shop->category_id = $data['category_id'];
+            }
+
+            if (isset($data['is_branch']) && $data['is_branch'] && isset($data['parent_id'])) {
+                $shop->parent_id = $data['parent_id'];
+            } else {
+                $shop->parent_id = null; // or simply don't set it as it's nullable
             }
 
             $shop->save();
