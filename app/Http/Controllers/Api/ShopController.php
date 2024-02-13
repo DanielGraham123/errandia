@@ -94,4 +94,25 @@ class ShopController extends Controller
             ]], 400);
         }
     }
+
+    // get a shop by id
+    public function show($slug)
+    {
+       try {
+            $shop = $this->shopService->getBySlug($slug);
+            return $this->build_success_response(
+                response(),
+                'Shop loaded',
+                [
+                    'item' => new ShopResource($shop)
+                ]
+            );
+       } catch (\Exception $e) {
+            logger()->error('Error loading shop: ' . $e->getMessage());
+            return response()->json(['data' => [
+                'error' => $e->getMessage(),
+                'message' => 'Sorry, we encountered an error'
+            ]], 400);
+       }
+    }
 }
