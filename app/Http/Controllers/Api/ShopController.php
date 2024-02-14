@@ -71,8 +71,7 @@ class ShopController extends Controller
         return response()->json(['data' => SubCategoryResource::collection($categories)]);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         try {
             $shopData = $request->all();
             $user = auth('api')->user();
@@ -98,8 +97,7 @@ class ShopController extends Controller
     }
 
     // get a shop by id
-    public function show($slug)
-    {
+    public function show($slug) {
         try {
             $shop = $this->shopService->getBySlug($slug);
             return $this->build_success_response(
@@ -118,27 +116,39 @@ class ShopController extends Controller
         }
     }
 
-    public function update(Request $request, $slug)
-    {
+    public function update(Request $request, $slug) {
         try {
             $shop = $this->shopService->getBySlug($slug);
 
-            $authenticatedUser = auth()->user();
+            $authenticatedUser = auth('api')->user();
+
             if ($shop->user_id !== $authenticatedUser->id) {
                 return response()->json([
                     'error' => 'Unauthorized',
                     'message' => 'You are not authorized to update this shop.'
                 ], 403);
             }
-            
-            $shopData = $request->all();
+
+            // Handle text data
+            $shopData = $request->except(['image']);
+            foreach ($shopData as $key => $value) {
+                if ($request->has($key)) {
+                    $shop->$key = $value;
+                }
+            }
+
+            // Handle file upload
+            if ($request->hasFile('image')) {
+                $shopImageLogo = $request->file('image');
+                // TODO: Save the file to disk and update the shop's image_path
+            }
+
             $shop->update($shopData);
             $shop->refresh();
 
             return $this->build_success_response(
                 response(),
-                'Shop updated successfully',
-                [
+                'Shop updated successfully', [
                     'item' => new ShopResource($shop)
                 ]
             );
