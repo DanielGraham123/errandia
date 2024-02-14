@@ -50,6 +50,7 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/categories', 'ShopController@getCategories');
 
     Route::post('/shops', 'ShopController@store');
+    Route::put('/shops/{slug}', 'ShopController@update');
     Route::get('/shops', 'ShopController@index');
     Route::get('/shops/featured', 'ShopController@featured_shops');
     Route::get('/shops/{slug}', 'ShopController@show');

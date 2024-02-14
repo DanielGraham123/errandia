@@ -31,10 +31,11 @@ class ShopController extends Controller
     {
         $shops_page = Shop::orderBy('created_at', 'desc')->paginate(15);
         return $this->build_success_response(
-            response() ,
+            response(),
             'shops loaded',
             self::convert_paginated_result(
-                $shops_page, ShopResource::collection($shops_page)
+                $shops_page,
+                ShopResource::collection($shops_page)
             )
         );
     }
@@ -51,20 +52,21 @@ class ShopController extends Controller
         );
     }
 
-    public function getCategories() {
+    public function getCategories()
+    {
         $categories = Category::orderBy('name', 'asc')->get();
         return response()->json(['data' => CategoryResource::collection($categories)]);
     }
 
-    public function getSubCategories(Request $request) 
+    public function getSubCategories(Request $request)
     {
         $categories = SubCategory::query();
         $categories = $categories->when($request->name, function ($query, $name) {
-            $query->where('name', 'like', '%'.$name.'%')
-                ->orWhere('description', 'like', '%'.$name.'%');
+            $query->where('name', 'like', '%' . $name . '%')
+                ->orWhere('description', 'like', '%' . $name . '%');
         });
         $categories = $categories->orderBy('name', 'asc')->get();
-        if(empty($categories))$categories = SubCategory::orderBy('name', 'asc')->get();
+        if (empty($categories)) $categories = SubCategory::orderBy('name', 'asc')->get();
 
         return response()->json(['data' => SubCategoryResource::collection($categories)]);
     }
@@ -86,7 +88,7 @@ class ShopController extends Controller
                     'item' => new ShopResource($created)
                 ]
             );
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             logger()->error('Error creating shop: ' . $e->getMessage());
             return response()->json(['data' => [
                 'error' => $e->getMessage(),
@@ -98,7 +100,7 @@ class ShopController extends Controller
     // get a shop by id
     public function show($slug)
     {
-       try {
+        try {
             $shop = $this->shopService->getBySlug($slug);
             return $this->build_success_response(
                 response(),
@@ -107,12 +109,45 @@ class ShopController extends Controller
                     'item' => new ShopResource($shop)
                 ]
             );
-       } catch (\Exception $e) {
+        } catch (\Exception $e) {
             logger()->error('Error loading shop: ' . $e->getMessage());
             return response()->json(['data' => [
                 'error' => $e->getMessage(),
                 'message' => 'Sorry, we encountered an error'
             ]], 400);
-       }
+        }
+    }
+
+    public function update(Request $request, $slug)
+    {
+        try {
+            $shop = $this->shopService->getBySlug($slug);
+
+            $authenticatedUser = auth()->user();
+            if ($shop->user_id !== $authenticatedUser->id) {
+                return response()->json([
+                    'error' => 'Unauthorized',
+                    'message' => 'You are not authorized to update this shop.'
+                ], 403);
+            }
+            
+            $shopData = $request->all();
+            $shop->update($shopData);
+            $shop->refresh();
+
+            return $this->build_success_response(
+                response(),
+                'Shop updated successfully',
+                [
+                    'item' => new ShopResource($shop)
+                ]
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error updating shop: ' . $e->getMessage());
+            return response()->json([
+                'error' => $e->getMessage(),
+                'message' => 'Sorry, we encountered an error while updating the shop.'
+            ], 400);
+        }
     }
 }
