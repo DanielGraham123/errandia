@@ -9,9 +9,7 @@ class SubscriptionController extends Controller
 {
     //
     public function __construct(
-        ShopSubscriptionService $shopSubscriptionService,
-        
-    )
+        ShopSubscriptionService $shopSubscriptionServices)
     {
         # code...
     }
@@ -57,7 +55,7 @@ class SubscriptionController extends Controller
         # code...
     }
 
-    public function delete(Request $request, $id);
+    public function delete(Request $request, $id)
     {
         # code...
     }
