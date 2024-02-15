@@ -25,6 +25,15 @@ class CreateShopsTable extends Migration
             $table->string('parent_slug')->nullable();
             $table->string('slug');
             $table->string('slogan')->nullable();
+            $table->string("street")->nullable();
+
+            $table->unsignedBigInteger('region_id')->nullable();
+            $table->unsignedBigInteger('town_id')->nullable();
+            $table->unsignedBigInteger('street_id')->nullable();
+
+            $table->foreign('region_id')->references('id')->on('regions')->onDelete('set null');
+            $table->foreign('town_id')->references('id')->on('towns')->onDelete('set null');
+            $table->foreign('street_id')->references('id')->on('streets')->onDelete('set null');
 
             $table->foreign('parent_id')->references('id')->on('shops')->onDelete('cascade'); // self-referencing foreign key
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

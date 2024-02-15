@@ -96,6 +96,11 @@ class ShopRepository
             $shop->slogan = $data['slogan'] ?? '';
             $shop->image_path = $data['image_path'];
 
+            $shop->region_id = $data['region_id'] ?? "";
+            $shop->town_id = $data['town_id'] ?? "";
+//            $shop->street_id = $data['street_id'] ?? "";
+            $shop->street = $data['street'] ?? "";
+
 //            if (isset($data['categories'])) {
 //                $categories = explode(",", trim($data['categories']));
 //                if (count($categories) > 0)
@@ -118,7 +123,7 @@ class ShopRepository
             $shop_info = ShopContactInfo::firstOrNew([
                 'shop_id' => $shop->id
             ]);
-            $shop_info->street_id = $data['street_id'];
+//            $shop_info->street_id = $data['street_id'];
             $shop_info->phone = $data['phone'] ?? '';
             $shop_info->whatsapp = $data['whatsapp'] ?? '';
             $shop_info->address = $data['address'] ?? '';
