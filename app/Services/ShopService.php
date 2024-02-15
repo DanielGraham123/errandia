@@ -31,13 +31,10 @@ class ShopService{
         return $this->shopRepository->get($size, $category_id);
     }
 
-    public function getUserShops($user_id)
+    public function getUserShops($user)
     {
-//        $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')
-//            ->where('shop_managers.user_id', $user_id)
-//            ->select('shops.*')->get();
-//        return $shops;
-        return Shop::where('user_id', $user_id)->orderBy('name')->get();
+        return $this->shopRepository->getUserShops($user);
+
     }
 
     public function getBySlug($slug)

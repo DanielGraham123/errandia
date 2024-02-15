@@ -116,6 +116,28 @@ class ShopController extends Controller
         }
     }
 
+    // get user shops
+    public function getUserShops(Request $request) {
+        try {
+            $user = auth('api')->user();
+            $shops = $this->shopService->getUserShops($user);
+            return $this->build_success_response(
+                response(),
+                'Shops loaded',
+               self::convert_paginated_result(
+                    $shops,
+                    ShopResource::collection($shops)
+                )
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error loading user shops: ' . $e->getMessage());
+            return response()->json(['data' => [
+                'error' => $e->getMessage(),
+                'message' => 'Sorry, we encountered an error'
+            ]], 400);
+        }
+    }
+
     public function update(Request $request, $slug) {
         try {
             $shop = $this->shopService->getBySlug($slug);

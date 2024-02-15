@@ -141,6 +141,12 @@ class ShopRepository
         return new ShopResource($record);
     }
 
+    /**
+     * get user shops
+     */
+    public function getUserShops($user) {
+        return Shop::where('user_id', $user->id)->paginate(15);
+    }
 
     /**
      * update a record in database
