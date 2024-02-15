@@ -12,7 +12,7 @@ class Shop extends Model
 
     protected $fillable = [
         'name', 'description', 'category_id', 'user_id', 'slug', 
-        'image_path', 'status', 'is_branch', 'parent_slug'
+        'image_path', 'status', 'is_branch', 'parent_slug', 'region_id', 'town_id'
     ];
 
     protected $dates = ['created_at', 'updated_at'];
@@ -101,4 +101,16 @@ class Shop extends Model
         # code...
         return $this->hasMany(ShopSubscription::class);
     }
+
+    public function region(){
+        return $this->belongsTo(Region::class, 'region_id');
+    }
+
+    public function town(){
+        return $this->belongsTo(Town::class, 'town_id');
+    }
+
+//    public function street(){
+//        return $this->belongsTo(Street::class, 'street_id');
+//    }
 }

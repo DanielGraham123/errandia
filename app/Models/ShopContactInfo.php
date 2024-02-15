@@ -12,7 +12,7 @@ class ShopContactInfo extends Model
 
     protected $table = 'shop_contact_info';
 
-    protected $fillable = ['shop_id', 'street_id', 'phone', 'whatsapp', 'address', 'facebook', 'instagram', 'website', 'email'];
+    protected $fillable = ['shop_id', 'phone', 'whatsapp', 'address', 'facebook', 'instagram', 'website', 'email'];
 
     public function shop()
     {
@@ -20,11 +20,11 @@ class ShopContactInfo extends Model
         return $this->belongsTo(Shop::class, 'shop_id');
     }
 
-    public function street()
-    {
-        # code...
-        return $this->belongsTo(Street::class, 'street_id');
-    }
+//    public function street()
+//    {
+//        # code...
+//        return $this->belongsTo(Street::class, 'street_id');
+//    }
 
     public function location()
     {
