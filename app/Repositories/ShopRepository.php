@@ -81,7 +81,13 @@ class ShopRepository
             $shop->name = $data['name'];
             $shop->description = $data['description'];
             $shop->user_id = $user->id;
-            $shop->category_id = $data['category_id'] ?? "1";
+
+            // check if category_id exists
+            if (!Category::find($data['category_id'])) {
+                throw new \Exception('Category does not exist');
+            }
+
+            $shop->category_id = $data['category_id'];
             $shop->status = $data['status'] ?? true;
 
             $shop->is_branch = $data['is_branch'] ?? false;
