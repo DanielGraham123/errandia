@@ -20,7 +20,7 @@ class ProductImage extends Model
 
     public function getImage()
     {
-        return $this->image ? asset('storage/'. $this->image) : '';
+        return $this->image ? $this->image : '';
     }
 
     public function item()

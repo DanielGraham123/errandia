@@ -34,7 +34,7 @@ class CreateItemsTable extends Migration
                 $table->unsignedBigInteger('category_id')->nullable();
                 $table->foreign('category_id')->references('id')->on('categories');
 
-                // add reference
+                // add reference to images
 
                 $table->timestamps();
                 $table->softdeletes();

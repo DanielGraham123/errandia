@@ -17,12 +17,13 @@ class ProductResource extends JsonResource
     {
         $product = $this;
         $shop_info = $this->shop->info;
-        $images = collect($product->images)->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'url' => $item->getImage()
-            ];
-        })->toArray();
+//        $images = collect($product->images)->map(function ($item) {
+            logger()->info("product images", (array)collect($product->images));
+//            return [
+//                'id' => $item->id,
+//                'url' => $item->getImage()
+//            ];
+//        })->toArray();
         $views = explode(",", trim($product->views));
 
         return [
@@ -40,7 +41,12 @@ class ProductResource extends JsonResource
             'views' => count($views), 
             'reviews' => $this->reviews()->count(),
             'tags' => $this->tags ?? '',
-            'images' => $images
+            'images' => $this->images->map(function ($image) {
+                return [
+                    'id' => $image->id,
+                    'url' => $image->getImage()
+                ];
+            }),
         ];
     }
 }

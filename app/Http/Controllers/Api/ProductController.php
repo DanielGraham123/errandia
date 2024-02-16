@@ -58,40 +58,6 @@ class ProductController extends Controller
     public function store(Request $request)
     {
        try {
-//        $item = DB::transaction(function () use ($request) {
-//            $product = new Product();
-//            $product->name = $request->name;
-//            $product->shop_id = $request->shop_id;
-//            $product->description = $request->description;
-//            $product->unit_price = $request->unit_price;
-//            $product->slug = Str::slug($request->name).'-'. time();
-//            $product->status = $request->status ?? true;
-//            $product->quantity = $request->quantity ?? 0;
-//            $product->service = $request->service;
-//            $product->search_index = $this->searchIndex($request);
-//            $product->tags = $request->tags;
-//            $product->views = '';
-//
-//            if ($request->file('featured_image')) {
-//                $product->featured_image = $request->file('featured_image')->store('products');
-//            }
-//            $product->save();
-//
-//            $categories = explode(",",trim($request->categories));
-//            if (count($categories) > 0) $product->subCategories()->sync($categories);
-//
-//            $count = intval($request->image_count ?? 0);
-//            for($i = 1; $i <= $count; $i++) {
-//                $image_name = 'image_'. $i;
-//                if ($request->file($image_name)) {
-//                    $image = new ProductImage();
-//                    $image->item_id = $product->id;
-//                    $image->image = $request->file($image_name)->store('products');
-//                    $image->save();
-//                }
-//            }
-//            return $product;
-//        });
 
         $item = $this->productService->save($request->all());
 

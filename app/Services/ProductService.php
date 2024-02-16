@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Product;
+use App\Models\ProductImage;
 use App\Repositories\ProductRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use \Illuminate\Support\Facades\Http;
@@ -53,16 +55,34 @@ class ProductService{
         ];
 
         if (isset($data['featured_image']) && ($file = $data['featured_image']) != null) {
-            $path = public_path('uploads/products/');
-            if (!file_exists($path))
-                mkdir($path, 0777, true);
-            $fName = 'product_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
-            $file->move($path, $fName);
-            $data['featured_image'] = $fName;
+            $data['featured_image'] = $this->uploadImage($file, 'products');
+        }
+
+        // Handle multiple image uploads
+        if (isset($data['images']) && is_array($data['images'])) {
+            $images = [];
+            foreach ($data['images'] as $image) {
+                $imagePath = $this->uploadImage($image, 'products');
+                $productImage = new ProductImage(['image' => $imagePath]);
+                $images[] = $productImage;
+            }
+            $data['productImages'] = $images; // Use a different key to store images
         }
 
         $this->validationService->validate($data, $validationRules);
         return $this->productRepository->store($data);
+    }
+
+    private function uploadImage($file, $folder)
+    {
+        $path = public_path("uploads/$folder/");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $fName = $folder . '_' . time() . '_' . random_int(1000, 9999) . '.' . $file->getClientOriginalExtension();
+        $file->move($path, $fName);
+
+        return "uploads/$folder/$fName";
     }
 
     public function update($slug, $data)

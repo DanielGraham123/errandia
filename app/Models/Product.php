@@ -82,7 +82,7 @@ class Product extends Model
 
     public function getFeaturedImage()
     {
-        return $this->featured_image ? asset('storage/'. $this->featured_image) : '';
+        return $this->featured_image ? $this->featured_image : '';
     }
 
     public function subCategories()
