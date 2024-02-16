@@ -39,6 +39,11 @@ class Shop extends Model
         return $this->hasMany(Shop::class, 'parent_id' );
     }
 
+    // get shops created by the user except the current slug
+    public function otherShops(){
+        return $this->user->shops()->where('slug', '!=', $this->slug)->paginate(5);
+    }
+
     public function contactInfo(){
         return $this->hasOne(ShopContactInfo::class, 'shop_id');
     }
