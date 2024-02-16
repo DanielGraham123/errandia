@@ -10,6 +10,7 @@ use App\Models\ProductImage;
 use App\Models\ProductSubCategory;
 use App\Models\Shop;
 use App\Models\SubCategory;
+use App\Services\ProductService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -18,71 +19,58 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
     public function index(Request $request)
     {
-        $products = new Product();
-        if ($request->category_id) {
-            $products = $products->whereHas('subCategories', function ($query) use ($request) {
-                $query->where('category_id', $request->category_id);
-            });
-        }
-        if ($request->search) {
-            $products = $products->where(function ($query) use ($request) {
-                $query->where('name', 'like', '%'.$request->search.'%')
-                    ->orWhere('description', 'like', '%'.$request->search.'%')
-                    ->orWhere('search_index', 'like', '%'.$request->search.'%');
-            });
-        }
+//        $products = new Product();
+//        if ($request->category_id) {
+//            $products = $products->whereHas('subCategories', function ($query) use ($request) {
+//                $query->where('category_id', $request->category_id);
+//            });
+//        }
+//        if ($request->search) {
+//            $products = $products->where(function ($query) use ($request) {
+//                $query->where('name', 'like', '%'.$request->search.'%')
+//                    ->orWhere('description', 'like', '%'.$request->search.'%')
+//                    ->orWhere('search_index', 'like', '%'.$request->search.'%');
+//            });
+//        }
+//
+//        $products = $products->orderBy('created_at', 'desc')->paginate(20);
 
-        $products = $products->orderBy('created_at', 'desc')->paginate(20);
-        return response()->json(['data' => [
-            'products' => ProductResource::collection($products)
-        ]]);
+        $products = $this->productService->getAll($request->size, $request->category_id, $request->service);
+
+        return $this->build_success_response(
+            response(),
+            'products loaded',
+            [
+                'items' => $products
+            ]
+        );
     }
 
     public function store(Request $request)
     {
        try {
-        $item = DB::transaction(function () use ($request) {
-            $product = new Product();
-            $product->name = $request->name;
-            $product->shop_id = $request->shop_id;
-            $product->description = $request->description;
-            $product->unit_price = $request->unit_price;
-            $product->slug = Str::slug($request->name).'-'. time();
-            $product->status = $request->status ?? true;
-            $product->quantity = $request->quantity ?? 0;
-            $product->service = $request->service;
-            $product->search_index = $this->searchIndex($request);
-            $product->tags = $request->tags;
-            $product->views = '';
 
-            if ($request->file('featured_image')) {
-                $product->featured_image = $request->file('featured_image')->store('products');
-            }
-            $product->save();
+        $item = $this->productService->save($request->all());
 
-            $categories = explode(",",trim($request->categories));
-            if (count($categories) > 0) $product->subCategories()->sync($categories);
-
-            $count = intval($request->image_count ?? 0);
-            for($i = 1; $i <= $count; $i++) {
-                $image_name = 'image_'. $i;
-                if ($request->file($image_name)) {
-                    $image = new ProductImage();
-                    $image->item_id = $product->id; 
-                    $image->image = $request->file($image_name)->store('products');
-                    $image->save();
-                }
-            }
-            return $product;
-        });
-
-        return response()->json(['data' => [
-            'product' => new ProductResource($item)
-        ]]);
+        return $this->build_success_response(
+            response(),
+            'Product created successfully',
+            [
+                'item' => new ProductResource($item)
+            ]
+        );
 
        } catch(\Exception $e) {
+              logger()->error('Error creating product: ' . $e->getMessage());
             return response()->json(['data' => [
                 'error' => $e->getMessage(),
                 'message' => 'Sorry, We encountered an error'

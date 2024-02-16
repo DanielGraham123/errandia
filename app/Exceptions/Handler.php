@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson() || $request->is('api/*')) {
             return response()->json([
                 'status' => 401,
-                'message' => 'Your session has expired. Please login.'
+                'message' => 'You\'re not authenticated. Please login.'
             ], 401);
         }
 

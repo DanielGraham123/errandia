@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -16,31 +17,20 @@ class ProductResource extends JsonResource
     {
         $product = $this;
         $shop_info = $this->shop->info;
-        $images = collect($product->images)->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'url' => $item->getImage()
-            ];
-        })->toArray();
+//        $images = collect($product->images)->map(function ($item) {
+            logger()->info("product images", (array)collect($product->images));
+//            return [
+//                'id' => $item->id,
+//                'url' => $item->getImage()
+//            ];
+//        })->toArray();
         $views = explode(",", trim($product->views));
 
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'shop' => [
-                'id' => $shop_info->id,
-                'name' => $shop_info->name,
-                'street' => $shop_info->street ? $shop_info->street->name : '',
-                'phone' => $shop_info->phone ?? '',
-                'whatsapp' => $shop_info->whatsapp ?? '',
-                'address' => $shop_info->address ?? '',
-                'facebook' => $shop_info->facebook ?? '',
-                'instagram' => $shop_info->instagram ?? '',
-                'website' => $shop_info->website ?? '',
-                'email' => $shop_info->email ?? '',
-                'member_since' => $this->shop->user->created_at->diffForHumans(),
-                'image' => $this->shop->getImage()
-            ],
+            'shop' => new ShopResource($product->shop),
+            'category' => new CategoryResource($this->category),
             'description' => $this->description,
             'unit_price' => $this->unit_price,
             'status' => $this->status,
@@ -51,7 +41,12 @@ class ProductResource extends JsonResource
             'views' => count($views), 
             'reviews' => $this->reviews()->count(),
             'tags' => $this->tags ?? '',
-            'images' => $images
+            'images' => $this->images->map(function ($image) {
+                return [
+                    'id' => $image->id,
+                    'url' => $image->getImage()
+                ];
+            }),
         ];
     }
 }

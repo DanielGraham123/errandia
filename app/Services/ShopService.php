@@ -31,13 +31,10 @@ class ShopService{
         return $this->shopRepository->get($size, $category_id);
     }
 
-    public function getUserShops($user_id)
+    public function getUserShops($user)
     {
-//        $shops = Shop::join('shop_managers', 'shop_managers.shop_id', '=', 'shops.id')
-//            ->where('shop_managers.user_id', $user_id)
-//            ->select('shops.*')->get();
-//        return $shops;
-        return Shop::where('user_id', $user_id)->orderBy('name')->get();
+        return $this->shopRepository->getUserShops($user);
+
     }
 
     public function getBySlug($slug)
@@ -116,6 +113,30 @@ class ShopService{
             throw new \Exception("Permission denied. shop can only be deleted by the owner");
 
         $this->shopRepository->delete($slug);
+    }
+
+    public function uploadImage($image)
+    {
+        $path = public_path('uploads/logos/');
+        $file = $image;
+
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $fName = 'logo_' . time() . '_' . random_int(1000, 9999) . '.' . $file->getClientOriginalExtension();
+        $file->move($path, $fName);
+
+        return 'uploads/logos/' . $fName;
+    }
+
+    public function deleteImage($imagePath)
+    {
+        // Delete the image file
+        if (file_exists(public_path($imagePath))) {
+            unlink(public_path($imagePath));
+            logger()->info('Previous image deleted: ' . $imagePath);
+        }
     }
 
 }

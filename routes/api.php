@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\ProductImageUploadController;
 use App\Http\Controllers\ProductUploadController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->group(function (){
     Route::patch('/user', [UserController::class, 'update']);
     Route::post('/user/image_upload', [UserController::class, 'userImageUpload']);
+    Route::get('/user/shops', [ShopController::class, 'getUserShops']);
 });
 
 
@@ -55,7 +57,7 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/shops/featured', 'ShopController@featured_shops');
     Route::get('/shops/{slug}', 'ShopController@show');
 
-    Route::resource('products', 'ProductController', ['only' => ['index', 'store']]);
+    Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
     Route::post('/product/delete', 'ProductController@deleteProduct');
     Route::get('/product/view', 'ProductController@view');
     Route::get('/products/related', 'ProductController@relatedProducts');
