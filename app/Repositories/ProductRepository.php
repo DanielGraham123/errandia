@@ -4,8 +4,10 @@ namespace App\Repositories;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Shop;
 use Illuminate\Support\facades\DB;
 use Exception;
+use Illuminate\Support\Str;
 
 class ProductRepository {
 
@@ -61,11 +63,30 @@ class ProductRepository {
      */
     public function store($data)
     {
-        # code...
+        // check if product with name exists
+        $item = Product::whereName($data['name'])->first();
+        if($item != null){
+            throw new Exception("Product with name already exists");
+        }
+
+        // check if shop with id exists
+         $shop = Shop::find($data['shop_id']);
+        if($shop == null) {
+            throw new Exception("Shop does not exist");
+        }
+
+        // check if category with id exists
+        $category = Category::find($data['category_id']);
+        if($category == null) {
+            throw new Exception("Category does not exist");
+        }
+
         // validate data and save to database
         try {
             $record = DB::transaction(function()use($data){
                 $item = new Product($data);
+                $item->slug = Str::slug($data['name']).'-'. time();
+                $item->service =  $data['service'] ?? "0";
                 $item->save();
                 return $item;
             });

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -27,20 +28,8 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'shop' => [
-                'id' => $shop_info->id,
-                'name' => $shop_info->name,
-                'street' => $shop_info->street ? $shop_info->street->name : '',
-                'phone' => $shop_info->phone ?? '',
-                'whatsapp' => $shop_info->whatsapp ?? '',
-                'address' => $shop_info->address ?? '',
-                'facebook' => $shop_info->facebook ?? '',
-                'instagram' => $shop_info->instagram ?? '',
-                'website' => $shop_info->website ?? '',
-                'email' => $shop_info->email ?? '',
-                'member_since' => $this->shop->user->created_at->diffForHumans(),
-                'image' => $this->shop->getImage()
-            ],
+            'shop' => new ShopResource($product->shop),
+            'category' => new CategoryResource($this->category),
             'description' => $this->description,
             'unit_price' => $this->unit_price,
             'status' => $this->status,

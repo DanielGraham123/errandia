@@ -30,7 +30,8 @@ class Product extends Model
         'service',
         'search_index',
         'tags',
-        'category_id'
+        'category_id',
+        'images'
     ];
 
     public function searchableAs()
@@ -66,7 +67,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(SubCategory::class, 'sub_category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function shop()

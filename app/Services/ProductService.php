@@ -42,11 +42,25 @@ class ProductService{
         $validationRules = [
             'name'=>'required', 'shop_id'=>'required', 
             'unit_price'=>'nullable|numeric', 'description'=>'nullable|string', 
-            'slug'=>'required', 'status'=>'nullable', 
-            'featured_image'=>'nullable|file|mimes:image/*', 
-            'quantity'=>'nullable|numeric', 'views'=>'nullable|numeric', 
-            'service'=>'nullable', 'search_index'=>'required', 'tags'=>'nullable'
+//            'status'=>'nullable',
+//            'featured_image'=>'nullable|file|mimes:image/*',
+            'quantity'=>'nullable|numeric',
+//            'views'=>'nullable|numeric',
+            'service'=>'boolean|nullable',
+//            'search_index'=>'required',
+            'tags'=>'nullable',
+            'category_id'=>'required'
         ];
+
+        if (isset($data['featured_image']) && ($file = $data['featured_image']) != null) {
+            $path = public_path('uploads/products/');
+            if (!file_exists($path))
+                mkdir($path, 0777, true);
+            $fName = 'product_'.time().'_'.random_int(1000, 9999).'.'.$file->getClientOriginalExtension();
+            $file->move($path, $fName);
+            $data['featured_image'] = $fName;
+        }
+
         $this->validationService->validate($data, $validationRules);
         return $this->productRepository->store($data);
     }

@@ -29,6 +29,13 @@ class CreateItemsTable extends Migration
                 $table->text('views');
                 $table->string('featured_image');
                 $table->integer('quantity')->nullable();
+
+                // add category id and its reference
+                $table->unsignedBigInteger('category_id')->nullable();
+                $table->foreign('category_id')->references('id')->on('categories');
+
+                // add reference
+
                 $table->timestamps();
                 $table->softdeletes();
             });
