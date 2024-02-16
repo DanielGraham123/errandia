@@ -162,7 +162,14 @@ class ShopController extends Controller
             // Handle file upload
             if ($request->hasFile('image')) {
                 $shopImageLogo = $request->file('image');
-                // TODO: Save the file to disk and update the shop's image_path
+
+                $image = $request->file('image');
+                // If the shop already has an image, delete it
+                if (!empty($shop->image_path)) {
+                    $this->shopService->deleteImage($shop->image_path);
+                }
+                $imagePath = $this->shopService->uploadImage($image);
+                $shop->image_path = $imagePath;
             }
 
             $shop->update($shopData);
