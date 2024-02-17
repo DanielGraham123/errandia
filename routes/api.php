@@ -56,6 +56,7 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/shops', 'ShopController@index');
     Route::get('/shops/featured', 'ShopController@featured_shops');
     Route::get('/shops/{slug}', 'ShopController@show');
+    Route::get('/shops/{slug}/branches', 'ShopController@otherShops');
 
     Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
     Route::post('/product/delete', 'ProductController@deleteProduct');

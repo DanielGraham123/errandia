@@ -189,4 +189,25 @@ class ShopController extends Controller
             ], 400);
         }
     }
+
+    public function otherShops(Request $request, $slug) {
+        try {
+            $shop = $this->shopService->getBySlug($slug);
+            $otherShops = $shop->otherShops();
+            return $this->build_success_response(
+                response(),
+                'Other shops loaded',
+               self::convert_paginated_result(
+                    $otherShops,
+                    ShopResource::collection($otherShops)
+                )
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error loading other shops: ' . $e->getMessage());
+            return response()->json(['data' => [
+                'error' => $e->getMessage(),
+                'message' => 'Sorry, we encountered an error'
+            ]], 400);
+        }
+    }
 }
