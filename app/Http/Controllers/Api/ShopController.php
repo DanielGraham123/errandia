@@ -8,14 +8,9 @@ use App\Http\Resources\ShopResource;
 use App\Http\Resources\SubCategoryResource;
 use App\Models\Category;
 use App\Models\Shop;
-use App\Models\ShopContactInfo;
 use App\Models\SubCategory;
-use App\Models\User;
 use App\Services\ShopService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Nette\Utils\Paginator;
 
 class ShopController extends Controller
 {
@@ -136,7 +131,6 @@ class ShopController extends Controller
         try {
             $shop = $this->shopService->getBySlug($slug);
             $authenticatedUser = auth('api')->user();
-
             if ($shop->user_id !== $authenticatedUser->id) {
                 return $this->build_response(
                     response(),
@@ -145,36 +139,11 @@ class ShopController extends Controller
                 );
             }
 
-            // Handle text data
-            $shopData = $request->except(['image']);
-            foreach ($shopData as $key => $value) {
-                if ($request->has($key)) {
-                    $shop->$key = $value;
-                }
-            }
-
-            // Handle file upload
-            if ($request->hasFile('image')) {
-                $shopImageLogo = $request->file('image');
-
-                $image = $request->file('image');
-                // If the shop already has an image, delete it
-                if (!empty($shop->image_path)) {
-                    $this->shopService->deleteImage($shop->image_path);
-                }
-                $imagePath = $this->shopService->uploadImage($image);
-                $shop->image_path = $imagePath;
-            }
-
-            $shop->update($shopData);
-            $shop->refresh();
-
+            $shop = $this->shopService->update_shop($request, $shop);
             return $this->build_success_response(
                 response(),
                 'Shop updated successfully',
-                [
-                    'item' => new ShopResource($shop)
-                ]
+                ['item' => new ShopResource($shop)]
             );
         } catch (\Exception $e) {
             logger()->error('Error updating shop: ' . $e->getMessage());

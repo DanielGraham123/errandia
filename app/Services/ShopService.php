@@ -113,33 +113,28 @@ class ShopService{
         $this->shopRepository->delete($slug);
     }
 
-    public function uploadImage($image)
-    {
-        $path = public_path('uploads/logos/');
-        $file = $image;
-
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
-
-        $fName = 'logo_' . time() . '_' . random_int(1000, 9999) . '.' . $file->getClientOriginalExtension();
-        $file->move($path, $fName);
-
-        return 'uploads/logos/' . $fName;
-    }
-
-    public function deleteImage($imagePath)
-    {
-        // Delete the image file
-        if (file_exists(public_path($imagePath))) {
-            unlink(public_path($imagePath));
-            logger()->info('Previous image deleted: ' . $imagePath);
-        }
-    }
-
-    public  function load_featured_businesses($size = 10)
+    public function load_featured_businesses($size = 10)
     {
         return Shop::orderBy('created_at', 'desc')->take($size)->get();
+    }
+
+    public function update_shop($request, $shop)
+    {
+        $data = $request->except(['image']);
+        foreach ($data as $key => $value) {
+            if ($request->has($key)) {
+                $shop->$key = $value;
+            }
+        }
+
+        // If the shop already has an image, delete it
+        if (!empty($shop->image_path)) {
+            MediaService::delete_meedoa($shop->image_path);
+        }
+        $shop->image_path = MediaService::upload_media($request, 'image', 'logos');
+        $shop->update($data);
+        $shop->refresh();
+        return $shop;
     }
 
 }
