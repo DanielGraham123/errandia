@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Models\Shop;
 use App\Repositories\ShopManagerRepository;
 use App\Repositories\ShopRepository;
-use \Illuminate\Support\Facades\Http;
-use PhpParser\Node\Scalar\String_;
 
 class ShopService{
 
@@ -137,6 +135,11 @@ class ShopService{
             unlink(public_path($imagePath));
             logger()->info('Previous image deleted: ' . $imagePath);
         }
+    }
+
+    public  function load_featured_businesses($size = 10)
+    {
+        return Shop::orderBy('created_at', 'desc')->take($size)->get();
     }
 
 }
