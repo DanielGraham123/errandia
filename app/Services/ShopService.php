@@ -128,10 +128,13 @@ class ShopService{
         }
 
         // If the shop already has an image, delete it
-        if (!empty($shop->image_path)) {
-            MediaService::delete_meedoa($shop->image_path);
+        if ($request->hasFile('image')) {
+            if(!empty($shop->image_path)) {
+                MediaService::delete_media($shop->image_path);
+            }
+            $shop->image_path = MediaService::upload_media($request, 'image', 'logos');
         }
-        $shop->image_path = MediaService::upload_media($request, 'image', 'logos');
+
         $shop->update($data);
         $shop->refresh();
         return $shop;

@@ -4,7 +4,8 @@ namespace App\Services;
 
 class MediaService
 {
-    public static function upload_media($request, $field_name, $folder){
+    public static function upload_media($request, $field_name, $folder): string
+    {
 
         if(!$request->hasFile($field_name)) {
             logger()->error("$field_name name not found in request." );
@@ -25,7 +26,7 @@ class MediaService
         return $relative_path . $filename;
     }
 
-    public static function delete_meedoa($media_path)
+    public static function delete_media($media_path): void
     {
         if (file_exists(public_path($media_path))) {
             unlink(public_path($media_path));

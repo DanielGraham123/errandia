@@ -24,6 +24,13 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth:api')->group(function (){
+    Route::group(['namespace' => 'Api'], function() {
+        Route::get('/auth/verify_token', 'AuthController@verifyToken');
+        Route::post('/auth/refresh_token', 'AuthController@refreshToken');
+        Route::delete('/auth/logout', 'AuthController@logout');
+    });
+
+
     Route::patch('/user', [UserController::class, 'update']);
     Route::post('/user/image_upload', [UserController::class, 'userImageUpload']);
     Route::get('/user/shops', [ShopController::class, 'getUserShops']);

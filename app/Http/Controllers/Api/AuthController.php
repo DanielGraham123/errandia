@@ -7,9 +7,12 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\TokenRepository;
 
 class AuthController extends Controller
 {
@@ -152,5 +155,52 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         return $this->build_response(response(), 'not yet implement. :)', 200);
+    }
+
+    public function verifyToken(Request $request)
+    {
+        if(Auth::guard('api')->check()) {
+            return $this->build_success_response(
+                response(),
+                'token is valid'
+            );
+        } else {
+            return $this->build_response(
+                response(),
+                'token expired',
+                403
+            );
+        }
+    }
+
+    public function refreshToken(Request $request)
+    {
+        if(Auth::guard('api')->check()) {
+            return $this->build_success_response(
+                response(),
+                'token is valid'
+            );
+        } else {
+            return $this->build_response(
+                response(),
+                'token expired',
+                403
+            );
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        $token_id = $request->user()->token()->id;
+        $tokenRepository = app(TokenRepository::class);
+        $refreshTokenRepository = app(RefreshTokenRepository::class);
+        $tokenRepository->revokeAccessToken($token_id);
+        $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($token_id);
+
+        logger()->info('user successfully logged out');
+        return $this->build_success_response(
+            response(),
+            'session closed'
+        );
     }
 }
