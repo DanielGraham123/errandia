@@ -26,6 +26,7 @@ class ProductController extends Controller
     {
         $this->productService = $productService;
     }
+
     public function index(Request $request)
     {
 //        $products = new Product();
@@ -57,33 +58,39 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-       try {
+        try {
+            $productData = $request->all();
 
-        $item = $this->productService->save($request->all());
+            $user = auth('api')->user();
 
-        return $this->build_success_response(
-            response(),
-            'Product created successfully',
-            [
-                'item' => new ProductResource($item)
-            ]
-        );
+            $productData['user'] = $user;
 
-       } catch(\Exception $e) {
-              logger()->error('Error creating product: ' . $e->getMessage());
+            $item = $this->productService->save($productData);
+
+            return $this->build_success_response(
+                response(),
+                'Product created successfully',
+                [
+                    'item' => new ProductResource($item)
+                ]
+            );
+
+        } catch (\Exception $e) {
+            logger()->error('Error creating product: ' . $e->getMessage());
             return response()->json(['data' => [
                 'error' => $e->getMessage(),
                 'message' => 'Sorry, We encountered an error'
             ]], 500);
-       }
+        }
     }
 
-    public function searchIndex($request) {
+    public function searchIndex($request)
+    {
         $shop = Shop::find($request->shop_id);
         if (!$shop) return $request->name . $request->description;
         $search_index = $request->name . $request->description . $shop->name . $shop->description . $shop->info->street->name . $shop->info->address;
-        $categories = explode(",",trim($request->categories));
-        foreach($categories as $cat_id) {
+        $categories = explode(",", trim($request->categories));
+        foreach ($categories as $cat_id) {
             $sub_category = SubCategory::find($cat_id);
             $search_index = $search_index . $sub_category->name . $sub_category->description;
         }
@@ -95,7 +102,7 @@ class ProductController extends Controller
         $product = Product::find($request->product_id);
         $user = auth('api')->user();
         if ($product) {
-            $views = explode(",",trim($product->views));
+            $views = explode(",", trim($product->views));
             if (!in_array($user->id, $views)) {
                 array_push($views, $user->id);
                 $product->views = implode(",", $views);
@@ -117,19 +124,19 @@ class ProductController extends Controller
             });
         }
         $related_products = $related_products->where('id', '!=', $product->id)
-                                            ->orderBy('created_at', 'desc')
-                                            ->take(10)->get();
+            ->orderBy('created_at', 'desc')
+            ->take(10)->get();
         return response()->json(['data' => ['products' => ProductResource::collection($related_products)]]);
     }
 
     public function deleteProduct(Request $request)
     {
         try {
-            DB::transaction(function() use ($request) {
+            DB::transaction(function () use ($request) {
                 $product = Product::find($request->product_id);
                 if (!$product) throw new Exception("Product not found");
-                if($product->featured_image) Storage::delete($product->featured_image);
-                foreach($product->images as $image) {
+                if ($product->featured_image) Storage::delete($product->featured_image);
+                foreach ($product->images as $image) {
                     Storage::delete($image->image);
                     $image->delete();
                 }
@@ -139,7 +146,7 @@ class ProductController extends Controller
             return response()->json(['data' => [
                 'message' => 'Product deleted successfully'
             ]]);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['data' => [
                 'error' => $e->getMessage(),
                 'message' => 'Sorry, We encountered an error'

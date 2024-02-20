@@ -14,9 +14,9 @@ class UpdateShopSubscriptionsTableAddStatus extends Migration
     public function up()
     {
         //
-        if(!Schema::hasColumn('shops_subscriptions', 'status')){
-            Schema::table('shops_subscriptions', function(Blueprint $table){
-                $table->boolean('status')->default(0);
+        if(!Schema::hasColumn('shop_subscriptions', 'status')){
+            Schema::table('shop_subscriptions', function(Blueprint $table){
+                $table->boolean('status')->default(0)->after('expiration_date');
             });
         }
     }

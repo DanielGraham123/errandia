@@ -31,6 +31,9 @@ Route::middleware('auth:api')->group(function (){
 
         Route::get('/user/shops', 'ShopController@getUserShops');
         Route::post('/user/shops', 'ShopController@store');
+        Route::put('/user/shops/{slug}', 'ShopController@update');
+
+        Route::post('/user/products', 'ProductController@store');
     });
 
 
@@ -61,14 +64,13 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/sub_categories', 'ShopController@getSubCategories');
     Route::get('/categories', 'ShopController@getCategories');
 
-
-    Route::put('/shops/{slug}', 'ShopController@update');
     Route::get('/shops', 'ShopController@index');
     Route::get('/shops/featured', 'ShopController@featured_shops');
     Route::get('/shops/{slug}', 'ShopController@show');
     Route::get('/shops/{slug}/branches', 'ShopController@otherShops');
 
-    Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
+//    Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
+    Route::get('/products', 'ProductController@index');
     Route::post('/product/delete', 'ProductController@deleteProduct');
     Route::get('/product/view', 'ProductController@view');
     Route::get('/products/related', 'ProductController@relatedProducts');

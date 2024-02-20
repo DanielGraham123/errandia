@@ -13,14 +13,16 @@ class CreateItemImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('item_images', function (Blueprint $table) {
-            $table->id();
-            $table->integer('item_id');
-            $table->string('image');
-            $table->timestamps();
+        if (!Schema::hasTable('item_images')) {
+            Schema::create('item_images', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('item_id');
+                $table->string('image');
+                $table->timestamps();
 
-            $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
-        });
+                $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
+            });
+        }
     }
 
     /**

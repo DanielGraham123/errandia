@@ -20,6 +20,7 @@ class CreateShopSubscriptionsTable extends Migration
                 $table->integer('subscription_id');
                 $table->date('subscription_date');
                 $table->date('expiration_date');
+                $table->boolean('status')->default(0);
                 $table->timestamps();
             });
         }
