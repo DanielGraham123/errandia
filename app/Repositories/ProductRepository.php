@@ -5,10 +5,10 @@ use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
-use Illuminate\Support\Arr;
-use Illuminate\Support\facades\DB;
+use \Illuminate\Support\Arr;
+use \Illuminate\Support\facades\DB;
 use Exception;
-use Illuminate\Support\Str;
+use \Illuminate\Support\Str;
 
 class ProductRepository {
 
