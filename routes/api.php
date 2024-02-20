@@ -24,9 +24,19 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth:api')->group(function (){
+    Route::group(['namespace' => 'Api'], function() {
+        Route::get('/auth/verify_token', 'AuthController@verifyToken');
+        Route::post('/auth/refresh_token', 'AuthController@refreshToken');
+        Route::delete('/auth/logout', 'AuthController@logout');
+
+        Route::get('/user/shops', 'ShopController@getUserShops');
+        Route::post('/user/shops', 'ShopController@store');
+    });
+
+
     Route::patch('/user', [UserController::class, 'update']);
     Route::post('/user/image_upload', [UserController::class, 'userImageUpload']);
-    Route::get('/user/shops', [ShopController::class, 'getUserShops']);
+
 });
 
 
@@ -51,7 +61,7 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/sub_categories', 'ShopController@getSubCategories');
     Route::get('/categories', 'ShopController@getCategories');
 
-    Route::post('/shops', 'ShopController@store');
+
     Route::put('/shops/{slug}', 'ShopController@update');
     Route::get('/shops', 'ShopController@index');
     Route::get('/shops/featured', 'ShopController@featured_shops');

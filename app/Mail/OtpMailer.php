@@ -33,7 +33,7 @@ class OtpMailer extends Mailable
         return $this->markdown('emails.otp_mailer')
             ->with(['data'  => $this->data,])
             ->subject("Authentication code")
-            ->from('info@errandia.com')
+            ->from('info@stellenanzeiger.ch')
             ->to($this->data['email']);
     }
 }

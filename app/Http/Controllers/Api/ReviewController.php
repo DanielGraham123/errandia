@@ -56,7 +56,7 @@ class ReviewController extends Controller
                         'name' => $user->name,
                         'body' => '<br>'. $user->name . ' wrote a review on your product, '. $review->product->name,
                         'message' => $user->name . ' wrote a review on your product, '. $review->product->name,
-                        'profile' => $user->getProfileUrl()
+                        'profile' => $user->photo
                     ];
                     $shop_owner->notify(new ReviewNotification($data));
                 }

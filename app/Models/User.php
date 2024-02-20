@@ -69,11 +69,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Shop::class, 'shop_managers', 'shop_id', 'user_id');
     }
 
-    public function getProfileUrl()
-    {
-        return $this->photo ? asset('storage/'. $this->photo) : '';
-    }
-
     public function street()
     {
         return $this->belongsTo(Street::class, 'street_id');

@@ -8,14 +8,9 @@ use App\Http\Resources\ShopResource;
 use App\Http\Resources\SubCategoryResource;
 use App\Models\Category;
 use App\Models\Shop;
-use App\Models\ShopContactInfo;
 use App\Models\SubCategory;
-use App\Models\User;
 use App\Services\ShopService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Nette\Utils\Paginator;
 
 class ShopController extends Controller
 {
@@ -42,7 +37,7 @@ class ShopController extends Controller
 
     public function featured_shops(Request $request)
     {
-        $shops = Shop::orderBy('created_at', 'desc')->take(10)->get();
+        $shops = $this->shopService->load_featured_businesses();
         return $this->build_success_response(
             response(),
             'shops loaded',
@@ -109,10 +104,7 @@ class ShopController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error('Error loading shop: ' . $e->getMessage());
-            return response()->json(['data' => [
-                'error' => $e->getMessage(),
-                'message' => 'Sorry, we encountered an error'
-            ]], 400);
+            return $this->build_response(response(), 'failed to load business', 400);
         }
     }
 
@@ -131,62 +123,31 @@ class ShopController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error('Error loading user shops: ' . $e->getMessage());
-            return response()->json(['data' => [
-                'error' => $e->getMessage(),
-                'message' => 'Sorry, we encountered an error'
-            ]], 400);
+            return $this->build_response(response(), 'failed to load businesses', 400);
         }
     }
 
     public function update(Request $request, $slug) {
         try {
             $shop = $this->shopService->getBySlug($slug);
-
             $authenticatedUser = auth('api')->user();
-
             if ($shop->user_id !== $authenticatedUser->id) {
-                return response()->json([
-                    'error' => 'Unauthorized',
-                    'message' => 'You are not authorized to update this shop.'
-                ], 403);
+                return $this->build_response(
+                    response(),
+                    'You are not authorized to update this shop.',
+                    403
+                );
             }
 
-            // Handle text data
-            $shopData = $request->except(['image']);
-            foreach ($shopData as $key => $value) {
-                if ($request->has($key)) {
-                    $shop->$key = $value;
-                }
-            }
-
-            // Handle file upload
-            if ($request->hasFile('image')) {
-                $shopImageLogo = $request->file('image');
-
-                $image = $request->file('image');
-                // If the shop already has an image, delete it
-                if (!empty($shop->image_path)) {
-                    $this->shopService->deleteImage($shop->image_path);
-                }
-                $imagePath = $this->shopService->uploadImage($image);
-                $shop->image_path = $imagePath;
-            }
-
-            $shop->update($shopData);
-            $shop->refresh();
-
+            $shop = $this->shopService->update_shop($request, $shop);
             return $this->build_success_response(
                 response(),
-                'Shop updated successfully', [
-                    'item' => new ShopResource($shop)
-                ]
+                'Shop updated successfully',
+                ['item' => new ShopResource($shop)]
             );
         } catch (\Exception $e) {
             logger()->error('Error updating shop: ' . $e->getMessage());
-            return response()->json([
-                'error' => $e->getMessage(),
-                'message' => 'Sorry, we encountered an error while updating the shop.'
-            ], 400);
+            return $this->build_response(response(), 'failed to update business details', 400);
         }
     }
 
@@ -204,10 +165,7 @@ class ShopController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error('Error loading other shops: ' . $e->getMessage());
-            return response()->json(['data' => [
-                'error' => $e->getMessage(),
-                'message' => 'Sorry, we encountered an error'
-            ]], 400);
+            return $this->build_response(response(), 'failed to load other shops', 400);
         }
     }
 }
