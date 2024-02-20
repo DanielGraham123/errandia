@@ -13,10 +13,12 @@ class AddCategoriesToItemsTable extends Migration
      */
     public function up()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->unsignedBigInteger('category_id')->nullable()->after('quantity');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
-        });
+        if (!Schema::hasColumn('items', 'category_id')) {
+            Schema::table('items', function (Blueprint $table) {
+                $table->unsignedBigInteger('category_id')->nullable()->after('quantity');
+                $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
+            });
+        }
     }
 
     /**

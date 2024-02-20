@@ -5,8 +5,10 @@ namespace App\Repositories;
 use App\Http\Resources\ShopResource;
 use App\Http\Resources\UserResource;
 use App\Models\Category;
+use App\Models\Region;
 use App\Models\Shop;
 use App\Models\ShopContactInfo;
+use App\Models\Town;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -96,16 +98,20 @@ class ShopRepository
             $shop->slogan = $data['slogan'] ?? '';
             $shop->image_path = $data['image_path'];
 
+            // check if region exists
+            if (!Region::find($data['region_id'])) {
+                throw new \Exception('Region does not exist');
+            }
+
+            // check if town exists
+            if (!Town::find($data['town_id'])) {
+                throw new \Exception('Town does not exist');
+            }
+
             $shop->region_id = $data['region_id'] ?? "";
             $shop->town_id = $data['town_id'] ?? "";
 //            $shop->street_id = $data['street_id'] ?? "";
             $shop->street = $data['street'] ?? "";
-
-//            if (isset($data['categories'])) {
-//                $categories = explode(",", trim($data['categories']));
-//                if (count($categories) > 0)
-//                    $shop->categories = json_encode($categories);
-//            }
 
             // Set category_id if provided and valid
             if (isset($data['category_id'])) {

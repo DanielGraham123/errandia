@@ -27,8 +27,8 @@ class MediaService
         $filename =  time()  . '.' . $media_file->getClientOriginalExtension();
         $media_file->move($relative_path, $filename);
 
-        logger()->info("media file successfully uploaded");
-        return $relative_path . $filename;
+        logger()->info("media file successfully uploaded: " . $relative_path);
+        return 'uploads/'. $folder . "/" . $filename;
     }
     public static function delete_media($media_path): void
     {

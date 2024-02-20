@@ -87,9 +87,11 @@ class ProductRepository {
             $record = DB::transaction(function()use($data){
                 // Exclude 'images' from the data array used for creating the product
                 $productData = Arr::except($data, ['images', 'productImages']);
+                $user = $data['user'];
                 $item = new Product($productData);
                 $item->slug = Str::slug($data['name']).'-'. time();
                 $item->service =  $data['service'] ?? "0";
+                $item->user_id = $user->id;
                 $item->save();
 
                 // save product images if any

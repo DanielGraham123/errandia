@@ -13,15 +13,26 @@ class AddLocationFieldsToShopsTable extends Migration
      */
     public function up()
     {
-        Schema::table('shops', function (Blueprint $table) {
-            $table->unsignedBigInteger('region_id')->nullable()->after('slug');
-            $table->unsignedBigInteger('town_id')->nullable()->after('region_id');
-            $table->unsignedBigInteger('street_id')->nullable()->after('town_id');
+       if (!Schema::hasColumn('shops', 'region_id')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->unsignedBigInteger('region_id')->nullable()->after('slug');
+                $table->foreign('region_id')->references('id')->on('regions')->onDelete('set null');
+            });
+        }
 
-            $table->foreign('region_id')->references('id')->on('regions')->onDelete('set null');
-            $table->foreign('town_id')->references('id')->on('towns')->onDelete('set null');
-            $table->foreign('street_id')->references('id')->on('streets')->onDelete('set null');
-        });
+        if (!Schema::hasColumn('shops', 'town_id')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->unsignedBigInteger('town_id')->nullable()->after('region_id');
+                $table->foreign('town_id')->references('id')->on('towns')->onDelete('set null');
+            });
+        }
+
+        if (!Schema::hasColumn('shops', 'street_id')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->unsignedBigInteger('street_id')->nullable()->after('town_id');
+                $table->foreign('street_id')->references('id')->on('streets')->onDelete('set null');
+            });
+        }
     }
 
     /**
