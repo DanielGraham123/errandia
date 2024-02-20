@@ -84,6 +84,54 @@ class ProductController extends Controller
         }
     }
 
+    // get user products
+    public function getUserProducts(Request $request)
+    {
+        try {
+            $user = auth('api')->user();
+            $products = $this->productService->getUserProducts($user);
+
+            return $this->build_success_response(
+                response(),
+                'products loaded',
+               self::convert_paginated_result(
+                    $products,
+                    ProductResource::collection($products)
+                )
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error loading user products: ' . $e->getMessage());
+            return response()->json(['data' => [
+                'error' => $e->getMessage(),
+                'message' => 'Sorry, We encountered an error'
+            ]], 500);
+        }
+    }
+
+    // get user services
+    public function getUserServices(Request $request)
+    {
+        try {
+            $user = auth('api')->user();
+            $products = $this->productService->getUserServices($user);
+
+            return $this->build_success_response(
+                response(),
+                'services loaded',
+               self::convert_paginated_result(
+                    $products,
+                    ProductResource::collection($products)
+                )
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error loading user services: ' . $e->getMessage());
+            return response()->json(['data' => [
+                'error' => $e->getMessage(),
+                'message' => 'Sorry, We encountered an error'
+            ]], 500);
+        }
+    }
+
     public function searchIndex($request)
     {
         $shop = Shop::find($request->shop_id);
