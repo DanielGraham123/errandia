@@ -31,7 +31,8 @@ class Product extends Model
         'search_index',
         'tags',
         'category_id',
-        'images'
+        'images',
+        'user_id'
     ];
 
     public function searchableAs()
