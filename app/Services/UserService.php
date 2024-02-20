@@ -3,14 +3,12 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\File;
 use App\Mail\OtpMailer;
 
 use App\Repositories\UserOTPRepository;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Mockery\Exception;
 use Nette\Utils\Random;
 use Ramsey\Uuid\Uuid;
@@ -56,26 +54,17 @@ class UserService{
         return $this->userRepository->updatePartially($id, $field_name, $value);
     }
 
-    public function updateProfileImage($user_id, $file)
+    public function update_user_profile_image($user_id, $request)
     {
-        # code...
-        if($file == null){
-            throw new \Exception("Empty file contents.");
-        }
-
+        MediaService::has_file($request, 'image');
         $user = $this->userRepository->getById($user_id);
-        if(!empty($user->photo) &&  File::exists(public_path($user->photo))) {
-            File::delete(public_path($user->photo));
+        if(!empty($user->photo)) {
+            MediaService::delete_media($user->photo);
             logger()->info('previous image file deleted : ' . $user->photo);
         }
 
-        $filename = 'profile_'.random_int(1000000, 9999999).'_'.time().'.'.$file->getClientOriginalExtension();
-        $file->move(public_path('uploads/user_photos'), $filename);
-
-        $path_name = '/uploads/user_photos/' . $filename;
-        logger()->info("File path : " . $path_name);
+        $path_name = MediaService::upload_media($request, 'image', 'user_photos');
         $this->userRepository->updatePartially($user_id, 'photo', $path_name);
-
         return $path_name;
     }
 
