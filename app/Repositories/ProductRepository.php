@@ -58,6 +58,27 @@ class ProductRepository {
         return new ProductResource($item);
     }
 
+    /**
+     * get user products
+     */
+    public function getUserProducts($user)
+    {
+        // return user products with is_services equals zero
+        $items = Product::whereUserId($user->id)->whereService(0)->paginate(15);
+        return $items;
+
+//       return Product::whereUserId($user->id)->paginate(15);
+    }
+
+    /**
+     * get user services
+     */
+    public function getUserServices($user)
+    {
+        // return user products with is_services equals one
+        $items = Product::whereUserId($user->id)->whereService(1)->paginate(15);
+        return $items;
+    }
 
     /**
      * save a record to database

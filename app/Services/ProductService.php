@@ -73,6 +73,16 @@ class ProductService{
         return $this->productRepository->store($data);
     }
 
+    public function getUserProducts($user)
+    {
+        return $this->productRepository->getUserProducts($user);
+    }
+
+    public function getUserServices($user)
+    {
+        return $this->productRepository->getUserServices($user);
+    }
+
     private function uploadImage($file, $folder)
     {
         $path = public_path("uploads/$folder/");

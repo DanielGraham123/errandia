@@ -33,7 +33,9 @@ Route::middleware('auth:api')->group(function (){
         Route::post('/user/shops', 'ShopController@store');
         Route::put('/user/shops/{slug}', 'ShopController@update');
 
-        Route::post('/user/products', 'ProductController@store');
+        Route::post('/user/item', 'ProductController@store');
+        Route::get("/user/products", "ProductController@getUserProducts");
+        Route::get("/user/services", "ProductController@getUserServices");
     });
 
 
