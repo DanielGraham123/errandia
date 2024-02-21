@@ -6,7 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
 use \Illuminate\Support\Arr;
-use \Illuminate\Support\facades\DB;
+use Illuminate\Support\Facades\DB;
 use Exception;
 use \Illuminate\Support\Str;
 
