@@ -151,7 +151,7 @@ class ShopRepository
      * get user shops
      */
     public function getUserShops($user) {
-        return Shop::where('user_id', $user->id)->paginate(15);
+        return Shop::orderBy('created_at', 'desc')->where('user_id', $user->id)->paginate(15);
     }
 
     /**
