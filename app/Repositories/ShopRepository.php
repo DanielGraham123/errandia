@@ -85,8 +85,12 @@ class ShopRepository
             $shop->user_id = $user->id;
 
             // check if category_id exists
-            if (!Category::find($data['category_id'])) {
-                throw new \Exception('Category does not exist');
+            if (!isset($data['category_id'])) {
+                throw new \Exception('You must choose a category for your business');
+            } else {
+                if (!Category::find($data['category_id'])) {
+                    throw new \Exception('Category does not exist');
+                }
             }
 
             $shop->category_id = $data['category_id'];
@@ -98,18 +102,25 @@ class ShopRepository
             $shop->slogan = $data['slogan'] ?? '';
             $shop->image_path = $data['image_path'];
 
-            // check if region exists
-            if (!Region::find($data['region_id'])) {
-                throw new \Exception('Region does not exist');
+            // check if the region_id is present in the data
+            if (isset($data['region_id'])) {
+                // check if region exists
+                if (!Region::find($data['region_id'])) {
+                    throw new \Exception('Region does not exist');
+                }
+                $shop->region_id = $data['region_id'] ?? "";
             }
 
-            // check if town exists
-            if (!Town::find($data['town_id'])) {
-                throw new \Exception('Town does not exist');
+            // check if the town_id is present in the data
+            if (isset($data['town_id'])) {
+                // check if town exists
+                if (!Town::find($data['town_id'])) {
+                    throw new \Exception('Town does not exist');
+                }
+                $shop->town_id = $data['town_id'] ?? "";
+
             }
 
-            $shop->region_id = $data['region_id'] ?? "";
-            $shop->town_id = $data['town_id'] ?? "";
 //            $shop->street_id = $data['street_id'] ?? "";
             $shop->street = $data['street'] ?? "";
 
