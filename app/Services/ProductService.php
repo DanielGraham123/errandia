@@ -2,11 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Product;
 use App\Models\ProductImage;
 use App\Repositories\ProductRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use \Illuminate\Support\Facades\Http;
 
 class ProductService{
 

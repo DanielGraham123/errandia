@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use App\Models\ProductImage;
-use App\Models\ProductSubCategory;
 use App\Models\Shop;
 use App\Models\SubCategory;
 use App\Services\ProductService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
