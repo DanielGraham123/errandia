@@ -69,13 +69,26 @@ class ShopController extends Controller
 
     public function store(Request $request) {
         try {
-            $shopData = $request->all();
+            // validate inputs
+            $rules = [
+                'name' => 'required',
+                'description' => 'required',
+                'category_id' => 'required',
+                'phone' => 'required',
+                'email_address' => 'email',
+                'region_id' => 'required',
+                'town_id' => 'required',
+            ];
+
+            $data = $request->all();
+            $this->validate($data, $rules);
+            if(!empty($this->validations_errors)) {
+                return $this->build_response(response(), 'failed to create business', 400);
+            }
+
             $user = auth('api')->user();
-            $shopData['user'] = $user;
-
-            $created = $this->shopService->save($shopData);
-
-
+            $data['user'] = $user;
+            $created = $this->shopService->save($data);
             return $this->build_success_response(
                 response(),
                 'Shop created successfully',
@@ -85,10 +98,7 @@ class ShopController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error('Error creating shop: ' . $e->getMessage());
-            return response()->json(['data' => [
-                'error' => $e->getMessage(),
-                'message' => 'Sorry, we encountered an error'
-            ]], 400);
+            return $this->build_response(response(), 'failed to create business', 400);
         }
     }
 
