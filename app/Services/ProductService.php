@@ -38,38 +38,18 @@ class ProductService{
         return $this->productRepository->getBySlug($slug);
     }
 
-    public function save($data)
+    public function save($data, $request)
     {
-        # code...
-        $validationRules = [
-            'name'=>'required', 'shop_id'=>'required', 
-            'unit_price'=>'nullable|numeric', 'description'=>'nullable|string', 
-//            'status'=>'nullable',
-//            'featured_image'=>'nullable|file|mimes:image/*',
-            'quantity'=>'nullable|numeric',
-//            'views'=>'nullable|numeric',
-            'service'=>'boolean|nullable',
-//            'search_index'=>'required',
-            'tags'=>'nullable',
-            'category_id'=>'required'
-        ];
-
-        if (isset($data['featured_image']) && ($file = $data['featured_image']) != null) {
-            $data['featured_image'] = $this->uploadImage($file, 'products');
+        if($request->hasFile('featured_image')) {
+            $data['featured_image'] = MediaService::upload_media($request, 'featured_image', 'products');
         }
 
         // Handle multiple image uploads
-        if (isset($data['images']) && is_array($data['images'])) {
-            $images = [];
-            foreach ($data['images'] as $image) {
-                $imagePath = $this->uploadImage($image, 'products');
-                $productImage = new ProductImage(['image' => $imagePath]);
-                $images[] = $productImage;
-            }
-            $data['productImages'] = $images; // Use a different key to store images
+        $image_paths = MediaService::upload_multiple_medias($request, 'images', 'products');
+        $data['productImages'] = [];
+        foreach ($image_paths as $image_path) {
+            $data['productImages'][] = new ProductImage(['image' => $image_path]);
         }
-
-        $this->validationService->validate($data, $validationRules);
         return $this->productRepository->store($data);
     }
 
@@ -81,18 +61,6 @@ class ProductService{
     public function getUserServices($user)
     {
         return $this->productRepository->getUserServices($user);
-    }
-
-    private function uploadImage($file, $folder)
-    {
-        $path = public_path("uploads/$folder/");
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
-        $fName = $folder . '_' . time() . '_' . random_int(1000, 9999) . '.' . $file->getClientOriginalExtension();
-        $file->move($path, $fName);
-
-        return "uploads/$folder/$fName";
     }
 
     public function update($slug, $data)

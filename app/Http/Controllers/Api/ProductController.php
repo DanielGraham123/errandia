@@ -29,27 +29,10 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-//        $products = new Product();
-//        if ($request->category_id) {
-//            $products = $products->whereHas('subCategories', function ($query) use ($request) {
-//                $query->where('category_id', $request->category_id);
-//            });
-//        }
-//        if ($request->search) {
-//            $products = $products->where(function ($query) use ($request) {
-//                $query->where('name', 'like', '%'.$request->search.'%')
-//                    ->orWhere('description', 'like', '%'.$request->search.'%')
-//                    ->orWhere('search_index', 'like', '%'.$request->search.'%');
-//            });
-//        }
-//
-//        $products = $products->orderBy('created_at', 'desc')->paginate(20);
-
         $products = $this->productService->getAll($request->size, $request->category_id, $request->service);
-
         return $this->build_success_response(
             response(),
-            'products loaded',
+            'items loaded',
             [
                 'items' => $products
             ]
@@ -59,14 +42,35 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-            $productData = $request->all();
+            $data = $request->all();
+//            $rules = [
+//                'name' => 'required',
+//                'shop_id' => 'required',
+//                'image' => 'image',
+//                'description' => 'required',
+//                'service' => 'required',
+//            ];
+
+            // Todo rot review the rules later
+            $rules = [
+                'name'=>'required',
+                'shop_id'=>'required',
+                'unit_price'=>'nullable|numeric',
+                'description'=>'nullable|string',
+                'quantity'=>'nullable|numeric',
+                'service'=>'boolean|nullable',
+                'tags'=>'nullable',
+                'category_id'=>'required'
+            ];
+
+            $this->validate($data, $rules);
+            if(!empty($this->validations_errors)) {
+                return $this->build_response(response(), 'check required fields', 400);
+            }
 
             $user = auth('api')->user();
-
-            $productData['user'] = $user;
-
-            $item = $this->productService->save($productData);
-
+            $data['user'] = $user;
+            $item = $this->productService->save($data, $request);
             return $this->build_success_response(
                 response(),
                 'Product created successfully',
@@ -76,12 +80,24 @@ class ProductController extends Controller
             );
 
         } catch (\Exception $e) {
-            logger()->error('Error creating product: ' . $e->getMessage());
-            return response()->json(['data' => [
-                'error' => $e->getMessage(),
-                'message' => 'Sorry, We encountered an error'
-            ]], 500);
+            logger()->error('Error creating item: ' . $e->getMessage());
+            return $this->build_response(response(), 'process failed', 400);
         }
+    }
+
+    public function show(Request $request, $id)
+    {
+
+    }
+
+    public function update(Request $request, $id)
+    {
+
+    }
+
+    public function delete(Request $request, $id)
+    {
+
     }
 
     // get user products
