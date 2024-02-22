@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group(function (){
         Route::get('/user/shops', 'ShopController@getUserShops');
         Route::post('/user/shops', 'ShopController@store');
         Route::put('/user/shops/{slug}', 'ShopController@update');
+        Route::delete('/user/shops/{slug}', 'ShopController@delete');
 
         Route::post('/user/item', 'ProductController@store');
         Route::get("/user/products", "ProductController@getUserProducts");

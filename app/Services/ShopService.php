@@ -37,8 +37,11 @@ class ShopService{
 
     public function getBySlug($slug)
     {
-        # code...
-        return $this->shopRepository->getBySlug($slug);
+        $shop =  $this->shopRepository->getBySlug($slug);
+        if ($shop == null) {
+            throw new \Exception("business not found with slug " . $slug);
+        }
+        return $slug;
     }
 
     public function getManagers($shop_id)
@@ -109,8 +112,8 @@ class ShopService{
         $shop = $this->shopRepository->getBySlug($slug);
         if($user_id != $shop->user_id)
             throw new \Exception("Permission denied. shop can only be deleted by the owner");
-
         $this->shopRepository->delete($slug);
+        logger()->info("business successfully deleted");
     }
 
     public function load_featured_businesses($size = 10)

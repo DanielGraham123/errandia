@@ -170,8 +170,6 @@ class ShopRepository
      */
     public function update($slug, $data)
     {
-        # code...
-        // validate data and save to database
         try {
             $record = DB::transaction(function () use ($slug, $data) {
                 $shop = Shop::whereSlug($slug)->first();
@@ -193,12 +191,9 @@ class ShopRepository
      */
     public function delete($slug)
     {
-        # code...
-        // validate data and save to database
         $shop = Shop::whereSlug($slug)->first();
         if ($shop == null)
             throw new \Exception("shop record to be deleted does not exist");
-
         $shop->delete();
         return true;
     }

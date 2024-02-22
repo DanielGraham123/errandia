@@ -11,6 +11,7 @@ use App\Models\Shop;
 use App\Models\SubCategory;
 use App\Services\ShopService;
 use Illuminate\Http\Request;
+use PHPUnit\Exception;
 
 class ShopController extends Controller
 {
@@ -103,7 +104,7 @@ class ShopController extends Controller
                 ]
             );
         } catch (\Exception $e) {
-            logger()->error('Error loading shop: ' . $e->getMessage());
+            logger()->error('Error loading business: ' . $e->getMessage());
             return $this->build_response(response(), 'failed to load business', 400);
         }
     }
@@ -129,16 +130,9 @@ class ShopController extends Controller
 
     public function update(Request $request, $slug) {
         try {
-            $shop = $this->shopService->getBySlug($slug);
             $authenticatedUser = auth('api')->user();
-            if ($shop->user_id !== $authenticatedUser->id) {
-                return $this->build_response(
-                    response(),
-                    'You are not authorized to update this shop.',
-                    403
-                );
-            }
-
+            $shop = $this->shopService->getBySlug($slug);
+            $this->checkOwner($shop,  $authenticatedUser);
             $shop = $this->shopService->update_shop($request, $shop);
             return $this->build_success_response(
                 response(),
@@ -148,6 +142,21 @@ class ShopController extends Controller
         } catch (\Exception $e) {
             logger()->error('Error updating shop: ' . $e->getMessage());
             return $this->build_response(response(), 'failed to update business details', 400);
+        }
+    }
+
+    public function delete(Request $request, $slug)
+    {
+        try {
+            $current_user = auth('api')->user();
+            $this->shopService->delete($slug, $current_user->id);
+            return $this->build_success_response(
+                response(),
+                'shop successful deleted'
+            );
+        } catch (Exception $e) {
+            logger()->error('Error updating shop: ' . $e->getMessage());
+            return $this->build_response(response(), 'failed to delete', 400);
         }
     }
 
@@ -166,6 +175,17 @@ class ShopController extends Controller
         } catch (\Exception $e) {
             logger()->error('Error loading other shops: ' . $e->getMessage());
             return $this->build_response(response(), 'failed to load other shops', 400);
+        }
+    }
+
+    private function checkOwner($shop, $authenticatedUser)
+    {
+        if ($shop->user_id !== $authenticatedUser->id) {
+            return $this->build_response(
+                response(),
+                'You are not authorized to update this shop.',
+                403
+            );
         }
     }
 }
