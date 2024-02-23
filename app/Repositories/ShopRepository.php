@@ -124,11 +124,6 @@ class ShopRepository
 //            $shop->street_id = $data['street_id'] ?? "";
             $shop->street = $data['street'] ?? "";
 
-            // Set category_id if provided and valid
-            if (isset($data['category_id'])) {
-                $shop->category_id = $data['category_id'];
-            }
-
             if (isset($data['is_branch']) && $data['is_branch'] && isset($data['parent_id'])) {
                 $shop->parent_id = $data['parent_id'];
             } else {

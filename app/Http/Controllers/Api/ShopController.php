@@ -98,7 +98,7 @@ class ShopController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error('Error creating shop: ' . $e->getMessage());
-            return $this->build_response(response(), 'failed to create business', 400);
+            return $this->build_error_response($e->getMessage(), 'failed to create business', 400);
         }
     }
 
@@ -140,8 +140,8 @@ class ShopController extends Controller
 
     public function update(Request $request, $slug) {
         try {
-            $authenticatedUser = auth('api')->user();
             $shop = $this->shopService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
             $this->checkOwner($shop,  $authenticatedUser);
             $shop = $this->shopService->update_shop($request, $shop);
             return $this->build_success_response(
@@ -151,7 +151,7 @@ class ShopController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error('Error updating shop: ' . $e->getMessage());
-            return $this->build_response(response(), 'failed to update business details', 400);
+            return $this->build_error_response($e->getMessage(), 'failed to update business details', 400);
         }
     }
 
