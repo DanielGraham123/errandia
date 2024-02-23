@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories;
 
 use App\Http\Resources\ProductResource;
@@ -9,9 +10,12 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use \Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use \Illuminate\Support\Str;
 
-class ProductRepository {
+class ProductRepository
+{
 
     /**
      * get all products
@@ -46,7 +50,7 @@ class ProductRepository {
         $items = $query->orderBy('id', 'DESC')->paginate(15);
 
         return ProductResource::collection($items);
-        
+
     }
 
 
@@ -60,7 +64,7 @@ class ProductRepository {
         try {
             # read the record associated to a given slug
             $item = Product::whereSlug($slug)->first();
-            if($item == null){
+            if ($item == null) {
                 throw new Exception("Item does not exist");
             }
             return new ProductResource($item);
@@ -98,31 +102,31 @@ class ProductRepository {
     {
         // check if product with name exists
         $item = Product::whereName($data['name'])->first();
-        if($item != null){
+        if ($item != null) {
             throw new Exception("Product with name already exists");
         }
 
         // check if shop with id exists
-         $shop = Shop::find($data['shop_id']);
-        if($shop == null) {
+        $shop = Shop::find($data['shop_id']);
+        if ($shop == null) {
             throw new Exception("Shop does not exist");
         }
 
         // check if category with id exists
         $category = Category::find($data['category_id']);
-        if($category == null) {
+        if ($category == null) {
             throw new Exception("Category does not exist");
         }
 
         // validate data and save to database
         try {
-            $record = DB::transaction(function()use($data){
+            $record = DB::transaction(function () use ($data) {
                 // Exclude 'images' from the data array used for creating the product
                 $productData = Arr::except($data, ['images', 'productImages']);
                 $user = $data['user'];
                 $item = new Product($productData);
-                $item->slug = Str::slug($data['name']).'-'. time();
-                $item->service =  $data['service'] ?? "0";
+                $item->slug = Str::slug($data['name']) . '-' . time();
+                $item->service = $data['service'] ?? "0";
                 $item->user_id = $user->id;
                 $item->save();
 
@@ -150,15 +154,15 @@ class ProductRepository {
     /**
      * update a record in database
      */
-    public function update( $slug, $data)
+    public function update($slug, $data)
     {
         # code...
         // validate data and save to database
         try {
             //code...
-            $record = DB::transaction(function()use($slug, $data){
+            $record = DB::transaction(function () use ($slug, $data) {
                 $item = Product::whereSlug($slug)->first();
-                if($item ==  null){
+                if ($item == null) {
                     throw new Exception("Item to be updated does not exist");
                 }
                 $item->update($data);
@@ -176,16 +180,30 @@ class ProductRepository {
      */
     public function delete($slug): bool
     {
-       try {
-           // validate data and save to database
-           $item  = Product::whereSlug($slug)->first();
-           if($item ==  null){
-               throw new Exception("Item to be deleted does not exist");
-           }
-           $item->delete();
-           return true;
-       } catch (\Throwable $th) {
-           throw $th;
-       }
+        try {
+            // validate data and save to database
+            $item = Product::whereSlug($slug)->first();
+            if ($item == null) {
+                throw new Exception("Item to be deleted does not exist");
+            }
+
+            // delete the featured image
+            if ($item->featured_image && File::exists(public_path($item->featured_image))) {
+                File::delete(public_path($item->featured_image));
+            }
+
+            // delete the item images
+            foreach ($item->images as $image) {
+                if ($image->image && File::exists(public_path($image->image))) {
+                    File::delete(public_path($image->image));
+                }
+                $image->delete();
+            }
+
+            $item->delete();
+            return true;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

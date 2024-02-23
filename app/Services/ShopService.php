@@ -132,6 +132,7 @@ class ShopService{
                 MediaService::delete_media($shop->image_path);
             }
             $shop->image_path = MediaService::upload_media($request, 'image', 'logos');
+            $data['image_path'] = $shop->image_path;
         }
 
         // update shop info

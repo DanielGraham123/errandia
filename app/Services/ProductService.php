@@ -36,19 +36,23 @@ class ProductService{
     /**
      * @throws \Throwable
      */
-    public function getBySlug($slug)
+    public function getBySlug($slug): \App\Http\Resources\ProductResource
     {
         return $this->productRepository->getBySlug($slug);
     }
 
     public function save($data, $request)
     {
-        if($request->hasFile('featured_image')) {
-            $data['featured_image'] = MediaService::upload_media($request,
-                'products', 'featured_image');
+        // TODO: not working -> buggy
+//        if($request->hasFile('featured_image')) {
+//            $data['featured_image'] = MediaService::upload_media($request,
+//                'products', 'featured_image');
+//        }
+        if (isset($data['featured_image']) && ($file = $data['featured_image']) != null) {
+            $data['featured_image'] = $this->uploadImage($file, 'products');
         }
 
-        // Handle multiple image uploads
+        // TODO: Handle multiple image uploads => not working -> buggy
 //        if (isset($data['images']) && is_array($data['images'])) {
 //            $image_paths = MediaService::upload_multiple_medias($request, 'images', 'products');
 //            $data['productImages'] = [];
@@ -90,14 +94,30 @@ class ProductService{
         return $this->productRepository->getUserServices($user);
     }
 
-    public function update($slug, $data)
+    public function update_item($request, $item)
     {
-        # code...
-        $validationRules = [];
-        $this->validationService->validate($data, $validationRules);
-        if(empty($data))
-            throw new \Exception("No data provided for update");
-        return $this->productRepository->update($slug, $data);
+        $data = $request->except(['featured_image']);
+        foreach ($data as $key => $value) {
+            if ($request->has($key)) {
+                $item->$key = $value;
+            }
+        }
+
+        // if the featured_image is set, upload the image and the item already has image delete it
+        if ($request->hasFile('featured_image')) {
+            logger()->info('featured_image found in request'. $request->file('featured_image'));
+            if (!empty($item->featured_image)) {
+                MediaService::delete_media($item->featured_image);
+            }
+            $item->featured_image = MediaService::upload_media($request, 'featured_image', 'products');
+            $data['featured_image'] = $item->featured_image;
+        }
+
+        $item->update($data);
+        $item->refresh();
+
+        logger()->info('featured_image uploaded: ' . $item->featured_image);
+        return $item;
     }
 
     /**

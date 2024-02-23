@@ -102,9 +102,30 @@ class ProductController extends Controller
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
+        try {
+            $item = $this->productService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+            $this->checkOwner($item, $authenticatedUser);
+            $data = $this->productService->update_item($request, $item);
 
+            logger()->info('Item updated: '. json_encode($data));
+
+            return $this->build_success_response(
+                response(),
+                'Item updated successfully',
+                [
+                    'item' => new ProductResource($data)
+                ]
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error updating item: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to update item', 400);
+        } catch (\Throwable $e) {
+            logger()->error('Error updating item: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to update item', 400);
+        }
     }
 
     public function delete(Request $request, $slug)
