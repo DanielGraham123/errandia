@@ -75,9 +75,9 @@ class ShopController extends Controller
                 'description' => 'required',
                 'category_id' => 'required',
                 'phone' => 'required',
-                'email_address' => 'email',
+                'email' => 'email',
                 'region_id' => 'required',
-                'town_id' => 'required',
+//                'town_id' => 'required',
             ];
 
             $data = $request->all();
@@ -98,7 +98,7 @@ class ShopController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error('Error creating shop: ' . $e->getMessage());
-            return $this->build_response(response(), 'failed to create business', 400);
+            return $this->build_error_response($e->getMessage(), 'failed to create business', 400);
         }
     }
 
@@ -140,8 +140,8 @@ class ShopController extends Controller
 
     public function update(Request $request, $slug) {
         try {
-            $authenticatedUser = auth('api')->user();
             $shop = $this->shopService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
             $this->checkOwner($shop,  $authenticatedUser);
             $shop = $this->shopService->update_shop($request, $shop);
             return $this->build_success_response(
@@ -151,22 +151,24 @@ class ShopController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error('Error updating shop: ' . $e->getMessage());
-            return $this->build_response(response(), 'failed to update business details', 400);
+            return $this->build_error_response($e->getMessage(), 'failed to update business details', 400);
         }
     }
 
     public function delete(Request $request, $slug)
     {
         try {
-            $current_user = auth('api')->user();
-            $this->shopService->delete($slug, $current_user->id);
+            $shop = $this->shopService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+            $this->checkOwner($shop,  $authenticatedUser);
+            $this->shopService->delete($slug);
             return $this->build_success_response(
                 response(),
-                'shop successful deleted'
+                'Shop deleted successfully',
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             logger()->error('Error updating shop: ' . $e->getMessage());
-            return $this->build_response(response(), 'failed to delete', 400);
+            return $this->build_error_response($e->getMessage(), 'failed to delete shop', 400);
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Shop;
+use App\Models\ShopContactInfo;
 use App\Repositories\ShopManagerRepository;
 use App\Repositories\ShopRepository;
 
@@ -41,7 +42,7 @@ class ShopService{
         if ($shop == null) {
             throw new \Exception("business not found with slug " . $slug);
         }
-        return $slug;
+        return $shop;
     }
 
     public function getManagers($shop_id)
@@ -106,14 +107,9 @@ class ShopService{
         # code...
     }
 
-    public function delete($slug, $user_id)
+    public function delete($slug)
     {
-        # code...
-        $shop = $this->shopRepository->getBySlug($slug);
-        if($user_id != $shop->user_id)
-            throw new \Exception("Permission denied. shop can only be deleted by the owner");
-        $this->shopRepository->delete($slug);
-        logger()->info("business successfully deleted");
+        return $this->shopRepository->delete($slug);
     }
 
     public function load_featured_businesses($size = 10)
@@ -136,7 +132,21 @@ class ShopService{
                 MediaService::delete_media($shop->image_path);
             }
             $shop->image_path = MediaService::upload_media($request, 'image', 'logos');
+            $data['image_path'] = $shop->image_path;
         }
+
+        // update shop info
+        $shop_info = ShopContactInfo::firstOrNew([
+            'shop_id' => $shop->id
+        ]);
+        $shop_info->phone = $data['phone'] ?? '';
+        $shop_info->whatsapp = $data['whatsapp'] ?? '';
+        $shop_info->address = $data['address'] ?? '';
+        $shop_info->facebook = $data['facebook'] ?? '';
+        $shop_info->instagram = $data['instagram'] ?? '';
+        $shop_info->website = $data['website'] ?? '';
+        $shop_info->email = $data['email'] ?? '';
+        $shop_info->save();
 
         $shop->update($data);
         $shop->refresh();

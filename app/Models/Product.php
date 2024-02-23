@@ -76,6 +76,11 @@ class Product extends Model
         return $this->belongsTo(Shop::class, 'shop_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function images()
     {
         return $this->hasMany(ProductImage::class, 'item_id');
@@ -94,5 +99,10 @@ class Product extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class, 'item_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(Product::class, 'item_id');
     }
 }

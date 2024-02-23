@@ -11,8 +11,8 @@ class Shop extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'description', 'category_id', 'user_id', 'slug', 
-        'image_path', 'status', 'is_branch', 'parent_slug', 'region_id', 'town_id'
+        'name', 'description', 'category_id', 'user_id', 'slug',
+        'status', 'is_branch', 'parent_slug', 'region_id', 'town_id',  'slogan', 'image_path', 'street'
     ];
 
     protected $dates = ['created_at', 'updated_at'];

@@ -57,11 +57,15 @@ class ShopRepository
      */
     public function getBySlug($slug)
     {
-        # read the record associated to a given slug
-        $shop = Shop::whereSlug($slug)->first();
-        if ($shop == null)
-            throw new \Exception("Shop record with record " . $slug . " does not exist");
-        return new ShopResource($shop);
+       try {
+           # read the record associated to a given slug
+           $shop = Shop::whereSlug($slug)->first();
+           if ($shop == null)
+               throw new \Exception("Shop record with record " . $slug . " does not exist");
+           return new ShopResource($shop);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
 
@@ -123,11 +127,6 @@ class ShopRepository
 
 //            $shop->street_id = $data['street_id'] ?? "";
             $shop->street = $data['street'] ?? "";
-
-            // Set category_id if provided and valid
-            if (isset($data['category_id'])) {
-                $shop->category_id = $data['category_id'];
-            }
 
             if (isset($data['is_branch']) && $data['is_branch'] && isset($data['parent_id'])) {
                 $shop->parent_id = $data['parent_id'];
@@ -191,10 +190,18 @@ class ShopRepository
      */
     public function delete($slug)
     {
-        $shop = Shop::whereSlug($slug)->first();
-        if ($shop == null)
-            throw new \Exception("shop record to be deleted does not exist");
-        $shop->delete();
-        return true;
+        try {
+            $record = DB::transaction(function () use ($slug) {
+                $shop = Shop::whereSlug($slug)->first();
+                if ($shop == null)
+                    throw new \Exception("Shop to be deleted does not exist");
+
+                $shop->delete();
+                return $shop;
+            });
+            return new ShopResource($record);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

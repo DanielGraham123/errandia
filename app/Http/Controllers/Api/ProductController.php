@@ -25,12 +25,15 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $products = $this->productService->getAll($request->size, $request->category_id, $request->service);
+        $products = $this->productService->getAll($request->category_id, $request->service);
         return $this->build_success_response(
             response(),
             'items loaded',
             [
-                'items' => $products
+                self::convert_paginated_result(
+                    $products,
+                    ProductResource::collection($products)
+                )
             ]
         );
     }
@@ -77,22 +80,73 @@ class ProductController extends Controller
 
         } catch (\Exception $e) {
             logger()->error('Error creating item: ' . $e->getMessage());
-            return $this->build_response(response(), 'process failed', 400);
+            return $this->build_error_response($e->getMessage(), 'Item creation process failed', 400);
         }
     }
 
     public function show(Request $request, $id)
     {
+        try {
+            $item = $this->productService->getBySlug($id);
+            return $this->build_success_response(
+                response(),
+                'item loaded',
+                [
+                    'item' => new ProductResource($item)
+                ]
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error loading item: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to load item', 400);
+        }
 
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
+        try {
+            $item = $this->productService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+            $this->checkOwner($item, $authenticatedUser);
+            $data = $this->productService->update_item($request, $item);
 
+            logger()->info('Item updated: '. json_encode($data));
+
+            return $this->build_success_response(
+                response(),
+                'Item updated successfully',
+                [
+                    'item' => new ProductResource($data)
+                ]
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error updating item: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to update item', 400);
+        } catch (\Throwable $e) {
+            logger()->error('Error updating item: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to update item', 400);
+        }
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $slug)
     {
+        try {
+            $item = $this->productService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+            $this->checkOwner($item, $authenticatedUser);
+            $this->productService->delete($slug);
+
+            return $this->build_success_response(
+                response(),
+                'Item deleted successfully',
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error deleting item: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to delete item', 400);
+        } catch (\Throwable $e) {
+            logger()->error('Error deleting item: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to delete item', 400);
+        }
 
     }
 
@@ -211,6 +265,17 @@ class ProductController extends Controller
                 'error' => $e->getMessage(),
                 'message' => 'Sorry, We encountered an error'
             ]], 500);
+        }
+    }
+
+    private function checkOwner($item, $authenticatedUser)
+    {
+        if ($item->user_id !== $authenticatedUser->id) {
+            return $this->build_response(
+                response(),
+                'You are not authorized to update this shop.',
+                403
+            );
         }
     }
 }

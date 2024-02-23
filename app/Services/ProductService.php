@@ -15,10 +15,13 @@ class ProductService{
         $this->validationService = $validationService;
     }
 
-    public function getAll($size = null, $category_id = null, $service = null)
+    /**
+     * @throws \Exception
+     */
+    public function getAll($category_id = null, $service = null)
     {
         # code...
-        return $this->productRepository->get($size, $category_id, $service);
+        return $this->productRepository->get($category_id, $service);
     }
 
     public function getAllPaginate($page_size, $current_page, $category_id = null, $service = null)
@@ -30,25 +33,55 @@ class ProductService{
         return $pagination;
     }
 
-    public function getOne($slug)
+    /**
+     * @throws \Throwable
+     */
+    public function getBySlug($slug): \App\Http\Resources\ProductResource
     {
-        # code...
         return $this->productRepository->getBySlug($slug);
     }
 
     public function save($data, $request)
     {
-        if($request->hasFile('featured_image')) {
-            $data['featured_image'] = MediaService::upload_media($request, 'featured_image', 'products');
+        // TODO: not working -> buggy
+//        if($request->hasFile('featured_image')) {
+//            $data['featured_image'] = MediaService::upload_media($request,
+//                'products', 'featured_image');
+//        }
+        if (isset($data['featured_image']) && ($file = $data['featured_image']) != null) {
+            $data['featured_image'] = $this->uploadImage($file, 'products');
         }
 
-        // Handle multiple image uploads
-        $image_paths = MediaService::upload_multiple_medias($request, 'images', 'products');
-        $data['productImages'] = [];
-        foreach ($image_paths as $image_path) {
-            $data['productImages'][] = new ProductImage(['image' => $image_path]);
+        // TODO: Handle multiple image uploads => not working -> buggy
+//        if (isset($data['images']) && is_array($data['images'])) {
+//            $image_paths = MediaService::upload_multiple_medias($request, 'images', 'products');
+//            $data['productImages'] = [];
+//            foreach ($image_paths as $image_path) {
+//                $data['productImages'][] = new ProductImage(['image' => $image_path]);
+//            }
+//        }
+        if (isset($data['images']) && is_array($data['images'])) {
+            $images = [];
+            foreach ($data['images'] as $image) {
+                $imagePath = $this->uploadImage($image, 'products');
+                $productImage = new ProductImage(['image' => $imagePath]);
+                $images[] = $productImage;
+            }
+            $data['productImages'] = $images; // Use a different key to store images
         }
         return $this->productRepository->store($data);
+    }
+
+    private function uploadImage($file, $folder)
+    {
+        $path = public_path("uploads/$folder/");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $fName = $folder . '_' . time() . '_' . random_int(1000, 9999) . '.' . $file->getClientOriginalExtension();
+        $file->move($path, $fName);
+
+        return "uploads/$folder/$fName";
     }
 
     public function getUserProducts($user)
@@ -61,19 +94,37 @@ class ProductService{
         return $this->productRepository->getUserServices($user);
     }
 
-    public function update($slug, $data)
+    public function update_item($request, $item)
     {
-        # code...
-        $validationRules = [];
-        $this->validationService->validate($data, $validationRules);
-        if(empty($data))
-            throw new \Exception("No data provided for update");
-        return $this->productRepository->update($slug, $data);
+        $data = $request->except(['featured_image']);
+        foreach ($data as $key => $value) {
+            if ($request->has($key)) {
+                $item->$key = $value;
+            }
+        }
+
+        // if the featured_image is set, upload the image and the item already has image delete it
+        if ($request->hasFile('featured_image')) {
+            logger()->info('featured_image found in request'. $request->file('featured_image'));
+            if (!empty($item->featured_image)) {
+                MediaService::delete_media($item->featured_image);
+            }
+            $item->featured_image = MediaService::upload_media($request, 'featured_image', 'products');
+            $data['featured_image'] = $item->featured_image;
+        }
+
+        $item->update($data);
+        $item->refresh();
+
+        logger()->info('featured_image uploaded: ' . $item->featured_image);
+        return $item;
     }
 
-    public function delete($slug, $user_id)
+    /**
+     * @throws \Throwable
+     */
+    public function delete($slug): bool
     {
-        # code...
         return $this->productRepository->delete($slug);
     }
 
