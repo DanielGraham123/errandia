@@ -31,6 +31,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'shop' => new ShopResource($product->shop),
             'category' => new CategoryResource($this->category),
+            'user' => new UserResource($this->user),
             'description' => $this->description,
             'unit_price' => $this->unit_price,
             'status' => $this->status,

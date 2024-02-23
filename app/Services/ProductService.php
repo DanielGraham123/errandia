@@ -33,9 +33,11 @@ class ProductService{
         return $pagination;
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function getBySlug($slug)
     {
-        # code...
         return $this->productRepository->getBySlug($slug);
     }
 
@@ -98,9 +100,11 @@ class ProductService{
         return $this->productRepository->update($slug, $data);
     }
 
-    public function delete($slug, $user_id)
+    /**
+     * @throws \Throwable
+     */
+    public function delete($slug): bool
     {
-        # code...
         return $this->productRepository->delete($slug);
     }
 

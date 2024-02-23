@@ -52,9 +52,10 @@ class ProductRepository {
 
     /**
      * get a product or service by slug
-     * @param string $slug: unique slug of item to read
+     * @param string $slug : unique slug of item to read
+     * @throws \Throwable
      */
-    public function getBySlug($slug)
+    public function getBySlug($slug): ProductResource
     {
         try {
             # read the record associated to a given slug
@@ -171,17 +172,20 @@ class ProductRepository {
 
 
     /**
-     * update a record in database
+     * delete a record in database
      */
-    public function delete($slug)
+    public function delete($slug): bool
     {
-        # code...
-        // validate data and save to database
-        $item  = Product::whereSlug($slug)->first();
-        if($item ==  null){
-            throw new Exception("Item to be deleted does not exist");
-        }
-        $item->delete();
-        return true;
+       try {
+           // validate data and save to database
+           $item  = Product::whereSlug($slug)->first();
+           if($item ==  null){
+               throw new Exception("Item to be deleted does not exist");
+           }
+           $item->delete();
+           return true;
+       } catch (\Throwable $th) {
+           throw $th;
+       }
     }
 }
