@@ -5,6 +5,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Shop;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use \Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Exception;
@@ -14,32 +15,37 @@ class ProductRepository {
 
     /**
      * get all products
-     * @param bool $service: nullable, if true|1, returns services only. if false|0, returns products only. otherwise return both
-     * @param int $size: nullable, specify the number of records to take
-     * @param string $category_id: nullable, category id to query products per category
+     * @param string|null $category_id : nullable, category id to query products per category
+     * @param bool|null $service : nullable, if true|1, returns services only. if false|0, returns products only. otherwise return both
+     * @return AnonymousResourceCollection
+     * @throws Exception
      */
-    public function get($size = null, $category_id = null, $service = null)
+    public function get(string $category_id = null, bool $service = null): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        # code...
-        $items = [];
-        if($category_id != null){
+        $query = Product::query();
+
+        // Filter by category if needed
+        if ($category_id !== null) {
             $category = Category::find($category_id);
-            
-            $builder = $service == null ? 
-                $category->items()->orderBy('id', 'DESC') : 
-                $category->items()->orderBy('id', 'DESC')->where('service', $service); 
-        }else{
-            $builder = $service == null ? 
-                Product::orderBy('id', 'DESC') : 
-                Product::orderBy('id', 'DESC')->where('service', $service);
+            if (!$category) {
+                throw new Exception("Category does not exist");
+            }
+            $query->whereHas('category', function ($q) use ($category_id) {
+                $q->where('id', $category_id);
+            });
         }
 
-        $items = $size ==  null ?
-            $builder->get() : 
-            $builder->take($size)->get();
+        // Filter by service if needed
+        if ($service !== null) {
+            $query->where('service', $service);
+        }
+
+        // Eager load related data
+        $query->with(['category', 'shop', 'images']);
+
+        $items = $query->orderBy('id', 'DESC')->paginate(15);
 
         return ProductResource::collection($items);
-
         
     }
 

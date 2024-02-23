@@ -15,10 +15,13 @@ class ProductService{
         $this->validationService = $validationService;
     }
 
-    public function getAll($size = null, $category_id = null, $service = null)
+    /**
+     * @throws \Exception
+     */
+    public function getAll($category_id = null, $service = null)
     {
         # code...
-        return $this->productRepository->get($size, $category_id, $service);
+        return $this->productRepository->get($category_id, $service);
     }
 
     public function getAllPaginate($page_size, $current_page, $category_id = null, $service = null)
@@ -39,16 +42,40 @@ class ProductService{
     public function save($data, $request)
     {
         if($request->hasFile('featured_image')) {
-            $data['featured_image'] = MediaService::upload_media($request, 'featured_image', 'products');
+            $data['featured_image'] = MediaService::upload_media($request,
+                'products', 'featured_image');
         }
 
         // Handle multiple image uploads
-        $image_paths = MediaService::upload_multiple_medias($request, 'images', 'products');
-        $data['productImages'] = [];
-        foreach ($image_paths as $image_path) {
-            $data['productImages'][] = new ProductImage(['image' => $image_path]);
+//        if (isset($data['images']) && is_array($data['images'])) {
+//            $image_paths = MediaService::upload_multiple_medias($request, 'images', 'products');
+//            $data['productImages'] = [];
+//            foreach ($image_paths as $image_path) {
+//                $data['productImages'][] = new ProductImage(['image' => $image_path]);
+//            }
+//        }
+        if (isset($data['images']) && is_array($data['images'])) {
+            $images = [];
+            foreach ($data['images'] as $image) {
+                $imagePath = $this->uploadImage($image, 'products');
+                $productImage = new ProductImage(['image' => $imagePath]);
+                $images[] = $productImage;
+            }
+            $data['productImages'] = $images; // Use a different key to store images
         }
         return $this->productRepository->store($data);
+    }
+
+    private function uploadImage($file, $folder)
+    {
+        $path = public_path("uploads/$folder/");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $fName = $folder . '_' . time() . '_' . random_int(1000, 9999) . '.' . $file->getClientOriginalExtension();
+        $file->move($path, $fName);
+
+        return "uploads/$folder/$fName";
     }
 
     public function getUserProducts($user)

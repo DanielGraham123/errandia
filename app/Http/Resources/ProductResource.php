@@ -16,7 +16,7 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         $product = $this;
-        $shop_info = $this->shop->info;
+//        $shop_info = $this->shop->info;
 //        $images = collect($product->images)->map(function ($item) {
             logger()->info("product images", (array)collect($product->images));
 //            return [

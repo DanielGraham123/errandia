@@ -134,6 +134,15 @@ class Controller extends BaseController
             );
     }
 
+    public function build_error_response($exceptionMsg, $message, $code): \Illuminate\Http\JsonResponse
+    {
+        return response()->json([
+            'data' => [
+            'error' => $exceptionMsg,
+            'message' => $message
+        ]], $code);
+    }
+
     public function build_success_response($response, $message = '', $data = [])
     {
         return

@@ -34,7 +34,8 @@ Route::middleware('auth:api')->group(function (){
         Route::put('/user/shops/{slug}', 'ShopController@update');
         Route::delete('/user/shops/{slug}', 'ShopController@delete');
 
-        Route::get('/user/items', 'ProductController@index');
+        Route::get("/user/products", "ProductController@getUserProducts");
+        Route::get("/user/services", "ProductController@getUserServices");
         Route::post('/user/items', 'ProductController@store');
         Route::get("/user/items/{slug}", "ProductController@show");
         Route::put("/user/items/{slug}", "ProductController@update");
@@ -75,7 +76,7 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/shops/{slug}/branches', 'ShopController@otherShops');
 
 //    Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
-    Route::get('/products', 'ProductController@index');
+    Route::get('/items', 'ProductController@index');
     Route::post('/product/delete', 'ProductController@deleteProduct');
     Route::get('/product/view', 'ProductController@view');
     Route::get('/products/related', 'ProductController@relatedProducts');

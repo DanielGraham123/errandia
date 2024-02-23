@@ -25,12 +25,15 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $products = $this->productService->getAll($request->size, $request->category_id, $request->service);
+        $products = $this->productService->getAll($request->category_id, $request->service);
         return $this->build_success_response(
             response(),
             'items loaded',
             [
-                'items' => $products
+                self::convert_paginated_result(
+                    $products,
+                    ProductResource::collection($products)
+                )
             ]
         );
     }
@@ -77,7 +80,7 @@ class ProductController extends Controller
 
         } catch (\Exception $e) {
             logger()->error('Error creating item: ' . $e->getMessage());
-            return $this->build_response(response(), 'process failed', 400);
+            return $this->build_error_response($e->getMessage(), 'Item creation process failed', 400);
         }
     }
 
