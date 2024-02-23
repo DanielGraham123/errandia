@@ -41,6 +41,7 @@ class ProductResource extends JsonResource
             'views' => count($views), 
             'reviews' => $this->reviews()->count(),
             'tags' => $this->tags ?? '',
+            'slug' => $this->slug,
             'images' => $this->images->map(function ($image) {
                 return [
                     'id' => $image->id,

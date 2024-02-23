@@ -56,12 +56,16 @@ class ProductRepository {
      */
     public function getBySlug($slug)
     {
-        # read the record associated to a given slug
-        $item = Product::whereSlug($slug)->first();
-        if($item == null){
-            throw new Exception("Item does not exist");
+        try {
+            # read the record associated to a given slug
+            $item = Product::whereSlug($slug)->first();
+            if($item == null){
+                throw new Exception("Item does not exist");
+            }
+            return new ProductResource($item);
+        } catch (\Throwable $th) {
+            throw $th;
         }
-        return new ProductResource($item);
     }
 
     /**

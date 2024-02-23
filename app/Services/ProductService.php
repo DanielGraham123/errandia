@@ -33,7 +33,7 @@ class ProductService{
         return $pagination;
     }
 
-    public function getOne($slug)
+    public function getBySlug($slug)
     {
         # code...
         return $this->productRepository->getBySlug($slug);

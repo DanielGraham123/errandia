@@ -86,6 +86,19 @@ class ProductController extends Controller
 
     public function show(Request $request, $id)
     {
+        try {
+            $item = $this->productService->getBySlug($id);
+            return $this->build_success_response(
+                response(),
+                'item loaded',
+                [
+                    'item' => new ProductResource($item)
+                ]
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error loading item: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to load item', 400);
+        }
 
     }
 
