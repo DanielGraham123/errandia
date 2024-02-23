@@ -158,15 +158,17 @@ class ShopController extends Controller
     public function delete(Request $request, $slug)
     {
         try {
-            $current_user = auth('api')->user();
-            $this->shopService->delete($slug, $current_user->id);
+            $shop = $this->shopService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+            $this->checkOwner($shop,  $authenticatedUser);
+            $this->shopService->delete($slug);
             return $this->build_success_response(
                 response(),
-                'shop successful deleted'
+                'Shop deleted successfully',
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             logger()->error('Error updating shop: ' . $e->getMessage());
-            return $this->build_response(response(), 'failed to delete', 400);
+            return $this->build_error_response($e->getMessage(), 'failed to delete shop', 400);
         }
     }
 

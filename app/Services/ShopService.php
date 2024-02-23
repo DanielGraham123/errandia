@@ -107,14 +107,9 @@ class ShopService{
         # code...
     }
 
-    public function delete($slug, $user_id)
+    public function delete($slug)
     {
-        # code...
-        $shop = $this->shopRepository->getBySlug($slug);
-        if($user_id != $shop->user_id)
-            throw new \Exception("Permission denied. shop can only be deleted by the owner");
-        $this->shopRepository->delete($slug);
-        logger()->info("business successfully deleted");
+        return $this->shopRepository->delete($slug);
     }
 
     public function load_featured_businesses($size = 10)

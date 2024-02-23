@@ -57,11 +57,15 @@ class ShopRepository
      */
     public function getBySlug($slug)
     {
-        # read the record associated to a given slug
-        $shop = Shop::whereSlug($slug)->first();
-        if ($shop == null)
-            throw new \Exception("Shop record with record " . $slug . " does not exist");
-        return new ShopResource($shop);
+       try {
+           # read the record associated to a given slug
+           $shop = Shop::whereSlug($slug)->first();
+           if ($shop == null)
+               throw new \Exception("Shop record with record " . $slug . " does not exist");
+           return new ShopResource($shop);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
 
@@ -186,10 +190,18 @@ class ShopRepository
      */
     public function delete($slug)
     {
-        $shop = Shop::whereSlug($slug)->first();
-        if ($shop == null)
-            throw new \Exception("shop record to be deleted does not exist");
-        $shop->delete();
-        return true;
+        try {
+            $record = DB::transaction(function () use ($slug) {
+                $shop = Shop::whereSlug($slug)->first();
+                if ($shop == null)
+                    throw new \Exception("Shop to be deleted does not exist");
+
+                $shop->delete();
+                return $shop;
+            });
+            return new ShopResource($record);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
