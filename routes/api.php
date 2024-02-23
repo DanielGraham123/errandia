@@ -32,10 +32,13 @@ Route::middleware('auth:api')->group(function (){
         Route::get('/user/shops', 'ShopController@getUserShops');
         Route::post('/user/shops', 'ShopController@store');
         Route::put('/user/shops/{slug}', 'ShopController@update');
+        Route::delete('/user/shops/{slug}', 'ShopController@delete');
 
-        Route::post('/user/item', 'ProductController@store');
-        Route::get("/user/products", "ProductController@getUserProducts");
-        Route::get("/user/services", "ProductController@getUserServices");
+        Route::get('/user/items', 'ProductController@index');
+        Route::post('/user/items', 'ProductController@store');
+        Route::get("/user/items/{slug}", "ProductController@show");
+        Route::put("/user/items/{slug}", "ProductController@update");
+        Route::delete("/user/items/{slug}", "ProductController@delete");
     });
 
 
