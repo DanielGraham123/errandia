@@ -19,10 +19,17 @@ class ErrandController extends Controller
 {
     public function index()
     {
-        $errands = Errand::orderBy('created_at', 'desc')->paginate(20);
-        return response()->json(['data' => [
-            'errands' => ErrandResource::collection($errands)
-        ]]);
+        $errands = Errand::orderBy('created_at', 'desc')->paginate(10);
+        return $this->build_success_response(
+            response(),
+            'errands loaded',
+            [
+                self::convert_paginated_result(
+                    $errands,
+                    ErrandResource::collection($errands)
+                )
+            ]
+        );
     }
 
     public function runErrand(Request $request)
