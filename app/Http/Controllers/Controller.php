@@ -165,4 +165,13 @@ class Controller extends BaseController
         ];
     }
 
+    // check if owner of the resource
+    public function is_owner($resource, $authenticatedUser): bool
+    {
+        if ($resource->user_id !== $authenticatedUser->id) {
+            return false;
+        }
+        return true;
+    }
+
 }

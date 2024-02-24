@@ -38,6 +38,9 @@ Route::middleware('auth:api')->group(function (){
         Route::get("/user/services", "ProductController@getUserServices");
         Route::post('/user/items', 'ProductController@store');
         Route::put("/user/items/{slug}", "ProductController@update");
+        Route::post('/user/items/{slug}/images/upload', [ProductUploadController::class, 'addItemImage']);
+        Route::delete('/user/items/{slug}/images/delete', [ProductUploadController::class, 'removeItemImage']);
+        Route::delete('/user/items/{slug}/images/delete-all', [ProductUploadController::class, 'removeAllItemImages']);
         Route::delete("/user/items/{slug}", "ProductController@delete");
     });
 

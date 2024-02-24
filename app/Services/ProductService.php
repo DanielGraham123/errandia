@@ -123,6 +123,37 @@ class ProductService{
     /**
      * @throws \Throwable
      */
+    public function addItemImage($request, $item): ProductImage
+    {
+        $data = $request->all();
+        if (isset($data['image']) && ($file = $data['image']) != null) {
+            $item['image'] = $this->uploadImage($file, 'products');
+            logger()->info('Image uploaded for product: ' . $item['image']);
+
+        }
+
+        return $this->productRepository->addItemImage($item);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function removeItemImage($request, $item): bool
+    {
+        return $this->productRepository->removeItemImage($request, $item);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function removeAllItemImages($request, $item): bool
+    {
+        return $this->productRepository->removeAllItemImages($item);
+    }
+
+    /**
+     * @throws \Throwable
+     */
     public function delete($slug): bool
     {
         return $this->productRepository->delete($slug);
