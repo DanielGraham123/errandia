@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Shop;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use \Illuminate\Support\Arr;
@@ -174,6 +175,67 @@ class ProductRepository
         }
     }
 
+    public function addItemImage($item)
+    {
+        try {
+           $productImage = new ProductImage([
+               'item_id' => $item->id,
+               'image' => $item['image']
+           ]);
+              $productImage->save();
+                return $productImage;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function removeItemImage($request, $item): bool
+    {
+        try {
+            $imageId = $request->image_id;
+            logger()->info('image_id: ' . $imageId);
+            $itemImage = ProductImage::find($imageId);
+
+            // check if image exists
+            if ($itemImage == null) {
+                throw new Exception("Image does not exist");
+            }
+
+            // check if the image belongs to the item
+            if ($itemImage->item_id != $item->id) {
+                throw new Exception("Image does not belong to the item");
+            }
+
+            // delete the image
+            if ($itemImage->image && File::exists(public_path($itemImage->image))) {
+                File::delete(public_path($itemImage->image));
+            }
+            $itemImage->delete();
+
+            return true;
+
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function removeAllItemImages($item)
+    {
+        try {
+            // delete the item images
+            foreach ($item->images as $image) {
+                if ($image->image && File::exists(public_path($image->image))) {
+                    File::delete(public_path($image->image));
+                }
+                $image->delete();
+            }
+            return true;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
 
     /**
      * delete a record in database
@@ -193,12 +255,7 @@ class ProductRepository
             }
 
             // delete the item images
-            foreach ($item->images as $image) {
-                if ($image->image && File::exists(public_path($image->image))) {
-                    File::delete(public_path($image->image));
-                }
-                $image->delete();
-            }
+            $this->removeAllItemImages($item);
 
             $item->delete();
             return true;
