@@ -45,7 +45,7 @@ class AuthController extends Controller
             );
 
         } else {
-            return $this->build_response(response(), "Phone does not exist", 400);
+            return $this->build_response(response(), "account not found with this identifier", 400);
         }
     }
 

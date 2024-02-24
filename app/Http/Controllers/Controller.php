@@ -2,18 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helpers;
-use App\Http\Controllers\SMS\Helpers as SMSHelpers;
-use App\Services\FocusTargetSms;
-use App\Models\CampusProgram;
-use App\Models\Config as ModelsConfig;
-use App\Models\Message;
 use App\Models\User;
-use App\Models\Wage;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\App;
@@ -134,7 +127,7 @@ class Controller extends BaseController
             );
     }
 
-    public function build_error_response($exceptionMsg, $message, $code): \Illuminate\Http\JsonResponse
+    public function build_error_response($exceptionMsg, $message, $code): JsonResponse
     {
         return response()->json([
             'data' => [
