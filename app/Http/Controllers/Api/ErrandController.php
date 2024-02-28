@@ -23,12 +23,10 @@ class ErrandController extends Controller
         return $this->build_success_response(
             response(),
             'errands loaded',
-            [
-                self::convert_paginated_result(
-                    $errands,
-                    ErrandResource::collection($errands)
-                )
-            ]
+            self::convert_paginated_result(
+                $errands,
+                ErrandResource::collection($errands)
+            )
         );
     }
 
