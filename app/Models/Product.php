@@ -58,6 +58,21 @@ class Product extends Model
         ];
     }
 
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function otherItems($service = null)
+    {
+        $query = $this->user->items()->where('slug', '!=', $this->slug);
+
+        if ($service !== null) {
+            $query->where('service', $service);
+        }
+
+        return $query->paginate(5);
+    }
+
     public function toSearchableArray()
     {
         return [
@@ -75,11 +90,6 @@ class Product extends Model
     public function shop()
     {
         return $this->belongsTo(Shop::class, 'shop_id');
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function images()

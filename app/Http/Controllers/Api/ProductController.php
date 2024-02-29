@@ -228,6 +228,38 @@ class ProductController extends Controller
         }
     }
 
+    public function otherItems(Request $request, $slug) {
+        try {
+            $item = $this->productService->getBySlug($slug);
+            $itemType = $request->input('service');
+
+            // check if item's service matches the service parameter
+            if ($itemType !== null && $item->service != $itemType) {
+                return $this->build_response(
+                    response(),
+                    'Item type does not match the service parameter',
+                    400
+                );
+            }
+
+            $otherItems = $item->otherItems($itemType);
+            return $this->build_success_response(
+                response(),
+                'Other items loaded',
+               self::convert_paginated_result(
+                    $otherItems,
+                    ProductResource::collection($otherItems)
+                )
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error loading other items: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to load other items', 400);
+        } catch (\Throwable $e) {
+            logger()->error('Error loading other items: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to load other items', 400);
+        }
+    }
+
     public function searchIndex($request)
     {
         $shop = Shop::find($request->shop_id);

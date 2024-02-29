@@ -65,6 +65,10 @@ class User extends Authenticatable
         return $this->hasMany(Shop::class, 'user_id');
     }
 
+    public function items() {
+        return $this->hasMany(Product::class, 'user_id');
+    }
+
     public function managedShops(){
         return $this->belongsToMany(Shop::class, 'shop_managers', 'shop_id', 'user_id');
     }

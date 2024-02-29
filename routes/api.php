@@ -82,6 +82,7 @@ Route::group(['namespace' => 'Api'], function() {
 //    Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
     Route::get('/items', 'ProductController@index');
     Route::get("/items/{slug}", "ProductController@show");
+    Route::get("/items/{slug}/related", "ProductController@otherItems");
 
     Route::get('/products/related', 'ProductController@relatedProducts');
 
