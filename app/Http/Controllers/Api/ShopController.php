@@ -172,6 +172,31 @@ class ShopController extends Controller
         }
     }
 
+    public function deleteFeaturedImage(Request $request, $slug) {
+        try {
+            $shop = $this->shopService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+
+            if ($this->is_owner($shop, $authenticatedUser) === false) {
+                return $this->build_response(
+                    response(),
+                    'You are not authorized to update this shop.',
+                    403
+                );
+            }
+
+            $shop = $this->shopService->deleteFeaturedImage($shop);
+            return $this->build_success_response(
+                response(),
+                'Featured image deleted successfully',
+                ['item' => new ShopResource($shop)]
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error deleting featured image: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to delete featured image', 400);
+        }
+    }
+
     public function otherShops(Request $request, $slug) {
         try {
             $shop = $this->shopService->getBySlug($slug);

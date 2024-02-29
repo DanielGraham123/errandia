@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\File;
 
 class Shop extends Model
 {
@@ -94,9 +95,13 @@ class Shop extends Model
         return $this->belongsToMany(Category::class, 'shop_categories', 'shop_id', 'sub_category_id')??'';
     }
 
-    public function getImage()
-    {
-        return $this->image_path ? asset('storage/'. $this->image_path) : '';
+//    public function getImage()
+//    {
+//        return $this->image_path ? asset('storage/'. $this->image_path) : '';
+//    }
+
+    public function getImage() {
+        return $this->image_path && File::exists(public_path($this->image_path)) ? $this->image_path : "";
     }
 
     public function info()

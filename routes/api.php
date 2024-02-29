@@ -33,6 +33,7 @@ Route::middleware('auth:api')->group(function (){
         Route::post('/user/shops', 'ShopController@store');
         Route::put('/user/shops/{slug}', 'ShopController@update');
         Route::delete('/user/shops/{slug}', 'ShopController@delete');
+        Route::delete('/user/shops/{slug}/featured-image', 'ShopController@deleteFeaturedImage');
 
         Route::get("/user/products", "ProductController@getUserProducts");
         Route::get("/user/services", "ProductController@getUserServices");
@@ -42,6 +43,7 @@ Route::middleware('auth:api')->group(function (){
         Route::delete('/user/items/{slug}/images/delete', [ProductUploadController::class, 'removeItemImage']);
         Route::delete('/user/items/{slug}/images/delete-all', [ProductUploadController::class, 'removeAllItemImages']);
         Route::delete("/user/items/{slug}", "ProductController@delete");
+        Route::delete("/user/items/{slug}/featured-image", "ProductController@deleteFeaturedImage");
     });
 
 

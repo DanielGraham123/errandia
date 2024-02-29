@@ -198,6 +198,36 @@ class ProductController extends Controller
         }
     }
 
+    public function deleteFeaturedImage(Request $request, $slug)
+    {
+        try {
+            $item = $this->productService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+
+            if ($this->is_owner($item, $authenticatedUser) === false) {
+                return $this->build_response(
+                    response(),
+                    'You are not authorized to update this shop.',
+                    403
+                );
+            }
+
+            $item = $this->productService->deleteFeaturedImage($item);
+
+            return $this->build_success_response(
+                response(),
+                'Featured image deleted successfully',
+                ['item' => new ProductResource($item)]
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error deleting featured image: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to delete featured image', 400);
+        } catch (\Throwable $e) {
+            logger()->error('Error deleting featured image: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to delete featured image', 400);
+        }
+    }
+
     public function searchIndex($request)
     {
         $shop = Shop::find($request->shop_id);
