@@ -151,6 +151,21 @@ class ProductService{
         return $this->productRepository->removeAllItemImages($item);
     }
 
+    public function deleteFeaturedImage($item)
+    {
+        if(empty($item->featured_image)) {
+            logger()->info("item info: " . json_encode($item));
+            throw new \Exception('No image to delete');
+        }
+
+        MediaService::delete_media($item->featured_image);
+
+        $item->featured_image = null;
+        $item->save();
+
+        return $item;
+    }
+
     /**
      * @throws \Throwable
      */

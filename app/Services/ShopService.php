@@ -6,6 +6,7 @@ use App\Models\Shop;
 use App\Models\ShopContactInfo;
 use App\Repositories\ShopManagerRepository;
 use App\Repositories\ShopRepository;
+use Illuminate\Support\Facades\File;
 
 class ShopService{
 
@@ -110,6 +111,24 @@ class ShopService{
     public function delete($slug)
     {
         return $this->shopRepository->delete($slug);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function deleteFeaturedImage($shop)
+    {
+        if(empty($shop->image_path)) {
+            logger()->info("shop info: " . json_encode($shop));
+            throw new \Exception('No image to delete');
+        }
+
+        MediaService::delete_media($shop->image_path);
+
+        $shop->image_path = null;
+        $shop->save();
+
+        return $shop;
     }
 
     public function load_featured_businesses($size = 10)

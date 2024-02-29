@@ -6,6 +6,7 @@ use GodJay\ScoutElasticsearch\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\File;
 
 
 class Product extends Model
@@ -88,7 +89,7 @@ class Product extends Model
 
     public function getFeaturedImage()
     {
-        return $this->featured_image ? $this->featured_image : '';
+        return $this->featured_image && File::exists(public_path($this->featured_image)) ? $this->featured_image : "";
     }
 
     public function subCategories()
