@@ -19,7 +19,8 @@ class ErrandController extends Controller
 {
     public function index()
     {
-        $errands = Errand::orderBy('created_at', 'desc')->paginate(10);
+        $errands = Errand::select('item_quotes.*')->leftJoin('users', 'item_quotes.user_id', '=', 'users.id')
+        ->orderBy('item_quotes.created_at', 'desc')->paginate(10);
         return $this->build_success_response(
             response(),
             'errands loaded',
