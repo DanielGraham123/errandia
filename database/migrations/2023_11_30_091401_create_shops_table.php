@@ -36,9 +36,7 @@ class CreateShopsTable extends Migration
 
                 $table->foreign('region_id')->references('id')->on('regions')->onDelete('set null');
                 $table->foreign('town_id')->references('id')->on('towns')->onDelete('set null');
-//            $table->foreign('street_id')->references('id')->on('streets')->onDelete('set null');
 
-//            $table->foreign('parent_id')->references('id')->on('shops')->onDelete('cascade'); // self-referencing foreign key
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
 
