@@ -80,7 +80,7 @@ class ProductRepository
     public function getUserProducts($user)
     {
         // return user products with is_services equals zero
-        $items = Product::whereUserId($user->id)->whereService(0)->paginate(15);
+        $items = Product::whereUserId($user->id)->whereService(0)->orderBy('created_at', 'desc')->paginate(15);
         return $items;
 
 //       return Product::whereUserId($user->id)->paginate(15);
@@ -92,7 +92,7 @@ class ProductRepository
     public function getUserServices($user)
     {
         // return user products with is_services equals one
-        $items = Product::whereUserId($user->id)->whereService(1)->paginate(15);
+        $items = Product::whereUserId($user->id)->whereService(1)->orderBy('created_at', 'desc')->paginate(15);
         return $items;
     }
 
