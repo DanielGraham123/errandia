@@ -17,6 +17,20 @@ class Shop extends Model
 
     protected $dates = ['created_at', 'updated_at'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($shop) {
+            $shop->contactInfo()->delete();
+            $shop->subscriptions()->delete();
+            $shop->products()->delete();
+            $shop->services()->delete();
+            $shop->reviews()->delete();
+            $shop->categories()->detach();
+        });
+    }
+
     public function user(){
         
         return $this->belongsTo(User::class, 'user_id');
