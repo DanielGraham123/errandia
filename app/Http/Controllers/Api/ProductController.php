@@ -233,15 +233,6 @@ class ProductController extends Controller
             $item = $this->productService->getBySlug($slug);
             $itemType = $request->input('service');
 
-            // check if item's service matches the service parameter
-            if ($itemType !== null && $item->service != $itemType) {
-                return $this->build_response(
-                    response(),
-                    'Item type does not match the service parameter',
-                    400
-                );
-            }
-
             $otherItems = $item->otherItems($itemType);
             return $this->build_success_response(
                 response(),
