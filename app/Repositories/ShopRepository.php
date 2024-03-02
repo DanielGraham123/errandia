@@ -57,12 +57,12 @@ class ShopRepository
      */
     public function getBySlug($slug)
     {
-       try {
-           # read the record associated to a given slug
-           $shop = Shop::whereSlug($slug)->first();
-           if ($shop == null)
-               throw new \Exception("Shop record with record " . $slug . " does not exist");
-           return new ShopResource($shop);
+        try {
+            # read the record associated to a given slug
+            $shop = Shop::whereSlug($slug)->first();
+            if ($shop == null)
+                throw new \Exception("Shop record with record " . $slug . " does not exist");
+            return new ShopResource($shop);
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -160,8 +160,21 @@ class ShopRepository
     /**
      * get user shops
      */
-    public function getUserShops($user) {
+    public function getUserShops($user)
+    {
         return Shop::orderBy('created_at', 'desc')->where('user_id', $user->id)->paginate(15);
+    }
+
+    public function getItemsByShop($slug, $isService)
+    {
+        $shop = Shop::whereSlug($slug)->first();
+
+        if ($isService != null) {
+            $items = $shop->items()->whereService($isService)->orderBy('created_at', 'desc')->paginate(15);
+        } else {
+            $items = $shop->items()->orderBy('created_at', 'desc')->paginate(15);
+        }
+        return $items;
     }
 
     /**
