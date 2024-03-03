@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\ShopResource;
 use App\Http\Resources\SubCategoryResource;
 use App\Models\Category;
@@ -212,6 +213,34 @@ class ShopController extends Controller
         } catch (\Exception $e) {
             logger()->error('Error loading other shops: ' . $e->getMessage());
             return $this->build_response(response(), 'failed to load other shops', 400);
+        }
+    }
+
+    public function getItemsByShop(Request $request, $slug) {
+        try {
+            $isService = $request->query('service');
+            $shop = $this->shopService->getBySlug($slug);
+
+            if ($shop == null) {
+                throw new \Exception('Shop not found');
+            }
+
+            $items = $this->shopService->getItemsByShop($slug, $isService);
+
+            return $this->build_success_response(
+                response(),
+                'Items loaded',
+               self::convert_paginated_result(
+                    $items,
+                    ProductResource::collection($items)
+                )
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error loading items: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to load items', 400);
+        } catch (\Throwable $th) {
+            logger()->error('Error loading items: ' . $th->getMessage());
+            return $this->build_error_response($th->getMessage(), 'failed to load items', 400);
         }
     }
 
