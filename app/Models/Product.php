@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use GodJay\ScoutElasticsearch\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +10,7 @@ use Illuminate\Support\Facades\File;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes, Searchable;
+    use HasFactory, SoftDeletes;
 
     const SORT_HIGH_PRICE = 1;
     const SORT_LOW_PRICE = 2;
@@ -35,28 +34,6 @@ class Product extends Model
         'images',
         'user_id'
     ];
-
-    public function searchableAs()
-    {
-        return 'products';
-    }
-
-    public function getElasticMapping()
-    {
-        return [
-            'name' => [
-                'type' => 'text',
-                'analyzer' => 'standard'
-            ],
-            'description' => [
-                'type' => 'text',
-                'analyzer' => 'standard'
-            ],
-            'status' => [
-                'type' => 'boolean'
-            ]
-        ];
-    }
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id');

@@ -1,6 +1,7 @@
 <?php
 
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\SocialiteServiceProvider;
 
 return [
 
@@ -163,7 +164,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        \Laravel\Socialite\SocialiteServiceProvider::class,
+        SocialiteServiceProvider::class,
         // Laravel\Passport\Passport::class,
         
         /*
