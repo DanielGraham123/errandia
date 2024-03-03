@@ -7,6 +7,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\SubCategory;
+use App\Services\ElasticSearchProductService;
 use App\Services\ProductService;
 use Exception;
 use Illuminate\Http\Request;
@@ -330,5 +331,26 @@ class ProductController extends Controller
                 403
             );
         }
+    }
+
+    public function search(Request $request)
+    {
+        $service =  ElasticSearchProductService::init();
+        $result = $request->get('q')?
+            $service->search(
+                $request->get('q'),
+                $request->get('page')
+            ) :
+            [] ;
+        return $this->build_success_response(response(), 'items found',
+            self::convert_documents_paginated_result($result['hits'])
+        );
+    }
+
+    public function bulk_index(Request $request)
+    {
+        $service =  ElasticSearchProductService::init();
+        $service->bulk_documents(Product::orderBy('id')->get());
+        return $this->build_success_response(response(), 'bulk index done');
     }
 }

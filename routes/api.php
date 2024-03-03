@@ -52,7 +52,6 @@ Route::middleware('auth:api')->group(function (){
 
 });
 
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -81,6 +80,8 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get("/shops/{slug}/items", [ShopController::class, 'getItemsByShop']);
 
 //    Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
+    Route::get('/search', 'ProductController@search');
+    Route::get('/index_items', 'ProductController@bulk_index');
     Route::get('/items', 'ProductController@index');
     Route::get("/items/{slug}", "ProductController@show");
     Route::get("/items/{slug}/related", "ProductController@otherItems");

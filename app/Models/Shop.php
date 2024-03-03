@@ -134,7 +134,7 @@ class Shop extends Model
         return $this->belongsTo(Town::class, 'town_id');
     }
 
-//    public function street(){
-//        return $this->belongsTo(Street::class, 'street_id');
-//    }
+    public function street(){
+        return $this->belongsTo(Street::class, 'street_id');
+    }
 }

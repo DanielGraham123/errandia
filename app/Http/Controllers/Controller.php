@@ -158,6 +158,25 @@ class Controller extends BaseController
         ];
     }
 
+    public static function convert_documents_paginated_result($hits, $page = 1)
+    {
+        return [
+            "current_page" => $page,
+            "per_page" => 10,
+            "total" => $hits['total']['value'],
+            "items" => self::documents_to_items($hits['hits'])
+        ];
+    }
+
+    private static function documents_to_items($documents)
+    {
+        $items = [];
+        foreach ($documents as $document) {
+            $items[] = $document['_source'];
+        }
+        return $items;
+    }
+
     // check if owner of the resource
     public function is_owner($resource, $authenticatedUser): bool
     {

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ProductResource;
 use App\Models\ProductImage;
 use App\Repositories\ProductRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -36,7 +37,7 @@ class ProductService{
     /**
      * @throws \Throwable
      */
-    public function getBySlug($slug): \App\Http\Resources\ProductResource
+    public function getBySlug($slug): ProductResource
     {
         return $this->productRepository->getBySlug($slug);
     }
