@@ -172,4 +172,8 @@ class ShopService{
         return $shop;
     }
 
+    public function getItemsByShop($slug, $isService) {
+       return $this->shopRepository->getItemsByShop($slug, $isService);
+    }
+
 }

@@ -74,10 +74,11 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/sub_categories', 'ShopController@getSubCategories');
     Route::get('/categories', 'ShopController@getCategories');
 
-    Route::get('/shops', 'ShopController@index');
-    Route::get('/shops/featured', 'ShopController@featured_shops');
-    Route::get('/shops/{slug}', 'ShopController@show');
-    Route::get('/shops/{slug}/branches', 'ShopController@otherShops');
+    Route::get('/shops', [ShopController::class, 'index']);
+    Route::get('/shops/featured', [ShopController::class, 'featured_shops']);
+    Route::get('/shops/{slug}', [ShopController::class, 'show']);
+    Route::get('/shops/{slug}/branches', [ShopController::class, 'otherShops']);
+    Route::get("/shops/{slug}/items", [ShopController::class, 'getItemsByShop']);
 
 //    Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
     Route::get('/items', 'ProductController@index');
