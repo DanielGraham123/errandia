@@ -336,7 +336,12 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $service =  ElasticSearchProductService::init();
-        $result = $request->get('q')? $service->search($request->get('q')) : [] ;
+        $result = $request->get('q')?
+            $service->search(
+                $request->get('q'),
+                $request->get('page')
+            ) :
+            [] ;
         return $this->build_success_response(response(), 'items found',
             self::convert_documents_paginated_result($result['hits'])
         );

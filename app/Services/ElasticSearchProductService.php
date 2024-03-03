@@ -123,10 +123,11 @@ class ElasticSearchProductService {
         }
     }
 
-    public function search($search_term)
+    public function search($search_term, $page)
     {
         $params = [
             'index' => $this->index_name,
+            'from' => intval($page) < 1 ? 0 : (intval($page) - 1) * 10,
             'size' => 10,
             'body' => [
                 'query' => [
