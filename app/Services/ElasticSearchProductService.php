@@ -38,9 +38,6 @@ class ElasticSearchProductService {
 
             ],
             'mappings' => [
-                '_source' => [
-                    'enabled' => true
-                ],
                 'properties' => [
                     'name' => ['type' => 'text', 'analyzer' => 'search_index'],
                     'description' => ['type' => 'text', 'analyzer' => 'search_index'],
@@ -140,6 +137,11 @@ class ElasticSearchProductService {
                             ['match' => ['description' => $search_term]],
                             ['match' => ['shop.description' => $search_term]],
                         ]
+                    ]
+                ],
+                'aggs' => [
+                    'types' => [
+                        "terms" => ['field' =>  'service']
                     ]
                 ]
             ]
