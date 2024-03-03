@@ -67,11 +67,7 @@ class ElasticSearchProductService {
                                 ]
                             ],
                             'street' => [
-                                'type' => 'nested',
-                                'properties' => [
-                                    'id' => ['type' => 'integer'],
-                                    'name' => ['type' => 'keyword'],
-                                ]
+                                'type' => 'text'
                             ]
                         ]
                     ],
@@ -103,6 +99,7 @@ class ElasticSearchProductService {
             'id' => $id,
             'body' => $this->getDocument($item)
         ]);
+        logger()->info('document indexed');
     }
 
     public function bulk_documents($items = array())
@@ -120,6 +117,7 @@ class ElasticSearchProductService {
 
         if (!empty($items)) {
             $this->client->bulk($params);
+            logger()->info('documents indexed');
         }
     }
 
@@ -158,6 +156,7 @@ class ElasticSearchProductService {
             'id' => $id,
             'body' => $this->getDocument($item)
         ]);
+        logger()->info('document updated');
     }
 
     public function delete_docuemnt($id)
@@ -166,7 +165,10 @@ class ElasticSearchProductService {
             'index' => $this->index_name,
             'id' => $id,
         ]);
+        logger()->info('document deleted');
     }
+
+
 
     private function getDocument($item)
     {
@@ -191,12 +193,18 @@ class ElasticSearchProductService {
                     'id' => $item->shop->town->id,
                     'name' => $item->shop->town->name,
                 ],
-                'street' => [
-                    'id' => $item->shop->street->id,
-                    'name' => $item->shop->street->name,
-                ]
+                'street' => $item->shop->street
             ],
         ];
+    }
+
+
+    public function flush_index()
+    {
+        $this->client->indices()->delete([
+            'index' => $this->index_name,
+        ]);
+        logger()->info('index deleted');
     }
 
 }

@@ -353,4 +353,11 @@ class ProductController extends Controller
         $service->bulk_documents(Product::orderBy('id')->get());
         return $this->build_success_response(response(), 'bulk index done');
     }
+
+    public function flush_items(Request $request)
+    {
+        $service =  ElasticSearchProductService::init();
+        $service->flush_index();
+        return $this->build_success_response(response(), 'Items flushed done');
+    }
 }
