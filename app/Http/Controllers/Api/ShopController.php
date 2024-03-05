@@ -244,6 +244,67 @@ class ShopController extends Controller
         }
     }
 
+    public function sendShopVerificationCode(Request $request, $slug) {
+        try {
+            $shop = $this->shopService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+            if ($this->is_owner($shop, $authenticatedUser) === false) {
+                return $this->build_response(
+                    response(),
+                    'You are not authorized to update this shop.',
+                    403
+                );
+            }
+
+            $result = $this->shopService->sendShopVerificationCode($shop);
+            return $this->build_success_response(
+                response(),
+                'Verification code sent successfully', $result
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error sending verification code: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to send verification code', 400);
+        } catch (\Throwable $th) {
+            logger()->error('Error sending verification code: ' . $th->getMessage());
+            return $this->build_error_response($th->getMessage(), 'failed to send verification code', 400);
+        }
+    }
+
+    public function validateShopOTPCode(Request $request, $slug) {
+        try {
+            $shop = $this->shopService->getBySlug($slug);
+            $authenticatedUser = auth('api')->user();
+            if ($this->is_owner($shop, $authenticatedUser) === false) {
+                return $this->build_response(
+                    response(),
+                    'You are not authorized to update this shop.',
+                    403
+                );
+            }
+
+            $this->validate($request->all(), [
+                'code' => 'required',
+                'uuid' => 'required'
+            ]);
+
+            if (!empty($this->validations_errors)) {
+                return $this->build_response(response(), 'failed to verify shop', 400);
+            }
+
+            $result = $this->shopService->verifyShopOTP($request->uuid, $request->code, $shop);
+            return $this->build_success_response(
+                response(),
+                'Shop verified successfully', $result
+            );
+        } catch (\Exception $e) {
+            logger()->error('Error verifying shop: ' . $e->getMessage());
+            return $this->build_error_response($e->getMessage(), 'failed to verify shop', 400);
+        } catch (\Throwable $th) {
+            logger()->error('Error verifying shop: ' . $th->getMessage());
+            return $this->build_error_response($th->getMessage(), 'failed to verify shop', 400);
+        }
+    }
+
     private function checkOwner($shop, $authenticatedUser)
     {
         if ($shop->user_id !== $authenticatedUser->id) {

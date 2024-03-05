@@ -5,24 +5,34 @@ namespace App\Services;
 use App\Models\Shop;
 use App\Models\ShopContactInfo;
 use App\Repositories\ShopManagerRepository;
+use App\Repositories\ShopOTPRepository;
 use App\Repositories\ShopRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
+use Nette\Utils\Random;
+use Ramsey\Uuid\Uuid;
 
 class ShopService{
 
     private 
         $shopRepository,
         $validationService,
-        $shopManagerRepository;
+        $shopManagerRepository,
+        $shopOTPRepository,
+        $smsService;
 
     public function __construct(
             ShopRepository $shopRepository, 
             ValidationService $validationService,
-            ShopManagerRepository $shopManagerRepository
+            ShopManagerRepository $shopManagerRepository,
+            ShopOTPRepository $shopOTPRepository,
+            SMSService $smsService
         ){
         $this->shopRepository = $shopRepository;
         $this->validationService = $validationService;
         $this->shopManagerRepository = $shopManagerRepository;
+        $this->shopOTPRepository = $shopOTPRepository;
+        $this->smsService = $smsService;
     }
 
     public function getAll($size = null, $category_id = null)
@@ -174,6 +184,52 @@ class ShopService{
 
     public function getItemsByShop($slug, $isService) {
        return $this->shopRepository->getItemsByShop($slug, $isService);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function sendShopVerificationCode($shop) {
+        $phoneNumber = $shop->info->phone;
+
+        logger()->info('Sending verification code to ' . $phoneNumber);
+
+        $shop_otp = $this->shopOTPRepository->save($shop->id, (string) Uuid::uuid4(),
+                                                Random::generate(4, '0-9'), Carbon::now()->addMinutes(120));
+
+        logger()->info('Verification code sent to ' . $phoneNumber . ' with code: ' . $shop_otp->code);
+
+        $sent = $this->smsService->send($phoneNumber, 'Your business verification code is: ' . $shop_otp->code);
+
+        if($sent) {
+            logger()->info('Verification code sent successfully');
+            return ['message' => 'Verification code sent successfully', 'phone' => $phoneNumber, 'uuid' => $shop_otp->uuid];
+        } else {
+            logger()->error('Failed to send verification code');
+            throw new \Exception('Failed to send verification code');
+        }
+
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function verifyShopOTP($uuid, $code, $shop) {
+        logger()->info('Verifying shop OTP with uuid: ' . $uuid . ' and code: ' . $code);
+
+        $shop_otp = $this->shopOTPRepository->find($uuid, $code);
+
+        if ($shop_otp == null) {
+            logger()->error('Invalid OTP');
+            throw new \Exception('Invalid OTP');
+        } else {
+            $this->shopOTPRepository->update($shop_otp);
+            $shop = $this->shopRepository->update($shop->slug, ['phone_verified' => '1']);
+
+            logger()->info('Shop phone verified: '. $shop->phone_verified);
+
+            return $shop_otp->shop();
+        }
     }
 
 }

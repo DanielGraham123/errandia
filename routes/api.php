@@ -34,6 +34,8 @@ Route::middleware('auth:api')->group(function (){
         Route::put('/user/shops/{slug}', 'ShopController@update');
         Route::delete('/user/shops/{slug}', 'ShopController@delete');
         Route::delete('/user/shops/{slug}/featured-image', 'ShopController@deleteFeaturedImage');
+        Route::post('/user/shops/{slug}/send_otp', [ShopController::class, 'sendShopVerificationCode']);
+        Route::post('/user/shops/{slug}/validate_otp', [ShopController::class, 'validateShopOTPCode']);
 
         Route::get("/user/products", "ProductController@getUserProducts");
         Route::get("/user/services", "ProductController@getUserServices");
