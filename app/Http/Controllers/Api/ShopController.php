@@ -76,7 +76,6 @@ class ShopController extends Controller
                 'description' => 'required',
                 'category_id' => 'required',
                 'phone' => 'required',
-                'email' => 'email',
                 'region_id' => 'required',
 //                'town_id' => 'required',
             ];
