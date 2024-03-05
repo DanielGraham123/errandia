@@ -37,6 +37,7 @@ class ShopResource extends JsonResource
             'status' => $this->status,
             'is_branch' => $this->is_branch,
             'slug' => $this->slug,
+            'phone_verified' => $this->phone_verified,
 //            'categories' => $this->subCategories,
             'slogan' => $this->slogan ?? '',
 //            'street' => $shop_info->street ? $shop_info->street->name : '',

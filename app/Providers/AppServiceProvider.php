@@ -7,6 +7,7 @@ use App\Repositories\ProductCategoryRepository;
 use App\Repositories\RegionRepository;
 use App\Repositories\ShopCategoryRepository;
 use App\Repositories\ShopManagerRepository;
+use App\Repositories\ShopOTPRepository;
 use App\Repositories\ShopRepository;
 use App\Repositories\StreetRepository;
 use App\Repositories\TownRepository;
@@ -86,6 +87,8 @@ class AppServiceProvider extends ServiceProvider
                 new ShopRepository(),
                 new ValidationService(),
                 new ShopManagerRepository(),
+                new ShopOTPRepository(),
+                new SMSService()
             );
         });
 

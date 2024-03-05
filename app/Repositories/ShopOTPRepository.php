@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ShopOTP;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 class ShopOTPRepository
 {

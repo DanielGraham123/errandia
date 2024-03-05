@@ -224,7 +224,10 @@ class ShopService{
             throw new \Exception('Invalid OTP');
         } else {
             $this->shopOTPRepository->update($shop_otp);
-            $shop = $this->shopRepository->update($shop->slug, ['phone_verified' => '1']);
+
+            $data = ['phone_verified' => true];
+
+            $shop->update($data);
 
             logger()->info('Shop phone verified: '. $shop->phone_verified);
 
