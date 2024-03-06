@@ -293,7 +293,7 @@ class ShopController extends Controller
             $result = $this->shopService->verifyShopOTP($request->uuid, $request->code, $shop);
             return $this->build_success_response(
                 response(),
-                'Shop verified successfully', $result
+                'Shop verified successfully', ['item' => new ShopResource($result)]
             );
         } catch (\Exception $e) {
             logger()->error('Error verifying shop: ' . $e->getMessage());
