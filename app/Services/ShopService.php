@@ -149,8 +149,18 @@ class ShopService{
     public function update_shop($request, $shop)
     {
         $data = $request->except(['image']);
+        $isPhoneNumberChanged = false;
+
+        $shop_info = ShopContactInfo::firstOrNew([
+            'shop_id' => $shop->id
+        ]);
+
         foreach ($data as $key => $value) {
             if ($request->has($key)) {
+                if ($key == 'phone' && $shop_info->phone != $value) {
+                    logger()->info('Phone number changed from ' . $shop_info->phone . ' to ' . $value);
+                    $isPhoneNumberChanged = true;
+                }
                 $shop->$key = $value;
             }
         }
@@ -165,9 +175,7 @@ class ShopService{
         }
 
         // update shop info
-        $shop_info = ShopContactInfo::firstOrNew([
-            'shop_id' => $shop->id
-        ]);
+
         $shop_info->phone = $data['phone'] ?? '';
         $shop_info->whatsapp = $data['whatsapp'] ?? '';
         $shop_info->address = $data['address'] ?? '';
@@ -176,6 +184,10 @@ class ShopService{
         $shop_info->website = $data['website'] ?? '';
         $shop_info->email = $data['email'] ?? '';
         $shop_info->save();
+
+        if ($isPhoneNumberChanged) {
+            $data['phone_verified'] = 0;
+        }
 
         $shop->update($data);
         $shop->refresh();
