@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Shop;
+use App\Services\ElasticSearchProductService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use \Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -101,6 +102,8 @@ class ProductRepository
      */
     public function store($data)
     {
+        $elSearchService =  ElasticSearchProductService::init();
+
         // check if product with name exists
         $item = Product::whereName($data['name'])->first();
         if ($item != null) {
@@ -121,7 +124,7 @@ class ProductRepository
 
         // validate data and save to database
         try {
-            $record = DB::transaction(function () use ($data) {
+            $record = DB::transaction(function () use ($elSearchService, $data) {
                 // Exclude 'images' from the data array used for creating the product
                 $productData = Arr::except($data, ['images', 'productImages']);
                 $user = $data['user'];
@@ -143,6 +146,7 @@ class ProductRepository
                 }
 
                 $item->save();
+                $elSearchService->create_document($item->id, $item);
                 return $item;
             });
             return new ProductResource($record);
@@ -160,13 +164,15 @@ class ProductRepository
         # code...
         // validate data and save to database
         try {
-            //code...
-            $record = DB::transaction(function () use ($slug, $data) {
+            $elSearchService =  ElasticSearchProductService::init();
+
+            $record = DB::transaction(function () use ($slug, $data, $elSearchService) {
                 $item = Product::whereSlug($slug)->first();
                 if ($item == null) {
                     throw new Exception("Item to be updated does not exist");
                 }
                 $item->update($data);
+                $elSearchService->update_docuemnt($item->id, $item);
                 return $item;
             });
             return new ProductResource($record);
@@ -178,11 +184,14 @@ class ProductRepository
     public function addItemImage($item)
     {
         try {
-           $productImage = new ProductImage([
+            $elSearchService =  ElasticSearchProductService::init();
+
+            $productImage = new ProductImage([
                'item_id' => $item->id,
                'image' => $item['image']
            ]);
               $productImage->save();
+                $elSearchService->create_document($item->id, $item);
                 return $productImage;
         } catch (\Throwable $th) {
             throw $th;
@@ -192,6 +201,8 @@ class ProductRepository
     public function removeItemImage($request, $item): bool
     {
         try {
+            $elSearchService =  ElasticSearchProductService::init();
+
             $imageId = $request->image_id;
             logger()->info('image_id: ' . $imageId);
             $itemImage = ProductImage::find($imageId);
@@ -211,6 +222,7 @@ class ProductRepository
                 File::delete(public_path($itemImage->image));
             }
             $itemImage->delete();
+            $elSearchService->update_docuemnt($item->id, $item);
 
             return true;
 
@@ -223,12 +235,15 @@ class ProductRepository
     public function removeAllItemImages($item)
     {
         try {
+            $elSearchService =  ElasticSearchProductService::init();
+
             // delete the item images
             foreach ($item->images as $image) {
                 if ($image->image && File::exists(public_path($image->image))) {
                     File::delete(public_path($image->image));
                 }
                 $image->delete();
+                $elSearchService->update_docuemnt($item->id, $item);
             }
             return true;
         } catch (\Throwable $th) {
@@ -243,6 +258,8 @@ class ProductRepository
     public function delete($slug): bool
     {
         try {
+            $elSearchService =  ElasticSearchProductService::init();
+
             // validate data and save to database
             $item = Product::whereSlug($slug)->first();
             if ($item == null) {
@@ -258,6 +275,7 @@ class ProductRepository
             $this->removeAllItemImages($item);
 
             $item->delete();
+            $elSearchService->delete_docuemnt($item->id);
             return true;
         } catch (\Throwable $th) {
             throw $th;
