@@ -19,28 +19,26 @@ class ShopResource extends JsonResource
         $shop_info = $this->info;
         $shop_registration = $this->registration;
 
-        $parentShopDetails = null;
-        if ($this->parent_id) {
-            $parentShop = Shop::find($this->parent_id);
-            if ($parentShop) {
-                $parentShopDetails = new ShopResource($parentShop);
-            }
-        }
+//        $parentShopDetails = null;
+//        if ($this->parent_id) {
+//            $parentShop = Shop::find($this->parent_id);
+//            if ($parentShop) {
+//                $parentShopDetails = new ShopResource($parentShop);
+//            }
+//        }
         return [
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'user' => new UserResource($shop->user),
             'category' => new CategoryResource($shop->category),
-            'parent' => new ShopResource($shop->parent),
+            'parent_id' => $this->parent_id,
             'image' => $this->getImage(),
             'status' => $this->status,
             'is_branch' => $this->is_branch,
             'slug' => $this->slug,
             'phone_verified' => $this->phone_verified,
-//            'categories' => $this->subCategories,
             'slogan' => $this->slogan ?? '',
-//            'street' => $shop_info->street ? $shop_info->street->name : '',
             'phone' => $shop_info->phone ?? '',
             'whatsapp' => $shop_info->whatsapp ?? '',
             'address' => $shop_info->address ?? '',
