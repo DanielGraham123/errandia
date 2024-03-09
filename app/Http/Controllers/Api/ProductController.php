@@ -343,7 +343,10 @@ class ProductController extends Controller
             ) :
             [] ;
         return $this->build_success_response(response(), 'items found',
-            self::convert_documents_paginated_result($result['hits'])
+            self::convert_documents_paginated_result(
+                $result,
+                ProductResource::collection($result['hits'])
+            )
         );
     }
 
