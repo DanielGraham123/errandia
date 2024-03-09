@@ -13,9 +13,24 @@ class AddPhoneVerifiedToShopsTable extends Migration
      */
     public function up()
     {
-        Schema::table('shops', function (Blueprint $table) {
-            $table->boolean('phone_verified')->default(0)->after('street');
-        });
+        if(!Schema::hasColumn('shops', 'street')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->string('street')->nullable();
+            });
+        }
+
+        if(!Schema::hasColumn('shops', 'phone_verified')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->boolean('phone_verified')->default(0);
+            });
+        }
+
+        if(Schema::hasColumn('shops', 'street_id')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->dropForeign(['street_id']);
+                $table->dropColumn(['street_id']);
+            });
+        }
     }
 
     /**
@@ -25,8 +40,16 @@ class AddPhoneVerifiedToShopsTable extends Migration
      */
     public function down()
     {
-        Schema::table('shops', function (Blueprint $table) {
-            $table->dropColumn('phone_verified');
-        });
+        if(Schema::hasColumn('shops', 'street')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->dropColumn('street');
+            });
+        }
+
+        if(Schema::hasColumn('shops', 'phone_verified')) {
+            Schema::table('shops', function (Blueprint $table) {
+                $table->dropColumn('phone_verified');
+            });
+        }
     }
 }
