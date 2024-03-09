@@ -178,6 +178,30 @@ class ElasticSearchProductService {
         return $product->toArray(request());
     }
 
+    //return [
+    //'id' => $item->id,
+    //'name' => $item->name,
+    //'description' => $item->description,
+    //'unit_price' => $item->unit_price,
+    //'quantity' => $item->quantity,
+    //'service' => $item->service == 1,
+    //'status' => $item->status == 1,
+    //'tags' => explode(',', $item->tags),
+    //'shop' => [
+    //'id' => $item->shop->id,
+    //'name' => $item->shop->name,
+    //'description' => $item->shop->description,
+    //'region' => [
+    //'id' => $item->shop->region->id,
+    //'name' => $item->shop->region->name,
+    //],
+    //'town' => [
+    //'id' => $item->shop->town->id,
+    //'name' => $item->shop->town->name,
+    //],
+    //'street' => $item->shop->street
+    //],
+    //];
 
     public function flush_index()
     {
