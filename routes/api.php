@@ -46,6 +46,12 @@ Route::middleware('auth:api')->group(function (){
         Route::delete('/user/items/{slug}/images/delete-all', [ProductUploadController::class, 'removeAllItemImages']);
         Route::delete("/user/items/{slug}", "ProductController@delete");
         Route::delete("/user/items/{slug}/featured-image", "ProductController@deleteFeaturedImage");
+
+        // subscriptions endpoints
+
+        Route::get("/user/subscriptions", "SubscriptionController@index");
+        Route::post("/user/subscriptions", "SubscriptionController@store");
+        Route::get("/user/subscription", "SubscriptionController@show");
     });
 
 
@@ -70,6 +76,7 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/regions', 'LocationController@regions');
     Route::get('/towns', 'LocationController@towns');
     Route::get('/streets', 'LocationController@streets');
+    Route::get('/plans', 'PlanController@index');
 
     // Shop
     Route::get('/sub_categories', 'ShopController@getSubCategories');
