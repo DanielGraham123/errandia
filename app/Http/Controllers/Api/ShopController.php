@@ -57,15 +57,11 @@ class ShopController extends Controller
 
     public function getSubCategories(Request $request)
     {
-        $categories = SubCategory::query();
-        $categories = $categories->when($request->name, function ($query, $name) {
-            $query->where('name', 'like', '%' . $name . '%')
-                ->orWhere('description', 'like', '%' . $name . '%');
-        });
-        $categories = $categories->orderBy('name', 'asc')->get();
-        if (empty($categories)) $categories = SubCategory::orderBy('name', 'asc')->get();
-
-        return response()->json(['data' => SubCategoryResource::collection($categories)]);
+        $categories = SubCategory::orderBy('name', 'asc')->get();
+        return $this->build_success_response(response(),
+            'categories loaded',
+            SubCategoryResource::collection($categories)
+        );
     }
 
     public function store(Request $request) {
@@ -77,7 +73,6 @@ class ShopController extends Controller
                 'category_id' => 'required',
                 'phone' => 'required',
                 'region_id' => 'required',
-//                'town_id' => 'required',
             ];
 
             $data = $request->all();

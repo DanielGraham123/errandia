@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -170,11 +172,11 @@ class Controller extends BaseController
 
     private static function documents_to_items($documents)
     {
-        $items = [];
+        $item_ids = [];
         foreach ($documents as $document) {
-            $items[] = $document['_source'];
+            $item_ids[] = $document['_source']['id'];
         }
-        return $items;
+        return ProductResource::collection(Product::find($item_ids));
     }
 
     // check if owner of the resource

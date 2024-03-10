@@ -2,59 +2,33 @@
 
 namespace App\Services;
 
-use App\Repositories\SubscriptionPlanRepository;
-use \Illuminate\Support\Facades\Http;
+use App\Repositories\SubscriptionRepository;
 
 class SubscriptionService{
-
-    private $subscriptionPlanRepository;
-    private $validationService;
+    private SubscriptionRepository $subscriptionRepository;
 
 
-    public function __construct(SubscriptionPlanRepository $subscriptionPlanRepository, ValidationService $validationService){
-        $this->subscriptionPlanRepository = $subscriptionPlanRepository;
-        $this->validationService = $validationService;
+    public function __construct(SubscriptionRepository $subscriptionRepository){
+        $this->subscriptionRepository = $subscriptionRepository;
     }
 
-    public function getAll()
+    public function find_all_by_user($user_id)
     {
-        # code...
-        return $this->subscriptionPlanRepository->get();
-    }
-
-    public function getById($id)
-    {
-        # code...
-        return $this->subscriptionPlanRepository->getById($id);
+        return $this->subscriptionRepository->find_all_by_user($user_id);
     }
 
     public function save($data)
     {
-        # code...
-        $validationRules = [
-            'name'=>'required|string', 'description'=>'required|string', 
-            'amount'=>'required|numeric', 'duration'=>'required|numeric', 
-            'status'=>'required'
-        ];
-        $this->validationService->validate($data, $validationRules);
-        return $this->subscriptionPlanRepository->store($data);
     }
 
-    public function update($id, $data)
+    public function get_current($user_id)
     {
-        # code...
-        $validationRules = [];
-        $this->validationService->validate($data, $validationRules);
-        if(empty($data))
-        throw new \Exception("No data provided for update");
-        return $this->subscriptionPlanRepository->update($id, $data);
+        return $this->subscriptionRepository->get_current($user_id);
     }
 
-    public function delete($id, $user_id)
+    public function mark_as_expired($id)
     {
-        # code...
-        // Can only be deleted by the super admin
-        return $this->subscriptionPlanRepository->delete($id);
+        $this->subscriptionRepository->set_as_expired($id);
     }
 
 }

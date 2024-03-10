@@ -45,22 +45,10 @@ class ProductService{
     public function save($data, $request)
     {
         // TODO: not working -> buggy
-//        if($request->hasFile('featured_image')) {
-//            $data['featured_image'] = MediaService::upload_media($request,
-//                'products', 'featured_image');
-//        }
         if (isset($data['featured_image']) && ($file = $data['featured_image']) != null) {
             $data['featured_image'] = $this->uploadImage($file, 'products');
         }
 
-        // TODO: Handle multiple image uploads => not working -> buggy
-//        if (isset($data['images']) && is_array($data['images'])) {
-//            $image_paths = MediaService::upload_multiple_medias($request, 'images', 'products');
-//            $data['productImages'] = [];
-//            foreach ($image_paths as $image_path) {
-//                $data['productImages'][] = new ProductImage(['image' => $image_path]);
-//            }
-//        }
         if (isset($data['images']) && is_array($data['images'])) {
             $images = [];
             foreach ($data['images'] as $image) {

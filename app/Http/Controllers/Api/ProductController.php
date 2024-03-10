@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
 
-    protected $productService;
+    protected ProductService $productService;
 
     public function __construct(ProductService $productService)
     {
@@ -43,14 +43,6 @@ class ProductController extends Controller
     {
         try {
             $data = $request->all();
-//            $rules = [
-//                'name' => 'required',
-//                'shop_id' => 'required',
-//                'image' => 'image',
-//                'description' => 'required',
-//                'service' => 'required',
-//            ];
-
             // Todo rot review the rules later
             $rules = [
                 'name'=>'required',
@@ -336,16 +328,14 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $service =  ElasticSearchProductService::init();
-        $result = $request->get('q')?
-            $service->search(
+        $result = $service->search(
                 $request->get('q'),
                 $request->get('page')
-            ) :
-            [] ;
+        );
+
         return $this->build_success_response(response(), 'items found',
             self::convert_documents_paginated_result(
-                $result,
-                ProductResource::collection($result['hits'])
+                $result['hits'], $request->get('page')
             )
         );
     }

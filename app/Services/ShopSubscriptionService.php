@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\ShopSubscriptionRepository;
+use App\Repositories\SubscriptionRepository;
 use Exception;
 use \Illuminate\Support\Facades\Http;
 
@@ -11,7 +11,7 @@ class ShopSubscriptionService{
     private $shopSubscriptionRepository;
     private $validationService;
 
-    public function __construct(ShopSubscriptionRepository $shopSubscriptionRepository, ValidationService $validationService){
+    public function __construct(SubscriptionRepository $shopSubscriptionRepository, ValidationService $validationService){
         $this->shopSubscriptionRepository = $shopSubscriptionRepository;
         $this->validationService = $validationService;
     }
