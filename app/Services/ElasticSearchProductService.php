@@ -47,6 +47,14 @@ class ElasticSearchProductService {
                     'status' => ['type' => 'boolean'],
                     'unit_price' => ['type' => 'long'],
                     'quantity' => ['type' => 'integer'],
+                    'category' => [
+                        'type' => 'nested',
+                        'properties' => [
+                            'id' => ['type' => 'integer'],
+                            'name' => ['type' => 'text', 'analyzer' => 'search_index'],
+                            'description' => ['type' => 'text', 'analyzer' => 'search_index'],
+                        ]
+                    ],
                     'shop' => [
                         'type' => 'nested',
                         'properties' => [
@@ -133,8 +141,10 @@ class ElasticSearchProductService {
                     'bool' => [
                         'should' => [
                             ['match' => ['name' => $search_term]],
+                            ['match' => ['category.name' => $search_term]],
                             ['match' => ['shop.name' => $search_term]],
                             ['match' => ['description' => $search_term]],
+                            ['match' => ['category.description' => $search_term]],
                             ['match' => ['shop.description' => $search_term]],
                         ]
                     ]
@@ -173,35 +183,38 @@ class ElasticSearchProductService {
 
     private function getDocument($item)
     {
-        $product = new ProductResource($item);
-
-        return $product->toArray(request());
+        return [
+            'id' => $item->id,
+            'name' => $item->name,
+            'description' => $item->description,
+            'unit_price' => $item->unit_price,
+            'quantity' => $item->quantity,
+            'service' => $item->service == 1,
+            'status' => $item->status == 1,
+            'tags' => explode(',', $item->tags),
+            'category' => [
+                'id' => $item->category->id,
+                'name' => $item->category->name,
+                'description' => $item->category->description,
+            ],
+            'shop' => [
+                'id' => $item->shop->id,
+                'name' => $item->shop->name,
+                'description' => $item->shop->description,
+                'region' => [
+                    'id' => $item->shop->region->id,
+                    'name' => $item->shop->region->name,
+                ],
+                'town' => [
+                    'id' => $item->shop->town->id,
+                    'name' => $item->shop->town->name,
+                ],
+                'street' => $item->shop->street
+            ],
+        ];
     }
 
-    //return [
-    //'id' => $item->id,
-    //'name' => $item->name,
-    //'description' => $item->description,
-    //'unit_price' => $item->unit_price,
-    //'quantity' => $item->quantity,
-    //'service' => $item->service == 1,
-    //'status' => $item->status == 1,
-    //'tags' => explode(',', $item->tags),
-    //'shop' => [
-    //'id' => $item->shop->id,
-    //'name' => $item->shop->name,
-    //'description' => $item->shop->description,
-    //'region' => [
-    //'id' => $item->shop->region->id,
-    //'name' => $item->shop->region->name,
-    //],
-    //'town' => [
-    //'id' => $item->shop->town->id,
-    //'name' => $item->shop->town->name,
-    //],
-    //'street' => $item->shop->street
-    //],
-    //];
+
 
     public function flush_index()
     {

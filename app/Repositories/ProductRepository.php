@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Shop;
+use App\Models\SubCategory;
 use App\Services\ElasticSearchProductService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use \Illuminate\Support\Arr;
@@ -117,7 +118,7 @@ class ProductRepository
         }
 
         // check if category with id exists
-        $category = Category::find($data['category_id']);
+        $category = SubCategory::find($data['category_id']);
         if ($category == null) {
             throw new Exception("Category does not exist");
         }
@@ -137,8 +138,6 @@ class ProductRepository
                 // save product images if any
                 if (isset($data['productImages'])) {
                     foreach ($data['productImages'] as $productImage) {
-                        // Set the item_id for each image
-//                        logger()->info("product image", (array)$productImage);
                         logger()->info("product image item_id", (array)$item->id);
                         $productImage->item_id = $item->id;
                         $productImage->save();
@@ -146,6 +145,7 @@ class ProductRepository
                 }
 
                 $item->save();
+                logger()->info("new item saved");
                 $elSearchService->create_document($item->id, $item);
                 return $item;
             });

@@ -16,21 +16,13 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         $product = $this;
-//        $shop_info = $this->shop->info;
-//        $images = collect($product->images)->map(function ($item) {
-            logger()->info("product images", (array)collect($product->images));
-//            return [
-//                'id' => $item->id,
-//                'url' => $item->getImage()
-//            ];
-//        })->toArray();
         $views = explode(",", trim($product->views));
 
         return [
             'id' => $this->id,
             'name' => $this->name,
             'shop' => new ShopResource($product->shop),
-            'category' => new CategoryResource($this->category),
+            'category' => new SubCategoryResource($this->category),
             'user' => new UserResource($this->user),
             'description' => $this->description,
             'unit_price' => $this->unit_price,
@@ -38,7 +30,6 @@ class ProductResource extends JsonResource
             'quantity' => $this->quantity,
             'is_service' => $this->service,
             'featured_image' => $this->getFeaturedImage(),
-            // 'is_viewed' => in_array(auth('api')->user()->id, $views),
             'views' => count($views), 
             'reviews' => $this->reviews()->count(),
             'tags' => $this->tags ?? '',

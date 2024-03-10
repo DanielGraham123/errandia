@@ -50,18 +50,9 @@ class Product extends Model
         return $query->paginate(5);
     }
 
-    public function toSearchableArray()
-    {
-        return [
-            'name' => $this->attributes['name'],
-            'description' => $this->attributes['description'],
-            'status' => $this->attributes['status']
-        ];
-    }
-
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(SubCategory::class, 'category_id');
     }
 
     public function shop()
