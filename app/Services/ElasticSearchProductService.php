@@ -206,8 +206,8 @@ class ElasticSearchProductService {
                     'name' => $item->shop->region->name,
                 ],
                 'town' => [
-                    'id' => $item->shop->town->id,
-                    'name' => $item->shop->town->name,
+                    'id' => $item->shop->town ? $item->shop->town->id : 0,
+                    'name' => $item->shop->town ? $item->shop->town->name :  ''
                 ],
                 'street' => $item->shop->street
             ],
