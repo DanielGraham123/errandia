@@ -2,16 +2,15 @@
 
 namespace App\Services;
 
-use App\Http\Resources\ProductResource;
+use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
 class ElasticSearchProductService {
 
-    protected $client;
+    protected Client $client;
     private string $index_name = 'errandia';
-    private string $type = 'item';
 
-    protected $settings = [
+    protected array $settings = [
         'body' => [
             'settings' => [
                 'number_of_shards' => 3,
@@ -96,12 +95,12 @@ class ElasticSearchProductService {
         }
     }
 
-    public static function init()
+    public static function init(): ElasticSearchProductService
     {
         return new ElasticSearchProductService();
     }
 
-    public function create_document($id, $item)
+    public function create_document($id, $item): void
     {
         $this->client->index([
             'index' => $this->index_name,
@@ -111,7 +110,7 @@ class ElasticSearchProductService {
         logger()->info('document indexed');
     }
 
-    public function bulk_documents($items = array())
+    public function bulk_documents($items = array()): void
     {
         $params['body'] = [];
         foreach ($items as $item) {
@@ -130,7 +129,7 @@ class ElasticSearchProductService {
         }
     }
 
-    public function search($search_term, $page)
+    public function search($search_term, $page): callable|array
     {
         $params = [
             'index' => $this->index_name,
@@ -139,13 +138,28 @@ class ElasticSearchProductService {
             'body' => [
                 'query' => [
                     'bool' => [
+                        'must' => [
+                            'bool' => [
+                                'should' => [
+                                    ['query_string' => ['default_field' => 'name', 'query' => $search_term]],
+                                    ['query_string' => ['default_field' => 'shop.name', 'query' => $search_term]],
+                                    ['query_string' => ['default_field' => 'category.name', 'query' => $search_term]],
+                                    ['wildcard' => ['description' => '*'. $search_term]],
+                                    ['wildcard' => ['description' => $search_term. '*']],
+                                    ['wildcard' => ['shop.description' => '*'. $search_term]],
+                                    ['wildcard' => ['shop.description' => $search_term. '*']],
+                                    ['wildcard' => ['category.description' => '*'. $search_term]],
+                                    ['wildcard' => ['category.description' => $search_term. '*']],
+                                ]
+                            ]
+                        ],
                         'should' => [
-                            ['match' => ['name' => $search_term]],
+                            ['match' => ['name' => ['query' => $search_term, 'boost' => 10, 'operator' => 'and']]],
                             ['match' => ['category.name' => $search_term]],
                             ['match' => ['shop.name' => $search_term]],
                             ['match' => ['description' => $search_term]],
                             ['match' => ['category.description' => $search_term]],
-                            ['match' => ['shop.description' => $search_term]],
+                            ['match' => ['shop.description' => $search_term]]
                         ]
                     ]
                 ],
@@ -160,7 +174,7 @@ class ElasticSearchProductService {
         return $this->client->search($params);
     }
 
-    public function update_docuemnt($id, $item)
+    public function update_document($id, $item): void
     {
         $this->client->update([
             'index' => $this->index_name,
@@ -170,7 +184,7 @@ class ElasticSearchProductService {
         logger()->info('document updated');
     }
 
-    public function delete_docuemnt($id)
+    public function delete_document($id): void
     {
         $this->client->index([
             'index' => $this->index_name,
@@ -181,7 +195,7 @@ class ElasticSearchProductService {
 
 
 
-    private function getDocument($item)
+    private function getDocument($item): array
     {
         return [
             'id' => $item->id,
@@ -216,7 +230,7 @@ class ElasticSearchProductService {
 
 
 
-    public function flush_index()
+    public function flush_index(): void
     {
         $this->client->indices()->delete([
             'index' => $this->index_name,

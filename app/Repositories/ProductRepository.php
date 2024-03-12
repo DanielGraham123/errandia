@@ -172,7 +172,7 @@ class ProductRepository
                     throw new Exception("Item to be updated does not exist");
                 }
                 $item->update($data);
-                $elSearchService->update_docuemnt($item->id, $item);
+                $elSearchService->update_document($item->id, $item);
                 return $item;
             });
             return new ProductResource($record);
@@ -269,7 +269,7 @@ class ProductRepository
             $item->delete();
 
             $elSearchService =  ElasticSearchProductService::init();
-            $elSearchService->delete_docuemnt($item->id);
+            $elSearchService->delete_document($item->id);
             return true;
         } catch (\Throwable $th) {
             throw $th;
