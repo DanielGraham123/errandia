@@ -24,7 +24,12 @@ class AlterTableSubscriptions extends Migration
                 $table->integer('plan_id');
                 $table->integer('user_id');
                 $table->string('status')->default('PENDING')->change();
-                $table->timestamp('expired_at')->nullable()->change();
+
+                if (Schema::hasColumn('subscriptions', 'expired_at')) {
+                    $table->timestamp('expired_at')->nullable()->change();
+                } else {
+                    $table->timestamp('expired_at')->nullable();
+                }
                 $table->integer('amount')->default(0)->change();
             });
         }
