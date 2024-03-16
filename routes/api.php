@@ -52,6 +52,7 @@ Route::middleware('auth:api')->group(function (){
         Route::get("/user/subscriptions", "SubscriptionController@index");
         Route::post("/user/subscriptions", "SubscriptionController@store");
         Route::get("/user/subscription", "SubscriptionController@show");
+        Route::get("/user/subscriptions/{id}/check-status", "SubscriptionController@checkStatus");
     });
 
 
@@ -102,6 +103,8 @@ Route::group(['namespace' => 'Api'], function() {
     Route::resource('errands', 'ErrandController', ['only' => ['index', 'store']]);
     Route::get('/errand/search', 'ErrandController@runErrand');
     Route::post('/errand/delete', 'ErrandController@deleteErrand');
+
+    Route::post('/payments/return', 'PaymentController@return');
 
     Route::resource('reviews', 'ReviewController');
 

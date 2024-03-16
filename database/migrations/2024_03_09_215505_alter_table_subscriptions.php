@@ -23,7 +23,8 @@ class AlterTableSubscriptions extends Migration
 
                 $table->integer('plan_id');
                 $table->integer('user_id');
-                $table->boolean('status')->default(0)->change();
+                $table->string('status')->default('PENDING')->change();
+                $table->timestamp('expired_at')->nullable()->change();
                 $table->integer('amount')->default(0)->change();
             });
         }
@@ -38,12 +39,9 @@ class AlterTableSubscriptions extends Migration
     {
         if(Schema::hasTable('subscriptions')) {
             Schema::table('subscriptions', function (Blueprint $table) {
-                if (Schema::hasColumns('subscriptions', ['plan_id','user_id','status','expired_at'])) {
-                    $table->dropForeign('plan_id');
-                    $table->dropColumn('plan_id');
-                    $table->dropForeign('user_id');
+                if (Schema::hasColumns('subscriptions', ['plan_id','user_id'])) {
                     $table->dropColumn('user_id');
-                    $table->dropColumn('status');
+                    $table->dropColumn('plan_id');
                 }
             });
         }

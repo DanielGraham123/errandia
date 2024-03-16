@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Shop;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ShopResource extends JsonResource
@@ -19,13 +18,6 @@ class ShopResource extends JsonResource
         $shop_info = $this->info;
         $shop_registration = $this->registration;
 
-//        $parentShopDetails = null;
-//        if ($this->parent_id) {
-//            $parentShop = Shop::find($this->parent_id);
-//            if ($parentShop) {
-//                $parentShopDetails = new ShopResource($parentShop);
-//            }
-//        }
         return [
             'id' => $this->id,
             'name' => $this->name,
