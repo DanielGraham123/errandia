@@ -38,10 +38,10 @@ class AuthController extends Controller
             $user = $result['user'];
             $channel = $result['channel'];
             return $this->build_response(
-                response(), 'A token has been sent to your ' . ( $user->phone == $channel ? 'phone number' : 'email address' ), 200,
-                [
-                    'uuid' => $result['uuid']
-                ]
+                response(),
+                'A token has been sent to your ' . ( $user->phone == $channel ? 'phone number' : 'email address' ),
+                200,
+                ['uuid' => $result['uuid']]
             );
 
         } else {
