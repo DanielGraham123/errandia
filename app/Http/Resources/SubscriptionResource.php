@@ -14,6 +14,7 @@ class SubscriptionResource extends JsonResource
             'description'=>$plan['description'],
             'amount'=>$plan['unit_price'],
             'expired_at' => $this->expired_at,
+            'expired' => $this->expired,
             'status'=>$this->status
         ];
     }
