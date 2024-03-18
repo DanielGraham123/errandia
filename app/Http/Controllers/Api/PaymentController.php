@@ -10,7 +10,7 @@ class PaymentController extends Controller
 {
     private SubscriptionService $subscriptionService;
 
-    private string $auth_key = '(,%-vp.lPmL7&UgmKoIx>FO}xgrY<^d96eK';
+    // private string $auth_key = '';
 
     public function __construct(SubscriptionService $subscriptionService)
     {
@@ -21,7 +21,6 @@ class PaymentController extends Controller
     {
         $data = $request->all();
         $this->subscriptionService->update_payment($data);
-        logger()->info(json_encode($data));
         return $this->build_success_response(response(), 'payment details received');
     }
 

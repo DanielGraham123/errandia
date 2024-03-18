@@ -45,6 +45,11 @@ class SubscriptionRepository {
         Subscription::where('id', $subscription_id)->update(['status' => $status, 'expired_at' => $expired_date]);
     }
 
+    public function markAsExpired($subscription_id): void
+    {
+        Subscription::where('id', $subscription_id)->update(['expired' => true]);
+    }
+
     public function find($id)
     {
         return Subscription::find($id);

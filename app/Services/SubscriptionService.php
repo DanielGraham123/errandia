@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\SubscriptionJob;
 use App\Models\Payment;
 use App\Models\Plan;
 use App\Repositories\PaymentRepository;
@@ -25,7 +26,7 @@ class SubscriptionService{
         return $this->subscriptionRepository->find_all_by_user($user_id);
     }
 
-    public function subscribe($user_id,  $data)
+    public function subscribe($user_id,  $data): void
     {
         if($this->subscriptionRepository->get_current($user_id)) {
             throw new \Exception('You are already under a subscription plan.');
@@ -104,8 +105,49 @@ class SubscriptionService{
         }
     }
 
-    public function update_payment(array $all)
+    public function update_payment($response_data): void
     {
+        $auth_key = env('API_PAYMENT_AUTH_KEY', '');
+        $appId = env('API_PAYMENT_API_ID', '');
+        if(!empty($response_data['authKey']) && $response_data['authKey'] == $auth_key) {
+            if(!empty($response_data['appId']) && $response_data['appId'] == $appId) {
+                $resource = $response_data['resource'];
+                $payment = Payment::where(
+                    'request_id', $resource['requestId']
+                )->first();
+
+                $status = $resource['status'] == 'FAILED' ? 'FAILED' :  ($resource['status'] == 'SUCCESSFUL' ? 'SUCCESS' : 'PENDING');
+                if($payment) {
+                    DB::transaction(function () use ($payment, $status) {
+                        $payment->status = $status;
+                        $payment->save();
+                        logger()->info("payment status updated as ". $status . " for request id : ". $payment->request_id);
+
+                        $subscription = $this->subscriptionRepository->find($payment->subscription_id);
+                        if($subscription) {
+                            $plan = $subscription->plan;
+                            $this->subscriptionRepository->chnageStatus(
+                                $payment->subscription_id,
+                                $status, $status == 'SUCCESS' ?  self::get_expired_date($plan['name']) : null
+                            );
+
+                            logger()->info("subscription status updated as " .$status);
+
+                            SubscriptionJob::dispatch($subscription->id)
+                                ->delay(new Carbon($subscription->expired_at));
+
+                        } else {
+                            logger()->warning('Subscription not found with id : ', $payment->sbscription_id);
+                        }
+                    });
+                } else {
+                    logger()->warning("No payment found with request_id : ". $resource['requestId']);
+                }
+            }
+        }
+        else {
+            logger()->warning('Wrong auth key');
+        }
     }
 
     public function check_status($id)

@@ -13,7 +13,7 @@ class Subscription extends Model
 
     protected $table = 'subscriptions';
 
-    protected $fillable = ['plan_id', 'user_id', 'amount', 'status', 'expired_at'] ;
+    protected $fillable = ['plan_id', 'user_id', 'amount', 'status', 'expired_at', 'expired'] ;
 
     public function plan(): BelongsTo
     {
