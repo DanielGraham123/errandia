@@ -28,6 +28,7 @@ Errandia is a platform that allows you search and fine any product, services fro
 - Paste the following command to clone the project : `git clone https://github.com/nishangsystems/errandia.git`
 - Navigate into the project root folder and run `composer install` to install composer packages
 - publish this vendor in the next command : `php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"`
+- push FCM vendor : `php artisan vendor:publish --provider="Kreait\Laravel\Firebase\ServiceProvider" --tag=config`
 - run `php artisan key:generate` to generate an app_key in the .env file
 - Connect to MySQL and create the database
 - Edit the .env file

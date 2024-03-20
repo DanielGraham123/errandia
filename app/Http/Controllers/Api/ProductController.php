@@ -244,17 +244,28 @@ class ProductController extends Controller
         }
     }
 
-    public function searchIndex($request)
+    public function searchIndex(Request $request)
     {
-        $shop = Shop::find($request->shop_id);
-        if (!$shop) return $request->name . $request->description;
-        $search_index = $request->name . $request->description . $shop->name . $shop->description . $shop->info->street->name . $shop->info->address;
-        $categories = explode(",", trim($request->categories));
+        $shop = Shop::find($request->get('shop_id'));
+        if (!$shop) return $request->get('name') . $request->get('description');
+
+        $search_index = $request->get('name')
+            . $request->get('description')
+            . $shop->name . $shop->description
+            . ($shop->info->street ? $shop->info->street->name : '')
+            . $shop->info->address;
+
+        $categories = explode(",", trim($request->get('categories')));
         foreach ($categories as $cat_id) {
-            $sub_category = SubCategory::find($cat_id);
-            $search_index = $search_index . $sub_category->name . $sub_category->description;
+            if(!empty($cat_id)) {
+                $sub_category = SubCategory::find($cat_id);
+                $search_index = $search_index . $sub_category->name . $sub_category->description;
+            }
         }
-        return $search_index;
+        return $this->build_success_response(response(), '', [
+            'item' => $search_index
+        ]);
+       //  return $search_index;
     }
 
     public function view(Request $request)

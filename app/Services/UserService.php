@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\UserDeviceRepository;
 use App\Repositories\UserRepository;
 use App\Mail\OtpMailer;
 
@@ -15,14 +16,16 @@ use Ramsey\Uuid\Uuid;
 
 class UserService{
 
-    private $userRepository;
-    private $validationService;
-    protected $userOtpRepository;
-    protected $smsService;
+    private UserRepository $userRepository;
+    private ValidationService$validationService;
+    protected UserOTPRepository $userOtpRepository;
+    protected SMSService $smsService;
 
     public function __construct(UserRepository $userRepository,
                                 ValidationService $validationService,
-                                UserOTPRepository $userOtpRepository, SMSService  $smsService){
+                                UserOTPRepository $userOtpRepository,
+                                SMSService  $smsService
+    ){
         $this->userRepository = $userRepository;
         $this->validationService = $validationService;
         $this->userOtpRepository = $userOtpRepository;
@@ -140,6 +143,13 @@ class UserService{
         }
 
         return null;
+    }
+
+    public function save_device_info($data): void
+    {
+        if(!empty($data['device_uuid']) && !empty($data['push_token'])) {
+            UserDeviceRepository::save($data);
+        }
     }
 
 }

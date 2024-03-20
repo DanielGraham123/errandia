@@ -36,11 +36,22 @@
       0 => 'Fruitcake\\Cors\\CorsServiceProvider',
     ),
   ),
-  'god-jay/scout-elasticsearch' => 
+  'kreait/laravel-firebase' => 
   array (
     'providers' => 
     array (
-      0 => 'GodJay\\ScoutElasticsearch\\ScoutElasticsearchServiceProvider',
+      0 => 'Kreait\\Laravel\\Firebase\\ServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Firebase' => 'Kreait\\Laravel\\Firebase\\Facades\\Firebase',
+    ),
+  ),
+  'laravel-notification-channels/fcm' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'NotificationChannels\\Fcm\\FcmServiceProvider',
     ),
   ),
   'laravel/passport' => 
@@ -55,13 +66,6 @@
     'providers' => 
     array (
       0 => 'Laravel\\Sail\\SailServiceProvider',
-    ),
-  ),
-  'laravel/scout' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Scout\\ScoutServiceProvider',
     ),
   ),
   'laravel/socialite' => 

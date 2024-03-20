@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Synonym;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
@@ -91,6 +92,7 @@ class ElasticSearchProductService {
         $this->client = ClientBuilder::create()->build();
         if(!$this->client->indices()->exists(['index' => $this->index_name])) {
             $this->settings['index'] = $this->index_name;
+            $this->settings['body']['settings']['analysis']['filter']['synonym']['synonyms'] = Synonym::get_synonym_values();
             $this->client->indices()->create($this->settings);
         }
     }

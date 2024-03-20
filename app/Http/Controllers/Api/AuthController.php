@@ -16,7 +16,7 @@ use Laravel\Passport\TokenRepository;
 class AuthController extends Controller
 {
 
-    protected $userService;
+    protected UserService $userService;
 
     public function __construct(UserService  $userService)
     {
@@ -26,7 +26,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $this->validate($request->all(), [
-            'identifier' => 'required',
+            'identifier'  => 'required'
         ]);
 
         if(!empty($this->validations_errors)) {
@@ -51,9 +51,14 @@ class AuthController extends Controller
 
     public function validateOtpCode(Request $request)
     {
-        $this->validate($request->all(), [
+        $inputs = $request->all();
+
+        // Todo when the new apk is ready, we force endpoint to have device_uuid and token for push notifications
+        $this->validate($inputs, [
             'code' => 'required',
             'uuid' => 'required',
+//            'device_uuid' => 'required',
+//            'push_token'  => 'required',
         ]);
 
         if(!empty($this->validations_errors)) {
@@ -62,6 +67,12 @@ class AuthController extends Controller
 
         $user = $this->userService->checkOTP($request->get('uuid'), $request->get('code'));
         if ($user) {
+            $this->userService->save_device_info([
+                'device_uuid' => $inputs['device_uuid'] ?? null,
+                'push_token' => $inputs['push_token'] ?? null,
+                'user_id' => $user->id,
+            ]);
+
             return $this->build_response(
                 response(), 'otp ok', 200,
                 [

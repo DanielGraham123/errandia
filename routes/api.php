@@ -91,6 +91,7 @@ Route::group(['namespace' => 'Api'], function() {
 
 //    Route::resource('/products', 'ProductController', ['only' => ['index', 'store']]);
     Route::get('/search', 'ProductController@search');
+    Route::get('/search/index', 'ProductController@searchIndex');
     Route::get('/index_items', 'ProductController@bulk_index');
     Route::delete('/flush_items', 'ProductController@flush_items');
 

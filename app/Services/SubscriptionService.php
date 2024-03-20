@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Jobs\SubscriptionJob;
 use App\Models\Payment;
 use App\Models\Plan;
+use App\Notifications\UserNotification;
 use App\Repositories\PaymentRepository;
 use App\Repositories\SubscriptionRepository;
+use App\Repositories\UserDeviceRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -136,6 +138,13 @@ class SubscriptionService{
                             SubscriptionJob::dispatch($subscription->id)
                                 ->delay(new Carbon($subscription->expired_at));
 
+                            $user_device = UserDeviceRepository::getDevice($payment->user_id);
+                            if($user_device) {
+                                $user_device->notify(new UserNotification(
+                                    'Subscription',
+                                    $status == 'SUCCESS' ? 'Subscription successfully done' : 'Payment failed'
+                                ));
+                            }
                         } else {
                             logger()->warning('Subscription not found with id : ', $payment->sbscription_id);
                         }
