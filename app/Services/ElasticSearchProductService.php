@@ -60,28 +60,16 @@ class ElasticSearchProductService {
                         'properties' => [
                             'id' => ['type' => 'integer'],
                             'name' => ['type' => 'keyword'],
-                            'description' => ['type' => 'text', 'analyzer' => 'search_index'],
-                            'region' => [
-                                'type' => 'nested',
-                                'properties' => [
-                                    'id' => ['type' => 'integer'],
-                                    'name' => ['type' => 'keyword'],
-                                ]
-                            ],
-                            'town' => [
-                                'type' => 'nested',
-                                'properties' => [
-                                    'id' => ['type' => 'integer'],
-                                    'name' => ['type' => 'keyword'],
-                                ]
-                            ],
-                            'street' => [
-                                'type' => 'text'
-                            ]
+                            'description' => ['type' => 'text', 'analyzer' => 'search_index']
                         ]
                     ],
                     'categories' => ['type' => 'keyword'],
                     'category_ids' => ['type' => 'keyword'],
+                    'region_id' => ['type' => 'integer'],
+                    'town_id' => ['type' => 'integer'],
+                    'region_name' => ['type' => 'keyword'],
+                    'town_name' => ['type' => 'keyword'],
+                    'street' => ['type' => 'text'],
                 ]
             ]
         ]
@@ -131,40 +119,60 @@ class ElasticSearchProductService {
         }
     }
 
-    public function search($search_term, $page): callable|array
+    public function search($search_term, $filter = [],   $page = 1): callable|array
     {
+        $query = [];
+        $query['must'] = [
+            'bool' => [
+                'should' => [
+                    ['query_string' => ['default_field' => 'name', 'query' => $search_term]],
+                    ['query_string' => ['default_field' => 'shop.name', 'query' => $search_term]],
+                    ['query_string' => ['default_field' => 'category.name', 'query' => $search_term]],
+                    ['wildcard' => ['description' => '*'. $search_term]],
+                    ['wildcard' => ['description' => $search_term. '*']],
+                    ['wildcard' => ['shop.description' => '*'. $search_term]],
+                    ['wildcard' => ['shop.description' => $search_term. '*']],
+                    ['wildcard' => ['category.description' => '*'. $search_term]],
+                    ['wildcard' => ['category.description' => $search_term. '*']],
+                ]
+            ]
+        ];
+        $query['should'] = [
+            ['match' => ['name' => ['query' => $search_term, 'boost' => 10, 'operator' => 'and']]],
+            ['match' => ['category.name' => $search_term]],
+            ['match' => ['shop.name' => $search_term]],
+            ['match' => ['description' => $search_term]],
+            ['match' => ['category.description' => $search_term]],
+            ['match' => ['shop.description' => $search_term]]
+        ];
+
+        // Apply filter
+        if (!empty($filter)) {
+            $query['filter'] = [];
+
+            // filter by service
+            if(!empty($filter['service'])) {
+                $query['filter'][] = ['term' => ['service' => $filter['service']]] ;
+            }
+
+            // filter by region
+            if(!empty($filter['region'])) {
+                $query['filter'][] = ['term' => ['region_id' => $filter['region']]] ;
+            }
+
+//            // filter by town
+            if(!empty($filter['town'])) {
+                $query['filter'][] = ['term' => ['town_id' => $filter['town']]] ;
+            }
+
+        }
+
         $params = [
             'index' => $this->index_name,
             'from' => intval($page) < 1 ? 0 : (intval($page) - 1) * 10,
             'size' => 10,
             'body' => [
-                'query' => [
-                    'bool' => [
-                        'must' => [
-                            'bool' => [
-                                'should' => [
-                                    ['query_string' => ['default_field' => 'name', 'query' => $search_term]],
-                                    ['query_string' => ['default_field' => 'shop.name', 'query' => $search_term]],
-                                    ['query_string' => ['default_field' => 'category.name', 'query' => $search_term]],
-                                    ['wildcard' => ['description' => '*'. $search_term]],
-                                    ['wildcard' => ['description' => $search_term. '*']],
-                                    ['wildcard' => ['shop.description' => '*'. $search_term]],
-                                    ['wildcard' => ['shop.description' => $search_term. '*']],
-                                    ['wildcard' => ['category.description' => '*'. $search_term]],
-                                    ['wildcard' => ['category.description' => $search_term. '*']],
-                                ]
-                            ]
-                        ],
-                        'should' => [
-                            ['match' => ['name' => ['query' => $search_term, 'boost' => 10, 'operator' => 'and']]],
-                            ['match' => ['category.name' => $search_term]],
-                            ['match' => ['shop.name' => $search_term]],
-                            ['match' => ['description' => $search_term]],
-                            ['match' => ['category.description' => $search_term]],
-                            ['match' => ['shop.description' => $search_term]]
-                        ]
-                    ]
-                ],
+                'query' => ['bool' => $query],
                 'aggs' => [
                     'types' => [
                         "terms" => ['field' =>  'service']
@@ -217,16 +225,11 @@ class ElasticSearchProductService {
                 'id' => $item->shop->id,
                 'name' => $item->shop->name,
                 'description' => $item->shop->description,
-                'region' => [
-                    'id' => $item->shop->region->id,
-                    'name' => $item->shop->region->name,
-                ],
-                'town' => [
-                    'id' => $item->shop->town ? $item->shop->town->id : 0,
-                    'name' => $item->shop->town ? $item->shop->town->name :  ''
-                ],
-                'street' => $item->shop->street
             ],
+            'region_id' => $item->shop->region->id,
+            'region_name' => $item->shop->region->name,
+            'town_id' => $item->shop->town ? $item->shop->town->id : 0,
+            'town_name' => $item->shop->town ? $item->shop->town->name :  ''
         ];
     }
 

@@ -339,10 +339,26 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $service =  ElasticSearchProductService::init();
+        $filter = [];
+
+        if($request->has('region') && !empty($request->get('region'))) {
+            $filter['region'] = $request->get('region');
+        }
+
+        if($request->has('town') && !empty($request->get('town'))) {
+            $filter['town'] = $request->get('town');
+        }
+
+        if($request->has('service') && !empty($request->get('service'))) {
+            $filter['service'] = $request->get('service') == 1;
+        }
+
         $result = $service->search(
                 $request->get('q'),
+                $filter,
                 $request->get('page')
         );
+
 
         return $this->build_success_response(response(), 'items found',
             self::convert_documents_paginated_result(
