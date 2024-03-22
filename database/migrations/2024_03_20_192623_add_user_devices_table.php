@@ -18,7 +18,7 @@ class AddUserDevicesTable extends Migration
                 $table->increments('id');
                 $table->string('device_uuid')->unique();
                 $table->string('push_token');
-                $table->string('user_id');
+                $table->integer('user_id');
                 $table->timestamps();
             });
         }
