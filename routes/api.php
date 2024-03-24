@@ -57,7 +57,7 @@ Route::middleware('auth:api')->group(function (){
 
 
     Route::patch('/user', [UserController::class, 'update']);
-    Route::patch('/user/notify', [UserController::class, 'notify']);
+    Route::get('/user/notify', [UserController::class, 'notify']);
     Route::post('/user/image_upload', [UserController::class, 'userImageUpload']);
 
 });
