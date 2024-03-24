@@ -27,7 +27,10 @@ class SubscriptionRepository {
     {
         return Subscription::where(
             'user_id', $user_id
-        )->where('status', 'SUCCESS')->orderBy('id', 'desc')->first();
+        )
+            ->where('status', 'SUCCESS')
+            ->where('expired', false)
+            ->orderBy('id', 'desc')->first();
     }
 
     public function set_as_expired($id)
