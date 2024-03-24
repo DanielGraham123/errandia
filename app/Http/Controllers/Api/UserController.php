@@ -7,8 +7,8 @@ use App\Http\Resources\UserResource;
 use App\Models\UserDevice;
 use App\Notifications\UserNotification;
 use App\Services\UserService;
-use GPBMetadata\Google\Api\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
