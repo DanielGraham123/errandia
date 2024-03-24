@@ -342,14 +342,17 @@ class ProductController extends Controller
         $filter = [];
 
         if($request->has('region') && !empty($request->get('region'))) {
+            logger()->info("region is : " . $request->get('region'));
             $filter['region'] = $request->get('region');
         }
 
         if($request->has('town') && !empty($request->get('town'))) {
+            logger()->info("town is : " . $request->get('town'));
             $filter['town'] = $request->get('town');
         }
 
         if($request->has('service') && !empty($request->get('service'))) {
+            logger()->info("service is : " . $request->get('service'));
             $filter['service'] = $request->get('service') == 1;
         }
 

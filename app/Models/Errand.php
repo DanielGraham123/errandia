@@ -10,6 +10,7 @@ class Errand extends Model
     use HasFactory;
 
     protected $table = 'item_quotes';
+
     protected $fillable = ['title', 'description', 'user_id', 'slug', 'read_status', 'sub_categories', 'region_id', 'town_id', 'street_id', 'visibility', 'status'];
 
     public function posted_by()
