@@ -141,8 +141,8 @@ class SubscriptionService{
                             $user_device = UserDeviceRepository::getDevice($payment->user_id);
                             if($user_device) {
                                 $user_device->notify(new UserNotification(
-                                    'Subscription',
-                                    $status == 'SUCCESS' ? 'Subscription successfully done' : 'Payment failed'
+                                    'Errandia',
+                                    $status == 'SUCCESS' ? 'Payment successfully done' : 'Payment not completed'
                                 ));
                             }
                         } else {
