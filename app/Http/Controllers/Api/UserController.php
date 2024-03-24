@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\UserDevice;
+use App\Notifications\UserNotification;
 use App\Services\UserService;
+use GPBMetadata\Google\Api\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -57,6 +60,25 @@ class UserController extends Controller
         } catch (\Throwable $e) {
             logger()->error($e->getMessage());
             return $this->build_response(response(), 'failed to upload image', 400);
+        }
+    }
+
+    public function notify(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $userDevice =  UserDevice::where('user_id', $user->id)->first();
+
+            if($userDevice) {
+                $userDevice->notify(new UserNotification('Errandia', 'Your subscription is now activated'));
+                return $this->build_success_response(response(), 'notification sent');
+            } else {
+                logger()->error('Device not found');
+                return $this->build_response(response(), 'failed  to send push notification', 400);
+            }
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), 'failed  to send push notification', 400);
         }
     }
 }
