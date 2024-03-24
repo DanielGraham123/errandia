@@ -40,3 +40,4 @@ composer.lock
 public/mix-manifest.json
 .idea/*
 public/uploads
+storage/app/firebase-auth.json

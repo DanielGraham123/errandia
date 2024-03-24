@@ -23,15 +23,14 @@ class UserNotification extends Notification
 
     public function toFcm($notifiable): FcmMessage
     {
-        $message = new FcmMessage();
-        $fcmNotification = new FcmNotification();
+        $message = FcmMessage::create();
+        $fcmNotification = FcmNotification::create();
         $fcmNotification->setBody($this->body);
-        $fcmNotification->setTitle ($this->body);
+        $fcmNotification->setTitle ($this->title);
+        $fcmNotification->setImage('https://errandia.com/assets/images/app-logo.png');
         $message->setNotification($fcmNotification);
-        return $message->setData([
-            'data1' => 'value',
-            'data2' => 'value',
-        ]);
+
+        return  $message;
     }
 
 }
