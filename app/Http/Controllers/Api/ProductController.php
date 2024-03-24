@@ -352,8 +352,8 @@ class ProductController extends Controller
         }
 
         if($request->has('service') && ($request->get('service') == 0 || $request->get('service') == 1)) {
-            logger()->info("service is : " . $request->get('service'));
-            $filter['service'] = (int)$request->get('service') == 1;
+            logger()->info("service is : " . intval($request->get('service')));
+            $filter['service'] = intval($request->get('service')) == 1;
         }
 
         $result = $service->search(
