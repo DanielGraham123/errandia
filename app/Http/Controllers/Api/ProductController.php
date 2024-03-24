@@ -351,7 +351,7 @@ class ProductController extends Controller
             $filter['town'] = $request->get('town');
         }
 
-        if($request->has('service') && !empty($request->get('service'))) {
+        if($request->has('service') && ($request->get('service') == 0 || $request->get('service') == 1)) {
             logger()->info("service is : " . $request->get('service'));
             $filter['service'] = $request->get('service') == 1;
         }
