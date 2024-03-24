@@ -4,7 +4,8 @@ namespace App\Notifications;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmChannel;
 use NotificationChannels\Fcm\FcmMessage;
-use NotificationChannels\Fcm\Resources\Notification as FcmNotification;
+use NotificationChannels\Fcm\Resources\AndroidConfig;
+use NotificationChannels\Fcm\Resources\AndroidNotification;
 
 class UserNotification extends Notification
 {
@@ -24,12 +25,13 @@ class UserNotification extends Notification
     public function toFcm($notifiable): FcmMessage
     {
         $message = FcmMessage::create();
-        $fcmNotification = FcmNotification::create();
-        $fcmNotification->setBody($this->body);
-        $fcmNotification->setTitle ($this->title);
-        $fcmNotification->setImage('https://errandia.com/assets/images/app-logo.png');
-        $message->setNotification($fcmNotification);
-
+        $androidConfig = AndroidConfig::create();
+        $androidNotification = AndroidNotification::create();
+        $androidNotification->setTitle($this->title);
+        $androidNotification->setBody($this->body);
+        $androidNotification->setIcon('https://errandia.com/assets/images/app-logo.png');
+        $androidConfig->setNotification($androidNotification);
+        $message->setAndroid($androidConfig);
         return  $message;
     }
 
