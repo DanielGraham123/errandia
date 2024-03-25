@@ -43,7 +43,7 @@ class ElasticSearchProductService {
                     'name' => ['type' => 'text', 'analyzer' => 'search_index'],
                     'description' => ['type' => 'text', 'analyzer' => 'search_index'],
                     'tags' => ['type' => 'text'],
-                    'service' => ['type' => 'boolean'],
+                    'service' => ['type' => 'integer'],
                     'status' => ['type' => 'boolean'],
                     'unit_price' => ['type' => 'long'],
                     'quantity' => ['type' => 'integer'],
@@ -213,7 +213,7 @@ class ElasticSearchProductService {
             'description' => $item->description,
             'unit_price' => $item->unit_price,
             'quantity' => $item->quantity,
-            'service' => $item->service == 1,
+            'service' => $item->service,
             'status' => $item->status == 1,
             'tags' => explode(',', $item->tags),
             'category' => [
