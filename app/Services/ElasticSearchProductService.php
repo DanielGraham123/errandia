@@ -150,21 +150,17 @@ class ElasticSearchProductService {
         if (!empty($filter)) {
             $query['filter'] = [];
 
-            // filter by service
             if(isset($filter['service'])) {
                 $query['filter'][] = ['term' => ['service' => $filter['service']]] ;
             }
 
-            // filter by region
-            if(!empty($filter['region'])) {
+            if(isset($filter['region'])) {
                 $query['filter'][] = ['term' => ['region_id' => $filter['region']]] ;
             }
 
-//            // filter by town
-            if(!empty($filter['town'])) {
+            if(isset($filter['town'])) {
                 $query['filter'][] = ['term' => ['town_id' => $filter['town']]] ;
             }
-
         }
 
         $params = [
