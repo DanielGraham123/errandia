@@ -352,7 +352,7 @@ class ProductController extends Controller
         }
 
         if($request->has('service') && (intval($request->get('service')) === 0 || intval($request->get('service')) === 1)) {
-            logger()->info(intval($request->get('service')));
+            logger()->info(gettype($request->get('service')));
             $filter['service'] = intval($request->get('service')) === 1;
         }
 
