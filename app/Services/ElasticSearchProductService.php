@@ -151,7 +151,7 @@ class ElasticSearchProductService {
             $query['filter'] = [];
 
             // filter by service
-            if(!empty($filter['service'])) {
+            if(isset($filter['service'])) {
                 $query['filter'][] = ['term' => ['service' => $filter['service']]] ;
             }
 
