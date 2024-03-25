@@ -162,10 +162,6 @@ class Controller extends BaseController
 
     public static function convert_documents_paginated_result($hits, $page = 1)
     {
-        if(!empty($hits['hits'])) {
-            logger()->info(json_encode($hits['hits'][0]));
-        }
-
         return [
             "current_page" => $page,
             "per_page" => 10,
