@@ -349,7 +349,7 @@ class ProductController extends Controller
             $filter['town'] = $request->get('town');
         }
 
-        if($request->has('service') && (intval($request->get('service')) === 0 || intval($request->get('service')) === 1)) {
+        if($request->has('service') && strlen($request->get('service')) != 0 ) {
             $filter['service'] = intval($request->get('service'));
         }
 
