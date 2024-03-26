@@ -9,19 +9,22 @@ use App\Http\Resources\ShopResource;
 use App\Models\Errand;
 use App\Models\ErrandImage;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Mockery\Exception;
 
 class ErrandController extends Controller
 {
     public function index()
     {
-        $errands = Errand::select('item_quotes.*')->leftJoin('users', 'item_quotes.user_id', '=', 'users.id')
+        $errands = Errand::select('item_quotes.*')
+            ->leftJoin('users', 'item_quotes.user_id', '=', 'users.id')
             ->where('user_id', '<>', '0')
-        ->orderBy('item_quotes.created_at', 'desc')
+            ->orderBy('item_quotes.created_at', 'desc')
             ->paginate(10);
         return $this->build_success_response(
             response(),
@@ -157,61 +160,69 @@ class ErrandController extends Controller
     public function store(Request $request)
     {
         try {
-            $created = DB::transaction(function () use ($request) {
+            $user_id = auth('api')->user()->id;
+            $created = DB::transaction(function () use ($request, $user_id) {
                 $errand = new Errand();
-                $errand->user_id = auth('api')->user()->id;
-                $errand->title = $request->title;
-                $errand->description = $request->description;
-                $errand->slug = Str::slug($request->title). '-' . time();
-                $errand->sub_categories = trim($request->categories);
-                $errand->street_id = $request->street_id;
+                $errand->user_id = $user_id;
+                $errand->title = $request->get('title');
+                $errand->description = $request->get('description');
+                $errand->slug = Str::slug($request->get('title')). '-' . time();
+                $errand->sub_categories = trim($request->get('categories'));
+                $errand->region_id = $request->get('region_id');
+                $errand->town_id = $request->get('town_id');
+                $errand->street_id = $request->get('street_id');
+                $errand->visibility = $request->get('visibility');
                 $errand->read_status = false;
                 $errand->save();
 
-                $count = intval($request->image_count);
-                for($i = 1; $i <= $count; $i++) {
-                    $image_name = 'image_'. $i;
-                    if ($request->file($image_name)) {
+                if (isset($data['images']) && is_array($data['images'])) {
+                    foreach ($data['images'] as $errand_image) {
                         $image = new ErrandImage();
                         $image->item_quote_id = $errand->id;
-                        $image->image = $request->file($image_name)->store('errands');
+                        $image->image = $this->uploadImage($errand_image, 'errands');
                         $image->save();
                     }
                 }
                 return $errand;
             });
 
-            return response()->json(['data' => [
-                'errand' => new ErrandResource($created)
-            ]]);
+            return $this->build_success_response(response(), 'Errand saved');
         } catch (\Exception $e) {
-            return response()->json(['data' => [
-                'error' => $e->getMessage(),
-                'message' => 'Sorry, We encountered an error'
-            ]], 500);
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), 'failed to save errand details.');
         }
     }
 
-    public function deleteErrand(Request $request)
+    public function delete(Request $request, $id)
     {
         try {
-            DB::transaction(function() use ($request) {
-                $errand = Errand::find($request->errand_id);
-                if (!$errand) throw new Exception("Errand not found");
+            DB::transaction(function() use ($request, $id) {
+                $errand = Errand::find($id);
+                if (!$errand) {
+                    throw new Exception("Errand not found");
+                };
                 foreach($errand->images as $image) {
                     Storage::delete($image->image);
                     $image->delete();
                 }
                 $errand->delete();
             });
-            return response()->json(['data' => [
-                'message' => 'Errand deleted successfully'
-            ]]);
+            return $this->build_success_response(response(), 'Errand deleted successfully');
         } catch(\Exception $e) {
-            return response()->json(['data' => [
-                'error' => $e->getMessage(),
-                'message' => 'Sorry, We encountered an error'
-            ]], 500);
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), 'failed to delete errand');
         }
+    }
+
+    private function uploadImage($file, $folder)
+    {
+        $path = public_path("uploads/$folder/");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $fName = 'errand_image_' . '_' . time(). '.' . $file->getClientOriginalExtension();
+        $file->move($path, $fName);
+
+        return "uploads/$folder/$fName";
     }
 }
