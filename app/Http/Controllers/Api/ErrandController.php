@@ -160,9 +160,10 @@ class ErrandController extends Controller
     public function store(Request $request)
     {
         try {
-            $created = DB::transaction(function () use ($request) {
+            $user_id = auth('api')->user()->id;
+            $created = DB::transaction(function () use ($request, $user_id) {
                 $errand = new Errand();
-                $errand->user_id = auth('api')->user()->id;
+                $errand->user_id = $user_id;
                 $errand->title = $request->get('title');
                 $errand->description = $request->get('description');
                 $errand->slug = Str::slug($request->get('title')). '-' . time();
