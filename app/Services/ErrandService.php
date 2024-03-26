@@ -10,7 +10,9 @@ class ErrandService{
 
     private $errandRepository, $categoryRepository;
     private $validationService;
-    public function __construct(ErrandRepository $errandRepository, ValidationService $validationService, CategoryRepository $categoryRepository){
+    public function __construct(ErrandRepository $errandRepository,
+                                ValidationService $validationService,
+                                CategoryRepository $categoryRepository){
         $this->errandRepository = $errandRepository;
         $this->validationService = $validationService;
         $this->categoryRepository = $categoryRepository;
@@ -65,13 +67,18 @@ class ErrandService{
 
     public function save($data)
     {
-        # code...
         $validationRules = [
-            'title'=>'required', 'description'=>'nullable|string', 
-            'user_id'=>'required', 'slug'=>'required', 'read_status'=>'nullable', 
-            'sub_categories'=>'nullable', 'region_id'=>'nullable|numeric', 
-            'town_id'=>'nullable|numeric', 'street_id'=>'nullable|numeric', 
-            'visibility'=>'nullable', 'status'=>'nullable'
+            'title'=>'required',
+            'description'=>'nullable|string',
+            'user_id'=>'required',
+            'slug'=>'required',
+            'read_status'=>'nullable',
+            'sub_categories'=>'nullable',
+            'region_id'=>'nullable|numeric',
+            'town_id'=>'nullable|numeric',
+            'street_id'=>'nullable|numeric',
+            'visibility'=>'nullable',
+            'status'=>'nullable'
         ];
         $this->validationService->validate($data, $validationRules);
         return $this->errandRepository->store($data);

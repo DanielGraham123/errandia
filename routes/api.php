@@ -53,6 +53,10 @@ Route::middleware('auth:api')->group(function (){
         Route::post("/user/subscriptions", "SubscriptionController@store");
         Route::get("/user/subscription", "SubscriptionController@show");
         Route::get("/user/subscriptions/{id}/check-status", "SubscriptionController@checkStatus");
+
+        Route::get("/user/errands", "ErrandController@index");
+        Route::post("/user/errands", "ErrandController@store");
+        Route::delete("/user/errands/{id}", "ErrandController@delete");
     });
 
 
