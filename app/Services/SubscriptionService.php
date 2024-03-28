@@ -128,15 +128,20 @@ class SubscriptionService{
                         $subscription = $this->subscriptionRepository->find($payment->subscription_id);
                         if($subscription) {
                             $plan = $subscription->plan;
+                            $expired_date = $status == 'SUCCESS' ?  self::get_expired_date($plan['name']) : null;
                             $this->subscriptionRepository->chnageStatus(
                                 $payment->subscription_id,
-                                $status, $status == 'SUCCESS' ?  self::get_expired_date($plan['name']) : null
+                                $status,
+                                $expired_date
                             );
 
                             logger()->info("subscription status updated as " .$status);
+                            if ($expired_date) {
+                                SubscriptionJob::dispatch($subscription->id)
+                                    ->delay(new Carbon($expired_date));
+                                logger()->info('subscription having id  '. $subscription->id . 'will expired on '. $expired_date );
+                            }
 
-                            SubscriptionJob::dispatch($subscription->id)
-                                ->delay(new Carbon($subscription->expired_at));
 
                             $user_device = UserDeviceRepository::getDevice($payment->user_id);
                             if($user_device) {
