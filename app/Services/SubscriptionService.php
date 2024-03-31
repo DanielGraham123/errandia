@@ -139,7 +139,7 @@ class SubscriptionService{
                             if ($expired_date) {
                                 SubscriptionJob::dispatch($subscription->id)
                                     ->delay(new Carbon($expired_date));
-                                logger()->info('subscription having id  '. $subscription->id . 'will expired on '. $expired_date );
+                                logger()->info('subscription having id  '. $subscription->id . ' will expired on '. $expired_date );
                             }
 
 
