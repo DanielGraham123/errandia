@@ -145,15 +145,17 @@ class ErrandService{
             $errand->save();
 
             $data = $request->all();
-            logger()->info(  gettype($data['images']) .  " errand images added");
-            $images= $data['images'];
-            if (isset($images)) {
-                if(is_array($images)) {
-                    foreach ($images as $errand_image) {
-                        $this->add_images($errand, $errand_image);
+            if($request->has('images')) {
+                logger()->info(gettype($data['images']) . " errand images added");
+                $images = $data['images'];
+                if (isset($images)) {
+                    if (is_array($images)) {
+                        foreach ($images as $errand_image) {
+                            $this->add_images($errand, $errand_image);
+                        }
+                    } else {
+                        $this->add_images($errand, $images);
                     }
-                } else {
-                    $this->add_images($errand, $images);
                 }
             }
             return $errand;
