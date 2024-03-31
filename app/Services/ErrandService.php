@@ -43,7 +43,7 @@ class ErrandService{
         $query =  Errand::select('item_quotes.*')
             ->leftJoin('users', 'item_quotes.user_id', '=', 'users.id');
             if ($user_id) {
-                $query->where('user_id', '$user_id');
+                $query->where('user_id', $user_id);
             } else {
                 $query->where('user_id', '<>', '0');
             }
