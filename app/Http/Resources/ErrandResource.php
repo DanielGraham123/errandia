@@ -61,13 +61,11 @@ class ErrandResource extends JsonResource
         }
 
         $data['categories'] = [];
-        if ($this->categories) {
-            foreach ($this->sub_categories() as $sub_category) {
-                $data['categories'] = [
-                    'id' => $sub_category->id,
-                    'name' => $sub_category->name,
-                ];
-            }
+        foreach ($this->sub_categories() as $sub_category) {
+            $data['categories'] = [
+                'id' => $sub_category->id,
+                'name' => $sub_category->name,
+            ];
         }
 
         return $data;
