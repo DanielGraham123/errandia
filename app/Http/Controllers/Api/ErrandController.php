@@ -192,12 +192,16 @@ class ErrandController extends Controller
                 $errand->read_status = false;
                 $errand->save();
 
-                if (isset($data['images']) && is_array($data['images'])) {
-                    foreach ($data['images'] as $errand_image) {
-                        $image = new ErrandImage();
-                        $image->item_quote_id = $errand->id;
-                        $image->image = $this->uploadImage($errand_image, 'errands');
-                        $image->save();
+                $data = $request->all();
+                logger()->info(  gettype($data['images']) .  " errand images added");
+                $images= $data['images'];
+                if (isset($images)) {
+                    if(is_array($images)) {
+                        foreach ($images as $errand_image) {
+                            $this->add_images($errand, $errand_image);
+                        }
+                    } else {
+                        $this->add_images($errand, $images);
                     }
                 }
                 return $errand;
@@ -241,5 +245,14 @@ class ErrandController extends Controller
         $file->move($path, $fName);
 
         return "uploads/$folder/$fName";
+    }
+
+    private function add_images($errand, $errand_image)
+    {
+        $image = new ErrandImage();
+        $image->item_quote_id = $errand->id;
+        $image->image = $this->uploadImage($errand_image, 'errands');
+        $image->save();
+        logger()->info('New errand image saved');
     }
 }
