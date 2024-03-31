@@ -54,7 +54,8 @@ Route::middleware('auth:api')->group(function (){
         Route::get("/user/subscription", "SubscriptionController@show");
         Route::get("/user/subscriptions/{id}/check-status", "SubscriptionController@checkStatus");
 
-        Route::get("/user/errands", "ErrandController@index");
+        Route::get("/errands", "ErrandController@index");
+        Route::get("/user/errands", "ErrandController@user_errands");
         Route::post("/user/errands", "ErrandController@store");
         Route::delete("/user/errands/{id}", "ErrandController@delete");
     });
