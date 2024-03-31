@@ -54,10 +54,13 @@ Route::middleware('auth:api')->group(function (){
         Route::get("/user/subscription", "SubscriptionController@show");
         Route::get("/user/subscriptions/{id}/check-status", "SubscriptionController@checkStatus");
 
-        Route::get("/errands", "ErrandController@index");
+
+
         Route::get("/user/errands", "ErrandController@user_errands");
         Route::post("/user/errands", "ErrandController@store");
+        Route::get("/user/errands/{id}/run", "ErrandController@run_errand");
         Route::delete("/user/errands/{id}", "ErrandController@delete");
+        Route::get("/user/errands/{id}", "ErrandController@load_errand");
     });
 
 
@@ -104,17 +107,16 @@ Route::group(['namespace' => 'Api'], function() {
     Route::get('/items', 'ProductController@index');
     Route::get("/items/{slug}", "ProductController@show");
     Route::get("/items/{slug}/related", "ProductController@otherItems");
-
     Route::get('/products/related', 'ProductController@relatedProducts');
 
-    Route::resource('errands', 'ErrandController', ['only' => ['index', 'store']]);
+
+
+    Route::get("/errands/{id}", "ErrandController@show");
+    Route::get("/errands", "ErrandController@index");
     Route::get('/errand/search', 'ErrandController@runErrand');
-    Route::post('/errand/delete', 'ErrandController@deleteErrand');
 
     Route::post('/payments/return', 'PaymentController@return');
-
     Route::resource('reviews', 'ReviewController');
-
     Route::get('/notifications', 'NotificationController@index');
     Route::get('/notifications/mark_as_read', 'NotificationController@markAllRead');
     Route::post('/products/{id}/images/upload', [ProductUploadController::class, 'uploadProductGallery']);

@@ -143,7 +143,6 @@ class ProductController extends Controller
 
     }
 
-    // get user products
     public function getUserProducts(Request $request)
     {
         try {
@@ -167,7 +166,6 @@ class ProductController extends Controller
         }
     }
 
-    // get user services
     public function getUserServices(Request $request)
     {
         try {
