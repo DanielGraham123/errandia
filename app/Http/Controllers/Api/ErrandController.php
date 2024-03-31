@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ErrandResource;
-use App\Models\Errand;
 use App\Services\ErrandService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Mockery\Exception;
 
 class ErrandController extends Controller
 {
@@ -83,6 +80,17 @@ class ErrandController extends Controller
     public function store(Request $request)
     {
         try {
+            $rules = [
+                'title' => 'required',
+                'description' => 'required'
+            ];
+
+            $data = $request->all();
+            $this->validate($data, $rules);
+            if(!empty($this->validations_errors)) {
+                return $this->build_response(response(), 'check required fields', 400);
+            }
+
             $user_id = auth('api')->user()->id;
             $this->errandService->save_errand($request, $user_id);
             return $this->build_success_response(response(), 'Errand saved');
@@ -95,6 +103,17 @@ class ErrandController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $data = $request->all();
+            $rules = [
+                'title' => 'required',
+                'description' => 'required'
+            ];
+
+            $this->validate($data, $rules);
+            if(!empty($this->validations_errors)) {
+                return $this->build_response(response(), 'check required fields', 400);
+            }
+
             $user_id = auth('api')->user()->id;
             $errand = $this->errandService->update_errand($id, $user_id, $request);
             return $this->build_success_response(

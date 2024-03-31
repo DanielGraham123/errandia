@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Errand;
 use App\Models\ErrandImage;
+use App\Models\SubCategory;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ErrandRepository;
 use Illuminate\Support\Facades\DB;
@@ -101,7 +102,7 @@ class ErrandService{
     public function add_image($id, $user_id , $request)
     {
         $errand = $this->load_errand($id, $user_id);
-        if (!$request->has('image')) {
+        if (!$request->hasFile('image')) {
             throw new \Exception("Image file is required");
         }
         $data = $request->all();
@@ -152,7 +153,7 @@ class ErrandService{
 
         $props = [];
         foreach ($tokens as $key => $tok) {
-            $props[] = \App\Models\SubCategory::where('name', 'LIKE', '%'.$tok.'%')->orWhere('description', 'LIKE', '%'.$tok.'%')->get()->all();
+            $props[] = SubCategory::where('name', 'LIKE', '%'.$tok.'%')->orWhere('description', 'LIKE', '%'.$tok.'%')->get()->all();
             $props[] = $this->categoryRepository->searchAll([['name'=>$tok, 'description'=>$tok]]);
         }
         $categs = [];
@@ -217,7 +218,6 @@ class ErrandService{
             return $errand;
         });
     }
-
 
     private function add_images($errand, $errand_image)
     {
