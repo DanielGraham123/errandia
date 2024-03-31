@@ -17,26 +17,60 @@ class ErrandResource extends JsonResource
     {
         $errand = $this;
         $user = $errand->user;
+
         $images = collect($errand->images)->map(function ($item) {
             return [
                 'id' => $item->id,
-                'url' => $item->getImage()
+                'image_path' => $item->image()
             ];
         })->toArray();
-        return [
+
+        $data = [
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
             'slug' =>  $this->slug,
             'read_status' => $this->read_status,
             'user' => new UserResource($user),
-            'categories' => $this->subCategories(),
             'images' => $images,
             'created_at' => $this->created_at,
             'when' => $this->created_at->diffForHumans(),
-            'street' => $this->street ? $this->street->name : '',
-            'town' => $this->street ? $this->street->town->name : '',
-            'region' => $this->street ? $this->street->town->region->name: ''
         ];
+
+        $data['region'] = [];
+        if ($this->region){
+            $data['region'] = [
+                'id' => $this->region->id,
+                'name' => $this->region->name,
+            ];
+        }
+
+        $data['town'] = [];
+        if ($this->town){
+            $data['town'] = [
+                'id' => $this->town->id,
+                'name' => $this->town->name,
+            ];
+        }
+
+        $data['street'] = [];
+        if ($this->street){
+            $data['street'] = [
+                'id' => $this->street->id,
+                'name' => $this->street->name,
+            ];
+        }
+
+        $data['categories'] = [];
+        if ($this->categories) {
+            foreach ($this->sub_categories() as $sub_category) {
+                $data['categories'] = [
+                    'id' => $sub_category->id,
+                    'name' => $sub_category->name,
+                ];
+            }
+        }
+
+        return $data;
     }
 }

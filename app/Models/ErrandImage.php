@@ -16,11 +16,6 @@ class ErrandImage extends Model
         'image'
     ];
 
-    public function getImage()
-    {
-        return $this->image ? asset('storage/'. $this->image) : '';
-    }
-
     public function errand()
     {
         # code...
