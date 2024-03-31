@@ -2,20 +2,27 @@
 
 namespace App\Services;
 
+use App\Models\Errand;
+use App\Models\ErrandImage;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ErrandRepository;
-use \Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ErrandService{
 
     private $errandRepository, $categoryRepository;
     private $validationService;
+    private ElasticSearchProductService $searchProductService;
     public function __construct(ErrandRepository $errandRepository,
                                 ValidationService $validationService,
-                                CategoryRepository $categoryRepository){
+                                CategoryRepository $categoryRepository,
+                                ElasticSearchProductService $searchProductService
+    ){
         $this->errandRepository = $errandRepository;
         $this->validationService = $validationService;
         $this->categoryRepository = $categoryRepository;
+        $this->searchProductService = $searchProductService;
     }
 
     public function get($size=null, $filter=null)
@@ -31,10 +38,47 @@ class ErrandService{
     }
 
 
-    public function searchAll($size, $filter)
+    public function load_errands($user_id = null)
     {
-        # code...
-        return $this->errandRepository->get($size, $filter);
+        $query =  Errand::select('item_quotes.*')
+            ->leftJoin('users', 'item_quotes.user_id', '=', 'users.id');
+            if ($user_id) {
+                $query->where('user_id', '$user_id');
+            } else {
+                $query->where('user_id', '<>', '0');
+            }
+            return $query
+            ->orderBy('item_quotes.created_at', 'desc')
+            ->paginate(10);
+    }
+
+    public function load_errand($id, $user_id = null)
+    {
+        if($user_id == null) {
+            $errand = Errand::find($id);
+        } else {
+            $errand = Errand::where('id' , $id)->where('user_id', $user_id)->first();
+        }
+
+        if($user_id &&  $errand->user_id != $user_id) {
+            throw new \Exception("Not Authorized to access to this resource");
+        }
+
+        return $errand;
+    }
+
+    public function run_errand($id, $user_id)
+    {
+        $errand = $this->load_errand($id, $user_id);
+
+        if(!$errand) {
+            return [];
+        }
+
+        logger()->info("Run errand with title : ". $errand->id);
+
+        return $this->searchProductService->search($errand->title);
+
     }
 
     public function getOne($slug)
@@ -84,36 +128,65 @@ class ErrandService{
         return $this->errandRepository->store($data);
     }
 
-    public function saveImages($data, $quote_id)
+    public function save_errand($request, $user_id)
     {
-        # code...
-        $quote_images = [];
-        $count = 0;
-        foreach ($data as $key => $file) {
-            # code...
-            if ($count >= 3) {break;}
-            $path = public_path('uploads/quote_images');
-            $fname = 'qim_'.time().'_'.random_int(100000, 999999).'.'.$file->getClientOriginalExtension();
-            $file->move($path, $fname);
-            $quote_images[] = ['item_quote_id'=>$quote_id, 'image'=>$fname];
-            $count++;
-        }
-        
-        $validationRules = ['item_quote_id'=>'required', 'image'=>'required'];
-        if(!empty($quote_images)){
-            if(is_array($quote_images[1])){
-                foreach ($quote_images as $key => $pair) {
-                    # code...
-                    $this->validationService->validate($pair, $validationRules);
+        DB::transaction(function () use ($request, $user_id) {
+            $errand = new Errand();
+            $errand->user_id = $user_id;
+            $errand->title = $request->get('title');
+            $errand->description = $request->get('description');
+            $errand->slug = Str::slug($request->get('title')). '-' . time();
+            $errand->sub_categories = trim($request->get('categories'));
+            $errand->region_id = $request->get('region_id');
+            $errand->town_id = $request->get('town_id');
+            $errand->street_id = $request->get('street_id');
+            $errand->visibility = $request->get('visibility');
+            $errand->read_status = false;
+            $errand->save();
+
+            $data = $request->all();
+            if($request->has('images')) {
+                logger()->info(gettype($data['images']) . " errand images added");
+                $images = $data['images'];
+                if (isset($images)) {
+                    if (is_array($images)) {
+                        foreach ($images as $errand_image) {
+                            $this->add_images($errand, $errand_image);
+                        }
+                    } else {
+                        $this->add_images($errand, $images);
+                    }
                 }
             }
-            $this->errandRepository->saveImages($quote_images);
+            return $errand;
+        });
+    }
+
+
+    private function add_images($errand, $errand_image)
+    {
+        $image = new ErrandImage();
+        $image->item_quote_id = $errand->id;
+        $image->image = $this->uploadImage($errand_image, 'errands');
+        $image->save();
+        logger()->info('New errand image saved');
+    }
+
+
+    private function uploadImage($file, $folder)
+    {
+        $path = public_path("uploads/$folder/");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
         }
+        $fName = 'errand_image_' . '_' . time(). '.' . $file->getClientOriginalExtension();
+        $file->move($path, $fName);
+
+        return "uploads/$folder/$fName";
     }
 
     public function update($slug, $data)
     {
-        # code...
         $validationRules = ['title'=>'required'];
         $this->validationService->validate($data, $validationRules);
         if(empty($data))

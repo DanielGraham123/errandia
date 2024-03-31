@@ -13,9 +13,8 @@ class Errand extends Model
 
     protected $fillable = ['title', 'description', 'user_id', 'slug', 'read_status', 'sub_categories', 'region_id', 'town_id', 'street_id', 'visibility', 'status'];
 
-    public function posted_by()
+    public function user()
     {
-        # code...
         return $this->belongsTo(User::class, 'user_id');
     }
 
@@ -39,10 +38,6 @@ class Errand extends Model
         return empty($sub_categories) ? '' : implode(', ', $sub_categories);
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 
     public function images()
     {
