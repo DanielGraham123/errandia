@@ -37,7 +37,7 @@ class ErrandController extends Controller
             return $this->build_success_response(response(),
                 'items found',
                 self::convert_documents_paginated_result(
-                    $result['hits'], $request->get('page')
+                    $result['hits'], $request->get('page')?? 1
                 )
             );
         } catch (\Exception $e) {
@@ -59,10 +59,9 @@ class ErrandController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
-            return $this->build_response(response(), 'failed load errand.');
+            return $this->build_response(response(), 'failed load errand.', 400);
         }
     }
-
     public function load_errand(Request $request, $id)
     {
         logger()->info('HELLO');
@@ -77,7 +76,7 @@ class ErrandController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
-            return $this->build_response(response(), 'failed load errand.');
+            return $this->build_response(response(), 'failed load errand.', 400);
         }
     }
     
@@ -89,28 +88,37 @@ class ErrandController extends Controller
             return $this->build_success_response(response(), 'Errand saved');
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
-            return $this->build_response(response(), 'failed to save errand details.');
+            return $this->build_response(response(), 'failed to save errand details.', 400);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $user_id = auth('api')->user()->id;
+            $errand = $this->errandService->update_errand($id, $user_id, $request);
+            return $this->build_success_response(
+                response(),
+                'errand updated',
+                [
+                    'item' => new ErrandResource($errand)
+                ]
+            );
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
 
     public function delete(Request $request, $id)
     {
         try {
-            DB::transaction(function() use ($request, $id) {
-                $errand = Errand::find($id);
-                if (!$errand) {
-                    throw new Exception("Errand not found");
-                };
-                foreach($errand->images as $image) {
-                    Storage::delete($image->image);
-                    $image->delete();
-                }
-                $errand->delete();
-            });
+            $user_id = auth('api')->user()->id;
+            $this->errandService->delete_errand($id, $user_id);
             return $this->build_success_response(response(), 'Errand deleted successfully');
         } catch(\Exception $e) {
             logger()->error($e->getMessage());
-            return $this->build_response(response(), 'failed to delete errand');
+            return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
     public function load_errands($user_id)
@@ -124,5 +132,36 @@ class ErrandController extends Controller
                 ErrandResource::collection($errands)
             )
         );
+    }
+
+    public function delete_image(Request $request, $id, $image_id)
+    {
+        try {
+            auth('api')->user();;
+            $this->errandService->delete_image($image_id, $id);
+            return $this->build_success_response(response(), 'errand image deleted');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), $e->getMessage(), 400);
+        }
+    }
+
+    public function add_image(Request $request, $id)
+    {
+        try {
+            $user_id = auth('api')->user()->id;;
+            $image = $this->errandService->add_image($id, $user_id, $request);
+            return $this->build_success_response(response(), 'image added',
+                [
+                    'item' => [
+                        'id' => $image->id,
+                        'image' => $image->image
+                    ]
+                ]
+            );
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), $e->getMessage(), 400);
+        }
     }
 }
