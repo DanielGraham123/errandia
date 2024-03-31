@@ -8,6 +8,7 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\ErrandRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Mockery\Exception;
 
 class ErrandService{
 
@@ -54,13 +55,13 @@ class ErrandService{
 
     public function load_errand($id, $user_id = null)
     {
-        if($user_id == null) {
-            $errand = Errand::find($id);
-        } else {
-            $errand = Errand::where('id' , $id)->where('user_id', $user_id)->first();
+        $errand = Errand::find($id);
+
+        if($errand == null) {
+            throw new \Exception("errand not found");
         }
 
-        if($user_id &&  $errand->user_id != $user_id) {
+        if($user_id != null &&  $errand->user_id != $user_id) {
             throw new \Exception("Not Authorized to access to this resource");
         }
 
@@ -79,6 +80,61 @@ class ErrandService{
 
         return $this->searchProductService->search($errand->title);
 
+    }
+
+    public function update_errand($id, $user_id, $request)
+    {
+        $errand  = $this->load_errand($id, $user_id);
+
+        $errand->title = $request->get('title');
+        $errand->description = $request->get('description');
+        $errand->sub_categories = trim($request->get('categories'));
+        $errand->region_id = $request->get('region_id');
+        $errand->town_id = $request->get('town_id');
+        $errand->street_id = $request->get('street_id');
+        $errand->visibility = $request->get('visibility');
+        $errand->save();
+        logger()->info("errand updated");
+        return $errand;
+    }
+
+    public function add_image($id, $user_id , $request)
+    {
+        $errand = $this->load_errand($id, $user_id);
+        if (!$request->has('image')) {
+            throw new \Exception("Image file is required");
+        }
+        $data = $request->all();
+        $image = $this->add_images($errand, $data['image']);
+        return $image;
+    }
+
+    public function delete_image($id, $errand_id)
+    {
+        $errand_image = ErrandImage::find($id);
+        if($errand_image == null){
+            throw new \Exception("image not found");
+        }
+
+        if($errand_image->item_quote_id != $errand_id){
+            throw new \Exception("You are not authorized");
+        }
+
+        MediaService::delete_media($errand_image->image);
+        $errand_image->delete();
+        logger()->info('Errand image deleted');
+    }
+
+    public function delete_errand($id, $user_id)
+    {
+        $errand = $this->load_errand($id, $user_id);
+        DB::transaction(function() use ($errand) {
+            foreach($errand->images as $errand_image) {
+                $errand_image->delete();
+                MediaService::delete_media($errand_image->image);
+            }
+            $errand->delete();
+        });
     }
 
     public function getOne($slug)
@@ -170,8 +226,8 @@ class ErrandService{
         $image->image = $this->uploadImage($errand_image, 'errands');
         $image->save();
         logger()->info('New errand image saved');
+        return $image;
     }
-
 
     private function uploadImage($file, $folder)
     {
