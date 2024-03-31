@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Street;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ErrandResource extends JsonResource
@@ -21,7 +20,7 @@ class ErrandResource extends JsonResource
         $images = collect($errand->images)->map(function ($item) {
             return [
                 'id' => $item->id,
-                'image_path' => $item->image()
+                'image_path' => $item->image
             ];
         })->toArray();
 
