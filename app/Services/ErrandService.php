@@ -79,15 +79,29 @@ class ErrandService{
             return [];
         }
 
-        $full_result  = $this->searchProductService->search($errand->title, [], null);
+        // build filter
+        $filters = [];
+        if($errand->region_id) {
+            $filters['region'] = $errand->region_id;
+        }
 
+        if($errand->town_id) {
+            $filters['town'] = $errand->town_id;
+        }
+
+        if($errand->sub_categories) {
+            $sub_category_ids = explode(',', $errand->sub_categories);
+            $filters['category_ids'] = $sub_category_ids;
+        }
+
+
+        $full_result  = $this->searchProductService->search($errand->title, $filters, null);
         if($full_result['hits']['total']['value'] > 0) {
-            // Todo create a background job to notify automatically businesses who have an active subscription
-            ErrandJob::dispatch($full_result['hits']['hits'])
+            ErrandJob::dispatch($full_result['hits']['hits'], $errand)
                 ->delay(Carbon::now()->addSeconds(5));
         }
 
-        return $this->searchProductService->search($errand->title, [], $page);
+        return $this->searchProductService->search($errand->title, $filters, $page);
     }
 
     public function update_errand($id, $user_id, $request)
