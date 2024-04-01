@@ -84,4 +84,9 @@ class Product extends Model
     {
         return $this->hasMany(Product::class, 'item_id');
     }
+
+    public function errand_items()
+    {
+        return $this->hasMany(ErrandItem::class, 'item_id');
+    }
 }

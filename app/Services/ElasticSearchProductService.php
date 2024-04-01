@@ -119,7 +119,7 @@ class ElasticSearchProductService {
         }
     }
 
-    public function search($search_term, $filter = [],   $page = 1): callable|array
+    public function search($search_term, $filter = [], $page = 1): callable|array
     {
         $query = [];
         $query['must'] = [
@@ -165,8 +165,6 @@ class ElasticSearchProductService {
 
         $params = [
             'index' => $this->index_name,
-            'from' => intval($page) < 1 ? 0 : (intval($page) - 1) * 10,
-            'size' => 10,
             'body' => [
                 'query' => ['bool' => $query],
                 'aggs' => [
@@ -176,6 +174,11 @@ class ElasticSearchProductService {
                 ]
             ]
         ];
+
+        if ($page != null) {
+            $params['from'] = intval($page) < 1 ? 0 : (intval($page) - 1) * 10;
+            $params['size'] = 10;
+        }
 
         return $this->client->search($params);
     }

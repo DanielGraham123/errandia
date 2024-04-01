@@ -275,4 +275,9 @@ class ProductRepository
             throw $th;
         }
     }
+
+    public function load_item(mixed $item_id)
+    {
+        return Product::find($item_id);
+    }
 }
