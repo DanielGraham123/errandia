@@ -30,7 +30,8 @@ class ErrandController extends Controller
     {
         $user_id = auth('api')->user()->id;
         try {
-            $result = $this->errandService->run_errand($id, $user_id);
+            $result = $this->errandService
+                ->run_errand($id, $user_id, $request->get('page')?? 1);
             return $this->build_success_response(response(),
                 'items found',
                 self::convert_documents_paginated_result(
@@ -152,7 +153,6 @@ class ErrandController extends Controller
             )
         );
     }
-
     public function delete_image(Request $request, $id, $image_id)
     {
         try {

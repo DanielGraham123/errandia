@@ -69,6 +69,13 @@ class User extends Authenticatable
         return $this->hasMany(Product::class, 'user_id');
     }
 
+    public function has_active_subscription()
+    {
+        $subscriptions = $this->hasMany(Subscription::class, 'user_id');
+        $subscription =  $subscriptions->where('expired', false)->first();
+        return (bool)$subscription;
+    }
+
     public function managedShops(){
         return $this->belongsToMany(Shop::class, 'shop_managers', 'shop_id', 'user_id');
     }

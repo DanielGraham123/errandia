@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Jobs\ErrandJob;
 use App\Models\Errand;
 use App\Models\ErrandImage;
 use App\Models\SubCategory;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ErrandRepository;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Mockery\Exception;
@@ -69,7 +71,7 @@ class ErrandService{
         return $errand;
     }
 
-    public function run_errand($id, $user_id)
+    public function run_errand($id, $user_id, $page = 1)
     {
         $errand = $this->load_errand($id, $user_id);
 
@@ -77,10 +79,15 @@ class ErrandService{
             return [];
         }
 
-        logger()->info("Run errand with title : ". $errand->id);
+        $full_result  = $this->searchProductService->search($errand->title, [], null);
 
-        return $this->searchProductService->search($errand->title);
+        if($full_result['hits']['total']['value'] > 0) {
+            // Todo create a background job to notify automatically businesses who have an active subscription
+            ErrandJob::dispatch($full_result['hits']['hits'])
+                ->delay(Carbon::now()->addSeconds(5));
+        }
 
+        return $this->searchProductService->search($errand->title, [], $page);
     }
 
     public function update_errand($id, $user_id, $request)
