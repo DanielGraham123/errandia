@@ -42,7 +42,7 @@ class ElasticSearchProductService {
                 'properties' => [
                     'name' => ['type' => 'text', 'analyzer' => 'search_index'],
                     'description' => ['type' => 'text', 'analyzer' => 'search_index'],
-                    'tags' => ['type' => 'text'],
+                    'tags' => ['type' => 'text', 'analyzer' => 'search_index'],
                     'service' => ['type' => 'integer'],
                     'status' => ['type' => 'boolean'],
                     'unit_price' => ['type' => 'long'],
@@ -126,6 +126,7 @@ class ElasticSearchProductService {
             'bool' => [
                 'should' => [
                     ['query_string' => ['default_field' => 'name', 'query' => $search_term]],
+                    ['query_string' => ['default_field' => 'tags', 'query' => $search_term]],
                     ['query_string' => ['default_field' => 'shop.name', 'query' => $search_term]],
                     ['query_string' => ['default_field' => 'category.name', 'query' => $search_term]],
                     ['wildcard' => ['description' => '*'. $search_term]],
@@ -228,7 +229,7 @@ class ElasticSearchProductService {
             'region_id' => $item->shop->region->id,
             'region_name' => $item->shop->region->name,
             'town_id' => $item->shop->town ? $item->shop->town->id : 0,
-            'town_name' => $item->shop->town ? $item->shop->town->name :  ''
+            'town_name' => $item->shop->town ? $item->shop->town->name :  '',
         ];
     }
 
