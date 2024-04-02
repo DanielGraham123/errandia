@@ -80,7 +80,7 @@ class ElasticSearchProductService {
         $this->client = ClientBuilder::create()->build();
         if(!$this->client->indices()->exists(['index' => $this->index_name])) {
             $this->settings['index'] = $this->index_name;
-            $this->settings['body']['settings']['analysis']['filter']['synonym']['synonyms'] = Synonym::get_synonym_values();
+            $this->settings['body']['settings']['analysis']['filter']['synonym']['synonyms'] = Synonym::build_from_sub_categories();
             $this->client->indices()->create($this->settings);
         }
     }
