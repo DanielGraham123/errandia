@@ -62,7 +62,6 @@ class ErrandController extends Controller
     }
     public function load_errand(Request $request, $id)
     {
-        logger()->info('HELLO');
         try {
             $errand = $this->errandService->load_errand($id, auth('api')->user()->id);
             return $this->build_success_response(
@@ -164,7 +163,6 @@ class ErrandController extends Controller
             return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
-
     public function add_image(Request $request, $id)
     {
         try {

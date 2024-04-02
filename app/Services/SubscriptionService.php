@@ -142,7 +142,6 @@ class SubscriptionService{
                                 logger()->info('subscription having id  '. $subscription->id . ' will expired on '. $expired_date );
                             }
 
-
                             $user_device = UserDeviceRepository::getDevice($payment->user_id);
                             if($user_device) {
                                 $user_device->notify(new UserNotification(
