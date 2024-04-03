@@ -19,13 +19,13 @@ class ElasticSearchProductService {
                 'analysis' => [
                     'analyzer' => [
                         'search_index' => [
-                            'tokenizer' => 'pattern',
+                            'tokenizer' => 'standard',
                             'filter' => ['lowercase','asciifolding', 'synonym', 'german'],
                         ]
                     ],
                     'filter' => [
                         'synonym' => [
-                            'type' => 'synonym',
+                            'type' => 'synonym_graph',
                             'ignore_case' => true,
                             'synonyms' => [],
                         ],
@@ -51,7 +51,7 @@ class ElasticSearchProductService {
                         'type' => 'nested',
                         'properties' => [
                             'id' => ['type' => 'integer'],
-                            'name' => ['type' => 'keyword'],
+                            'name' => ['type' => 'text', 'analyzer' => 'search_index'],
                             'description' => ['type' => 'text'],
                         ]
                     ],
@@ -59,7 +59,7 @@ class ElasticSearchProductService {
                         'type' => 'nested',
                         'properties' => [
                             'id' => ['type' => 'integer'],
-                            'name' => ['type' => 'keyword'],
+                            'name' => ['type' => 'text', 'analyzer' => 'search_index'],
                             'description' => ['type' => 'text']
                         ]
                     ],
