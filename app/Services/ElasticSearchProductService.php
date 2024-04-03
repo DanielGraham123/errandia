@@ -19,7 +19,7 @@ class ElasticSearchProductService {
                 'analysis' => [
                     'analyzer' => [
                         'search_index' => [
-                            'tokenizer' => 'standard',
+                            'tokenizer' => 'keyword',
                             'filter' => ['lowercase','asciifolding', 'synonym', 'german'],
                         ]
                     ],
@@ -126,7 +126,7 @@ class ElasticSearchProductService {
             'bool' => [
                 'should' => [
                     ['query_string' => ['default_field' => 'name', 'query' => $search_term]],
-                    ['match' => ['name' => ['query' => $search_term, 'boost' => 10, 'operator' => 'and']]],
+                    ['match' => ['name' => ['query' => $search_term, 'boost' => 10]]],
                     ['wildcard' => ['name' => '*'. $search_term]],
                     ['wildcard' => ['name' => $search_term. '*']],
                     ['query_string' => ['default_field' => 'tags', 'query' => $search_term]],
