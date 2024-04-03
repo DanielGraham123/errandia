@@ -176,7 +176,9 @@ class Controller extends BaseController
         foreach ($documents as $document) {
             $item_ids[] = $document['_source']['id'];
         }
-        return ProductResource::collection(Product::find($item_ids));
+        return ProductResource::collection(Product::find($item_ids)->sortBy(function ($model) use ($item_ids){
+            return array_search($model->id, $item_ids);
+        }));
     }
 
     // check if owner of the resource

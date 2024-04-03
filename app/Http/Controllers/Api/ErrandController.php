@@ -92,8 +92,10 @@ class ErrandController extends Controller
             }
 
             $user_id = auth('api')->user()->id;
-            $this->errandService->save_errand($request, $user_id);
-            return $this->build_success_response(response(), 'Errand saved');
+            $errand = $this->errandService->save_errand($request, $user_id);
+            return $this->build_success_response(response(), 'Errand saved', [
+                'item' => new ErrandResource($errand)
+            ]);
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
             return $this->build_response(response(), 'failed to save errand details.', 400);
