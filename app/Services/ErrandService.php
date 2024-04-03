@@ -208,7 +208,7 @@ class ErrandService{
 
     public function save_errand($request, $user_id)
     {
-        DB::transaction(function () use ($request, $user_id) {
+        return DB::transaction(function () use ($request, $user_id) {
             $errand = new Errand();
             $errand->user_id = $user_id;
             $errand->title = $request->get('title');
@@ -228,8 +228,10 @@ class ErrandService{
                 $images = $data['images'];
                 if (isset($images)) {
                     if (is_array($images)) {
+                        $i = 1; // image count
                         foreach ($images as $errand_image) {
-                            $this->add_images($errand, $errand_image);
+                            $this->add_images($errand, $errand_image, $i);
+                            $i++;
                         }
                     } else {
                         $this->add_images($errand, $images);
@@ -240,23 +242,23 @@ class ErrandService{
         });
     }
 
-    private function add_images($errand, $errand_image)
+    private function add_images($errand, $errand_image, $i = 1): ErrandImage
     {
         $image = new ErrandImage();
         $image->item_quote_id = $errand->id;
-        $image->image = $this->uploadImage($errand_image, 'errands');
+        $image->image = $this->uploadImage($errand_image, 'errands', $i);
         $image->save();
         logger()->info('New errand image saved');
         return $image;
     }
 
-    private function uploadImage($file, $folder)
+    private function uploadImage($file, $folder, $i = 1): string
     {
         $path = public_path("uploads/$folder/");
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
-        $fName = 'errand_image_' . '_' . time(). '.' . $file->getClientOriginalExtension();
+        $fName = 'errand_image_' . $i . '_' . time(). '.' . $file->getClientOriginalExtension();
         $file->move($path, $fName);
 
         return "uploads/$folder/$fName";

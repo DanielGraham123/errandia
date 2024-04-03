@@ -41,7 +41,7 @@ class ElasticSearchProductService {
             'mappings' => [
                 'properties' => [
                     'name' => ['type' => 'text', 'analyzer' => 'search_index'],
-                    'description' => ['type' => 'text', 'analyzer' => 'search_index'],
+                    'description' => ['type' => 'text'],
                     'tags' => ['type' => 'text', 'analyzer' => 'search_index'],
                     'service' => ['type' => 'integer'],
                     'status' => ['type' => 'boolean'],
@@ -51,8 +51,8 @@ class ElasticSearchProductService {
                         'type' => 'nested',
                         'properties' => [
                             'id' => ['type' => 'integer'],
-                            'name' => ['type' => 'text', 'analyzer' => 'search_index'],
-                            'description' => ['type' => 'text', 'analyzer' => 'search_index'],
+                            'name' => ['type' => 'keyword'],
+                            'description' => ['type' => 'text'],
                         ]
                     ],
                     'shop' => [
@@ -60,7 +60,7 @@ class ElasticSearchProductService {
                         'properties' => [
                             'id' => ['type' => 'integer'],
                             'name' => ['type' => 'keyword'],
-                            'description' => ['type' => 'text', 'analyzer' => 'search_index']
+                            'description' => ['type' => 'text']
                         ]
                     ],
                     'categories' => ['type' => 'keyword'],
@@ -126,20 +126,15 @@ class ElasticSearchProductService {
             'bool' => [
                 'should' => [
                     ['query_string' => ['default_field' => 'name', 'query' => $search_term]],
+                    ['match' => ['name' => ['query' => $search_term, 'boost' => 10, 'operator' => 'and']]],
+                    ['wildcard' => ['name' => '*'. $search_term]],
+                    ['wildcard' => ['name' => $search_term. '*']],
                     ['query_string' => ['default_field' => 'tags', 'query' => $search_term]],
-                    ['query_string' => ['default_field' => 'shop.name', 'query' => $search_term]],
-                    ['query_string' => ['default_field' => 'category.name', 'query' => $search_term]],
-                    ['wildcard' => ['description' => '*'. $search_term]],
-                    ['wildcard' => ['description' => $search_term. '*']],
-                    ['wildcard' => ['shop.description' => '*'. $search_term]],
-                    ['wildcard' => ['shop.description' => $search_term. '*']],
-                    ['wildcard' => ['category.description' => '*'. $search_term]],
-                    ['wildcard' => ['category.description' => $search_term. '*']],
                 ]
             ]
         ];
         $query['should'] = [
-            ['match' => ['name' => ['query' => $search_term, 'boost' => 10, 'operator' => 'and']]],
+            ['match' => ['tags' => ['query' => $search_term]]],
             ['match' => ['category.name' => $search_term]],
             ['match' => ['shop.name' => $search_term]],
             ['match' => ['description' => $search_term]],
@@ -172,6 +167,9 @@ class ElasticSearchProductService {
                     'types' => [
                         "terms" => ['field' =>  'service']
                     ]
+                ],
+                'sort' => [
+                    ['_score' => 'desc']
                 ]
             ]
         ];
@@ -215,7 +213,7 @@ class ElasticSearchProductService {
             'quantity' => $item->quantity,
             'service' => $item->service,
             'status' => $item->status == 1,
-            'tags' => explode(',', $item->tags),
+            'tags' => $item->name . ',' . $item->tags,
             'category' => [
                 'id' => $item->category->id,
                 'name' => $item->category->name,

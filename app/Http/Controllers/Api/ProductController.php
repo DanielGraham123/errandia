@@ -357,7 +357,6 @@ class ProductController extends Controller
                 $request->get('page')
         );
 
-
         return $this->build_success_response(response(), 'items found',
             self::convert_documents_paginated_result(
                 $result['hits'], $request->get('page')
