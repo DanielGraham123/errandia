@@ -19,7 +19,7 @@ class ElasticSearchProductService {
                 'analysis' => [
                     'analyzer' => [
                         'search_index' => [
-                            'tokenizer' => 'keyword',
+                            'tokenizer' => 'pattern',
                             'filter' => ['lowercase','asciifolding', 'synonym', 'german'],
                         ]
                     ],
