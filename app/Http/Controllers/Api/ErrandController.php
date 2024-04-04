@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ErrandResource;
+use App\Http\Resources\ProductResource;
 use App\Services\ErrandService;
 use Illuminate\Http\Request;
 
@@ -74,6 +75,21 @@ class ErrandController extends Controller
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
             return $this->build_response(response(), 'failed load errand.', 400);
+        }
+    }
+
+    public function load_errand_results(Request $request, $id)
+    {
+        try {
+            $errand_results = $this->errandService->load_errand_results($id, auth('api')->user()->id);
+            return $this->build_success_response(
+                response(),
+                'items loaded',
+                self::convert_paginated_result($errand_results, ProductResource::collection($errand_results->items()))
+            );
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), 'failed load errand results.', 400);
         }
     }
     
