@@ -57,6 +57,7 @@ Route::middleware('auth:api')->group(function (){
         Route::get("/user/errands", "ErrandController@user_errands");
         Route::post("/user/errands", "ErrandController@store");
         Route::get("/user/errands/{id}/run", "ErrandController@run_errand");
+        Route::get("/user/errands/{id}/results", "ErrandController@load_errand_results");
         Route::post("/user/errands/{id}", "ErrandController@update");
         Route::post("/user/errands/{id}/add_image", "ErrandController@add_image");
         Route::delete("/user/errands/{id}/image/{image_id}", "ErrandController@delete_image");

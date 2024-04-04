@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Errand extends Model
 {
@@ -62,5 +63,17 @@ class Errand extends Model
     public function errand_items()
     {
         return $this->hasMany(ErrandItem::class, 'item_quote_id');
+    }
+
+    public function items_found(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Product::class,
+            ErrandItem::class,
+            'item_quote_id',
+            'id',
+            'id',
+            'item_id'
+        );
     }
 }

@@ -287,4 +287,11 @@ class ErrandService{
         return $this->errandRepository->delete($slug);
     }
 
+    public function load_errand_results($id, $user_id)
+    {
+        $errand = $this->load_errand($id, $user_id);
+
+        return $errand->items_found()->select('items.*')->paginate(10);
+    }
+
 }
