@@ -10,7 +10,7 @@ class ErrandItem extends Model
     use HasFactory;
 
     protected $table = 'item_quotes_sent';
-    protected $fillable = ['item_quote_id', 'item_id'];
+    protected $fillable = ['item_quote_id', 'item_id', 'show_contact_details'];
 
     public function item()
     {

@@ -18,6 +18,7 @@ class AddItemQuotesSentTable extends Migration
                 $table->increments('id');
                 $table->integer('item_quote_id');
                 $table->integer('item_id');
+                $table->boolean('show_contact_details')->default(false);
                 $table->timestamps();
             });
         }

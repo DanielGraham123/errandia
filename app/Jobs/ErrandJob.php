@@ -56,11 +56,12 @@ class ErrandJob implements ShouldQueue
                     if(!$errandItem) {
                         ErrandItem::create([
                             'item_quote_id' => $this->errand->id,
-                            'item_id' => $item_id
+                            'item_id' => $item_id,
+                            'show_contact_details' => $item->shop->user->has_active_subscription()
                         ]);
                         logger()->info("errand item record added");
 
-                        if($item->shop->user && $item->shop->user->has_active_subscription()) {
+                        if($item->shop->user->has_active_subscription()) {
                             // No sent notifications to owners to businesses who create errands
                             // that match
                             if(in_array($item->shop->user->id, $users_to_notify) === false) {
@@ -89,11 +90,15 @@ class ErrandJob implements ShouldQueue
         foreach ($user_ids as $user_id) {
             $user_device = UserDeviceRepository::getDevice($user_id);
             if($user_device) {
-                $user_device->notify(new UserNotification(
-                    'Errandia',
-                    'A user created an errand which<br/>matches with your offers'
-                ));
-                logger()->info("A push notification sent to the business owner");
+                try {
+                    $user_device->notify(new UserNotification(
+                        'Errandia',
+                        'A user created an errand which matches with your offers'
+                    ));
+                    logger()->info("A push notification sent to the business owner");
+                } catch (\Exception $e){
+                    logger()->error($e->getMessage());
+                }
             }
         }
 
