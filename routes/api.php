@@ -55,12 +55,14 @@ Route::middleware('auth:api')->group(function (){
         Route::get("/user/subscriptions/{id}/check-status", "SubscriptionController@checkStatus");
 
         Route::get("/user/errands", "ErrandController@user_errands");
+        Route::get("/user/errands_received", "ErrandController@errands_received");
         Route::post("/user/errands", "ErrandController@store");
         Route::get("/user/errands/{id}/run", "ErrandController@run_errand");
         Route::get("/user/errands/{id}/results", "ErrandController@load_errand_results");
         Route::post("/user/errands/{id}", "ErrandController@update");
         Route::post("/user/errands/{id}/add_image", "ErrandController@add_image");
         Route::delete("/user/errands/{id}/image/{image_id}", "ErrandController@delete_image");
+        Route::delete("/user/errands/{id}/remove_images", "ErrandController@delete_images");
         Route::delete("/user/errands/{id}", "ErrandController@delete");
         Route::get("/user/errands/{id}", "ErrandController@load_errand");
     });

@@ -8,6 +8,7 @@ use App\Models\ErrandImage;
 use App\Models\SubCategory;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ErrandRepository;
+use Google\Auth\Cache\Item;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -61,7 +62,7 @@ class ErrandService{
         $errand = Errand::find($id);
 
         if($errand == null) {
-            throw new \Exception("errand not found");
+            throw new \Exception("errand is no longer available");
         }
 
         if($user_id != null &&  $errand->user_id != $user_id) {
@@ -292,6 +293,27 @@ class ErrandService{
         $errand = $this->load_errand($id, $user_id);
 
         return $errand->items_found()->select('items.*')->paginate(10);
+    }
+
+    public function delete_images($id, $user_id = null): void
+    {
+        $errand = $this->load_errand($id, $user_id);
+        if(!empty($errand->images)){
+            foreach ($errand->images as $image){
+                $image->delete();
+            }
+            logger()->info("errand images deleted");
+        }
+    }
+
+    public function load_errands_received($user_id)
+    {
+        return Errand::select('item_quotes.*')
+            ->join("item_quotes_sent", 'item_quotes_sent.item_quote_id', 'item_quotes.id')
+            ->join("items", 'items.id', 'item_quotes_sent.item_id')
+            ->join("shops", 'shops.id', 'items.shop_id')
+            ->where('shops.user_id', $user_id)
+            ->paginate(10);
     }
 
 }

@@ -10,14 +10,11 @@ use Illuminate\Http\Request;
 
 class ErrandController extends Controller
 {
-
     private ErrandService $errandService;
-
     public function __construct(ErrandService $errandService)
     {
         $this->errandService = $errandService;
     }
-
     public function index()
     {
         return $this->load_errands(null);
@@ -41,10 +38,9 @@ class ErrandController extends Controller
             );
         } catch (\Exception $e) {
             logger()->error($e->getMessage());
-            return $this->build_response(response(), 'failed to load errand', 400);
+            return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
-
     public function show(Request $request, $id)
     {
         try {
@@ -77,7 +73,6 @@ class ErrandController extends Controller
             return $this->build_response(response(), 'failed load errand.', 400);
         }
     }
-
     public function load_errand_results(Request $request, $id)
     {
         try {
@@ -92,7 +87,6 @@ class ErrandController extends Controller
             return $this->build_response(response(), 'failed load errand results.', 400);
         }
     }
-    
     public function store(Request $request)
     {
         try {
@@ -117,7 +111,6 @@ class ErrandController extends Controller
             return $this->build_response(response(), 'failed to save errand details.', 400);
         }
     }
-
     public function update(Request $request, $id)
     {
         try {
@@ -146,7 +139,6 @@ class ErrandController extends Controller
             return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
-
     public function delete(Request $request, $id)
     {
         try {
@@ -158,7 +150,7 @@ class ErrandController extends Controller
             return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
-    public function load_errands($user_id)
+    public function load_errands(Request $request, $user_id)
     {
         $errands = $this->errandService->load_errands($user_id);
         return $this->build_success_response(
@@ -181,6 +173,17 @@ class ErrandController extends Controller
             return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
+    public function delete_images(Request $request, $id)
+    {
+        try {
+            auth('api')->user();;
+            $this->errandService->delete_images($id, auth('api')->user()->id);
+            return $this->build_success_response(response(), 'errand images deleted');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), $e->getMessage(), 400);
+        }
+    }
     public function add_image(Request $request, $id)
     {
         try {
@@ -198,5 +201,18 @@ class ErrandController extends Controller
             logger()->error($e->getMessage());
             return $this->build_response(response(), $e->getMessage(), 400);
         }
+    }
+    public function errands_received(Request $request)
+    {
+        $user = auth('api')->user();
+        $errands = $this->errandService->load_errands_received($user->id);
+        return $this->build_success_response(
+            response(),
+            'errands loaded',
+            self::convert_paginated_result(
+                $errands,
+                ErrandResource::collection($errands)
+            )
+        );
     }
 }
