@@ -50,27 +50,28 @@ class ErrandJob implements ShouldQueue
                     continue;
                 }
 
-                if($item->shop->user && $item->shop->user->has_active_subscription()) {
-                    // No sent notifications to owners to businesses who create errands
-                    // that match
-                    if($item->shop->user->id != $this->errand->user->id) {
-                        $errandItem = ErrandItem::where('item_quote_id', $this->errand->id)
-                            ->where('item_id', $item_id)->first();
-                        if(!$errandItem) {
-                            ErrandItem::create([
-                                'item_quote_id' => $this->errand->id,
-                                'item_id' => $item_id
-                            ]);
-                            logger()->info("errand item record added");
+                if($item->shop->user->id != $this->errand->user->id) {
+                    $errandItem = ErrandItem::where('item_quote_id', $this->errand->id)
+                        ->where('item_id', $item_id)->first();
+                    if(!$errandItem) {
+                        ErrandItem::create([
+                            'item_quote_id' => $this->errand->id,
+                            'item_id' => $item_id
+                        ]);
+                        logger()->info("errand item record added");
 
+                        if($item->shop->user && $item->shop->user->has_active_subscription()) {
+                            // No sent notifications to owners to businesses who create errands
+                            // that match
                             if(in_array($item->shop->user->id, $users_to_notify) === false) {
                                 $users_to_notify[] = $item->shop->user->id;
                             }
+                        } else {
+                            $user_excluded [] = $item->shop->user->id;
+                            logger()->debug("user id : " . $item->shop->user->id . ' does not have an active subscription');
                         }
+
                     }
-                } else {
-                    $user_excluded [] = $item->shop->user->id;
-                    logger()->debug("user id : " . $item->shop->user->id . ' does not have an active subscription');
                 }
             }
         }
