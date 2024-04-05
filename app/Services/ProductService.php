@@ -11,7 +11,8 @@ class ProductService{
 
     private $productRepository;
     private $validationService;
-    public function __construct(ProductRepository $productRepository, ValidationService $validationService){
+    public function __construct(ProductRepository $productRepository,
+                                ValidationService $validationService){
         $this->productRepository = $productRepository;
         $this->validationService = $validationService;
     }
@@ -100,12 +101,15 @@ class ProductService{
             }
             $item->featured_image = MediaService::upload_media($request, 'featured_image', 'products');
             $data['featured_image'] = $item->featured_image;
+
+            logger()->info('feature image replaced ' . $item->featured_image);
         }
 
         $item->update($data);
         $item->refresh();
 
-        logger()->info('featured_image uploaded: ' . $item->featured_image);
+        $elSearchService =  ElasticSearchProductService::init();
+        $elSearchService->update_document($item->id, $item);
         return $item;
     }
 

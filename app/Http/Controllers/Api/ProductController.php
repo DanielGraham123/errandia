@@ -102,9 +102,7 @@ class ProductController extends Controller
             $authenticatedUser = auth('api')->user();
             $this->checkOwner($item, $authenticatedUser);
             $data = $this->productService->update_item($request, $item);
-
-            logger()->info('Item updated: '. json_encode($data));
-
+            logger()->info('Item updated: ');
             return $this->build_success_response(
                 response(),
                 'Item updated successfully',
