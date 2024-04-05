@@ -187,7 +187,7 @@ class ElasticSearchProductService {
         $this->client->update([
             'index' => $this->index_name,
             'id' => $id,
-            'body' => $this->getDocument($item)
+            'body' => ['doc' => $this->getDocument($item)]
         ]);
         logger()->info('document updated');
     }
