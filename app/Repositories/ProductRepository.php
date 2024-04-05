@@ -161,8 +161,6 @@ class ProductRepository
      */
     public function update($slug, $data)
     {
-        # code...
-        // validate data and save to database
         try {
 
             $elSearchService =  ElasticSearchProductService::init();
