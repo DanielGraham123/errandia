@@ -150,7 +150,7 @@ class ErrandController extends Controller
             return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
-    public function load_errands(Request $request, $user_id)
+    private function load_errands( $user_id)
     {
         $errands = $this->errandService->load_errands($user_id);
         return $this->build_success_response(
