@@ -85,7 +85,8 @@ class ErrandJob implements ShouldQueue
                 try {
                     $user_device->notify(new UserNotification(
                         'Errandia',
-                        'A user created an errand which matches with your offers'
+                        'A user created an errand which matches with your offers',
+                        'received_errands'
                     ));
                     logger()->info("A push notification sent to the business owner");
                 } catch (\Exception $e){

@@ -11,10 +11,12 @@ class UserNotification extends Notification
 {
     private string $title;
     private string $body;
-    public function __construct(string $title, string $body)
+    private string $page;
+    public function __construct(string $title, string $body, $page = 'subscription')
     {
         $this->title = $title;
         $this->body = $body;
+        $this->page = $page;
     }
 
     public function via($notifiable): array
@@ -30,7 +32,11 @@ class UserNotification extends Notification
         $androidNotification->setTitle($this->title);
         $androidNotification->setBody($this->body);
         $androidNotification->setIcon('https://errandia.com/assets/images/app-logo.png');
+        $androidNotification->setSound('alert');
+        $androidNotification->setChannelId('errandia_channel_id');
+        $androidNotification->setClickAction($this->page);
         $androidConfig->setNotification($androidNotification);
+        $androidConfig->setData(['page' => $this->page]);
         $message->setAndroid($androidConfig);
         return  $message;
     }
