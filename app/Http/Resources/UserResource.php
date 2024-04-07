@@ -28,6 +28,7 @@ class UserResource extends JsonResource
             'region' => $this->street ? $this->street->town->region->name : '',
             'place_of_birth' => $this->profile ? $this->profile->pob : '',
             'date_of_birth' => $this->profile ? $this->profile->dob : '',
+            'active_subscription' => $this->has_active_subscription()
         ];
     }
 }

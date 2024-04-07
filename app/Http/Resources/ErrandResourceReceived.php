@@ -24,6 +24,7 @@ class ErrandResourceReceived extends JsonResource
             'description' => $this->description,
             'slug' =>  $this->slug,
             'read_status' => $this->read_status,
+            'status' => $this->status,
             'user' => new UserResource($user),
             'images' => $images,
             'created_at' => $this->created_at,
