@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ErrandResource;
+use App\Http\Resources\ErrandResourceReceived;
 use App\Http\Resources\ProductResource;
 use App\Services\ErrandService;
 use Illuminate\Http\Request;
@@ -139,6 +140,17 @@ class ErrandController extends Controller
             return $this->build_response(response(), $e->getMessage(), 400);
         }
     }
+    public function marked_as_found(Request $request, $id)
+    {
+        try {
+            $user_id = auth('api')->user()->id;
+            $this->errandService->marked_as_found($id, $user_id);
+            return $this->build_success_response(response(), 'errand marked as found');
+        } catch (\Exception $e) {
+            logger()->error($e->getMessage());
+            return $this->build_response(response(), $e->getMessage(), 400);
+        }
+    }
     public function delete(Request $request, $id)
     {
         try {
@@ -211,7 +223,7 @@ class ErrandController extends Controller
             'errands loaded',
             self::convert_paginated_result(
                 $errands,
-                ErrandResource::collection($errands)
+                ErrandResourceReceived::collection($errands)
             )
         );
     }

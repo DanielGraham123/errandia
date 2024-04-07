@@ -134,6 +134,12 @@ class ElasticSearchProductService {
             ]
         ];
         $query['should'] = [
+            ['wildcard' => ['category.name' => '*'. $search_term]],
+            ['wildcard' => ['category.name' => $search_term. '*']],
+            ['wildcard' => ['category.description' => '*'. $search_term]],
+            ['wildcard' => ['category.description' => $search_term. '*']],
+            ['wildcard' => ['shop.name' => '*'. $search_term]],
+            ['wildcard' => ['shop.name' => $search_term. '*']],
             ['match' => ['tags' => ['query' => $search_term]]],
             ['match' => ['category.name' => $search_term]],
             ['match' => ['shop.name' => $search_term]],
