@@ -57,21 +57,13 @@ class ErrandJob implements ShouldQueue
                         ErrandItem::create([
                             'item_quote_id' => $this->errand->id,
                             'item_id' => $item_id,
-                            'show_contact_details' => $item->shop->user->has_active_subscription()
+                            'show_contact_details' => true
                         ]);
+
                         logger()->info("errand item record added");
-
-                        if($item->shop->user->has_active_subscription()) {
-                            // No sent notifications to owners to businesses who create errands
-                            // that match
-                            if(in_array($item->shop->user->id, $users_to_notify) === false) {
-                                $users_to_notify[] = $item->shop->user->id;
-                            }
-                        } else {
-                            $user_excluded [] = $item->shop->user->id;
-                            logger()->debug("user id : " . $item->shop->user->id . ' does not have an active subscription');
+                        if(in_array($item->shop->user->id, $users_to_notify) === false) {
+                            $users_to_notify[] = $item->shop->user->id;
                         }
-
                     }
                 }
             }
