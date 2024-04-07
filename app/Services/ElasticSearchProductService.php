@@ -63,8 +63,7 @@ class ElasticSearchProductService {
                             'description' => ['type' => 'text']
                         ]
                     ],
-                    'categories' => ['type' => 'keyword'],
-                    'category_ids' => ['type' => 'keyword'],
+                    'categories' => ['type' => 'text', 'analyzer' => 'search_index'],
                     'region_id' => ['type' => 'integer'],
                     'town_id' => ['type' => 'integer'],
                     'region_name' => ['type' => 'keyword'],
@@ -129,23 +128,19 @@ class ElasticSearchProductService {
                     ['match' => ['name' => ['query' => $search_term, 'boost' => 10]]],
                     ['wildcard' => ['name' => '*'. $search_term]],
                     ['wildcard' => ['name' => $search_term. '*']],
-                    ['query_string' => ['default_field' => 'tags', 'query' => $search_term]],
+                    ['match' => ['tags' => ['query' => $search_term, 'boost' => 5]]],
+                    ['match' => ['categories' => ['query' => $search_term, 'boost' => 2]]],
                 ]
             ]
         ];
         $query['should'] = [
+            ['query_string' => ['default_field' => 'tags', 'query' => $search_term]],
             ['wildcard' => ['category.name' => '*'. $search_term]],
             ['wildcard' => ['category.name' => $search_term. '*']],
-            ['wildcard' => ['category.description' => '*'. $search_term]],
-            ['wildcard' => ['category.description' => $search_term. '*']],
+            ['query_string' => ['default_field' => 'category.description', 'query' => $search_term]],
+            ['query_string' => ['default_field' => 'category.description', 'query' => $search_term]],
             ['wildcard' => ['shop.name' => '*'. $search_term]],
             ['wildcard' => ['shop.name' => $search_term. '*']],
-            ['match' => ['tags' => ['query' => $search_term]]],
-            ['match' => ['category.name' => $search_term]],
-            ['match' => ['shop.name' => $search_term]],
-            ['match' => ['description' => $search_term]],
-            ['match' => ['category.description' => $search_term]],
-            ['match' => ['shop.description' => $search_term]]
         ];
 
         // Apply filter
@@ -230,6 +225,7 @@ class ElasticSearchProductService {
                 'name' => $item->shop->name,
                 'description' => $item->shop->description,
             ],
+            'categories' => $item->category->name. ',' . $item->category->description,
             'region_id' => $item->shop->region->id,
             'region_name' => $item->shop->region->name,
             'town_id' => $item->shop->town ? $item->shop->town->id : 0,
