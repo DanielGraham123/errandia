@@ -308,12 +308,21 @@ class ErrandService{
 
     public function load_errands_received($user_id)
     {
-        return Errand::select('item_quotes.*')
-            ->join("item_quotes_sent", 'item_quotes_sent.item_quote_id', 'item_quotes.id')
+        return Errand::join("item_quotes_sent", 'item_quotes_sent.item_quote_id', 'item_quotes.id')
             ->join("items", 'items.id', 'item_quotes_sent.item_id')
             ->join("shops", 'shops.id', 'items.shop_id')
             ->where('shops.user_id', $user_id)
+            ->where('item_quotes.status', 0)
+            ->select('item_quotes.*', 'show_contact_details')
             ->paginate(10);
+    }
+
+    public function marked_as_found($id, $user_id): void
+    {
+        $errand = $this->load_errand($id, $user_id);
+        $errand->status = 1;
+        $errand->save();
+        logger()->info("errand status set to marked as found");
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Subscription;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Carbon;
@@ -23,7 +24,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         // $schedule->command('inspire')->hourly();
+         $schedule->call(function (){
+           $subscriptions =  Subscription::where('status', 'PENDING')->limit(10)->get();
+           foreach ($subscriptions as $subscription){
+               logger()->info("Checking payment status of subscription id : ". $subscription->id);
+           }
+         })->everyMinute()
     }
 
     /**

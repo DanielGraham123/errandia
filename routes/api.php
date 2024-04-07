@@ -60,6 +60,7 @@ Route::middleware('auth:api')->group(function (){
         Route::get("/user/errands/{id}/run", "ErrandController@run_errand");
         Route::get("/user/errands/{id}/results", "ErrandController@load_errand_results");
         Route::post("/user/errands/{id}", "ErrandController@update");
+        Route::put("/user/errands/{id}/marked_as_found", "ErrandController@marked_as_found");
         Route::post("/user/errands/{id}/add_image", "ErrandController@add_image");
         Route::delete("/user/errands/{id}/image/{image_id}", "ErrandController@delete_image");
         Route::delete("/user/errands/{id}/remove_images", "ErrandController@delete_images");
