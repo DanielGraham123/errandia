@@ -314,6 +314,7 @@ class ErrandService{
             ->where('shops.user_id', $user_id)
             ->where('item_quotes.status', 0)
             ->select('item_quotes.*', 'show_contact_details')
+            ->orderBy('item_quotes_sent.created_at', 'desc')
             ->paginate(10);
     }
 
