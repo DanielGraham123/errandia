@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
            foreach ($subscriptions as $subscription){
                logger()->info("Checking payment status of subscription id : ". $subscription->id);
            }
-         })->everyMinute()
+         })->everyMinute();
     }
 
     /**
