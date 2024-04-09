@@ -50,7 +50,7 @@ class ErrandJob implements ShouldQueue
                     continue;
                 }
 
-                if($item->shop->user->id != $this->errand->user->id) {
+                // if($item->shop->user->id != $this->errand->user->id) {
                     $errandItem = ErrandItem::where('item_quote_id', $this->errand->id)
                         ->where('item_id', $item_id)->first();
                     if(!$errandItem) {
@@ -65,7 +65,7 @@ class ErrandJob implements ShouldQueue
                             $users_to_notify[] = $item->shop->user->id;
                         }
                     }
-                }
+                // }
             }
         }
 
