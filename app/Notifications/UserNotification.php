@@ -31,7 +31,7 @@ class UserNotification extends Notification
         $androidNotification = AndroidNotification::create();
         $androidNotification->setTitle($this->title);
         $androidNotification->setBody($this->body);
-        $androidNotification->setIcon('https://errandia.com/assets/images/app-logo.png');
+        // $androidNotification->setIcon('https://errandia.com/assets/images/app-logo.png');
         $androidNotification->setSound('alert');
         $androidNotification->setChannelId('errandia_channel_id');
         $androidNotification->setClickAction($this->page);
