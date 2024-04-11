@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Jobs\ErrandJob;
 use App\Models\Errand;
 use App\Models\ErrandImage;
+use App\Models\ErrandItem;
 use App\Models\SubCategory;
 use App\Repositories\CategoryRepository;
 use App\Repositories\ErrandRepository;
@@ -313,7 +314,8 @@ class ErrandService{
             ->join("shops", 'shops.id', 'items.shop_id')
             ->where('shops.user_id', $user_id)
             ->where('item_quotes.status', 0)
-            ->select('item_quotes.*', 'show_contact_details')
+            ->where('item_quotes_sent.rejected', 0)
+            ->select('item_quotes.*', 'item_quotes_sent.id as errand_received_id')
             ->orderBy('item_quotes_sent.created_at', 'desc')
             ->paginate(10);
     }
@@ -324,6 +326,16 @@ class ErrandService{
         $errand->status = 1;
         $errand->save();
         logger()->info("errand status set to marked as found");
+    }
+
+    public function reject_errands_received($id1): void
+    {
+       $errand_item =  ErrandItem::find($id1);
+       if($errand_item) {
+           $errand_item->rejected = true;
+           $errand_item->save();
+           logger()->info('errand received  '. $id1 . '  rejected');
+       }
     }
 
 }

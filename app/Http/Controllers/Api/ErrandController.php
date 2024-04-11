@@ -227,4 +227,14 @@ class ErrandController extends Controller
             )
         );
     }
+
+    public function reject_errands_received(Request $request, $id)
+    {
+        $user = auth('api')->user();
+        $this->errandService->reject_errands_received($id);
+        return $this->build_success_response(
+            response(),
+            'errand rejected'
+        );
+    }
 }

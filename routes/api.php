@@ -56,6 +56,7 @@ Route::middleware('auth:api')->group(function (){
 
         Route::get("/user/errands", "ErrandController@user_errands");
         Route::get("/user/errands_received", "ErrandController@errands_received");
+        Route::delete("/user/errands_received/{id}", "ErrandController@reject_errands_received");
         Route::post("/user/errands", "ErrandController@store");
         Route::get("/user/errands/{id}/run", "ErrandController@run_errand");
         Route::get("/user/errands/{id}/results", "ErrandController@load_errand_results");

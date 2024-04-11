@@ -29,7 +29,7 @@ class ErrandResourceReceived extends JsonResource
             'images' => $images,
             'created_at' => $this->created_at,
             'when' => $this->created_at->diffForHumans(),
-            'show_contact_details' => $this->show_contact_details == 1
+            'errand_received_id' => $this->errand_received_id
         ];
 
         $data['region'] = [];
