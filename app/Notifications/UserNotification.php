@@ -34,9 +34,14 @@ class UserNotification extends Notification
         // $androidNotification->setIcon('https://errandia.com/assets/images/app-logo.png');
         $androidNotification->setSound('alert');
         $androidNotification->setChannelId('errandia_channel_id');
-        $androidNotification->setClickAction($this->page);
+        $androidNotification->setClickAction('FLUTTER_NOTIFICATION_CLICK');
         $androidConfig->setNotification($androidNotification);
-        $androidConfig->setData(['page' => $this->page]);
+        $androidConfig->setData(
+            [
+                'page' => $this->page,
+                'image' => 'https://errandia.com/assets/images/app-logo.png'
+            ]
+        );
         $message->setAndroid($androidConfig);
         return  $message;
     }

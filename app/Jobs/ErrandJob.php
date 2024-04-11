@@ -56,8 +56,7 @@ class ErrandJob implements ShouldQueue
                     if(!$errandItem) {
                         ErrandItem::create([
                             'item_quote_id' => $this->errand->id,
-                            'item_id' => $item_id,
-                            'show_contact_details' => true
+                            'item_id' => $item_id
                         ]);
 
                         logger()->info("errand item record added");
