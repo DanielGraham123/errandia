@@ -63,6 +63,15 @@ class UserController extends Controller
         }
     }
 
+    public function delete(Request $request)
+    {
+        $this->userService->delete_account($request, Auth::user());
+        return $this->build_success_response(
+            response(),
+            'account successfully deleted'
+        );
+    }
+
     public function notify(Request $request)
     {
         try {

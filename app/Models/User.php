@@ -6,6 +6,7 @@ use App\Permissions\HasPermissionsTrait;
 use App\Models\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -33,7 +34,8 @@ class User extends Authenticatable
         'password',
         'active',
         'google_id',
-        'whatsapp_number'
+        'whatsapp_number',
+        'deleted'
     ];
     protected $connection = 'mysql';
 
@@ -83,6 +85,18 @@ class User extends Authenticatable
     public function street()
     {
         return $this->belongsTo(Street::class, 'street_id');
+    }
+
+    public function annoucements(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Announcement::class,
+            UserAnnouncement::class,
+            'user_id',
+            'id',
+            'id',
+            'announcement_id'
+        );
     }
 
 }

@@ -67,6 +67,10 @@ Route::middleware('auth:api')->group(function (){
         Route::delete("/user/errands/{id}/remove_images", "ErrandController@delete_images");
         Route::delete("/user/errands/{id}", "ErrandController@delete");
         Route::get("/user/errands/{id}", "ErrandController@load_errand");
+
+        Route::get("/user/notifications", "AnnoucementController@index");
+        Route::get("/user/notifications/{id}", "AnnoucementController@show");
+        Route::delete("/user/notifications/{id}", "AnnoucementController@delete");
     });
 
 
