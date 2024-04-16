@@ -56,9 +56,7 @@ class AuthController extends Controller
         // Todo when the new apk is ready, we force endpoint to have device_uuid and token for push notifications
         $this->validate($inputs, [
             'code' => 'required',
-            'uuid' => 'required',
-//            'device_uuid' => 'required',
-//            'push_token'  => 'required',
+            'uuid' => 'required'
         ]);
 
         if(!empty($this->validations_errors)) {
@@ -201,12 +199,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $token_id = $request->user()->token()->id;
-        $tokenRepository = app(TokenRepository::class);
-        $refreshTokenRepository = app(RefreshTokenRepository::class);
-        $tokenRepository->revokeAccessToken($token_id);
-        $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($token_id);
-
+        $this->userService->logout($request);
         logger()->info('user successfully logged out');
         return $this->build_success_response(
             response(),

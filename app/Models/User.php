@@ -33,7 +33,8 @@ class User extends Authenticatable
         'password',
         'active',
         'google_id',
-        'whatsapp_number'
+        'whatsapp_number',
+        'deleted'
     ];
     protected $connection = 'mysql';
 

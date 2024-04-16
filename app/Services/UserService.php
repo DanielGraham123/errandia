@@ -2,17 +2,21 @@
 
 namespace App\Services;
 
+use App\Jobs\UserDeletedJob;
 use App\Repositories\UserDeviceRepository;
 use App\Repositories\UserRepository;
 use App\Mail\OtpMailer;
 
 use App\Repositories\UserOTPRepository;
 use App\Models\User;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Passport\RefreshTokenRepository;
+use Laravel\Passport\TokenRepository;
 use Mockery\Exception;
 use Nette\Utils\Random;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Carbon;
 
 class UserService{
 
@@ -150,6 +154,29 @@ class UserService{
         if(!empty($data['device_uuid']) && !empty($data['push_token'])) {
             UserDeviceRepository::save($data);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $token_id = $request->user()->token()->id;
+        $tokenRepository = app(TokenRepository::class);
+        $refreshTokenRepository = app(RefreshTokenRepository::class);
+        $tokenRepository->revokeAccessToken($token_id);
+        $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($token_id);
+        logger()->info("user auth token deleted");
+    }
+
+    public function delete_account(Request $request, $user)
+    {
+        $user->deleted = true;
+        $user->save();
+        logger()->info('User record set as deleted');
+
+        $this->logout($request);
+        logger()->info('Your account and data are being deleted');
+
+        // send a background job to deleted all the user data
+        UserDeletedJob::dispatch($user)->delay(Carbon::now()->addSeconds(1));
     }
 
 }
