@@ -63,6 +63,16 @@ class UserController extends Controller
         }
     }
 
+    public function show(Request $request)
+    {
+        return $this->build_success_response(
+            response(),
+            'user details loaded',
+            [
+                'item' => new UserResource(Auth::user())
+            ]
+        );
+    }
     public function delete(Request $request)
     {
         $this->userService->delete_account($request, Auth::user());

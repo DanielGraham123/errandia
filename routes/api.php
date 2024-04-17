@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\ProductImageUploadController;
 use App\Http\Controllers\ProductUploadController;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\UserController;
@@ -75,13 +76,15 @@ Route::middleware('auth:api')->group(function (){
 
 
     Route::patch('/user', [UserController::class, 'update']);
+    Route::get('/user', [UserController::class, 'show']);
+    Route::delete('/user', [UserController::class, 'delete']);
     Route::get('/user/notify', [UserController::class, 'notify']);
     Route::post('/user/image_upload', [UserController::class, 'userImageUpload']);
 
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    return ['message' => 'user details loaded', 'data' => ['item' => new UserResource($request->user())]];
 });
 
 Route::group(['namespace' => 'Api'], function() {
