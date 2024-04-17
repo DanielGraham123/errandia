@@ -82,12 +82,16 @@ class UserService{
         return $this->userRepository->delete($id);
     }
 
+    public function load_user_by($identifier)
+    {
+        return User::whereRaw('(phone = ? OR email = ?) AND deleted = 0', [$identifier, $identifier])
+            ->first();
+    }
+
     public function findAndSendOTP($identifier)
     {
         // Todo to implement it in user repository clqss
-        $user = User::where('phone', $identifier)
-            ->orWhere('email', $identifier)
-            ->first();
+        $user = $this->load_user_by($identifier);
 
         if($user) {
             $user_otp = $this->userOtpRepository->save(
@@ -166,7 +170,7 @@ class UserService{
         logger()->info("user auth token deleted");
     }
 
-    public function delete_account(Request $request, $user)
+    public function delete_account(Request $request, $user): void
     {
         $user->deleted = true;
         $user->save();
