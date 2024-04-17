@@ -115,14 +115,24 @@ class AuthController extends Controller
     {        
         $rules = [
             'name' => ['required', 'string', 'max:200', 'min:3'],
-            'email' => ['required', 'string', 'email', 'unique:users,email'],
-            'phone' => ['required', 'unique:users,phone']
+            'email' => ['required', 'string', 'email'],
+            'phone' => ['required']
         ];
 
         $this->validate($request->all(), $rules);
 
         if(!empty($this->validations_errors)) {
             return $this->build_response(response(), 'Registration failed', 400);
+        }
+
+        $user = $this->userService->load_user_by($request->get('email'));
+        if($user) {
+            return $this->build_response(response(), 'email address already exists', 400);
+        }
+
+        $user = $this->userService->load_user_by($request->get('phone'));
+        if($user) {
+            return $this->build_response(response(), 'phone already exists', 400);
         }
 
 
