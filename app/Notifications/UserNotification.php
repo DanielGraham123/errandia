@@ -12,11 +12,13 @@ class UserNotification extends Notification
     private string $title;
     private string $body;
     private string $page;
-    public function __construct(string $title, string $body, $page = 'subscription')
+    private array $data_to_send;
+    public function __construct(string $title, string $body, $page = 'subscription', $data_to_send = array())
     {
         $this->title = $title;
         $this->body = $body;
         $this->page = $page;
+        $this->data_to_send = $data_to_send;
     }
 
     public function via($notifiable): array
@@ -31,17 +33,15 @@ class UserNotification extends Notification
         $androidNotification = AndroidNotification::create();
         $androidNotification->setTitle($this->title);
         $androidNotification->setBody($this->body);
-        // $androidNotification->setIcon('https://errandia.com/assets/images/app-logo.png');
         $androidNotification->setSound('alert');
         $androidNotification->setChannelId('errandia_channel_id');
         $androidNotification->setClickAction('FLUTTER_NOTIFICATION_CLICK');
         $androidConfig->setNotification($androidNotification);
-        $androidConfig->setData(
-            [
-                'page' => $this->page,
-                'image' => 'https://errandia.com/assets/images/app-logo.png'
-            ]
-        );
+        $data = [
+            'page' => $this->page,
+            'image' => 'https://errandia.com/assets/images/app-logo.png'
+        ];
+        $androidConfig->setData(array_merge($data, $this->data_to_send));
         $message->setAndroid($androidConfig);
         return  $message;
     }

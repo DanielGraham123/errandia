@@ -89,7 +89,19 @@ class UserController extends Controller
             $userDevice =  UserDevice::where('user_id', $user->id)->first();
 
             if($userDevice) {
-                $userDevice->notify(new UserNotification('Errandia', 'Your subscription is now activated'));
+                $page = $request->get('page')?? 'other';
+                switch ($page) {
+                    case 'notification':
+                        $user_notification = new UserNotification('Errandia', 'You have new message', 'notification', array('id' => "1", 'title' => ''));
+                        break;
+                    case 'errand':
+                        $user_notification = new UserNotification('Errandia', 'A user created an errand which matches with your offers', 'received_errands');
+                        break;
+                    default:
+                        $user_notification = new UserNotification('Errandia', 'Your subscription is now activated', 'received_errands');
+                }
+
+                $userDevice->notify($user_notification);
                 return $this->build_success_response(response(), 'notification sent');
             } else {
                 logger()->error('Device not found');
