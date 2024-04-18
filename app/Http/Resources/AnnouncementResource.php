@@ -9,6 +9,7 @@ class AnnouncementResource extends JsonResource
 
     public function toArray($request){
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'message' => $this->message,
             'created_at' => $this->created_at,
