@@ -92,7 +92,7 @@ class UserController extends Controller
                 $page = $request->get('page')?? 'other';
                 switch ($page) {
                     case 'notification':
-                        $user_notification = new UserNotification('Errandia', 'You have new message', 'notification', array('id' => "1", 'title' => ''));
+                        $user_notification = new UserNotification('Errandia', 'You have new message', 'notification', array('id' => "1", 'title' => 'test title'));
                         break;
                     case 'errand':
                         $user_notification = new UserNotification('Errandia', 'A user created an errand which matches with your offers', 'received_errands');
