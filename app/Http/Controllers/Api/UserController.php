@@ -98,7 +98,7 @@ class UserController extends Controller
                         $user_notification = new UserNotification('Errandia', 'A user created an errand which matches with your offers', 'received_errands');
                         break;
                     default:
-                        $user_notification = new UserNotification('Errandia', 'Your subscription is now activated', 'received_errands');
+                        $user_notification = new UserNotification('Errandia', 'Your subscription is now activated');
                 }
 
                 $userDevice->notify($user_notification);
