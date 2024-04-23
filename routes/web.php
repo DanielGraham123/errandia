@@ -76,8 +76,8 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
-        Route::get('', [Admin\ErrandController::class, 'errands'])->name('index');
-        Route::get('delete/{slug}', [Admin\ErrandController::class, 'delete_errand'])->name('delete');
+        Route::get('', [Admin\HomeController::class, 'errands'])->name('index');
+        Route::get('delete/{slug}', [Admin\HomeController::class, 'delete_errand'])->name('delete');
     });
     Route::prefix('services')->name('services.')->group(function(){
         Route::get('', [Admin\ProductController::class, 'services'])->name('index');
@@ -121,9 +121,9 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('roles', [Admin\UserController::class, 'roles'])->name('roles');
     });
     Route::prefix('plans')->name('plans.')->group(function(){
-        Route::get('', [Admin\SubscriptionController::class, 'subscription_plans'])->name('index');
-        Route::get('create', [Admin\SubscriptionController::class, 'create_subscription_plan'])->name('create');
-        Route::post('create', [Admin\SubscriptionController::class, 'save_subscription_plan']);
+        Route::get('', [Admin\HomeController::class, 'subscription_plans'])->name('index');
+        Route::get('create', [Admin\HomeController::class, 'create_subscription_plan'])->name('create');
+        Route::post('create', [Admin\HomeController::class, 'save_subscription_plan']);
     });
     Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
         Route::get('', [Admin\SubscriptionController::class, 'sms_bundles'])->name('index');
