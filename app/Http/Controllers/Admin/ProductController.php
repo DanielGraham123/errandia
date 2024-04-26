@@ -70,6 +70,7 @@ class ProductController extends Controller {
     {
         # code...
         $data['title'] = "All Services";
+        $data['services'] = Product::whereService(1)->orderBy('id', 'DESC')->get();
         return view('admin.services.index', $data);
     }
 

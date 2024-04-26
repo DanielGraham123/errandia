@@ -25,7 +25,7 @@
                             <td>
                                 <div class="row bg-white border-0">
                                     <span class="col-sm-2">
-                                        <img style="height: 5rem; width: 5rem;" src="{{ asset('uploads/products/'.$product->featured_image) }}" alt="product image">
+                                        <img style="height: 5rem; width: 5rem;" src="{{ asset($product->featured_image) }}" alt="product image">
                                     </span>
                                     <div class="col-sm-10">
                                         <span class="d-block my-1 h5 my-2 text-dark">{{ $product->name }}</span>

@@ -16,30 +16,31 @@
                 <tbody>
                     @php $k = 1;
                     @endphp
-                    @for($i = 0; $i <= 50; $i++)
+                    @foreach($services as $service)
                         <tr class="shadow-sm border-bottom">
                             <td>{{ $k++}}</td>
                             <td>
                                 <div class="row bg-white border-0">
                                     <span class="col-sm-2">
-                                        <img style="height: 5rem; width: 5rem;" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}">
+                                        <img style="height: 5rem; width: 5rem;" src="{{ asset($service->featured_image) }}" alt="service image">
                                     </span>
                                     <div class="col-sm-10">
-                                        <span class="d-block my-1 h5 my-2 text-dark">IPhone Pro Max</span>
+                                        <span class="d-block my-1 h5 my-2 text-dark">{{
+                                            $service->name }}</span>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                Beauty, Hair
+                                {{ $service->category->name }}
                             </td>
                             <td>
-                                Gerson Emmerich
+                                {{ $service->shop->name }}
                             </td>
                             <td>
-                                19th June 2020
+                                {{ \Carbon\Carbon::parse($service->created_at)->format('D dS M Y') }}
                             </td>
                             <td>
-                                XAF 110,0000
+                                XAF {{ $service->unit_price }}
                             </td>
                             <td>
                                 <div class="btn-group">
@@ -55,7 +56,7 @@
                                 </div>
                              </td>
                         </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
         </div>
