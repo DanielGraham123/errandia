@@ -69,37 +69,6 @@ class HomeController  extends Controller
         $data['streets'] = Street::orderBy('name', 'DESC')->get();
         return view('admin.businesses.branches.create', $data);
     }
-    
-    public function categories (Request $reuest)
-    {
-        # code...
-        $data['title'] = "All Categories";
-        $data['categories'] = \App\Models\Category::all();
-        return view('admin.categories.index', $data);
-    }
-
-    public function create_category(Request $reuest)
-    {
-        # code...
-        $data['title'] = "Create New Category";
-        return view('admin.categories.create', $data);
-    }
-
-    public function sub_categories(Request $reuest)
-    {
-        # code...
-        $data['title'] = "All Sub-Categories";
-        $data['sub_categories'] = SubCategory::all();
-        return view('admin.categories.subcategories.index', $data);
-    }
-
-    public function create_sub_category(Request $reuest)
-    {
-        # code...
-        $data['title'] = "Create New Sub-Category";
-        $data['categories'] = Category::all();
-        return view('admin.categories.subcategories.create', $data);
-    }
 
     public function towns(Request $reuest)
     {
