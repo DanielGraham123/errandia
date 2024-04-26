@@ -70,30 +70,6 @@ class HomeController  extends Controller
         return view('admin.businesses.branches.create', $data);
     }
 
-    public function towns(Request $reuest)
-    {
-        # code...
-        $data['title'] = "All Towns";
-        $data['towns'] = Town::orderBy('id', 'DESC')->get();
-        return view('admin.towns.index', $data);
-    }
-
-    public function streets(Request $reuest)
-    {
-        # code...
-        $data['title'] = "All Streets";
-        $data['streets'] = Street::orderBy('id', 'DESC')->get();
-        return view('admin.streets.index', $data);
-    }
-
-    public function create_town(Request $reuest)
-    {
-        # code...
-        $data['title'] = "Create Town";
-        $data['regions'] = Region::all();
-        return view('admin.towns.create', $data);
-    }
-
     public function create_street(Request $reuest)
     {
         # code...
@@ -116,56 +92,6 @@ class HomeController  extends Controller
         $data['title'] = "All Subscriptions";
         $data['subscriptions'] = ShopSubscription::all();
         return view('admin.reports.subscriptions', $data);
-    }
-
-
-    public function save_town(Request $request){
-        $validity = Validator::make($request->all(), ['name'=>'required', 'region_id'=>'required']);
-        if($validity->fails()){
-            return back()->with('error', $validity->errors()->first());
-        }
-
-        $town = ['name'=>$request->name, 'region_id'=>$request->region_id];
-        if(Town::where($town)->count() > 0){
-            return redirect(route('admin.locations.towns'))->with('error', 'Town already exist');
-        }
-        Town::insert(['name'=>$request->name, 'region_id'=>$request->region_id, 'status'=>1]);
-        return redirect(route('admin.locations.towns'))->with('success', 'Town successfully created');
-    }
-
-    public function edit_town(Request $request, $slug){
-        $data['town'] = Town::find($slug);
-        $data['regions'] = Region::all();
-        $data['title'] = "Edit Town";
-        return view('admin.towns.edit', $data);
-    }
-
-    public function update_town(Request $request, $id){
-        $validity = Validator::make($request->all(), ['name'=>'required', 'region_id'=>'required']);
-        if($validity->fails()){
-            return back()->with('error', $validity->errors()->first());
-        }
-
-        $town_record = Town::find($id);
-        if($town_record == null){
-            return back()->with('error', "Town not found");
-        }
-
-        $town = ['name'=>$request->name, 'region_id'=>$request->region_id, 'status'=>$request->status??1];
-        if(Town::where($town)->count() > 0){
-            return redirect(route('admin.locations.towns'))->with('error', 'Town already exist');
-        }
-        $town_record->update($town);
-        return redirect(route('admin.locations.towns'))->with('success', 'Town successfully updated');
-    }
-
-    public function delete_town($id){
-        $town = Town::find($id);
-        if($town != null){
-            $town->delete();
-            return redirect(route('admin.locations.towns'))->with('success', 'Town successfully deleted');
-        }
-        return redirect(route('admin.locations.towns'))->with('error', 'Town not found');
     }
 
     public function save_street(Request $request){

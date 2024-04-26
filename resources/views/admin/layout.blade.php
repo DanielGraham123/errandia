@@ -269,13 +269,15 @@
                             </a>
                             <b class="arrow"></b>
                         </li>
-                        <li>
-                            <a href="{{ route('admin.locations.streets') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Manage Streets
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
+                    <?php
+//                        <li>
+//                            <a href="{{ route('admin.locations.streets') }}" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                                Manage Streets
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+                        ?>
                     </ul>
                 </li>
                 

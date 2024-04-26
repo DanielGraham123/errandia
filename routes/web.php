@@ -98,11 +98,11 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     });
     Route::prefix('locations')->name('locations.')->group(function(){
         Route::get('streets', [Admin\LocationController::class, 'streets'])->name('streets');
-        Route::get('streets/create', [Admin\LocationController::class, 'create_street'])->name('streets.create');
-        Route::post('streets/create', [Admin\LocationController::class, 'save_street']);
-        Route::get('streets/{slug}/edit', [Admin\LocationController::class, 'edit_street'])->name('streets.edit');
-        Route::post('streets/{slug}/edit', [Admin\LocationController::class, 'update_street']);
-        Route::get('streets/{slug}/delete', [Admin\LocationController::class, 'delete_street'])->name('streets.delete');
+//        Route::get('streets/create', [Admin\LocationController::class, 'create_street'])->name('streets.create');
+//        Route::post('streets/create', [Admin\LocationController::class, 'save_street']);
+//        Route::get('streets/{slug}/edit', [Admin\LocationController::class, 'edit_street'])->name('streets.edit');
+//        Route::post('streets/{slug}/edit', [Admin\LocationController::class, 'update_street']);
+//        Route::get('streets/{slug}/delete', [Admin\LocationController::class, 'delete_street'])->name('streets.delete');
         Route::get('towns', [Admin\LocationController::class, 'towns'])->name('towns');
         Route::get('towns/create', [Admin\LocationController::class, 'create_town'])->name('towns.create');
         Route::post('towns/create', [Admin\LocationController::class, 'save_town']);
