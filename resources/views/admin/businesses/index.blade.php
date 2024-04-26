@@ -30,7 +30,7 @@
                                     </span>
                                     <div class="col-sm-10">
                                         <span class="d-block my-1 h5 my-2 text-dark">{{ $business->name }}</span>
-                                        <span class="label label-sm label-info arrowed-in">Head Office</span>
+<!--                                        <span class="label label-sm label-info arrowed-in">Head Office</span>-->
                                     </div>
                                 </div>
                             </td>
@@ -51,6 +51,7 @@
                                     <?php
 //                                        <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.show_owner', $business->slug) }}" class="text-decoration-none text-secondary">view owner profile</a></li>
 
+//                                        <li class="list-item py-1 border-y"> <a href="{{route('admin.businesses.branch.index', $business->slug)}}" class="text-decoration-none text-secondary">branches</a></li>
 
 //                                        <li class="list-item py-1 border-y"> <a href="{{ route('admin.businesses.suspend', $business->slug) }}" onclick="_prompt('url', 'Are you sure you intend to suspend this item?')" class="text-decoration-none text-secondary">suspend</a></li>
 

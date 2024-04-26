@@ -1,9 +1,9 @@
 @extends('admin.layout')
 @section('section')
     <div class="py-2">
-        <div class="d-flex justify-content-end py-3 px-2">
-            <a href="{{ route('admin.products.create') }}" class=" btn btn-primary bg-sm py-2 px-4 text-white text-capitalize rounded"><span class="text-white fa fa-plus mx-2"></span>Add new Product</a>
-        </div>
+<!--        <div class="d-flex justify-content-end py-3 px-2">-->
+<!--            <a href="{{ route('admin.products.create') }}" class=" btn btn-primary bg-sm py-2 px-4 text-white text-capitalize rounded"><span class="text-white fa fa-plus mx-2"></span>Add new Product</a>-->
+<!--        </div>-->
         <div class="py-1 px-2 d-flex">
 
             <table class="table">
@@ -19,30 +19,30 @@
                 <tbody>
                     @php $k = 1;
                     @endphp
-                    @for($i = 0; $i <= 50; $i++)
+                    @foreach($products as $product)
                         <tr class="shadow-sm border-bottom">
                             <td>{{ $k++}}</td>
                             <td>
                                 <div class="row bg-white border-0">
                                     <span class="col-sm-2">
-                                        <img style="height: 5rem; width: 5rem;" src="{{ asset('assets/admin/images/admin-profile-pic.png') }}">
+                                        <img style="height: 5rem; width: 5rem;" src="{{ asset('uploads/products/'.$product->featured_image) }}" alt="product image">
                                     </span>
                                     <div class="col-sm-10">
-                                        <span class="d-block my-1 h5 my-2 text-dark">IPhone Pro Max</span>
+                                        <span class="d-block my-1 h5 my-2 text-dark">{{ $product->name }}</span>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                Beauty, Hair
+                                {{ $product->category->name }}
                             </td>
                             <td>
-                                Gerson Emmerich
+                                {{ $product->shop->name }}
                             </td>
                             <td>
-                                19th June 2020
+                                {{ \Carbon\Carbon::parse($product->created_at)->format('D dS M Y') }}
                             </td>
                             <td>
-                                XAF 110,0000
+                                XAF {{ $product->unit_price }}
                             </td>
                             <td>
                                 <div class="btn-group">
@@ -58,7 +58,7 @@
                                 </div>
                              </td>
                         </tr>
-                    @endfor
+                    @endforeach
                 </tbody>
             </table>
         </div>
