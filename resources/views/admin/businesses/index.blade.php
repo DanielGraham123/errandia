@@ -42,6 +42,7 @@
                             <td>
                                 <div class="btn-group">
                                     <button data-toggle="dropdown" class="btn btn-xs btn-secondary dropdown-toggle" aria-expanded="false">
+                                        Actions
                                         <span class="ace-icon fa fa-caret-down icon-only"></span>
                                     </button>
 
