@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\User;
 use App\Models\UserRole;
 use App\Option;
@@ -152,5 +153,20 @@ class UserController extends Controller
         return redirect()->to(route('admin.users.index', ['type' => $user->type]))->with('success', "User deleted successfully!");
     }
 
+    // all admins
+    public function admins(Request $request)
+    {
+        $data['title'] = "All Admins";
+        $data['users'] = Admin::all();
+        return view('admin.user.index')->with($data);
+    }
+
+    // all roles
+    public function roles(Request $request)
+    {
+        $data['title'] = "All Roles";
+        $data['roles'] = UserRole::all();
+        return view('admin.roles.index')->with($data);
+    }
 
 }

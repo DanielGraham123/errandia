@@ -3,23 +3,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Config;
-use App\Models\Errand;
-use App\Models\File;
-use App\Models\PrivacyPolicy;
+//use App\Models\File;
 use App\Models\Region;
 use App\Models\Shop;
-use App\Models\ShopSubscription;
 use App\Models\Street;
-use App\Models\SubCategory;
-use App\Models\Subscription;
 use App\Models\Town;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -55,7 +47,7 @@ class HomeController  extends Controller
         return back()->with('success', __('text.word_Done'));
     }
 
-    public function create_business_branch(Request $reuest, $business)
+    public function create_business_branch(Request $request, $business)
     {
         # code...
         $data['business'] = Shop::whereSlug($business)->first();
@@ -70,28 +62,12 @@ class HomeController  extends Controller
         return view('admin.businesses.branches.create', $data);
     }
 
-    public function create_street(Request $reuest)
+    public function create_street(Request $request)
     {
         # code...
         $data['title'] = "Create New Street";
         $data['towns'] = Town::all();
         return view('admin.streets.create', $data);
-    }
-
-    public function reviews(Request $reuest)
-    {
-        # code...
-        $data['title'] = "All Reviews";
-        // $data['reviews'] = Town::all();
-        return view('admin.streets.create', $data);
-    }
-
-    public function subscription_report (Request $reuest)
-    {
-        # code...
-        $data['title'] = "All Subscriptions";
-        $data['subscriptions'] = ShopSubscription::all();
-        return view('admin.reports.subscriptions', $data);
     }
 
     public function save_street(Request $request){

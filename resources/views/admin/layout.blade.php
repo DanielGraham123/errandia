@@ -353,14 +353,16 @@
                     </ul>
                 </li>
                   
-                <li>
-                    <a
-                        href="{{route('admin.reviews.index')}}">
-                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-dashboard-review.svg') }}"></span>
-                        <span class="menu-text text-capitalize">Manage Reviews</span>
-                    </a>
-                    <b class="arrow"></b>
-                </li>
+                <?php
+//                <li>
+//                    <a
+//                        href="{{route('admin.reviews.index')}}">
+//                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-dashboard-review.svg') }}"></span>
+//                        <span class="menu-text text-capitalize">Manage Reviews</span>
+//                    </a>
+//                    <b class="arrow"></b>
+//                </li>
+                ?>
 
     
                 <li>
@@ -372,13 +374,15 @@
 
 
                     <ul class="submenu">
-                        <li>
-                            <a href="{{route('admin.users.index')}}?type=admin" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                {{trans_choice('text.add_admin', 2)}}
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
+                        <?php
+//                             <li>
+//                            <a href="{{route('admin.users.index')}}?type=admin" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                                {{trans_choice('text.add_admin', 2)}}
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+                        ?>
 
                         <li>
                             <a href="{{route('admin.roles.index')}}" class="text-capitalize">
@@ -423,13 +427,15 @@
                             <b class="arrow"></b>
                         </li>
 
-                        <li>
-                            <a href="{{ route('admin.admins.roles') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Manage Roles
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
+                        <?php
+//                        <li>
+//                            <a href="{{ route('admin.admins.roles') }}" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                                Manage Roles
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+                        ?>
 
                     </ul>
                 </li>
@@ -446,14 +452,16 @@
                     <b class="arrow"></b>
                 </li>
                             
-                <li>
-                    <a
-                        href="{{route('admin.sms_bundles.index')}}">
-                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-sms-bundles.svg') }}"></span>
-                        <span class="menu-text text-capitalize">SMS Bundles</span>
-                    </a>
-                    <b class="arrow"></b>
-                </li>
+                <?php
+//                  <li>
+//                    <a
+//                        href="{{route('admin.sms_bundles.index')}}">
+//                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-sms-bundles.svg') }}"></span>
+//                        <span class="menu-text text-capitalize">SMS Bundles</span>
+//                    </a>
+//                    <b class="arrow"></b>
+//                </li>
+                ?>
 
                 <li>
                     <a href="#" class="dropdown-toggle text-capitalize">
@@ -471,53 +479,57 @@
                             <b class="arrow"></b>
                         </li>
 
-                        <li>
-                            <a href="{{ route('admin.reports.sms') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                SMS
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
+                        <?php
+//                         <li>
+//                            <a href="{{ route('admin.reports.sms') }}" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                                SMS
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+                        ?>
 
                     </ul>
                 </li>
                 {{-- @if (\auth('admin')->user()->hasPermissionTo('manage_user'))
                 @endif --}}
 
-                <li>
-                    <a href="#" class="dropdown-toggle text-capitalize">
-                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-settings.svg') }}"></span>
-                        <span class="menu-text">Settings</span>
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-
-                    <ul class="submenu">
-                        <li>
-                            <a href="{{ route('admin.settings.profile') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                My Profile
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
-
-                        <li>
-                            <a href="{{ route('admin.settings.footer') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Manage Footer
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
-
-                        <li>
-                            <a href="{{ route('admin.settings.change_password') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                            Change Password
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
-
-                    </ul>
-                </li>
+                <?php
+//                <li>
+//                    <a href="#" class="dropdown-toggle text-capitalize">
+//                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-settings.svg') }}"></span>
+//                        <span class="menu-text">Settings</span>
+//                        <b class="arrow fa fa-angle-down"></b>
+//                    </a>
+//
+//                    <ul class="submenu">
+//                        <li>
+//                            <a href="{{ route('admin.settings.profile') }}" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                                My Profile
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+//
+//                        <li>
+//                            <a href="{{ route('admin.settings.footer') }}" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                                Manage Footer
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+//
+//                        <li>
+//                            <a href="{{ route('admin.settings.change_password') }}" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                            Change Password
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+//
+//                    </ul>
+//                </li>
+                ?>
                 {{-- @if (\auth('admin')->user()->hasPermissionTo('manage_user'))
                 @endif --}}
 
@@ -529,13 +541,15 @@
                     </a>
 
                     <ul class="submenu">
-                        <li>
-                            <a href="{{ route('admin.pages.index') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                All Pages
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
+                        <?php
+//                        <li>
+//                            <a href="{{ route('admin.pages.index') }}" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                                All Pages
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+                        ?>
                         <li>
                             <a href="{{ route('admin.pages.privacy') }}" class="text-capitalize">
                                 <i class="menu-icon fa fa-caret-right"></i>
@@ -544,25 +558,29 @@
                             <b class="arrow"></b>
                         </li>
 
-                        <li>
-                            <a href="{{ route('admin.pages.team_members') }}" class="text-capitalize">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                Team Members
-                            </a>
-                            <b class="arrow"></b>
-                        </li>
+                        <?php
+//                        <li>
+//                            <a href="{{ route('admin.pages.team_members') }}" class="text-capitalize">
+//                                <i class="menu-icon fa fa-caret-right"></i>
+//                                Team Members
+//                            </a>
+//                            <b class="arrow"></b>
+//                        </li>
+                        ?>
                     </ul>
                 </li>
                 {{-- @if (\auth('admin')->user()->hasPermissionTo('manage_user'))
                 @endif --}}
 
-                <li>
-                    <a href="{{route('admin.abuse.reports')}}">
-                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-business-locations.svg') }}"></span>
-                        <span class="menu-text text-capitalize">Abuse Reports</span>
-                    </a>
-                    <b class="arrow"></b>
-                </li>
+                <?php
+//                <li>
+//                    <a href="{{route('admin.abuse.reports')}}">
+//                        <span style="height: 2rem; width: 2rem;" class="menu-icon"><img src="{{ asset('assets/admin/icons/icon-business-locations.svg') }}"></span>
+//                        <span class="menu-text text-capitalize">Abuse Reports</span>
+//                    </a>
+//                    <b class="arrow"></b>
+//                </li>
+                ?>
             </ul>
 
 

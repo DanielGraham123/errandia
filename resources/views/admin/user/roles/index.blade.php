@@ -29,7 +29,7 @@
                             <tbody>
                             @foreach($roles as $role)
                                 <tr>
-                                    <td>{{$role->byLocale()->name}}</td>
+                                    <td>{{$role->name}}</td>
                                     <td align="right">
                                         @if(\auth('admin')->user()->campus_id == null)<a class="btn btn-success" href="{{route('admin.roles.edit',$role->slug)}}?role={{$role->slug}}"> {{__('text.word_edit')}}</a>@endif
                                         <a class="btn btn-primary" href="{{route('admin.users.index')}}?role={{$role->slug}}">{{__('text.word_users')}}</a>

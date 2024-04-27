@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Errand;
+use App\Models\Town;
 use Illuminate\Http\Request;
 
 class ErrandController extends Controller
@@ -15,6 +16,15 @@ class ErrandController extends Controller
         $data['errands'] = Errand::paginate(100);
         // dd($data);
         return view('admin.errands.index', $data);
+    }
+
+    public function reviews(Request $reuest)
+    {
+        # code...
+        $data['title'] = "All Reviews";
+        // $data['reviews'] = Town::all();
+        $data['towns'] = Town::orderBy('name')->get();
+        return view('admin.streets.create', $data);
     }
 
     public function delete_errand($errand_slug): \Illuminate\Http\RedirectResponse

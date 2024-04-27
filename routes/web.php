@@ -126,12 +126,12 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('create', [Admin\SubscriptionsController::class, 'create_subscription_plan'])->name('create');
         Route::post('create', [Admin\SubscriptionsController::class, 'save_subscription_plan']);
     });
-    Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
-        Route::get('', [Admin\SubscriptionController::class, 'sms_bundles'])->name('index');
-    });
+//    Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
+//        Route::get('', [Admin\SMSController::class, 'sms_bundles'])->name('index');
+//    });
     Route::prefix('reports')->name('reports.')->group(function(){
-        Route::get('sms', [Admin\SubscriptionController::class, 'sms_reports'])->name('sms');
-        Route::get('subscriptions', [Admin\SubscriptionController::class, 'subscription_report'])->name('subscription');
+//        Route::get('sms', [Admin\SubscriptionController::class, 'sms_reports'])->name('sms');
+        Route::get('subscriptions', [Admin\SubscriptionsController::class, 'subscription_report'])->name('subscription');
     });
     
     Route::prefix('settings')->name('settings.')->group(function(){

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Errand;
+use App\Models\ShopSubscription;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -53,5 +54,13 @@ class SubscriptionsController extends Controller
         $data['title'] = "Edit Subscription Plan";
         $data['plan'] = Subscription::whereSlug($slug)->first();
         return view('admin.subscriptions.edit', $data);
+    }
+
+    public function subscription_report (Request $request)
+    {
+        # code...
+        $data['title'] = "All Subscriptions";
+        $data['subscriptions'] = ShopSubscription::all();
+        return view('admin.reports.subscriptions', $data);
     }
 }
