@@ -17,6 +17,8 @@ Route::group([
     $router->resource('regions', RegionsController::class);
     $router->resource('shops', ShopsController::class);
     $router->resource('products', ProductController::class);
+    $router->resource('users', UserController::class);
+
 
 
 });
