@@ -111,6 +111,24 @@
       'Module' => 'Nwidart\\Modules\\Facades\\Module',
     ),
   ),
+  'open-admin-ext/helpers' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'OpenAdmin\\Admin\\Helpers\\HelpersServiceProvider',
+    ),
+  ),
+  'open-admin-org/open-admin' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'OpenAdmin\\Admin\\AdminServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Admin' => 'OpenAdmin\\Admin\\Facades\\Admin',
+    ),
+  ),
   'spatie/laravel-permission' => 
   array (
     'providers' => 

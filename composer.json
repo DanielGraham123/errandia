@@ -23,6 +23,8 @@
         "laravel/tinker": "^2.5",
         "nexmo/client": "^2.4",
         "nwidart/laravel-modules": "8.2",
+        "open-admin-ext/helpers": "^1.0",
+        "open-admin-org/open-admin": "^1.0",
         "predis/predis": "^2.2",
         "spatie/laravel-permission": "^5.2"
     },

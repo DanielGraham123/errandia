@@ -57,120 +57,120 @@ Route::get('home', 'WelcomeController@home');
 Route::get('searchUser', 'WelcomeController@searchUser')->name('searchUser');
 
 
-Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function () {
-
-    Route::get('', 'Admin\HomeController@index')->name('home');
-    Route::get('home', 'Admin\HomeController@index')->name('home');
-
-    Route::prefix('businesses')->name('businesses.')->group(function(){
-        Route::get('', [Admin\BusinessController::class, 'index'])->name('index');
-        Route::get('create', [Admin\BusinessController::class, 'create_business'])->name('create');
-        Route::post('create', [Admin\BusinessController::class, 'save_business']);
-        Route::get('{slug}/show', [Admin\BusinessController::class, 'show_business'])->name('show');
-        Route::get('{slug}/branches', [Admin\BusinessController::class, 'business_branches'])->name('branch.index');
-//        Route::get('{slug}/owner', [Admin\HomeController::class, 'show_business_owner'])->name('show_owner');
-        Route::get('{slug}/edit', [Admin\BusinessController::class, 'edit_business'])->name('edit');
-        Route::post('{slug}/edit', [Admin\BusinessController::class, 'update_business']);
-        Route::get('{slug}/delete', [Admin\BusinessController::class, 'delete_business'])->name('delete');
-//        Route::get('{slug}/suspend', [Admin\BusinessController::class, 'suspend_business'])->name('suspend');
-//        Route::get('{slug}/verify', [Admin\BusinessController::class, 'verify_business'])->name('verify');
-    });
-
-    Route::prefix('errands')->name('errands.')->group(function(){
-        Route::get('', [Admin\ErrandController::class, 'index'])->name('index');
-        Route::get('delete/{slug}', [Admin\ErrandController::class, 'delete_errand'])->name('delete');
-    });
-    Route::prefix('services')->name('services.')->group(function(){
-        Route::get('', [Admin\ProductController::class, 'services'])->name('index');
-        Route::get('show/{service}', [Admin\ProductController::class, 'show_service'])->name('show');
-        Route::get('create', [Admin\ProductController::class, 'create_service'])->name('create');
-    });
-    Route::prefix('products')->name('products.')->group(function(){
-        Route::get('', [Admin\ProductController::class, 'products'])->name('index');
-        Route::get('show/{product}', [Admin\ProductController::class, 'show_product'])->name('show');
-        Route::get('create', [Admin\ProductController::class, 'create_products'])->name('create');
-    });
-    Route::prefix('categories')->name('categories.')->group(function(){
-        Route::get('', [Admin\CategoryController::class, 'categories'])->name('index');
-        Route::get('subcategories', [Admin\CategoryController::class, 'sub_categories'])->name('sub_categories');
-        Route::get('subcategories/create', [Admin\CategoryController::class, 'create_sub_category'])->name('sub_categories.create');
-        Route::get('create', [Admin\CategoryController::class, 'create_category'])->name('create');
-    });
-    Route::prefix('locations')->name('locations.')->group(function(){
-        Route::get('streets', [Admin\LocationController::class, 'streets'])->name('streets');
-//        Route::get('streets/create', [Admin\LocationController::class, 'create_street'])->name('streets.create');
-//        Route::post('streets/create', [Admin\LocationController::class, 'save_street']);
-//        Route::get('streets/{slug}/edit', [Admin\LocationController::class, 'edit_street'])->name('streets.edit');
-//        Route::post('streets/{slug}/edit', [Admin\LocationController::class, 'update_street']);
-//        Route::get('streets/{slug}/delete', [Admin\LocationController::class, 'delete_street'])->name('streets.delete');
-        Route::get('towns', [Admin\LocationController::class, 'towns'])->name('towns');
-        Route::get('towns/create', [Admin\LocationController::class, 'create_town'])->name('towns.create');
-        Route::post('towns/create', [Admin\LocationController::class, 'save_town']);
-        Route::get('towns/{slug}/edit', [Admin\LocationController::class, 'edit_town'])->name('towns.edit');
-        Route::post('towns/{slug}/edit', [Admin\LocationController::class, 'update_town']);
-        Route::get('towns/{slug}/delete', [Admin\LocationController::class, 'delete_town'])->name('towns.delete');
-    });
-    Route::prefix('reviews')->name('reviews.')->group(function(){
-        Route::get('', [Admin\ErrandController::class, 'reviews'])->name('index');
-    });
-    Route::prefix('users')->name('users.')->group(function(){
-        Route::get('', [Admin\UserController::class, 'users'])->name('index');
-        Route::get('create', [Admin\UserController::class, 'create_user'])->name('create');
-    });
-    Route::prefix('admins')->name('admins.')->group(function(){
-        Route::get('', [Admin\UserController::class, 'admins'])->name('index');
-        Route::get('roles', [Admin\UserController::class, 'roles'])->name('roles');
-    });
-    Route::prefix('plans')->name('plans.')->group(function(){
-        Route::get('', [Admin\SubscriptionsController::class, 'index'])->name('index');
-        Route::get('create', [Admin\SubscriptionsController::class, 'create_subscription_plan'])->name('create');
-        Route::post('create', [Admin\SubscriptionsController::class, 'save_subscription_plan']);
-    });
-//    Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
-//        Route::get('', [Admin\SMSController::class, 'sms_bundles'])->name('index');
+//Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function () {
+//
+//    Route::get('', 'Admin\HomeController@index')->name('home');
+//    Route::get('home', 'Admin\HomeController@index')->name('home');
+//
+//    Route::prefix('businesses')->name('businesses.')->group(function(){
+//        Route::get('', [AdminO\BusinessController::class, 'index'])->name('index');
+//        Route::get('create', [AdminO\BusinessController::class, 'create_business'])->name('create');
+//        Route::post('create', [AdminO\BusinessController::class, 'save_business']);
+//        Route::get('{slug}/show', [AdminO\BusinessController::class, 'show_business'])->name('show');
+//        Route::get('{slug}/branches', [AdminO\BusinessController::class, 'business_branches'])->name('branch.index');
+////        Route::get('{slug}/owner', [Admin\HomeController::class, 'show_business_owner'])->name('show_owner');
+//        Route::get('{slug}/edit', [AdminO\BusinessController::class, 'edit_business'])->name('edit');
+//        Route::post('{slug}/edit', [AdminO\BusinessController::class, 'update_business']);
+//        Route::get('{slug}/delete', [AdminO\BusinessController::class, 'delete_business'])->name('delete');
+////        Route::get('{slug}/suspend', [Admin\BusinessController::class, 'suspend_business'])->name('suspend');
+////        Route::get('{slug}/verify', [Admin\BusinessController::class, 'verify_business'])->name('verify');
 //    });
-    Route::prefix('reports')->name('reports.')->group(function(){
-//        Route::get('sms', [Admin\SubscriptionController::class, 'sms_reports'])->name('sms');
-        Route::get('subscriptions', [Admin\SubscriptionsController::class, 'subscription_report'])->name('subscription');
-    });
-    
-    Route::prefix('settings')->name('settings.')->group(function(){
-        Route::get('profile', [Admin\HomeController::class, 'my_profile'])->name('profile');
-        Route::get('footer', [Admin\HomeController::class, 'footer_settings'])->name('footer');
-        Route::get('password', [Admin\HomeController::class, 'change_password'])->name('change_password');
-    });
-
-    Route::prefix('pages')->name('pages.')->group(function(){
-        Route::get('', [Admin\HomeController::class, 'all_pages'])->name('index');
-        Route::get('privacy', [Admin\HomeController::class, 'show_privacy_policy'])->name('privacy');
-        Route::post('privacy', [Admin\HomeController::class, 'save_privacy_policy']);
-        Route::get('team_members', [Admin\HomeController::class, 'page_team_members'])->name('team_members');
-    });
-
-    Route::prefix('abuse')->name('abuse.')->group(function(){
-        Route::get('', [Admin\HomeController::class, 'abuse_reports'])->name('reports');
-    });
-
-    Route::get('region/{id}/towns', [Controller::class, 'region_towns'])->name('region.towns');
-    Route::get('town/{id}/streets', [Controller::class, 'town_streets'])->name('town.streets');
-   
-    Route::get('users/search', [Controller::class, 'search_user'])->name('users.search');
-
-
-    Route::resource('users', 'Admin\UserController');
-    Route::resource('roles','Admin\RolesController');
-    Route::get('permissions', 'Admin\RolesController@permissions')->name('roles.permissions');
-    Route::get('assign_role', 'Admin\RolesController@rolesView')->name('roles.assign');
-    Route::post('assign_role', 'Admin\RolesController@rolesStore')->name('roles.assign.post');
-    Route::post('roles/destroy/{id}', 'Admin\RolesController@destroy')->name('roles.destroy');
-
-    Route::get('reset_password', 'Controller@reset_password')->name('reset_password');
-    Route::post('reset_password', 'Controller@reset_password_save')->name('reset_password');
-
-    Route::get('user/block/{user_id}', 'Admin\HomeController@block_user')->name('block_user');
-    Route::get('user/activate/{user_id}', 'Admin\HomeController@activate_user')->name('activate_user');
-
-});
+//
+//    Route::prefix('errands')->name('errands.')->group(function(){
+//        Route::get('', [AdminO\ErrandController::class, 'index'])->name('index');
+//        Route::get('delete/{slug}', [AdminO\ErrandController::class, 'delete_errand'])->name('delete');
+//    });
+//    Route::prefix('services')->name('services.')->group(function(){
+//        Route::get('', [AdminO\ProductController::class, 'services'])->name('index');
+//        Route::get('show/{service}', [AdminO\ProductController::class, 'show_service'])->name('show');
+//        Route::get('create', [AdminO\ProductController::class, 'create_service'])->name('create');
+//    });
+//    Route::prefix('products')->name('products.')->group(function(){
+//        Route::get('', [AdminO\ProductController::class, 'products'])->name('index');
+//        Route::get('show/{product}', [AdminO\ProductController::class, 'show_product'])->name('show');
+//        Route::get('create', [AdminO\ProductController::class, 'create_products'])->name('create');
+//    });
+//    Route::prefix('categories')->name('categories.')->group(function(){
+//        Route::get('', [AdminO\CategoryController::class, 'categories'])->name('index');
+//        Route::get('subcategories', [AdminO\CategoryController::class, 'sub_categories'])->name('sub_categories');
+//        Route::get('subcategories/create', [AdminO\CategoryController::class, 'create_sub_category'])->name('sub_categories.create');
+//        Route::get('create', [AdminO\CategoryController::class, 'create_category'])->name('create');
+//    });
+//    Route::prefix('locations')->name('locations.')->group(function(){
+//        Route::get('streets', [AdminO\LocationController::class, 'streets'])->name('streets');
+////        Route::get('streets/create', [Admin\LocationController::class, 'create_street'])->name('streets.create');
+////        Route::post('streets/create', [Admin\LocationController::class, 'save_street']);
+////        Route::get('streets/{slug}/edit', [Admin\LocationController::class, 'edit_street'])->name('streets.edit');
+////        Route::post('streets/{slug}/edit', [Admin\LocationController::class, 'update_street']);
+////        Route::get('streets/{slug}/delete', [Admin\LocationController::class, 'delete_street'])->name('streets.delete');
+//        Route::get('towns', [AdminO\LocationController::class, 'towns'])->name('towns');
+//        Route::get('towns/create', [AdminO\LocationController::class, 'create_town'])->name('towns.create');
+//        Route::post('towns/create', [AdminO\LocationController::class, 'save_town']);
+//        Route::get('towns/{slug}/edit', [AdminO\LocationController::class, 'edit_town'])->name('towns.edit');
+//        Route::post('towns/{slug}/edit', [AdminO\LocationController::class, 'update_town']);
+//        Route::get('towns/{slug}/delete', [AdminO\LocationController::class, 'delete_town'])->name('towns.delete');
+//    });
+//    Route::prefix('reviews')->name('reviews.')->group(function(){
+//        Route::get('', [AdminO\ErrandController::class, 'reviews'])->name('index');
+//    });
+//    Route::prefix('users')->name('users.')->group(function(){
+//        Route::get('', [AdminO\UserController::class, 'users'])->name('index');
+//        Route::get('create', [AdminO\UserController::class, 'create_user'])->name('create');
+//    });
+//    Route::prefix('admins')->name('admins.')->group(function(){
+//        Route::get('', [AdminO\UserController::class, 'admins'])->name('index');
+//        Route::get('roles', [AdminO\UserController::class, 'roles'])->name('roles');
+//    });
+//    Route::prefix('plans')->name('plans.')->group(function(){
+//        Route::get('', [AdminO\SubscriptionsController::class, 'index'])->name('index');
+//        Route::get('create', [AdminO\SubscriptionsController::class, 'create_subscription_plan'])->name('create');
+//        Route::post('create', [AdminO\SubscriptionsController::class, 'save_subscription_plan']);
+//    });
+////    Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
+////        Route::get('', [Admin\SMSController::class, 'sms_bundles'])->name('index');
+////    });
+//    Route::prefix('reports')->name('reports.')->group(function(){
+////        Route::get('sms', [Admin\SubscriptionController::class, 'sms_reports'])->name('sms');
+//        Route::get('subscriptions', [AdminO\SubscriptionsController::class, 'subscription_report'])->name('subscription');
+//    });
+//
+//    Route::prefix('settings')->name('settings.')->group(function(){
+//        Route::get('profile', [AdminO\HomeController::class, 'my_profile'])->name('profile');
+//        Route::get('footer', [AdminO\HomeController::class, 'footer_settings'])->name('footer');
+//        Route::get('password', [AdminO\HomeController::class, 'change_password'])->name('change_password');
+//    });
+//
+//    Route::prefix('pages')->name('pages.')->group(function(){
+//        Route::get('', [AdminO\HomeController::class, 'all_pages'])->name('index');
+//        Route::get('privacy', [AdminO\HomeController::class, 'show_privacy_policy'])->name('privacy');
+//        Route::post('privacy', [AdminO\HomeController::class, 'save_privacy_policy']);
+//        Route::get('team_members', [AdminO\HomeController::class, 'page_team_members'])->name('team_members');
+//    });
+//
+//    Route::prefix('abuse')->name('abuse.')->group(function(){
+//        Route::get('', [AdminO\HomeController::class, 'abuse_reports'])->name('reports');
+//    });
+//
+//    Route::get('region/{id}/towns', [Controller::class, 'region_towns'])->name('region.towns');
+//    Route::get('town/{id}/streets', [Controller::class, 'town_streets'])->name('town.streets');
+//
+//    Route::get('users/search', [Controller::class, 'search_user'])->name('users.search');
+//
+//
+//    Route::resource('users', 'Admin\UserController');
+//    Route::resource('roles','Admin\RolesController');
+//    Route::get('permissions', 'Admin\RolesController@permissions')->name('roles.permissions');
+//    Route::get('assign_role', 'Admin\RolesController@rolesView')->name('roles.assign');
+//    Route::post('assign_role', 'Admin\RolesController@rolesStore')->name('roles.assign.post');
+//    Route::post('roles/destroy/{id}', 'Admin\RolesController@destroy')->name('roles.destroy');
+//
+//    Route::get('reset_password', 'Controller@reset_password')->name('reset_password');
+//    Route::post('reset_password', 'Controller@reset_password_save')->name('reset_password');
+//
+//    Route::get('user/block/{user_id}', 'Admin\HomeController@block_user')->name('block_user');
+//    Route::get('user/activate/{user_id}', 'Admin\HomeController@activate_user')->name('activate_user');
+//
+//});
 
 Route::get('region/{id}/towns', [Controller::class, 'region_towns'])->name('region.towns');
 Route::get('town/{id}/streets', [Controller::class, 'town_streets'])->name('town.streets');

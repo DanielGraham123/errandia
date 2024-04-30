@@ -23,10 +23,10 @@ class Errand extends Model
         return $this->region == null ? '' : ($this->region->country->name.', '.$this->region->name.', '.($this->town == null ? '' : ($this->town->name.', '.($this->street == null ? '' : $this->street->name))));
     }
 
-    public function sub_categories(){
-        $cats = explode(',', $this->sub_categories);
-        return SubCategory::whereIn('id', $cats)->get();
-    }
+//    public function sub_categories(){
+//        $cats = explode(',', $this->sub_categories);
+//        return SubCategory::whereIn('id', $cats)->get();
+//    }
 
     public function getSubcategories(){
         $cats = explode('-', $this->sub_categories);
