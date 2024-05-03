@@ -6,6 +6,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 //use App\Models\File;
+use App\Models\Errand;
+use App\Models\Product;
 use App\Models\Region;
 use App\Models\Shop;
 use App\Models\Street;
@@ -21,6 +23,15 @@ class HomeController  extends Controller
     {
 
         $data['title'] = "Dashboard";
+        $data['no_users'] = User::count();
+        $data['no_businesses'] = Shop::count();
+        $data['no_categories'] = Category::count();
+        $data['no_regions'] = Region::count();
+        $data['no_towns'] = Town::count();
+        $data['no_errands'] = Errand::count();
+        $data['no_products'] = Product::whereService(false)->count();
+        $data['no_services'] = Product::whereService(true)->count();
+
         return view('admin.dashboard', $data);
     }
 
