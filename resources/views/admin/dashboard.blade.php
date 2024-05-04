@@ -4,133 +4,78 @@
 
 @endphp
 <div>
-    <div class="d-flex justify-content-start flex-wrap">
+    <div class="row">
+        <x-dashboard-item
+                :count="$no_users"
+                icon="assets/admin/icons/icon-dashboard-users.svg"
+                title="Users"
+                route-name="admin.users.index" />
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-users.svg') }}"></div>
-            <span class="title">Users</span>
-            <div class="stats">
-                <span class="qty text-extra">46</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
+<!--        <div class=" col-md-3">-->
+<!--            <div class="dashboard-item">-->
+<!--                <div class="stats">-->
+<!--                    <span class="qty text-extra">{{ $no_users }}</span>-->
+<!--                    <div class="icon-box">-->
+<!--                        <img src="{{ asset('assets/admin/icons/icon-dashboard-users.svg') }}">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!---->
+<!--               <div class="d-flex align-items-center justify-content-between bottom-stats mx-3">-->
+<!--                   <span class="title">Users</span>-->
+<!--                   <span>-->
+<!--                        <a href="{{ route('admin.users.index') }}" class="act text-link">-->
+<!--                            manage-->
+<!--                            <img style="height: 1.5rem; width: 1.5rem;"-->
+<!--                                 src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}">-->
+<!--                        </a>-->
+<!--                    </span>-->
+<!--               </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-businesses.svg') }}"></div>
-            <span class="title">Businesses</span>
-            <div class="stats">
-                <span class="qty text-extra">22</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
+        <x-dashboard-item
+                :count="$no_businesses"
+                icon="assets/admin/icons/icon-dashboard-businesses.svg"
+                title="Businesses"
+                route-name="admin.businesses.index" />
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-service-provider.svg') }}"></div>
-            <span class="title">Service Providers</span>
-            <div class="stats">
-                <span class="qty text-extra">10</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
+        <x-dashboard-item
+                :count="$no_categories"
+                icon="assets/admin/icons/icon-dashboard-individuals.svg"
+                title="Categories"
+                route-name="admin.categories.index" />
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-individuals.svg') }}"></div>
-            <span class="title">Individuals</span>
-            <div class="stats">
-                <span class="qty text-extra">12</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-admins.svg') }}"></div>
-            <span class="title">Admins</span>
-            <div class="stats">
-                <span class="qty text-extra">4</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
+        <x-dashboard-item
+                :count="$no_errands"
+                icon="assets/admin/icons/icon-dashboard-errands.svg"
+                title="Errands"
+                route-name="admin.errands.index" />
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-errands.svg') }}"></div>
-            <span class="title">Errands</span>
-            <div class="stats">
-                <span class="qty text-extra">55</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
+<x-dashboard-item
+                :count="$no_products"
+                icon="assets/admin/icons/icon-dashboard-admins.svg"
+                title="Products"
+                route-name="admin.products.index" />
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-products.svg') }}"></div>
-            <span class="title">Products</span>
-            <div class="stats">
-                <span class="qty text-extra">100</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
+        <x-dashboard-item
+                :count="$no_services"
+                icon="assets/admin/icons/icon-dashboard-services.svg"
+                title="Services"
+                route-name="admin.services.index" />
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-services.svg') }}"></div>
-            <span class="title">Services</span>
-            <div class="stats">
-                <span class="qty text-extra">35</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
+        <x-dashboard-item
+                :count="$no_regions"
+                icon="assets/admin/icons/icon-dashboard-review.svg"
+                title="Regions"
+                route-name="admin.locations.towns" />
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-review.svg') }}"></div>
-            <span class="title">Reviews and Ratings</span>
-            <div class="stats">
-                <span class="qty text-extra">32</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
+        <x-dashboard-item
+                :count="$no_towns"
+                icon="assets/admin/icons/icon-dashboard-towns.svg"
+                title="Towns"
+                route-name="admin.locations.towns" />
 
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-subscription-plans.svg') }}"></div>
-            <span class="title">Subscription Plans</span>
-            <div class="stats">
-                <span class="qty text-extra">05</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
-
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-sms.svg') }}"></div>
-            <span class="title">SMS Bundles</span>
-            <div class="stats">
-                <span class="qty text-extra">04</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
-
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-towns.svg') }}"></div>
-            <span class="title">Towns</span>
-            <div class="stats">
-                <span class="qty text-extra">10</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
-
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-street.svg') }}"></div>
-            <span class="title">Streets</span>
-            <div class="stats">
-                <span class="qty text-extra">25</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
-
-       <div class="dashboard-item">
-            <div class="icon-box"><img src="{{ asset('assets/admin/icons/icon-dashboard-promo-featured-business.svg') }}"></div>
-            <span class="title">Featured Businesses</span>
-            <div class="stats">
-                <span class="qty text-extra">5</span>
-                <span><a class="act text-link">manage <img style="height: 1.5rem; width: 1.5rem;" src="{{asset('assets/admin/icons/icon-arrow-right.svg')}}"></a></span>
-            </div>
-       </div>
 
     </div>
 </div>

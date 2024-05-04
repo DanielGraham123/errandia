@@ -63,20 +63,21 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     Route::get('home', 'Admin\HomeController@index')->name('home');
 
     Route::prefix('businesses')->name('businesses.')->group(function(){
-        Route::get('', [Admin\ShopController::class, 'businesses'])->name('index');
-        Route::get('create', [Admin\ShopController::class, 'create_business'])->name('create');
-        Route::post('create', [Admin\ShopController::class, 'save_business']);
-        Route::get('{slug}/show', [Admin\ShopController::class, 'show_business'])->name('show');
-        Route::get('{slug}/owner', [Admin\ShopController::class, 'show_business_owner'])->name('show_owner');
-        Route::get('{slug}/edit', [Admin\ShopController::class, 'edit_business'])->name('edit');
-        Route::post('{slug}/edit', [Admin\ShopController::class, 'update_business']);
-        Route::get('{slug}/delete', [Admin\ShopController::class, 'delete_business'])->name('delete');
-        Route::get('{slug}/suspend', [Admin\ShopController::class, 'suspend_business'])->name('suspend');
-        Route::get('{slug}/verify', [Admin\ShopController::class, 'verify_business'])->name('verify');
+        Route::get('', [Admin\BusinessController::class, 'index'])->name('index');
+        Route::get('create', [Admin\BusinessController::class, 'create_business'])->name('create');
+        Route::post('create', [Admin\BusinessController::class, 'save_business']);
+        Route::get('{slug}/show', [Admin\BusinessController::class, 'show_business'])->name('show');
+        Route::get('{slug}/branches', [Admin\BusinessController::class, 'business_branches'])->name('branch.index');
+//        Route::get('{slug}/owner', [Admin\HomeController::class, 'show_business_owner'])->name('show_owner');
+        Route::get('{slug}/edit', [Admin\BusinessController::class, 'edit_business'])->name('edit');
+        Route::post('{slug}/edit', [Admin\BusinessController::class, 'update_business']);
+        Route::get('{slug}/delete', [Admin\BusinessController::class, 'delete_business'])->name('delete');
+//        Route::get('{slug}/suspend', [Admin\BusinessController::class, 'suspend_business'])->name('suspend');
+//        Route::get('{slug}/verify', [Admin\BusinessController::class, 'verify_business'])->name('verify');
     });
 
     Route::prefix('errands')->name('errands.')->group(function(){
-        Route::get('', [Admin\ErrandController::class, 'errands'])->name('index');
+        Route::get('', [Admin\ErrandController::class, 'index'])->name('index');
         Route::get('delete/{slug}', [Admin\ErrandController::class, 'delete_errand'])->name('delete');
     });
     Route::prefix('services')->name('services.')->group(function(){
@@ -97,11 +98,11 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
     });
     Route::prefix('locations')->name('locations.')->group(function(){
         Route::get('streets', [Admin\LocationController::class, 'streets'])->name('streets');
-        Route::get('streets/create', [Admin\LocationController::class, 'create_street'])->name('streets.create');
-        Route::post('streets/create', [Admin\LocationController::class, 'save_street']);
-        Route::get('streets/{slug}/edit', [Admin\LocationController::class, 'edit_street'])->name('streets.edit');
-        Route::post('streets/{slug}/edit', [Admin\LocationController::class, 'update_street']);
-        Route::get('streets/{slug}/delete', [Admin\LocationController::class, 'delete_street'])->name('streets.delete');
+//        Route::get('streets/create', [Admin\LocationController::class, 'create_street'])->name('streets.create');
+//        Route::post('streets/create', [Admin\LocationController::class, 'save_street']);
+//        Route::get('streets/{slug}/edit', [Admin\LocationController::class, 'edit_street'])->name('streets.edit');
+//        Route::post('streets/{slug}/edit', [Admin\LocationController::class, 'update_street']);
+//        Route::get('streets/{slug}/delete', [Admin\LocationController::class, 'delete_street'])->name('streets.delete');
         Route::get('towns', [Admin\LocationController::class, 'towns'])->name('towns');
         Route::get('towns/create', [Admin\LocationController::class, 'create_town'])->name('towns.create');
         Route::post('towns/create', [Admin\LocationController::class, 'save_town']);
@@ -121,16 +122,16 @@ Route::prefix('admin')->name('admin.')->middleware('isAdmin')->group(function ()
         Route::get('roles', [Admin\UserController::class, 'roles'])->name('roles');
     });
     Route::prefix('plans')->name('plans.')->group(function(){
-        Route::get('', [Admin\SubscriptionController::class, 'subscription_plans'])->name('index');
-        Route::get('create', [Admin\SubscriptionController::class, 'create_subscription_plan'])->name('create');
-        Route::post('create', [Admin\SubscriptionController::class, 'save_subscription_plan']);
+        Route::get('', [Admin\SubscriptionsController::class, 'index'])->name('index');
+        Route::get('create', [Admin\SubscriptionsController::class, 'create_subscription_plan'])->name('create');
+        Route::post('create', [Admin\SubscriptionsController::class, 'save_subscription_plan']);
     });
-    Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
-        Route::get('', [Admin\SubscriptionController::class, 'sms_bundles'])->name('index');
-    });
+//    Route::prefix('sms_bundles')->name('sms_bundles.')->group(function(){
+//        Route::get('', [Admin\SMSController::class, 'sms_bundles'])->name('index');
+//    });
     Route::prefix('reports')->name('reports.')->group(function(){
-        Route::get('sms', [Admin\SubscriptionController::class, 'sms_reports'])->name('sms');
-        Route::get('subscriptions', [Admin\SubscriptionController::class, 'subscription_report'])->name('subscription');
+//        Route::get('sms', [Admin\SubscriptionController::class, 'sms_reports'])->name('sms');
+        Route::get('subscriptions', [Admin\SubscriptionsController::class, 'subscription_report'])->name('subscription');
     });
     
     Route::prefix('settings')->name('settings.')->group(function(){
